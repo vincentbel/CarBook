@@ -18,11 +18,11 @@
 		Storing new user
 		return user details
     */
-		public function storeUser($name, $email, $password) {
+		public function storeUser($username, $email, $password) {
 			$hash = $this->hashSSHA($password);
 			$encrypted_password = $hash["encrypted"]; // encrypted password
 			$salt = $hash["salt"]; // salt
-			$result = mysqli_query("INSERT INTO user(user_name, password, salt, created_at) VALUES ('$name', '$encrypted_password', '$salt', NOW())");
+			$result = mysqli_query("INSERT INTO user(username, password, salt, created_at) VALUES ('$username', '$encrypted_password', '$salt', NOW())");
 			// checked for successful store
 			if ($result) {
 				// get user details
@@ -57,11 +57,37 @@
 				return false;
 			}
 		}
+
 	/*
-		Check user is existed or not
+		Get user by username and password
+	*/
+		public function getUserByUsernameAndPassword($username,$password) {
+			$result = mysqli_query("SELECT * FROM user WHERE username = '$username'") or die(mysqli_error());
+			// check for result 
+			$no_of_rows = mysqli_num_rows($result);
+			if ($no_of_rows > 0) {
+				$result = mysqli_fetch_array($result);
+				$salt = $result['$salt'];
+				$encrypted_password = $result['encrypted_password'];
+				$hash = $this->checkhashSSHA($password,$salt);
+				// check for password equality
+				if ($encrypted_password == $hash) {
+					// user authentication details are correct
+					return $result;
+				} 
+			} else {
+				// user not found
+				return false;
+			}
+		}
+
+
+
+	/*
+		Check user is existed or not by email
 	*/
 	
-		public function isUserExisted($email) {
+		public function isUserExistedByEmail($email) {
 			$result = mysqli_query("SELECT * FROM user WHERE email = '$email'") or die(mysqli_error());
 			// check for result
 			$no_of_rows = mysqli_num_rows($result);
@@ -74,6 +100,23 @@
 			}
 		}
 	
+	/*
+		Check user is existed or not by username
+	*/
+
+		public function isUserExistedByUsername($username) {
+			$result = mysqli_query("SELECT * FROM user WHERE username = '$username'") or die(mysqli_error());
+			// check for result
+			$no_of_rows = mysqli_num_rows($result);
+			if ($no_of_rows > 0) {
+				// user existed
+				return true;
+			} else {
+				// user not existed
+				return false;
+			}
+		}
+
 		/**
 		*Encrypting password
 		*@param password

@@ -11,6 +11,7 @@
 	  * check for POST request
 	 */
 	
+
 	if (isset($_POST['tag']) && $_POST['tag'] != '') {
 		// get tag
 		$tag = $_POST['tag'];
@@ -19,30 +20,30 @@
 		require_once 'include/DB_Functions.php';
 		$db = new DB_Functions();
 
-		// response Array
-		$response = array("tag" => $tag, "success" => 0, "error" => 0);
+		// response _POST
+		$response = _POST("tag" => $tag, "success" => 0, "error" => 0);
 
 		if ($tag == 'register') {
 			// Request type is Register new user
-			$name = $_POST['name'];
+			$username = $_POST['name'];
 			$email = $_POST['email'];
 			$password = $_POST['password'];
 
 			// check if user is already existed
-			if ($db->isUserExisted($email)) {
+			if ($db->isUserExistedByUsername($username)) {
 				// user is already existed - error response
 				$response["error"] = 2;
 				$response["error_msg"] = "User already existed!";
 				echo json_encode($response);
 			} else {
 				// store user
-				$user = $db->storeUser($name, $email, $password);
+				$user = $db->storeUser($username, $email, $password);
 				if ($user) {
 					// user stored successfully
 					$response["success"] = 1;
-					$response["user"]["name"] = $user["user_name"];
-					$response["user"]["email"] = $user["email"];
-					$response["user"] ["created_at"] = $user["created_at"];
+					$response["username"] = $user["username"];
+					$response["email"] = $user["email"];
+					$response["created_at"] = $user["created_at"];
 					echo json_encode($response);
 				} else {
 					// user failed to store
