@@ -9,10 +9,9 @@ import java.util.List;
 //工具类--JSON获取与发送
 public class JSONParser {
 
-    private ServiceHandler serviceHandler = null;
-
     static JSONObject jsonObject = null;
     static String json = "";
+    private ServiceHandler serviceHandler = null;
 
     public JSONParser() {
         serviceHandler = new ServiceHandler();

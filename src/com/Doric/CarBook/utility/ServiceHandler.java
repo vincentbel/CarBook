@@ -19,10 +19,9 @@ import java.util.List;
 //工具类--连接数据库
 public class ServiceHandler {
 
-    static String response = null;
-
     public static final int GET = 1;
     public static final int POST = 2;
+    static String response = null;
 
     public ServiceHandler() {
     }

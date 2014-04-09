@@ -1,18 +1,11 @@
 package com.Doric.CarBook;
 
-import android.app.Activity;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.ListView;
 import android.widget.TextView;
-import com.example.CarBook_master.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Sunyao_Will on 2014/4/3.
@@ -20,7 +13,7 @@ import java.util.List;
 public class SummaryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView =inflater.inflate(R.layout.car_summary, container, false);
+        View rootView = inflater.inflate(R.layout.car_summary, container, false);
 
         TextView bodyStruText = (TextView) rootView.findViewById(R.id.bodyStruText);
         TextView SCBText = (TextView) rootView.findViewById(R.id.SCBText);
@@ -57,7 +50,7 @@ public class SummaryFragment extends Fragment {
         store5Addr.setText("ÕÒ²»×Å¡£");
 
         return rootView;
-}
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

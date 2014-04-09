@@ -1,27 +1,21 @@
 package com.Doric.CarBook;
 
 
-import android.app.ActionBar;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.*;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
-import com.example.CarBook_master.R;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 
-public class CarShow extends FragmentActivity implements android.app.ActionBar.TabListener{
+public class CarShow extends FragmentActivity implements android.app.ActionBar.TabListener {
+    public static final int MAX_TAB_SIZE = 5;
     /*
     实现一个可以左右滑动的，包括“综述”“图片”“参数”“报价”“评论”的车辆信息展示页面
      */
     private ViewPager mViewPager;
-    public static final int MAX_TAB_SIZE = 5;
     private TabFragmentPagerAdapter mAdapter;
 
 
@@ -49,12 +43,13 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
         findViewById();
         initView();
     }
-    private void findViewById(){
+
+    private void findViewById() {
 
         mViewPager = (ViewPager) this.findViewById(R.id.pager);
     }
 
-    private void initView(){
+    private void initView() {
         final android.app.ActionBar mActionBar = getActionBar();
 
         mActionBar.setDisplayHomeAsUpEnabled(false);
@@ -83,13 +78,36 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
         });
 
         //初始化 ActionBar
-        for(int i=0;i<MAX_TAB_SIZE;i++){
+        for (int i = 0; i < MAX_TAB_SIZE; i++) {
             android.app.ActionBar.Tab tab = mActionBar.newTab();
             tab.setText(mAdapter.getPageTitle(i)).setTabListener(this);
             mActionBar.addTab(tab);
         }
     }
-    public static class TabFragmentPagerAdapter extends FragmentPagerAdapter{
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the main; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public void onTabSelected(android.app.ActionBar.Tab tab, android.app.FragmentTransaction ft) {
+        mViewPager.setCurrentItem(tab.getPosition());
+    }
+
+    @Override
+    public void onTabUnselected(android.app.ActionBar.Tab tab, android.app.FragmentTransaction ft) {
+
+    }
+
+    @Override
+    public void onTabReselected(android.app.ActionBar.Tab tab, android.app.FragmentTransaction ft) {
+
+    }
+
+    public static class TabFragmentPagerAdapter extends FragmentPagerAdapter {
 
         public TabFragmentPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -125,9 +143,10 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
 
             return MAX_TAB_SIZE;
         }
+
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position){
+            switch (position) {
                 case 0:
                     return "综述";
                 case 1:
@@ -142,27 +161,5 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
                     return "";
             }
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the main; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public void onTabSelected(android.app.ActionBar.Tab tab, android.app.FragmentTransaction ft) {
-        mViewPager.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(android.app.ActionBar.Tab tab, android.app.FragmentTransaction ft) {
-
-    }
-
-    @Override
-    public void onTabReselected(android.app.ActionBar.Tab tab, android.app.FragmentTransaction ft) {
-
     }
 }
