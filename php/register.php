@@ -21,11 +21,11 @@
 		$db = new DB_Functions();
 
 		// response _POST
-		$response = _POST("tag" => $tag, "success" => 0, "error" => 0);
+		$response = array("tag" => $tag, "success" => 0, "error" => 0);
 
 		if ($tag == 'register') {
 			// Request type is Register new user
-			$username = $_POST['name'];
+			$username = $_POST['username'];
 			$email = $_POST['email'];
 			$password = $_POST['password'];
 

@@ -21,7 +21,7 @@
 		$db = new DB_Functions();
 
 		// response _POST
-		$response = _POST("tag" => $tag, "success" => 0, "error" => 0);
+		$response = array("tag" => $tag, "success" => 0, "error" => 0);
 
 		// check for tag type
 		if ($tag == 'login') {
