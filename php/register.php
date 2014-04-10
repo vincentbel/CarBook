@@ -5,11 +5,11 @@
 	 * 
 	 * Each request will be identified by TAG
 	 * Response will be JSON data
-	*/
+	 */
 
 	 /**
 	  * check for POST request
-	 */
+	  */
 	
 
 	if (isset($_POST['tag']) && $_POST['tag'] != '') {
