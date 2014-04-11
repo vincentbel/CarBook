@@ -1,4 +1,4 @@
-package com.Doric.CarBook;
+package com.Doric.CarBook.car;
 
 public class CarInfor {
 
