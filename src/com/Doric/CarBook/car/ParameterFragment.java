@@ -1,4 +1,4 @@
-package com.Doric.CarBook;
+package com.Doric.CarBook.car;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,10 +9,11 @@ import android.view.ViewGroup;
 /**
  * Created by Sunyao_Will on 2014/4/3.
  */
-public class CommentFragment extends Fragment {
+public class ParameterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
+
     }
 
     @Override

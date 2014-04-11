@@ -1,4 +1,4 @@
-package com.Doric.CarBook;
+package com.Doric.CarBook.car;
 
 
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
+import com.Doric.CarBook.R;
 
 public class CarShow extends FragmentActivity implements android.app.ActionBar.TabListener {
     public static final int MAX_TAB_SIZE = 5;

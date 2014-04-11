@@ -1,4 +1,4 @@
-package com.Doric.CarBook;
+package com.Doric.CarBook.car;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.Doric.CarBook.R;
 
 /**
  * Created by Sunyao_Will on 2014/4/3.
@@ -20,10 +21,10 @@ public class SummaryFragment extends Fragment {
         TextView driveModeText = (TextView) rootView.findViewById(R.id.driveModeText);
         TextView lowCostText = (TextView) rootView.findViewById(R.id.lowCostText);
 
-        bodyStruText.setText("³µÉí½á¹¹£ºÊ®ÃÅÊ®×ù");
-        SCBText.setText("±äËÙÏä£ºÎÞ¼«Ê®µµ±äËÙ");
-        driveModeText.setText("Çý¶¯Ä£Ê½£ºÇ°ºó¶¼ÐÐ");
-        lowCostText.setText("×îµÍ¼Û¸ñ£º²»ÒªÇ®");
+        bodyStruText.setText("ï¿½ï¿½ï¿½ï¿½á¹¹ï¿½ï¿½Ê®ï¿½ï¿½Ê®ï¿½ï¿½");
+        SCBText.setText("ï¿½ï¿½ï¿½ï¿½ï¿½ä£ºï¿½Þ¼ï¿½Ê®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+        driveModeText.setText("ï¿½ï¿½Ä£Ê½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½");
+        lowCostText.setText("ï¿½ï¿½Í¼Û¸ñ£º²ï¿½ÒªÇ®");
 
         TextView store1Name = (TextView) rootView.findViewById(R.id.store1Name);
         TextView store2Name = (TextView) rootView.findViewById(R.id.store2Name);
@@ -31,11 +32,11 @@ public class SummaryFragment extends Fragment {
         TextView store4Name = (TextView) rootView.findViewById(R.id.store4Name);
         TextView store5Name = (TextView) rootView.findViewById(R.id.store5Name);
 
-        store1Name.setText("1µê");
-        store2Name.setText("2µê");
-        store3Name.setText("3µê");
-        store4Name.setText("4µê");
-        store5Name.setText("5µê");
+        store1Name.setText("1ï¿½ï¿½");
+        store2Name.setText("2ï¿½ï¿½");
+        store3Name.setText("3ï¿½ï¿½");
+        store4Name.setText("4ï¿½ï¿½");
+        store5Name.setText("5ï¿½ï¿½");
 
         TextView store1Addr = (TextView) rootView.findViewById(R.id.store1Addr);
         TextView store2Addr = (TextView) rootView.findViewById(R.id.store2Addr);
@@ -43,11 +44,11 @@ public class SummaryFragment extends Fragment {
         TextView store4Addr = (TextView) rootView.findViewById(R.id.store4Addr);
         TextView store5Addr = (TextView) rootView.findViewById(R.id.store5Addr);
 
-        store1Addr.setText("ÕÒ²»×Å¡£");
-        store2Addr.setText("ÕÒ²»×Å¡£");
-        store3Addr.setText("ÕÒ²»×Å¡£");
-        store4Addr.setText("ÕÒ²»×Å¡£");
-        store5Addr.setText("ÕÒ²»×Å¡£");
+        store1Addr.setText("ï¿½Ò²ï¿½ï¿½Å¡ï¿½");
+        store2Addr.setText("ï¿½Ò²ï¿½ï¿½Å¡ï¿½");
+        store3Addr.setText("ï¿½Ò²ï¿½ï¿½Å¡ï¿½");
+        store4Addr.setText("ï¿½Ò²ï¿½ï¿½Å¡ï¿½");
+        store5Addr.setText("ï¿½Ò²ï¿½ï¿½Å¡ï¿½");
 
         return rootView;
     }
