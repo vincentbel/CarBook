@@ -31,6 +31,8 @@
 
 			// check for user
 			$user = $db->getUserByUsernameAndPassword($username, $password);
+			// close connection
+			$db->close_dbc();
 			if ($user != false) {
 				// user found
 				// echo json with success = 1
