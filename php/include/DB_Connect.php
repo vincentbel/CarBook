@@ -1,5 +1,7 @@
 <?php
 class DB_Connect {
+	private $con;
+
 	// constructor
 	function __construct(){
 
@@ -9,20 +11,20 @@ class DB_Connect {
 	function __destruct(){
 
 	}
-
 	// Connecting to database
 	public function connect() {
 		require_once 'config.php';
 		// connecting to mysql
-		$con = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD,DB_DATABASE) or die("Cannot connect to database.");
-		
+		$this->con = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD,DB_DATABASE) or die("Cannot connect to database.");
+		mysqli_query($this->con, "SET NAMES 'utf-8'");
 		// return database handler
-		return $con;
+		return $this->con;
 	}
 
 	public function close() {
-		mysqli_close();
+		mysqli_close($this->con);
 	}
 
+	
 }
 ?>
