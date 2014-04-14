@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#000000" android:weightSum="1">
+
+    <LinearLayout android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_margin="10dp">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="@string/carseable_name"
+                    android:textColor="#ffffff"
+                    android:gravity="left"
+                    android:textSize="20dp"/>
+            <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:hint="  null is ok  "
+                    android:textColor="#777777"
+                    android:background="#ffffff"
+                    android:textSize="20dp"
+                    android:gravity="fill_horizontal"
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/carseable_name"/>
+
+    </LinearLayout>
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_margin="10dp">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:text="@string/car_price"
+                  android:textColor="#ffffff"
+                  android:gravity="left"
+
+                  android:textSize="20dp"/>
+        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:hint="            "
+                  android:layout_marginLeft="30dp"
+                  android:textColor="#777777"
+                  android:background="#ffffff"
+                  android:textSize="20dp"
+
+                  android:gravity="fill_horizontal"
+                  android:id="@+id/carprice_low"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:text="  --  "
+                  android:gravity="left"
+                  android:textColor="#ffffff"
+                  android:textSize="20dp"/>
+        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:hint="            "
+                  android:textColor="#777777"
+                  android:background="#ffffff"
+                  android:textSize="20dp"
+                  android:gravity="fill_horizontal"
+                  android:id="@+id/carprice_hig"/>
+
+    </LinearLayout>
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_margin="10dp">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:text="@string/car_size"
+                  android:textColor="#ffffff"
+                  android:gravity="left"
+                  android:textSize="20dp"/>
+        <EditText android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:hint="  null is ok  "
+                  android:textColor="#777777"
+                  android:background="#ffffff"
+                  android:textSize="20dp"
+                  android:gravity="fill_horizontal"
+                  android:id="@+id/car_size"
+                  android:layout_marginLeft="38dp"/>
+
+    </LinearLayout>
+
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="right"
+            android:textColor="#ffffff"
+            android:id="@+id/csearchbutton"
+            android:text="@string/search"/>
+
+</LinearLayout>

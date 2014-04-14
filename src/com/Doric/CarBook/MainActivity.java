@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import com.Doric.CarBook.car.CarShow;
 import com.Doric.CarBook.member.Login;
+import com.Doric.CarBook.search.AlphaShow;
 
 public class MainActivity extends Activity {
 
@@ -23,9 +25,9 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
-        /*
+
         //Æû³µÕ¹Ê¾²âÊÔ
-        Button carShowButton = (Button) findViewById(R.id.carShow);
+        Button carShowButton = (Button) findViewById(R.id.car_show);
         carShowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,6 +48,5 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
-        */
     }
 }

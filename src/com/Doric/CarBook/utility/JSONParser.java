@@ -1,6 +1,5 @@
 package com.Doric.CarBook.utility;
 
-import android.util.Log;
 import org.apache.http.NameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,10 +18,10 @@ public class JSONParser {
     }
 
     /**
-     *通过URL获取JSON对象
+     * 通过URL获取JSON对象
      *
-     * @param url 获取json对象的url
-     * @param params  发送到url的参数
+     * @param url    获取json对象的url
+     * @param params 发送到url的参数
      * @return 通过url获取到的json对象
      */
     public JSONObject getJSONFromUrl(String url, List<NameValuePair> params) {
