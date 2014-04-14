@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+
+    <Button
+        android:id="@+id/register"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:background="@xml/btn_background"
+        android:text="@string/register"
+        android:textColor="#FFFFFF"
+        android:layout_marginLeft="44dp"
+        android:layout_alignTop="@+id/login"
+        android:layout_alignParentLeft="true"/>
+
+
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/password"
+        android:textColor="#000000"
+        android:inputType="textPassword"
+        android:layout_below="@+id/username"
+        android:layout_marginTop="31dp"
+        android:layout_alignLeft="@+id/username"
+        android:layout_alignRight="@+id/username">
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="119dp"
+        android:layout_height="wrap_content"
+        android:background="@xml/btn_background"
+        android:text="@string/login"
+        android:textColor="#FFFFFF"
+        android:layout_marginRight="47dp"
+        android:layout_below="@+id/password"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="51dp"/>
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:textColor="#000000"  
+        android:hint="@string/user_name"
+        android:layout_marginTop="33dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/register"
+        android:layout_alignRight="@+id/login"/>
+
+</RelativeLayout>
+
