@@ -1,5 +1,6 @@
 package com.Doric.CarBook.utility;
 
+import android.util.Log;
 import org.apache.http.NameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,22 +9,6 @@ import java.util.List;
 
 //工具类--JSON获取与发送
 public class JSONParser {
-
-    public JSONObject getJsonObject() {
-        return jsonObject;
-    }
-
-    public void setJsonObject(JSONObject jsonObject) {
-        this.jsonObject = jsonObject;
-    }
-
-    public String getJson() {
-        return json;
-    }
-
-    public void setJson(String json) {
-        this.json = json;
-    }
 
     private JSONObject jsonObject = null;   //获取到的json对象
     private String json = "";
@@ -48,5 +33,25 @@ public class JSONParser {
             e.printStackTrace();
         }
         return jsonObject;
+    }
+
+    public JSONObject getJSONFromUrl(String url) {
+        return getJSONFromUrl(url, null);
+    }
+
+    public JSONObject getJsonObject() {
+        return jsonObject;
+    }
+
+    public void setJsonObject(JSONObject jsonObject) {
+        this.jsonObject = jsonObject;
+    }
+
+    public String getJson() {
+        return json;
+    }
+
+    public void setJson(String json) {
+        this.json = json;
     }
 }

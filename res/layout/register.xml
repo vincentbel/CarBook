@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:ems="10"
+        android:textColor="#000000" 
+        android:hint="@string/enter_user_name"
+        android:layout_alignLeft="@+id/register"
+        android:layout_alignRight="@+id/register"/>
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/username"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="@string/enter_password"
+        android:textColor="#000000" 
+        android:inputType="textPassword"
+        android:layout_alignLeft="@+id/username"
+        android:layout_alignRight="@+id/username">
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/ensure_password"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/password"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="@string/ensure_password"
+        android:textColor="#000000" 
+        android:inputType="textPassword"
+        android:layout_alignLeft="@+id/password"
+        android:layout_alignRight="@+id/password"/>
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ensure_password"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:textColor="#000000" 
+        android:hint="@string/enter_email"
+        android:layout_alignLeft="@+id/ensure_password"
+        android:layout_alignRight="@+id/ensure_password"/>
+
+    <Button
+        android:id="@+id/register"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="43dp"
+        android:background="@xml/btn_background"
+        android:textColor="#FFFFFF"
+        android:text="@string/register"
+        android:layout_below="@+id/email"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>
