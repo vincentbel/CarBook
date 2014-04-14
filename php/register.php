@@ -5,11 +5,11 @@
 	 * 
 	 * Each request will be identified by TAG
 	 * Response will be JSON data
-	*/
+	 */
 
 	 /**
 	  * check for POST request
-	 */
+	  */
 	
 
 	if (isset($_POST['tag']) && $_POST['tag'] != '') {
@@ -38,6 +38,8 @@
 			} else {
 				// store user
 				$user = $db->storeUser($username, $email, $password);
+				// close connection
+				$db->close_dbc();
 				if ($user) {
 					// user stored successfully
 					$response["success"] = 1;

@@ -2,7 +2,7 @@
      (user_id	int(10) NOT NULL AUTO_INCREMENT,
      username    varchar(32) NOT NULL COMMENT '用户名',
      encrypted_password    char(50) NOT NULL COMMENT '加密后的密码',
-     gender      tinyint(1) DEFAULT '0' COMMENT '性别',
+     gender      tinyint(1) DEFAULT '0' COMMENT '性别 0-保密, 1-男, 2-女',
      birthdate	date,
      avatar_status		tinyint(1) DEFAULT '0' COMMENT '用户是否有自定义头像',
      email varchar(50) COMMENT '用户邮箱',
