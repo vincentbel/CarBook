@@ -9,7 +9,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 import com.Doric.CarBook.R;
 import com.Doric.CarBook.Static;
 import com.Doric.CarBook.utility.JSONParser;
@@ -23,12 +25,11 @@ import java.util.List;
 
 public class Login extends Activity implements OnClickListener {
 
-    private EditText edt_username, edt_password;
-    private Button btn_login, btn_register;
-
     String url = Static.BASE_URL + "/login.php";  //登录请求的url,务必加上http://或https://
     List<NameValuePair> loginParams;    //登录时发送给服务器的数据
     JSONObject loginInfo;       //向服务器请求得到的json对象
+    private EditText edt_username, edt_password;
+    private Button btn_login, btn_register;
     private ProgressDialog progressDialog;   //异步任务时显示的进度条
 
     public void onCreate(Bundle savedInstanceState) {
@@ -114,7 +115,7 @@ public class Login extends Activity implements OnClickListener {
             super.onPreExecute();
             progressDialog = new ProgressDialog(Login.this);
             progressDialog.setMessage("Please wait...");
-            progressDialog.setCancelable(false);
+            progressDialog.setCancelable(true);
             progressDialog.show();
         }
 

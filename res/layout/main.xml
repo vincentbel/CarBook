@@ -10,7 +10,18 @@
         android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/login" />
+        android:text="登录" />
 
+    <Button
+            android:id="@+id/car_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="汽车展示" />
+
+    <Button
+            android:id="@+id/search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="搜索" />
 </LinearLayout>
 

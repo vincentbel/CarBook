@@ -21,5 +21,30 @@
         <activity android:name=".member.Register"
                   android:theme="@style/RegisterTheme">
         </activity>
+        <activity
+                android:name="com.Doric.CarBook.car.CarShow"
+                android:label="carShow"
+                android:theme="@style/Theme.CarShow"
+                >
+        </activity>
+
+
+        <activity
+                android:name="com.Doric.CarBook.search.AlphaShow"
+                android:label="@string/app_name" >
+        </activity>
+        <activity android:name="com.Doric.CarBook.search.Search"
+                  android:theme="@android:style/Theme.Dialog">
+
+        </activity>
+        <activity android:name="com.Doric.CarBook.search.Result">
+
+        </activity>
+        <activity android:name="com.Doric.CarBook.search.CarListShow">
+
+        </activity>
+        <activity android:name="com.Doric.CarBook.search.ConditionSearch">
+
+        </activity>
     </application>
 </manifest>
