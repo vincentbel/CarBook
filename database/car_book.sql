@@ -13,7 +13,7 @@
 
 
     CREATE TABLE car_grade
-    (car_grade_id tinyint(2)  NOT NULL,
+    (car_grade_id tinyint(2)  NOT NULL AUTO_INCREMENT,
      grade  varchar(10) NOT NULL,
      PRIMARY KEY (car_grade_id));
 
@@ -43,7 +43,7 @@
     CREATE TABLE produce_company
     (company_id int(6) NOT NULL AUTO_INCREMENT COMMENT '厂商id',
      name varchar(20) NOT NULL COMMENT '厂商名称',
-     set_up_time int(11) NOT NULL COMMENT '厂商建立时间',
+     set_up_time date NOT NULL COMMENT '厂商建立时间',
      nationality varchar(20) NOT NULL COMMENT '国别',
      PRIMARY KEY (company_id));    
 
@@ -84,7 +84,8 @@
    	 affordable_price_lowest	int(12),
    	 affordable_price_highest	int(12)	COMMENT '可承受价格范围',
    	 PRIMARY KEY (user_id),
-   	 FOREIGN KEY (favour_brand_id) REFERENCES brand(brand_id));
+   	 FOREIGN KEY (favour_brand_id) REFERENCES brand(brand_id),
+     FOREIGN KEY (user_id) REFERENCES user(user_id));
 
 
     CREATE TABLE user_comments

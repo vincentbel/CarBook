@@ -5,12 +5,19 @@
 		private $db;
 		private $dbc;
 
+		private $brand;
+		private $series;
+		private $model_number;
+
 		// constructor
-		function __construct() {
+		function __construct($brand, $series, $model_number) {
 			require_once 'DB_Connect.php';
 			// connecting to database
 			$this->db = new DB_Connect();
 			$this->dbc = $this->db->connect();
+			$this->brand = $brand;
+			$this->series = $series;
+			$this->model_number = $model_number;			
 		}
 
 		// destructor
@@ -20,7 +27,7 @@
 
 		// close database connection
 		public function close_dbc() {
-			$this->db->close();			
+			$this->db->close();
 		}
 
 	/**
@@ -37,5 +44,21 @@
 			}
 		}
 
-	
+		public function getCarInformation() {
+			$brand = $this->brand;
+			$series = $this->series;
+			$model_number = $this->model_number;
+			$query = "SELECT * FROM car NATURAL JOIN brand JOIN brand_series USING (series_id) JOIN car_grade USING (car_grade_id) WHERE brand.name = '$brand' AND brand_series.name = '$series' AND model_number = '$model_number'";
+			$result = mysqli_query($this->dbc, $query);
+			// check the query result
+			$this->check_sql_error($this->dbc, $query, $result);
+			
+			$result = mysqli_fetch_array($result);
+
+			// test the result
+			var_dump($result);
+			return $result;
+		}
 	}
+
+?>

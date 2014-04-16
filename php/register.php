@@ -20,7 +20,7 @@
 		require_once 'include/DB_Functions.php';
 		$db = new DB_Functions();
 
-		// response _POST
+		// response array
 		$response = array("tag" => $tag, "success" => 0, "error" => 0);
 
 		if ($tag == 'register') {
