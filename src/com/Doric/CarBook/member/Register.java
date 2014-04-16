@@ -1,16 +1,20 @@
 package com.Doric.CarBook.member;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.Doric.CarBook.R;
+import com.Doric.CarBook.Static;
 import com.Doric.CarBook.utility.JSONParser;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -19,22 +23,29 @@ import java.util.List;
 
 public class Register extends Activity implements View.OnClickListener {
 
-    EditText edt_username, edt_password, edt_ensurePsd, edt_email;
-    Button btn_register;
+    //服务器请求相关变量
+    private String url = Static.BASE_URL + "/login.php";  //登录请求的url,务必加上http://或https://
+    private List<NameValuePair> registerParams;    //登录时发送给服务器的数据
+    private JSONObject registerInfo;       //向服务器请求得到的json对象
+
+    //定义控件
+    private ProgressDialog progressDialog;   //异步任务时显示的进度条
+    private EditText edtUsername, edtPassword, edtEnsurePsd, edtEmail;
+    private Button btnRegister;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
 
         //设置控件
-        edt_username = (EditText) findViewById(R.id.username);
-        edt_password = (EditText) findViewById(R.id.password);
-        edt_ensurePsd = (EditText) findViewById(R.id.ensure_password);
-        edt_email = (EditText) findViewById(R.id.email);
-        btn_register = (Button) findViewById(R.id.register);
+        edtUsername = (EditText) findViewById(R.id.username);
+        edtPassword = (EditText) findViewById(R.id.password);
+        edtEnsurePsd = (EditText) findViewById(R.id.ensure_password);
+        edtEmail = (EditText) findViewById(R.id.email);
+        btnRegister = (Button) findViewById(R.id.register);
 
         //添加监听器
-        btn_register.setOnClickListener(this);
+        btnRegister.setOnClickListener(this);
 
         //设置Actionbar
         getActionBar().setTitle("注册账号");
@@ -49,10 +60,10 @@ public class Register extends Activity implements View.OnClickListener {
         //“注册”按钮
         if (id == R.id.register) {
             //获取用户输入的信息
-            String name = edt_username.getText().toString();
-            String psd = edt_password.getText().toString();
-            String enPsd = edt_ensurePsd.getText().toString();
-            String emailAddress = edt_email.getText().toString();
+            String name = edtUsername.getText().toString();
+            String psd = edtPassword.getText().toString();
+            String enPsd = edtEnsurePsd.getText().toString();
+            String emailAddress = edtEmail.getText().toString();
 
             //判断用户名是否为空
             if (name.equals("")) {
@@ -93,19 +104,24 @@ public class Register extends Activity implements View.OnClickListener {
             //判断邮箱格式是否合规范
             else if (!check_email(emailAddress)) {
                 Toast.makeText(Register.this, "您的邮箱地址不正确，请重新输入", Toast.LENGTH_LONG).show();
-            } else {
+            }
+
+            //发送用户信息到服务器
+            else {
+
                 //发送用户信息到服务器
-                String url = "";
-                List<NameValuePair> params = new ArrayList<NameValuePair>();
-                params.add(new BasicNameValuePair("username", name));
-                params.add(new BasicNameValuePair("password", psd));
-                params.add(new BasicNameValuePair("email", emailAddress));
-                JSONParser jsonParser = new JSONParser();
-                JSONObject loginInfo = jsonParser.getJSONFromUrl(url, params);
+                registerParams = new ArrayList<NameValuePair>();
+                registerParams.add(new BasicNameValuePair("tag", "login"));
+                registerParams.add(new BasicNameValuePair("username", name));
+                registerParams.add(new BasicNameValuePair("password", psd));
+
+                //异步任务判断用户是否登录成功
+                new registerUser().execute();
             }
         }
     }
 
+    //验证邮箱格式
     public boolean check_email(String ead) {
         int len = ead.length();
         int i;
@@ -117,11 +133,56 @@ public class Register extends Activity implements View.OnClickListener {
         return false;
     }
 
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
+    private class registerUser extends AsyncTask<Void, Void, Void> {
+
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+            //弹出"正在注册"框
+            progressDialog = new ProgressDialog(Register.this);
+            progressDialog.setMessage("正在注册..");
+            progressDialog.setCancelable(true);
+            progressDialog.show();
         }
-        return super.onOptionsItemSelected(item);
+
+        protected Void doInBackground(Void... params)
+        {
+            //向服务器发送请求
+            JSONParser jsonParser = new JSONParser();
+            registerInfo = jsonParser.getJSONFromUrl(url, registerParams);;
+
+            //判断收到的json是否为空
+            if (registerInfo != null) {
+                try {
+                    //注册成功
+                    if ( registerInfo.getString("error").equals("0")) {
+                        //跳转至个人中心
+                        Intent intent = new Intent(Register.this,PersonalCenter.class);
+                        startActivity(intent);
+                    }
+                    //发生错误
+                    else if ( registerInfo.getString("error").equals("1") ){
+                        Toast.makeText(Register.this, "注册失败", Toast.LENGTH_LONG).show();
+                    }
+                    //用户名已存在
+                    else {
+                        Toast.makeText(Register.this, "用户名已存在，请重新输入", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                Toast.makeText(Register.this, "注册失败，请检查您的网络是否正常", Toast.LENGTH_LONG).show();
+            }
+            return null;
+        }
+
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+        }
     }
 }
