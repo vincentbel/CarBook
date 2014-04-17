@@ -107,6 +107,8 @@ public class Register extends Activity implements View.OnClickListener {
                 Toast.makeText(Register.this, "您的邮箱地址不正确，请重新输入", Toast.LENGTH_LONG).show();
             }
 
+            //todo 邮箱唯一性验证
+
             //发送用户信息到服务器
             else {
 

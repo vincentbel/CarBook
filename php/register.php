@@ -58,4 +58,6 @@
 	} else {
 		echo "Invaild Request!";
 	}
+
+	//todo 邮箱唯一性验证
 ?>
