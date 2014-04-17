@@ -123,14 +123,6 @@ public class Login extends Activity implements OnClickListener {
         protected Void doInBackground(Void... params) {
             JSONParser jsonParser = new JSONParser();
             loginInfo = jsonParser.getJSONFromUrl(url, loginParams);
-            Log.d("Response: ", "" + loginInfo);
-
-            if (loginInfo != null) {
-                Log.e("JSON", loginInfo.toString());
-            } else {
-                Log.e("ServiceHandler", "Couldn't get any data from the url");
-            }
-
             return null;
         }
 

@@ -83,12 +83,12 @@ public class Register extends Activity implements View.OnClickListener {
                 Toast.makeText(Register.this, "请再次输入您的密码", Toast.LENGTH_LONG).show();
             }
             //判断验证密码是否正确
-            else if (psd.equals(enPsd)) {
-                Toast.makeText(Register.this, "两次输入的密码不同，请重新输入?", Toast.LENGTH_LONG).show();
+            else if (!psd.equals(enPsd)) {
+                Toast.makeText(Register.this, "两次输入的密码不同，请重新输入", Toast.LENGTH_LONG).show();
             }
             //判断邮箱是否为空
             else if (emailAddress.equals("")) {
-                Toast.makeText(Register.this, "请输入您的邮箱地址?", Toast.LENGTH_LONG).show();
+                Toast.makeText(Register.this, "请输入您的邮箱地址", Toast.LENGTH_LONG).show();
             }
             //判断邮箱格式是否合规范
             else if (!check_email(emailAddress)) {
