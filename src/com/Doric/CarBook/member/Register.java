@@ -94,7 +94,7 @@ public class Register extends Activity implements View.OnClickListener {
                 Toast.makeText(Register.this, "请再次输入您的密码", Toast.LENGTH_LONG).show();
             }
             //判断验证密码是否正确
-            else if (psd.equals(enPsd)) {
+            else if (!psd.equals(enPsd)) {
                 Toast.makeText(Register.this, "两次输入的密码不同，请重新输入?", Toast.LENGTH_LONG).show();
             }
             //判断邮箱是否为空
@@ -151,6 +151,15 @@ public class Register extends Activity implements View.OnClickListener {
             JSONParser jsonParser = new JSONParser();
             registerInfo = jsonParser.getJSONFromUrl(url, registerParams);;
 
+            return null;
+        }
+
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+
             //判断收到的json是否为空
             if (registerInfo != null) {
                 try {
@@ -175,14 +184,7 @@ public class Register extends Activity implements View.OnClickListener {
             else {
                 Toast.makeText(Register.this, "注册失败，请检查您的网络是否正常", Toast.LENGTH_LONG).show();
             }
-            return null;
-        }
 
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            if (progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
         }
     }
 }

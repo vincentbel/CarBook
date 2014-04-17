@@ -111,6 +111,15 @@ public class Login extends Activity implements OnClickListener {
             //向服务器发送请求
             JSONParser jsonParser = new JSONParser();
             loginInfo = jsonParser.getJSONFromUrl(url, loginParams);;
+            return null;
+        }
+
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
 
             //判断收到的json是否为空
             if (loginInfo != null) {
@@ -131,14 +140,6 @@ public class Login extends Activity implements OnClickListener {
             }
             else {
                 Toast.makeText(Login.this, "验证失败，请检查您的网络是否正常", Toast.LENGTH_LONG).show();
-            }
-            return null;
-        }
-
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            if (progressDialog.isShowing()) {
-                progressDialog.dismiss();
             }
         }
     }
