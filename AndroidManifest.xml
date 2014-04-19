@@ -16,15 +16,21 @@
 
         <activity android:name=".member.Login"
                   android:theme="@style/Theme.CarShow"
-                  android:screenOrientation="portrait"
-                >
+
+                  android:screenOrientation="portrait">
         </activity>
 
         <activity android:name=".member.Register"
                   android:theme="@style/Theme.CarShow"
-                  android:screenOrientation="portrait"
-                >
+
+                  android:screenOrientation="portrait">
         </activity>
+
+        <activity android:name=".member.PersonalCenter"
+                  android:theme="@style/Theme.CarShow"
+                  android:screenOrientation="portrait">
+        </activity>
+
         <activity
                 android:name="com.Doric.CarBook.car.CarShow"
                 android:label="carShow"
