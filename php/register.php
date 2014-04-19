@@ -20,7 +20,7 @@
 		require_once 'include/DB_Functions.php';
 		$db = new DB_Functions();
 
-		// response _POST
+		// response array
 		$response = array("tag" => $tag, "success" => 0, "error" => 0);
 
 		if ($tag == 'register') {
@@ -33,8 +33,12 @@
 			if ($db->isUserExistedByUsername($username)) {
 				// user is already existed - error response
 				$response["error"] = 2;
-				$response["error_msg"] = "User already existed!";
+				$response["error_msg"] = "Username already existed!";
 				echo json_encode($response);
+			} elseif ($db->isUserExistedByEmail($email)) {
+				// user is already existed - error response
+				$response["error"] = 3;
+				$response["error_msg"] = "User email already existed!";
 			} else {
 				// store user
 				$user = $db->storeUser($username, $email, $password);
@@ -53,9 +57,11 @@
 					$response["error_msg"] = "Error occured in Registartion";
 					echo json_encode($response);
 				}
-			} 
+			}
 		}
 	} else {
 		echo "Invaild Request!";
 	}
+
+	//todo 邮箱唯一性验证
 ?>

@@ -37,6 +37,8 @@
 			}
 		}
 
+
+
 	/**                         
 	 *	Storing new user
 	 *	return user details
@@ -52,10 +54,18 @@
 			// checked for successful store
 			$this->check_sql_error($this->dbc, $query, $result);
 			if ($result) {
-				// get user details
+				// get user id
 				$uid = mysqli_insert_id($this->dbc); // last inserted id
+				// init user_favour_type
+				$query = "INSERT INTO user_favour_type(user_id) VALUES ($uid)";
+				$result = mysqli_query($this->dbc, $query);
+				// checked for successful store 
+				$this->check_sql_error($this->dbc, $query, $result);				
+
 				$query = "SELECT * FROM user WHERE user_id = $uid";
 				$result = mysqli_query($this->dbc, $query);
+				// checked for successful store 
+				$this->check_sql_error($this->dbc, $query, $result);
 				// return user details
 				return mysqli_fetch_array($result);
 			}else {
