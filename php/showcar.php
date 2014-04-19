@@ -27,7 +27,7 @@
 		$response = array("tag" => $tag, "success" => 0, "error" => 0);
 		
 		// check for tag type
-		if ($tag == 'query') {
+		if ($tag == 'showcar') {
 			$car = $db->getCompositeInformation();
 			// close connection
 			$db->close_dbc();
@@ -39,7 +39,10 @@
 				$response["car_body_structure"] = $car["car_body_structure"];
 				$response["price"] = $car["price"];
 				$response["transmission"] = $car["transmission"];
-
+				$response["sale_company_num"] = $car["sale_company_num"];
+				for ($i = 0; $i < $car["sale_company_num"]; $i++) {
+					$response["sale_company_".($i+1)] = $car["sale_company_".($i+1)];
+				}
 				echo json_encode($response);
 			} else {
 				// car not found

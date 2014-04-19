@@ -105,9 +105,12 @@
 			$result = mysqli_query($this->dbc, $query);
 			// check the query result
 			$this->check_sql_error($this->dbc, $query, $result);
-			$result = mysqli_fetch_array($result);
-
-			return $result;
+			// count the number of sale_company
+			$counter = 0;
+			while ($row = mysqli_fetch_row($result)) {
+				$sale_company_id[$counter++] = $row[0];
+			}
+			return $sale_company_id;
 		}
 	
 	/**
@@ -116,7 +119,6 @@
 		public function getCompositeInformation() {
 			$comInformation;
 			$car_id = $this->getCarId();
-			echo $this->getCarId();
 			// query car's grade
 			$query = "SELECT grade FROM car NATURAL JOIN car_grade WHERE car.car_id = $car_id";
 			$result = mysqli_query($this->dbc, $query);
@@ -137,6 +139,20 @@
 			$comInformation["price"] = ($result["price_lowest"]/10000)."万-".($result["price_highest"]/10000)."万";
 			$comInformation["transmission"] = $result["transmission"];
 
+			// query car's sale_company
+			$sale_company_id = $this->getSaleCompanyId();
+			$comInformation["sale_company_num"] = count($sale_company_id);
+			// mark different sale_company
+			$counter = 1;
+			foreach ($sale_company_id as $value) {
+				$query = "SELECT name, telephone, address FROM sale_company WHERE sale_company_id = $value";
+				$result = mysqli_query($this->dbc, $query);
+				$result = mysqli_fetch_array($result);
+				$comInformation["sale_company_".$counter]["name"] = $result["name"];
+				$comInformation["sale_company_".$counter]["telephone"] = $result["telephone"];
+				$comInformation["sale_company_".$counter]["address"] = $result["address"];
+				$counter++;
+			}
 			var_dump($comInformation);
 			return $comInformation;
 		}

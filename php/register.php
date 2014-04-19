@@ -33,8 +33,12 @@
 			if ($db->isUserExistedByUsername($username)) {
 				// user is already existed - error response
 				$response["error"] = 2;
-				$response["error_msg"] = "User already existed!";
+				$response["error_msg"] = "Username already existed!";
 				echo json_encode($response);
+			} elseif ($db->isUserExistedByEmail($email)) {
+				// user is already existed - error response
+				$response["error"] = 3;
+				$response["error_msg"] = "User email already existed!";
 			} else {
 				// store user
 				$user = $db->storeUser($username, $email, $password);
