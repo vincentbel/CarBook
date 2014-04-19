@@ -28,24 +28,27 @@
 		
 		// check for tag type
 		if ($tag == 'query') {
-			$car = $db->getCarInformation();
-			if ($car != false){
+			$car = $db->getCompositeInformation();
+			// close connection
+			$db->close_dbc();
+
+			if ($car != false) {
 				// car found
 				$response["success"] = 1;
-				$response["grade"] = $car["grade"];
-				$response["price_lowest"] = $car["price_lowest"];
-				$response["price_highest"] = $car["price_highest"];
-				$response["name"] = $car["name"];
-				echo json_encode($response);				
+				$response["car_grade"] = $car["car_grade"];
+				$response["car_body_structure"] = $car["car_body_structure"];
+				$response["price"] = $car["price"];
+				$response["transmission"] = $car["transmission"];
+
+				echo json_encode($response);
 			} else {
 				// car not found
 				$response["error"] = 1;
 				$response["error_msg"] = "Car not found!";
 				echo json_encode($response);
 			}
-
+		} else {
+			echo "Invaild request!";
 		}
-	} else {
-		echo "Invaild request!";
 	}
 ?>

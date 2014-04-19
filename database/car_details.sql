@@ -6,14 +6,14 @@
 	 cylinder_number tinyint(2) COMMENT '气缸排列形式(L, V, W, H, R)',
 	 cylinder_arrangement char(1) COMMENT '汽缸数(个)',
 	 value_per_cylinder_number tinyint(2) COMMENT '每缸气门数(个)',
-	 compression_ration single COMMENT '压缩比',
+	 compression_ration float(3) COMMENT '压缩比',
 	 maximum_horsepower int(10) COMMENT '最大马力(Ps)',
 	 maximum_power int(10) COMMENT '最大功率(Kw)',
 	 maximum_power_speed int(10) COMMENT '最大功率转速(rpm)',
 	 fuel_type varchar(10) COMMENT '燃料形式(汽油, 柴油)',
 	 fuel_grade varchar(10) COMMENT '燃油标号(97号, 95号)',
 	 environmental_level varchar(10) COMMENT '环保标准(国IV...)',
-	 PRIMARY KEY (car_id) ,
+	 PRIMARY KEY (car_id),
 	 FOREIGN KEY (car_id) REFERENCES car(car_id));
 
 	CREATE TABLE color
@@ -41,7 +41,7 @@
 	 door_number tinyint(2) COMMENT '车门数(个)',
 	 seat_number tinyint(2) COMMENT '座位数(个)',
 	 fuel_tank_capacity int(10) COMMENT '油箱容积(L)',
-	 luggage_compartment_volume int(10), COMMENT '行李箱容积(L)'
+	 luggage_compartment_volume int(10) COMMENT '行李箱容积(L)',
 	 PRIMARY KEY (car_id),
 	 FOREIGN KEY (car_id) REFERENCES car(car_id));
 

@@ -24,8 +24,8 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
         super.onCreate(savedInstanceState);
         setContentView(R.layout.car_show);
         /*
-            使用carId构造Car实例
-        */
+         *    使用carId构造Car实例
+         */
         Intent intent = getIntent();
         intent.getIntExtra("carId", 0);
         CarInfor car = new CarInfor();

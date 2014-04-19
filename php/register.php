@@ -53,9 +53,11 @@
 					$response["error_msg"] = "Error occured in Registartion";
 					echo json_encode($response);
 				}
-			} 
+			}
 		}
 	} else {
 		echo "Invaild Request!";
 	}
+
+	//todo 邮箱唯一性验证
 ?>

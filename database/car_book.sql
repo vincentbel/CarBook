@@ -53,6 +53,7 @@
  	   car_grade_id	tinyint(2) NOT NULL COMMENT '汽车级别id',
   	 price_highest int(12) NOT NULL COMMENT '最高价格',
   	 price_lowest int(12) NOT NULL COMMENT '最低价格',
+     transmission varchar(20) COMMENT '变速器',
   	 brand_id int(6) NOT NULL COMMENT '品牌id',
   	 series_id int(6) NOT NULL COMMENT '车系id',
   	 model_number varchar(32) NOT NULL COMMENT '汽车型号',
