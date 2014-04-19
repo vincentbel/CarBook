@@ -153,7 +153,7 @@
 				$comInformation["sale_company_".$counter]["address"] = $result["address"];
 				$counter++;
 			}
-			var_dump($comInformation);
+			//var_dump($comInformation);
 			return $comInformation;
 		}
 	}
