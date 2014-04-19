@@ -1,0 +1,35 @@
+ // Car_show 
+ // car found
+ {
+ 	"tag": "showcar",
+ 	"success": 1,
+ 	"error": 0,
+ 	"car_grade": "\u8c6a\u534e\u8f66",
+ 	"car_body_structure": "4\u95e84\u5ea7",
+ 	"price": "117\u4e07-144.4\u4e07",
+ 	"transmission": "8\u6863\u624b\u81ea\u4e00\u4f53",
+ 	"sale_company_num": 3,
+ 	"sale_company_1": {
+ 		"name": "\u5317\u4eac\u661f\u5f97\u5b9d",
+ 		"telephone": "400-868-9298",
+ 		"address": "\u5317\u4eac\u5e02\u671d\u9633\u533a\u9ad8\u7891\u5e97\u4e61\u767d\u5bb6\u697c8\u53f7"
+ 	},
+ 	"sale_company_2": {
+ 		"name": "\u5317\u4eac\u8fd0\u901a\u661f\u5b9d\u5b9d\u9a6c",
+ 		"telephone": "400-878-9298",
+ 		"address": "\u5317\u4eac\u5e02\u5927\u5174\u533a\u897f\u7ea2\u95e8\u4e2d\u9f0e\u8def"
+ 	},
+ 	"sale_company_3": {
+ 		"name": "\u5317\u4eac\u4eac\u5b9d\u884c",
+ 		"telephone": "400-868-5698",
+ 		"address": "\u5317\u4eac\u5e02\u6d77\u6dc0\u533a\u95f5\u5e84\u8def19\u53f7"
+ 	}
+ }
+
+ // car not found
+ {
+ 	"tag": "register",
+ 	"success": 0,
+ 	"error": 1,
+ 	"error_msg": "Car not found!"
+ }
