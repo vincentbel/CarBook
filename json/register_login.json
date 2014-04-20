@@ -24,6 +24,14 @@
  	"error_msg": "User already existed!"
  }
 
+ // User already existed
+{
+	"tag": "register",
+	"success": 0,
+	"error": 3,
+	"error_msg": "User email already existed!"
+}
+
  // login success
  {
  	"tag": "login",

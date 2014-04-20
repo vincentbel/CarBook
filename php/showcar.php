@@ -28,7 +28,7 @@
 		
 		// check for tag type
 		if ($tag == 'showcar') {
-			$car = $db->getCompositeInformation();
+			$car = $db->get_composite_information();
 			// close connection
 			$db->close_dbc();
 
@@ -48,6 +48,43 @@
 				// car not found
 				$response["error"] = 1;
 				$response["error_msg"] = "Car not found!";
+				echo json_encode($response);
+			}
+		} elseif ($tag == 'configuration') {
+			$car = $db->get_car_configuration();
+			// close connection
+			$db->close_dbc();
+
+			if ($car != false) {
+				// car found
+				$response["success"] = 1;
+				$response["car_engine"] = $car["car_engine"];
+				$response["car_body_structure"] = $car["car_body_structure"];
+				$response["car_multimedia"] = $car["car_multimedia"];
+				$response["car_hightech"] = $car["car_hightech"];
+				echo json_encode($response);
+			} else {
+				// car not found
+				$response["error"] = 1;
+				$response["error_msg"] = "Car not found!";
+				echo json_encode($response);
+			}
+		} elseif ($tag == 'sale_companys') {
+			$sale_companys = $db->get_sale_company_information();
+			// close connection
+			$db->close_dbc();
+
+			if ($sale_companys != false) {
+				// companys found
+				$response["success"] = 1;
+				for ($i = 0; $i < $sale_companys["sale_company_num"]; $i++) {
+					$response["sale_company_".($i+1)] = $sale_companys["sale_company_".($i+1)];
+				}
+				echo json_encode($response);				
+			} else {
+				// companys not found
+				$response["error"] = 1;
+				$response["error_msg"] = "Sale Companys not found!";
 				echo json_encode($response);
 			}
 		} else {
