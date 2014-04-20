@@ -27,6 +27,9 @@ public class JSONParser {
     public JSONObject getJSONFromUrl(String url, List<NameValuePair> params) {
         json = serviceHandler.makeServiceCall(url, ServiceHandler.POST, params);
 
+        if (json == null) {
+            return null;
+        }
         try {
             jsonObject = new JSONObject(json);
         } catch (JSONException e) {
