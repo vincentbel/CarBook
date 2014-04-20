@@ -1,5 +1,5 @@
 <?php
-	class UserSetting{
+	class User_Setting{
 		private $db;
 		private $dbc;
 
@@ -35,7 +35,7 @@
 			Test success.
 			Update user's basic infomation.
 		*/
-		public function updateInfomation($username,$email,$password,$gender,$birthdate){
+		public function update_infomation($username,$email,$password,$gender,$birthdate){
 			$hash = $this->hashSSHA($password);
 			$encrypted_password = $hash["encrypted"]; // encrypted password
 			$salt = $hash["salt"]; // salt
@@ -65,15 +65,17 @@
 		/*
 		Has not tested yet.
 		*/
-		public function updateUserFavourType($username,$favourBrandId,$grade,$bodyStructure,$affordablePriceLowest,$affordablePriceHighest){
-			$userId = mysqli_query($this->dbc,"SELECT user_id FROM user WHERE username='$username'");
-			$query = "UPDATE user_favour_type SET favour_brand_id=$favourBrandId,grade='$grade',body_structure='$bodyStructure',affordable_price_lowest=$affordablePriceLowest,affordable_price_highest='$affordablePriceHighest' WHERE user_id=$userId";
+		public function update_user_favour_type($username,$favourBrandId,$grade,$bodyStructure,$affordablePriceLowest,$affordablePriceHighest){
+			$res = mysqli_query($this->dbc,"SELECT user_id FROM user WHERE username='$username'");
+			$row = mysqli_fetch_array($res);
+			$user_id = $row['user_id'];
+			$query = "UPDATE user_favour_type SET favour_brand_id=$favourBrandId,grade='$grade',body_structure='$bodyStructure',affordable_price_lowest=$affordablePriceLowest,affordable_price_highest=$affordablePriceHighest WHERE user_id = $user_id";
 			$result = mysqli_query($this->dbc, $query);
 			// checked for successful store
 			$this->check_sql_error($this->dbc, $query, $result);
 			if ($result) {
 				// get user_favour_type details
-				$query = "SELECT * FROM user_favour_type WHERE user_id = $userId";
+				$query = "SELECT * FROM user_favour_type WHERE user_id = $user_id";
 				$result = mysqli_query($this->dbc, $query);
 				// return user_favour_type details
 				

@@ -1,5 +1,6 @@
 package com.Doric.CarBook.car;
 
+import android.app.ListActivity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -7,6 +8,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.Doric.CarBook.R;
+import org.json.JSONException;
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.util.Pair;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.*;
+import android.widget.AdapterView.OnItemClickListener;
+import com.Doric.CarBook.R;
+import org.json.JSONObject;
+import com.Doric.CarBook.car.CarShow;
+import com.Doric.CarBook.search.MyListView;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Sunyao_Will on 2014/4/3.
@@ -16,41 +36,88 @@ public class SummaryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.car_summary, container, false);
 
-        TextView bodyStruText = (TextView) rootView.findViewById(R.id.bodyStruText);
-        TextView SCBText = (TextView) rootView.findViewById(R.id.SCBText);
-        TextView driveModeText = (TextView) rootView.findViewById(R.id.driveModeText);
-        TextView lowCostText = (TextView) rootView.findViewById(R.id.lowCostText);
 
-        bodyStruText.setText("车身结构：十门十座");
-        SCBText.setText("变速箱：无极十档变速");
-        driveModeText.setText("驱动模式：前后都行");
-        lowCostText.setText("最低价格：不要钱");
 
-        TextView store1Name = (TextView) rootView.findViewById(R.id.store1Name);
-        TextView store2Name = (TextView) rootView.findViewById(R.id.store2Name);
-        TextView store3Name = (TextView) rootView.findViewById(R.id.store3Name);
-        TextView store4Name = (TextView) rootView.findViewById(R.id.store4Name);
-        TextView store5Name = (TextView) rootView.findViewById(R.id.store5Name);
+        TextView bodyStruText = (TextView) (rootView != null ? rootView.findViewById(R.id.bodyStruText) : null);
+        TextView SCBText = (TextView) (rootView != null ? rootView.findViewById(R.id.SCBText) : null);
+        TextView driveModeText = (TextView) (rootView != null ? rootView.findViewById(R.id.driveModeText) : null);
+        TextView lowCostText = (TextView) (rootView != null ? rootView.findViewById(R.id.lowCostText) : null);
 
-        store1Name.setText("1店");
-        store2Name.setText("2店");
-        store3Name.setText("3店");
-        store4Name.setText("4店");
-        store5Name.setText("5店");
 
-        TextView store1Addr = (TextView) rootView.findViewById(R.id.store1Addr);
-        TextView store2Addr = (TextView) rootView.findViewById(R.id.store2Addr);
-        TextView store3Addr = (TextView) rootView.findViewById(R.id.store3Addr);
-        TextView store4Addr = (TextView) rootView.findViewById(R.id.store4Addr);
-        TextView store5Addr = (TextView) rootView.findViewById(R.id.store5Addr);
+        try {
+            if(driveModeText!=null){
+                driveModeText.setText("级别:"+CarShow.carInfo.getString("car_grade"));
+            }
+            if (bodyStruText != null ) {
+                bodyStruText.setText("车身结构:"+CarShow.carInfo.getString("car_body_structure"));
+            }
+            if(SCBText!=null){
+                SCBText.setText("变速箱:"+CarShow.carInfo.getString("transmission"));
+            }
+            if(lowCostText!=null){
+                lowCostText.setText("价格区间:"+CarShow.carInfo.getString("price"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        store1Addr.setText("找不着。");
-        store2Addr.setText("找不着。");
-        store3Addr.setText("找不着。");
-        store4Addr.setText("找不着。");
-        store5Addr.setText("找不着。");
+        //构建车行信息
+        ListView storeList = (ListView) (rootView != null ? rootView.findViewById(R.id.storeList) : null);
+        ArrayList<Map<String, Object>> list = getData();
+        SimpleAdapter adapter = new SimpleAdapter(getActivity().getApplicationContext(),list,R.layout.sale_company_list,
+                        new String[]{"storeName","storeAddr"},
+                        new int[]{R.id.storeName,R.id.storeAddr});
+        if (storeList != null) {
+            storeList.setAdapter(adapter);
+            setListViewHeightBasedOnChildren(storeList);
+        }
 
         return rootView;
+    }
+    ArrayList<Map<String, Object>> getData(){
+        ArrayList<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            for (Integer i=1;i<=CarShow.carInfo.getInt("sale_company_num");i++){
+                map =  new HashMap<String, Object>();
+                JSONObject carSaleCompany = CarShow.carInfo.getJSONObject("sale_company_"+i.toString());
+                map.put("storeName",carSaleCompany.getString("name"));
+                map.put("storeAddr",carSaleCompany.getString("address"));
+                list.add(map);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    public void setListViewHeightBasedOnChildren(ListView listView) {
+        // 获取ListView对应的Adapter
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            return;
+        }
+
+        int totalHeight = 0;
+        for (int i = 0, len = listAdapter.getCount(); i < len; i++) {
+            // listAdapter.getCount()返回数据项的数目
+            View listItem = listAdapter.getView(i, null, listView);
+            // 计算子项View 的宽高
+            if (listItem != null) {
+                listItem.measure(0, 0);
+            }
+            // 统计所有子项的总高度
+            if (listItem != null) {
+                totalHeight += listItem.getMeasuredHeight();
+            }
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        if (params != null) {
+            params.height = totalHeight+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        }
+        // listView.getDividerHeight()获取子项间分隔符占用的高度
+        // params.height最后得到整个ListView完整显示需要的高度
+        listView.setLayoutParams(params);
     }
 
     @Override

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@android:color/white">
+    <View
+            android:layout_width="fill_parent"
+            android:layout_height="0.5dip"
+            android:background="#3598db"
+            />
+    <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="120dp"
+            android:padding="10dp"
+            android:background="@drawable/article_page_bottom_layout_bg"
+            >
+        <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="35dp"
+                android:id="@+id/storeName"
+                />
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/storeName"
+                android:src="@drawable/car_address_logo"
+                android:id="@+id/icon1"
+                />
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:id="@+id/storeAddr"
+                android:layout_below="@id/storeName"
+                android:layout_toRightOf="@+id/icon1"
+                />
+        <Button android:layout_height="30dp"
+                android:layout_width="wrap_content"
+                android:background="@drawable/call_store"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:text="@string/call_4s_store"
+                android:textColor="@android:color/white"
+                />
+    </RelativeLayout>
+</LinearLayout>

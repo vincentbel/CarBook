@@ -134,7 +134,7 @@
 				$com_information["sale_company_".$counter]["address"] = $result["address"];
 				$counter++;
 			}
-			var_dump($com_information);
+			//var_dump($com_information);
 			return $com_information;
 		}
 
@@ -201,7 +201,7 @@
 			$car_configuration["car_hightech"]["night_version_system"] = $result["night_version_system"];
 			$car_configuration["car_hightech"]["panoramic_camera"] = $result["panoramic_camera"];
 
-			var_dump($car_configuration);
+			//var_dump($car_configuration);
 			return $car_configuration;
 		}
 
@@ -225,7 +225,7 @@
 				$sale_company_information["sale_company_".$counter]["price_highest"] = $result["price_highest"];
 				$counter++;
 			}
-			var_dump($sale_company_information);
+			//var_dump($sale_company_information);
 			return $sale_company_information;
 		}
 	}
