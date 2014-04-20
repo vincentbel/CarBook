@@ -17,7 +17,7 @@
         <activity android:name=".member.Login"
                   android:theme="@style/Theme.CarShow"
 
-                  android:screenOrientation="portrait">
+                  android:screenOrientation="portrait" >
         </activity>
 
         <activity android:name=".member.Register"
@@ -35,10 +35,13 @@
                 android:name="com.Doric.CarBook.car.CarShow"
                 android:label="carShow"
                 android:theme="@style/Theme.CarShow"
-                android:screenOrientation="portrait"
-                >
+                android:screenOrientation="portrait">
         </activity>
-
+        <activity android:name="com.Doric.CarBook.member.UserCollection"
+                  android:label="userCollection"
+                  android:theme="@style/Theme.CarShow"
+                  android:screenOrientation="portrait">
+        </activity>
 
         <activity
                 android:name="com.Doric.CarBook.search.AlphaShow"
