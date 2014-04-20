@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import com.Doric.CarBook.car.CarShow;
 import com.Doric.CarBook.member.Login;
+import com.Doric.CarBook.member.UserCollection;
 import com.Doric.CarBook.search.AlphaShow;
 
 public class MainActivity extends Activity {
@@ -45,6 +46,17 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, AlphaShow.class);
+                startActivity(intent);
+            }
+        });
+        // ’≤ÿº–≤‚ ‘
+        Button userCollectionButton = (Button) findViewById(R.id.collection);
+        userCollectionButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent ();
+                intent.setClass(MainActivity.this, UserCollection.class);
+                intent.putExtra("userName","defaultUser");
                 startActivity(intent);
             }
         });

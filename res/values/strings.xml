@@ -16,7 +16,6 @@
 
     <string name="call_4s_store">拨打电话</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_search">Search</string>
     <string name="action_ConditionSearch">ConditionSearch</string>
     <string name="hint">Please write the key words</string>
@@ -24,4 +23,5 @@
     <string name="car_price">Car Price</string>
     <string name="car_size">Car Size</string>
     <string name="search">Search</string>
+    <string name="user_collection">我的收藏</string>
 </resources>
