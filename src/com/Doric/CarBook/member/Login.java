@@ -55,19 +55,21 @@ public class Login extends Activity implements OnClickListener {
     public void onClick(View v) {
 
         int id = v.getId();
+        //获取用户名密码
+        String name = edtUsername.getText().toString();
+        String psd = edtPassword.getText().toString();
 
         //“注册”按钮
         if (id == R.id.register) {
+            //从登陆界面转到注册界面时将用户名和密码传过去，减少用户输入
             Intent intent = new Intent(Login.this, Register.class);
+            intent.putExtra("username", name);
+            intent.putExtra("password", psd);
             startActivity(intent);
         }
 
         //“登陆”按钮
         if (id == R.id.login) {
-
-            //获取用户名密码
-            String name = edtUsername.getText().toString();
-            String psd = edtPassword.getText().toString();
 
             //判断用户名是否为空
             if (name.equals("")) {
@@ -76,9 +78,7 @@ public class Login extends Activity implements OnClickListener {
             //判断密码是否为空
             else if (psd.equals("")) {
                 Toast.makeText(Login.this, "请输入密码", Toast.LENGTH_LONG).show();
-            }
-            else
-            {
+            } else {
                 //发送用户信息到服务器
                 loginParams = new ArrayList<NameValuePair>();
                 loginParams.add(new BasicNameValuePair("tag", "login"));
@@ -93,8 +93,7 @@ public class Login extends Activity implements OnClickListener {
 
     private class CheckUser extends AsyncTask<Void, Void, Void> {
 
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             super.onPreExecute();
             //弹出"正在登录"框
             progressDialog = new ProgressDialog(Login.this);
@@ -103,17 +102,15 @@ public class Login extends Activity implements OnClickListener {
             progressDialog.show();
         }
 
-        protected Void doInBackground(Void... params)
-        {
+        protected Void doInBackground(Void... params) {
             //向服务器发送请求
             JSONParser jsonParser = new JSONParser();
-            loginInfo = jsonParser.getJSONFromUrl(url, loginParams);;
+            loginInfo = jsonParser.getJSONFromUrl(url, loginParams);
             return null;
         }
 
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
@@ -122,7 +119,7 @@ public class Login extends Activity implements OnClickListener {
             if (loginInfo != null) {
                 try {
                     //账户信息验证失败
-                    if ( loginInfo.getString("success").equals("0")) {
+                    if (loginInfo.getString("success").equals("0")) {
                         Toast.makeText(Login.this, "用户名或密码错误，请重新输入", Toast.LENGTH_LONG).show();
                     }
                     //账户信息验证成功
@@ -142,8 +139,7 @@ public class Login extends Activity implements OnClickListener {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
-            else {
+            } else {
                 Toast.makeText(Login.this, "验证失败，请检查您的网络是否正常", Toast.LENGTH_LONG).show();
             }
         }

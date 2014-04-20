@@ -1,7 +1,9 @@
 package com.Doric.CarBook.car;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -9,7 +11,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
+import android.widget.Toast;
 import com.Doric.CarBook.R;
+import com.Doric.CarBook.Static;
+import com.Doric.CarBook.member.PersonalCenter;
+import com.Doric.CarBook.utility.JSONParser;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CarShow extends FragmentActivity implements android.app.ActionBar.TabListener {
     public static final int MAX_TAB_SIZE = 5;
@@ -17,33 +30,78 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
     实现一个可以左右滑动的，包括“综述”“图片”“参数”“报价”“评论”的车辆信息展示页面
      */
     private ViewPager mViewPager;
-    private TabFragmentPagerAdapter mAdapter;
-
+    static JSONObject carInfo;
+    String url = Static.BASE_URL+"/showcar.php";
+    List<NameValuePair> carParams = new ArrayList<NameValuePair>();
+    ProgressDialog progressDialog;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.car_show);
-        /*
-            使用carId构造Car实例
-        */
-        Intent intent = getIntent();
-        intent.getIntExtra("carId", 0);
-        CarInfor car = new CarInfor();
-        car.setCarId(89757);
-        car.setBrandId("BMW");
-        car.setCarName("Z4");
-        car.setCarSize("Sports Car");
-        car.setHighSpeed(200.0);
-        car.setEngineType("好引擎");
-        car.setHigPrice(50.0);
-        car.setLowPrice(40.0);
-        car.setTimeTo100Km(20.0);
 
-        getActionBar().setTitle(car.getCarName());
+        //发送请求并获取Json包
 
-        findViewById();
-        initView();
+        carParams.add(new BasicNameValuePair("tag", "showcar"));
+        carParams.add(new BasicNameValuePair("brand", "BMW"));
+        carParams.add(new BasicNameValuePair("series", "7series"));
+        carParams.add(new BasicNameValuePair("model_number", "2013 740Li grand"));
+
+        new GetCarInfo().execute();
+        //通过Json包构造car实例
+
+
+
     }
+
+    private class GetCarInfo extends AsyncTask<Void, Void, Void> {
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //弹出"正在登录"框
+            progressDialog = new ProgressDialog(CarShow.this);
+            progressDialog.setMessage("加载中..");
+            progressDialog.setCancelable(true);
+            progressDialog.show();
+        }
+
+        protected Void doInBackground(Void... params) {
+            //向服务器发送请求
+            JSONParser jsonParser = new JSONParser();
+            carInfo = jsonParser.getJSONFromUrl(url, carParams);
+            return null;
+        }
+
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+            if (carInfo!=null) {
+                CarInfor car = new CarInfor();
+                car.setCarName("BMW 7series 2013 740Li grand");
+                /*
+                try {
+                    car.setCarName("BMW 7series 2013 740Li grand");
+                    car.setCarGrade(carInfo.getString("car_grade"));
+                    car.setCarBodyStructure(carInfo.getString("car_body_structure"));
+                    car.setPrice(carInfo.getString("price"));
+                    car.setTransmission(carInfo.getString("transmission"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                */
+                if (getActionBar() != null) {
+                    getActionBar().setTitle(car.getCarName());
+                }
+                findViewById();
+                initView();
+            }
+            else {
+                Toast.makeText(CarShow.this.getApplicationContext(), "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
 
     private void findViewById() {
 
@@ -53,18 +111,24 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
     private void initView() {
         final android.app.ActionBar mActionBar = getActionBar();
 
-        mActionBar.setDisplayHomeAsUpEnabled(false);
+        if (mActionBar != null) {
+            mActionBar.setDisplayHomeAsUpEnabled(false);
+        }
 
-        mActionBar.setNavigationMode(android.app.ActionBar.NAVIGATION_MODE_TABS);
+        if (mActionBar != null) {
+            mActionBar.setNavigationMode(android.app.ActionBar.NAVIGATION_MODE_TABS);
+        }
 
-        mAdapter = new TabFragmentPagerAdapter(getSupportFragmentManager());
+        TabFragmentPagerAdapter mAdapter = new TabFragmentPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
             public void onPageSelected(int arg0) {
 
-                mActionBar.setSelectedNavigationItem(arg0);
+                if (mActionBar != null) {
+                    mActionBar.setSelectedNavigationItem(arg0);
+                }
             }
 
             @Override
@@ -80,9 +144,16 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
 
         //初始化 ActionBar
         for (int i = 0; i < MAX_TAB_SIZE; i++) {
-            android.app.ActionBar.Tab tab = mActionBar.newTab();
-            tab.setText(mAdapter.getPageTitle(i)).setTabListener(this);
-            mActionBar.addTab(tab);
+            android.app.ActionBar.Tab tab = null;
+            if (mActionBar != null) {
+                tab = mActionBar.newTab();
+            }
+            if (tab != null) {
+                tab.setText(mAdapter.getPageTitle(i)).setTabListener(this);
+            }
+            if (mActionBar != null) {
+                mActionBar.addTab(tab);
+            }
         }
     }
 
@@ -108,7 +179,7 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
 
     }
 
-    public static class TabFragmentPagerAdapter extends FragmentPagerAdapter {
+    public  class TabFragmentPagerAdapter extends FragmentPagerAdapter {
 
         public TabFragmentPagerAdapter(FragmentManager fm) {
             super(fm);

@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.*;
 import com.Doric.CarBook.R;
 
-
 public class PersonalCenter extends Activity implements View.OnClickListener {
 
     //¶¨Òå¿Ø¼þ

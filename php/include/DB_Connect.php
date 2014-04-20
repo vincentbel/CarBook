@@ -16,7 +16,7 @@ class DB_Connect {
 		require_once 'config.php';
 		// connecting to mysql
 		$this->con = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD,DB_DATABASE) or die("Cannot connect to database.");
-		mysqli_query($this->con, "SET NAMES 'utf-8'");
+		mysqli_query($this->con, "SET NAMES 'utf8'");
 		// return database handler
 		return $this->con;
 	}

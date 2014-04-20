@@ -20,10 +20,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // 数据库名称
-    private static final String DATABASE_NAME = "car_book";
+    private static final String DATABASE_NAME = "carbook";
 
     // 表名
     private static final String TABLE_USER = "user";
+    private static final String TABLE_COLLECT = "user_collect";
 
     // user表 - 列名
     private static final String KEY_ID = "id";

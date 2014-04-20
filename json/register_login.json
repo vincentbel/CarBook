@@ -1,15 +1,51 @@
  // register success, return username, email, created_time
-{"tag":"register","success":1,"error":0,"username":"Amy","email":"616690602@qq.com","created_at":"2014-04-13 22:01:40"}
+ {
+ 	"tag": "register",
+ 	"success": 1,
+ 	"error": 0,
+ 	"username": "Amy",
+ 	"email": "616690602@qq.com",
+ 	"created_at": "2014-04-13 22:01:40"
+ }
 
-// Error occured in Registartion
-{"tag":"register","success":0,"error":1,"error_msg":"Error occured in Registartion"} 
+ // Error occured in Registartion
+ {
+ 	"tag": "register",
+ 	"success": 0,
+ 	"error": 1,
+ 	"error_msg": "Error occured in Registartion"
+ }
 
-// User already existed
-{"tag":"register","success":0,"error":2,"error_msg":"User already existed!"}
+ // User already existed
+ {
+ 	"tag": "register",
+ 	"success": 0,
+ 	"error": 2,
+ 	"error_msg": "User already existed!"
+ }
 
-// login success
-{"tag":"login","success":1,"error":0,"username":"a","email":"616690602@qq.com","created_at":"2014-04-13 22:04:07"}
+ // User already existed
+{
+	"tag": "register",
+	"success": 0,
+	"error": 3,
+	"error_msg": "User email already existed!"
+}
 
-// Incorrect email or password!
-{"tag":"login","success":0,"error":1,"error_msg":"Incorrect email or password!"}
+ // login success
+ {
+ 	"tag": "login",
+ 	"success": 1,
+ 	"error": 0,
+ 	"username": "a",
+ 	"email": "616690602@qq.com",
+ 	"created_at": "2014-04-13 22:04:07"
+ }
 
+ // Incorrect email or password!
+ {
+ 	"tag": "login",
+ 	"success": 0,
+ 	"error": 1,
+ 	"error_msg": "Incorrect email or password!"
+ }
