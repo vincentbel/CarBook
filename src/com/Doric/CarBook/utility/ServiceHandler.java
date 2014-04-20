@@ -1,15 +1,20 @@
 package com.Doric.CarBook.utility;
 
 
+import android.util.Log;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
@@ -21,7 +26,16 @@ public class ServiceHandler {
 
     public static final int GET = 1;
     public static final int POST = 2;
+
+    // Set the timeout in milliseconds until a connection is established.
+    // The default value is zero, that means the timeout is not used.
+    int timeoutConnection = 6000;
+    // Set the default socket timeout (SO_TIMEOUT)
+    // in milliseconds which is the timeout for waiting for data.
+    int timeoutSocket = 10000;
     static String response = null;
+
+    public static final String TAG = "service handler";
 
     public ServiceHandler() {
     }
@@ -31,11 +45,18 @@ public class ServiceHandler {
     }
 
     public String makeServiceCall(String url, int method, List<NameValuePair> params) {
-        try {
-            DefaultHttpClient httpClient = new DefaultHttpClient();
-            HttpEntity httpEntity = null;
-            HttpResponse httpResponse = null;
+        HttpParams httpParameters = new BasicHttpParams();
 
+        HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+
+        HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+
+        DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
+
+        HttpEntity httpEntity;
+        HttpResponse httpResponse = null;
+
+        try {
             if (method == POST) {
                 HttpPost httpPost = new HttpPost(url);
                 if (params != null) {
@@ -51,7 +72,7 @@ public class ServiceHandler {
                 HttpGet httpGet = new HttpGet(url);
                 httpResponse = httpClient.execute(httpGet);
             }
-
+            Log.i(TAG, httpResponse.getStatusLine().toString());
             httpEntity = httpResponse.getEntity();
             response = EntityUtils.toString(httpEntity);
         } catch (UnsupportedEncodingException e) {
@@ -61,7 +82,7 @@ public class ServiceHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        httpClient.getConnectionManager().shutdown();
         return response;
     }
 }

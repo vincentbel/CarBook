@@ -58,18 +58,21 @@ public class Login extends Activity implements OnClickListener {
     public void onClick(View v) {
 
         int id = v.getId();
+        //获取用户名密码
+        String name = edtUsername.getText().toString();
+        String psd = edtPassword.getText().toString();
 
         //“注册”按钮
         if (id == R.id.register) {
+            //从登陆界面转到注册界面时将用户名和密码传过去，减少用户输入
             Intent intent = new Intent(Login.this, Register.class);
+            intent.putExtra("username", name);
+            intent.putExtra("password", psd);
             startActivity(intent);
         }
 
         //“登陆”按钮
         if (id == R.id.login) {
-            //获取用户名密码
-            String name = edtUsername.getText().toString();
-            String psd = edtPassword.getText().toString();
 
             //判断用户名是否为空
             if (name.equals("")) {
@@ -88,7 +91,6 @@ public class Login extends Activity implements OnClickListener {
                 //异步任务判断用户是否登录成功
                 new CheckUser().execute();
 
-                //todo 从登陆界面转到注册界面时将用户名和密码传过去，减少用户输入
             }
         }
     }

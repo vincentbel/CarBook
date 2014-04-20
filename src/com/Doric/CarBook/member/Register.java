@@ -45,6 +45,10 @@ public class Register extends Activity implements View.OnClickListener {
         edtEmail = (EditText) findViewById(R.id.email);
         btnRegister = (Button) findViewById(R.id.register);
 
+        Intent intent = getIntent();
+        edtUsername.setText(intent.getStringExtra("username"));
+        edtPassword.setText(intent.getStringExtra("password"));
+
         //Ìí¼Ó¼àÌýÆ÷
         btnRegister.setOnClickListener(this);
 
