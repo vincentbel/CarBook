@@ -15,3 +15,8 @@ INSERT INTO sale_company(name, telephone, address) VALUES ('北京京宝行','40
 INSERT INTO sale(car_id, sale_company_id, sale_date) VALUES (1, 1, '2013-12-31');
 INSERT INTO sale(car_id, sale_company_id, sale_date) VALUES (1, 2, '2013-12-31');
 INSERT INTO sale(car_id, sale_company_id, sale_date) VALUES (1, 3, '2013-12-31');
+
+INSERT INTO car_engine VALUES (1, 'N55B30A', 2979, '涡轮增压', 6, 'L', 4, NULL, 320, 235, 5800, '汽油', '97号', '欧IV');
+INSERT INTO car_body_structure VALUES (1, 5223, 1902, 1498, NULL, 3210, NULL, 4, 5, 80, NULL);
+INSERT INTO car_multimedia_configuration VALUES (1, 1, 1, 1, 1, 2, 3, 1, 1, 1, 8);
+INSERT INTO car_tech_configuration VALUES (1, 0, 1, 1);

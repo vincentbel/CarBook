@@ -3,7 +3,7 @@
      username    varchar(32) NOT NULL COMMENT '用户名',
      encrypted_password    char(50) NOT NULL COMMENT '加密后的密码',
      gender      tinyint(1) DEFAULT '0' COMMENT '性别 0-保密, 1-男, 2-女',
-     birthdate	date,
+     birthdate	date COMMENT '出生日期',
      avatar_status		tinyint(1) DEFAULT '0' COMMENT '用户是否有自定义头像',
      email varchar(50) COMMENT '用户邮箱',
      salt char(10) NOT NULL COMMENT '对密码进行加密',
@@ -72,6 +72,8 @@
   	 car_id int(10) NOT NULL,
   	 sale_company_id int(6) NOT NULL,
   	 sale_date date NOT NULL,
+     price_lowest int(12) NOT NULL,
+     price_highest int(12) NOT NULL,
   	 PRIMARY KEY (sale_id),
   	 FOREIGN KEY (car_id) REFERENCES car(car_id),
   	 FOREIGN KEY (sale_company_id) REFERENCES sale_company(sale_company_id));
