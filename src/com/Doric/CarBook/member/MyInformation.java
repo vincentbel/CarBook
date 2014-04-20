@@ -1,42 +1,40 @@
 package com.Doric.CarBook.member;
 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.Toast;
 import com.Doric.CarBook.R;
 
-
-public class PersonalCenter extends Activity implements View.OnClickListener {
+public class MyInformation extends Activity implements View.OnClickListener {
 
     //定义控件
-    private Button btnInformation,btnComment, btnFavourite,btnLogOut;
+    private Button btnHead,btnName, btnSex,btnLogOut;
 
     //定义变量
-    private String name;
+    private String name = "暂无",sex = null;
+    private String[] sexes = new String[]{"男","女"};
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.personal_center);
+        setContentView(R.layout.my_information);
 
         //设置控件
-        btnFavourite = (Button) findViewById(R.id.name);
-        btnInformation = (Button) findViewById(R.id.head);
-        btnComment = (Button) findViewById(R.id.sex);
+        btnHead = (Button) findViewById(R.id.head);
+        btnSex = (Button) findViewById(R.id.sex);
         btnLogOut = (Button) findViewById(R.id.log_out);
 
         //添加监听器
-        btnComment.setOnClickListener(this);
-        btnFavourite.setOnClickListener(this);
-        btnInformation.setOnClickListener(this);
+        btnHead.setOnClickListener(this);
+        btnSex.setOnClickListener(this);
         btnLogOut.setOnClickListener(this);
 
         //设置Actionbar
-        getActionBar().setTitle("我的主页");
+        getActionBar().setTitle("我的资料");
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         //取得启动该Activity的Intent对象
@@ -44,33 +42,27 @@ public class PersonalCenter extends Activity implements View.OnClickListener {
 
         //取出Intent中附加的数据
         name = intent.getStringExtra("name");
-
     }
 
     public void onClick(View v) {
         int id = v.getId();
 
-        //"我的资料"按钮
+        //"头像"按钮
         if (id == R.id.head) {
-            Intent intent = new Intent(PersonalCenter.this, MyInformation.class);
-            intent.putExtra("name",name);
-            startActivity(intent);
+
         }
 
-        //"我的评论"按钮
+        //"性别"按钮
         if (id == R.id.sex) {
-            /*Intent intent = new Intent(PersonalCenter.this, comment.class);
-            intent.putExtra("name",name);
-             startActivity(intent);*/
+            new AlertDialog.Builder(MyInformation.this) // build AlertDialog
+                    .setTitle("选择性别") // title
+                    .setItems(sexes, new DialogInterface.OnClickListener() { //content
+                        public void onClick(DialogInterface dialog, int which) {
+                            sex = sexes[which];
+                        }
+                    })
+                    .show();
         }
-
-        //"我的收藏"按钮
-        if (id == R.id.name) {
-            /*Intent intent = new Intent(PersonalCenter.this, favourite.class);
-            intent.putExtra("name",name);
-            startActivity(intent);*/
-        }
-
         //"退出登录"按钮
         if (id == R.id.log_out) {
             logOutDialog();
@@ -80,7 +72,7 @@ public class PersonalCenter extends Activity implements View.OnClickListener {
     //退出登录对话框
     public void logOutDialog()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(PersonalCenter.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MyInformation.this);
         builder.setMessage("确定要退出登录吗？");
         builder.setTitle("退出登录");
         builder.setPositiveButton("取消", new DialogInterface.OnClickListener() {
@@ -91,9 +83,10 @@ public class PersonalCenter extends Activity implements View.OnClickListener {
         builder.setNegativeButton("确认", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                PersonalCenter.this.finish();
+                MyInformation.this.finish();
             }
         });
         builder.create().show();
-     }
+    }
 }
+

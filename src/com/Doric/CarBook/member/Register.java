@@ -49,9 +49,8 @@ public class Register extends Activity implements View.OnClickListener {
 
         //设置Actionbar
         getActionBar().setTitle("注册账号");
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        android.app.ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     public void onClick(View v) {
@@ -174,8 +173,12 @@ public class Register extends Activity implements View.OnClickListener {
                         Toast.makeText(Register.this, "注册失败", Toast.LENGTH_LONG).show();
                     }
                     //用户名已存在
-                    else {
+                    else if ( registerInfo.getString("error").equals("2") ) {
                         Toast.makeText(Register.this, "用户名已存在，请重新输入", Toast.LENGTH_LONG).show();
+                    }
+                    //邮箱已被使用
+                    else {
+                        Toast.makeText(Register.this, "邮箱已存在，请重新输入", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

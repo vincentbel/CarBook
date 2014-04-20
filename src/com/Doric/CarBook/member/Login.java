@@ -5,8 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -19,7 +17,6 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,9 +49,7 @@ public class Login extends Activity implements OnClickListener {
 
         //设置Actionbar
         getActionBar().setTitle("登录");
-        android.app.ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public void onClick(View v) {
@@ -82,15 +77,17 @@ public class Login extends Activity implements OnClickListener {
             else if (psd.equals("")) {
                 Toast.makeText(Login.this, "请输入密码", Toast.LENGTH_LONG).show();
             }
+            else
+            {
+                //发送用户信息到服务器
+                loginParams = new ArrayList<NameValuePair>();
+                loginParams.add(new BasicNameValuePair("tag", "login"));
+                loginParams.add(new BasicNameValuePair("username", name));
+                loginParams.add(new BasicNameValuePair("password", psd));
 
-            //发送用户信息到服务器
-            loginParams = new ArrayList<NameValuePair>();
-            loginParams.add(new BasicNameValuePair("tag", "login"));
-            loginParams.add(new BasicNameValuePair("username", name));
-            loginParams.add(new BasicNameValuePair("password", psd));
-
-            //异步任务判断用户是否登录成功
-            new CheckUser().execute();
+                //异步任务判断用户是否登录成功
+                new CheckUser().execute();
+            }
         }
     }
 
@@ -130,9 +127,17 @@ public class Login extends Activity implements OnClickListener {
                     }
                     //账户信息验证成功
                     else {
+
+                        Toast.makeText(Login.this, "登录成功！", Toast.LENGTH_LONG).show();
+
+                        //获取用户名
+                        String name = edtUsername.getText().toString();
+
                         //跳转至个人中心
                         Intent intent = new Intent(Login.this, PersonalCenter.class);
+                        intent.putExtra("name",name);
                         startActivity(intent);
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
