@@ -11,8 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="23dp"
         android:ems="10"
-        android:textColor="#000000" 
-        android:hint="@string/enter_user_name"
+        android:textColor="#000000"
+        android:background="@xml/register_edt_background"
+        android:hint="用户名"
         android:layout_alignLeft="@+id/register"
         android:layout_alignRight="@+id/register"/>
 
@@ -23,7 +24,8 @@
         android:layout_below="@+id/username"
         android:layout_marginTop="20dp"
         android:ems="10"
-        android:hint="@string/enter_password"
+        android:background="@xml/register_edt_background"
+        android:hint="密码"
         android:textColor="#000000" 
         android:inputType="textPassword"
         android:layout_alignLeft="@+id/username"
@@ -39,7 +41,8 @@
         android:layout_below="@+id/password"
         android:layout_marginTop="20dp"
         android:ems="10"
-        android:hint="@string/ensure_password"
+        android:hint="确认密码"
+        android:background="@xml/register_edt_background"
         android:textColor="#000000" 
         android:inputType="textPassword"
         android:layout_alignLeft="@+id/password"
@@ -52,19 +55,20 @@
         android:layout_below="@+id/ensure_password"
         android:layout_marginTop="20dp"
         android:ems="10"
+        android:background="@xml/register_edt_background"
         android:textColor="#000000" 
-        android:hint="@string/enter_email"
+        android:hint="邮箱地址"
         android:layout_alignLeft="@+id/ensure_password"
         android:layout_alignRight="@+id/ensure_password"/>
 
     <Button
         android:id="@+id/register"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="43dp"
-        android:background="@xml/btn_background"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:background="@xml/login_btn_background_blue"
         android:textColor="#FFFFFF"
-        android:text="@string/register"
+        android:text="注  册"
         android:layout_below="@+id/email"
         android:layout_centerHorizontal="true"/>
 

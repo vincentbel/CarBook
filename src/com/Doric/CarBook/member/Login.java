@@ -17,7 +17,6 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,9 +49,7 @@ public class Login extends Activity implements OnClickListener {
 
         //设置Actionbar
         getActionBar().setTitle("登录");
-        android.app.ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public void onClick(View v) {
@@ -90,7 +87,6 @@ public class Login extends Activity implements OnClickListener {
 
                 //异步任务判断用户是否登录成功
                 new CheckUser().execute();
-
             }
         }
     }
@@ -128,9 +124,17 @@ public class Login extends Activity implements OnClickListener {
                     }
                     //账户信息验证成功
                     else {
+
+                        Toast.makeText(Login.this, "登录成功！", Toast.LENGTH_LONG).show();
+
+                        //获取用户名
+                        String name = edtUsername.getText().toString();
+
                         //跳转至个人中心
                         Intent intent = new Intent(Login.this, PersonalCenter.class);
+                        intent.putExtra("name",name);
                         startActivity(intent);
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
