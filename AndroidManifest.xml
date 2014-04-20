@@ -31,6 +31,11 @@
                   android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name=".member.MyInformation"
+                  android:theme="@style/Theme.CarShow"
+                  android:screenOrientation="portrait">
+        </activity>
+
         <activity
                 android:name="com.Doric.CarBook.car.CarShow"
                 android:label="carShow"

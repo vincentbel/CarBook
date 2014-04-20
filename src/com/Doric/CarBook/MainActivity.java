@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import com.Doric.CarBook.car.CarShow;
 import com.Doric.CarBook.member.Login;
+import com.Doric.CarBook.member.PersonalCenter;
 import com.Doric.CarBook.member.UserCollection;
 import com.Doric.CarBook.search.AlphaShow;
 
@@ -47,6 +48,15 @@ public class MainActivity extends Activity {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, AlphaShow.class);
                 startActivity(intent);
+            }
+        });
+        //个人中心测试
+        Button pcButton = (Button) findViewById(R.id.pc);
+        pcButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, PersonalCenter.class);
             }
         });
         //收藏夹测试
