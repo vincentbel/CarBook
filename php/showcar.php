@@ -77,6 +77,7 @@
 			if ($sale_companys != false) {
 				// companys found
 				$response["success"] = 1;
+				$response["sale_company_num"] = $sale_companys["sale_company_num"];
 				for ($i = 0; $i < $sale_companys["sale_company_num"]; $i++) {
 					$response["sale_company_".($i+1)] = $sale_companys["sale_company_".($i+1)];
 				}
@@ -87,8 +88,27 @@
 				$response["error_msg"] = "Sale Companys not found!";
 				echo json_encode($response);
 			}
-		} else {
+		} elseif ($tag == 'show_pictures') {
+			$pictures_url = $db->get_pictures_url();
+			// close connection
+			$db->close_dbc();
+
+			if ($pictures_url != false) {
+				// pictures found
+				$response["success"] = 1;
+				$response["pictures_num"] = $pictures_url["pictures_num"];
+				for ($i=1; $i <= $pictures_url["pictures_num"]; $i++) { 
+					$response["pictures_".$i."_url"] = $pictures_url[$i];
+				}
+				echo json_encode($response);
+			} else {
+				// pictures not found
+				$response["error"] = 1;
+				$response["error_msg"] = "Pictures not found!";
+				echo json_encode($response);
+			}
+		} 
+	} else {
 			echo "Invaild request!";
-		}
 	}
 ?>

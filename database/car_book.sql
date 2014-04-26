@@ -60,6 +60,8 @@
   	 view_times int(6) NOT NULL COMMENT '观看次数',
   	 time_to_market date NOT NULL COMMENT '上市时间',
   	 company_id int(6) NOT NULL COMMENT '生产厂商id',
+     pictures_url varchar(100) COMMENT '存储图片的url',
+     pictures_num int(6) COMMENT '图片数量', 
   	 PRIMARY KEY (car_id),
   	 FOREIGN KEY (company_id) REFERENCES produce_company(company_id),
   	 FOREIGN KEY (car_grade_id) REFERENCES car_grade(car_grade_id),

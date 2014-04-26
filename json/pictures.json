@@ -1,0 +1,18 @@
+// pictures found
+{
+	"tag": "show_pictures",
+	"success": 1,
+	"error": 0,
+	"pictures_num": "3",
+	"pictures_1_url": "picture\/BMW\/7series\/2013 740Li grand\/1.jpg",
+	"pictures_2_url": "picture\/BMW\/7series\/2013 740Li grand\/2.jpg",
+	"pictures_3_url": "picture\/BMW\/7series\/2013 740Li grand\/3.jpg"
+}
+
+// pictures not found
+{
+	"tag": "show_pictures",
+	"success": 0,
+	"error": 1,
+	"error_msg": "Pictures not found!"
+}
