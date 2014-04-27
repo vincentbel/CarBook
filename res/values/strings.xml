@@ -24,4 +24,8 @@
     <string name="car_size">Car Size</string>
     <string name="search">Search</string>
     <string name="user_collection">我的收藏</string>
+
+    <string name="border_top">上部边界</string>
+    <string name="border_bottom">底部边界</string>
+    <string name="image_url">图片链接</string>
 </resources>
