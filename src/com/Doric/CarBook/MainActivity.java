@@ -57,6 +57,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, PersonalCenter.class);
+                startActivity(intent);
             }
         });
         // ’≤ÿº–≤‚ ‘

@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+import com.Doric.CarBook.MainActivity;
 import com.Doric.CarBook.R;
 import com.Doric.CarBook.Static;
 import com.Doric.CarBook.utility.JSONParser;
@@ -30,8 +32,9 @@ public class Login extends Activity implements OnClickListener {
 
     //定义控件
     private EditText edtUsername, edtPassword;
-    private Button btnLogin, btnRegister;
+    private Button btnLogin, btnRegister,btnBack;
     private ProgressDialog progressDialog;   //异步任务时显示的进度条
+    private TextView tvFindPsd;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,19 +45,23 @@ public class Login extends Activity implements OnClickListener {
         edtPassword = (EditText) findViewById(R.id.password);
         btnLogin = (Button) findViewById(R.id.login);
         btnRegister = (Button) findViewById(R.id.register);
+        btnBack = (Button) findViewById(R.id.back);
+        tvFindPsd = (TextView) findViewById(R.id.forget_psd);
 
         //添加监听器
         btnRegister.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
+        btnBack.setOnClickListener(this);
+        tvFindPsd.setOnClickListener(this);
 
-        //设置Actionbar
-        getActionBar().setTitle("登录");
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        //隐藏Actionbar
+        getActionBar().hide();
     }
 
     public void onClick(View v) {
 
         int id = v.getId();
+
         //获取用户名密码
         String name = edtUsername.getText().toString();
         String psd = edtPassword.getText().toString();
@@ -78,7 +85,8 @@ public class Login extends Activity implements OnClickListener {
             //判断密码是否为空
             else if (psd.equals("")) {
                 Toast.makeText(Login.this, "请输入密码", Toast.LENGTH_LONG).show();
-            } else {
+            }
+            else {
                 //发送用户信息到服务器
                 loginParams = new ArrayList<NameValuePair>();
                 loginParams.add(new BasicNameValuePair("tag", "login"));
@@ -88,6 +96,17 @@ public class Login extends Activity implements OnClickListener {
                 //异步任务判断用户是否登录成功
                 new CheckUser().execute();
             }
+        }
+
+        //"返回"按钮
+        if (id == R.id.back) {
+            Login.this.finish();
+        }
+
+        //"忘记密码？"按钮
+        if( id == R.id.forget_psd ) {
+            Intent intent = new Intent(Login.this,FindPsd.class);
+            startActivity(intent);
         }
     }
 
@@ -131,10 +150,10 @@ public class Login extends Activity implements OnClickListener {
                         String name = edtUsername.getText().toString();
 
                         //跳转至个人中心
+                        Login.this.finish();
                         Intent intent = new Intent(Login.this, PersonalCenter.class);
                         intent.putExtra("name",name);
                         startActivity(intent);
-
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -8,12 +8,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
+import com.Doric.CarBook.MainActivity;
 import com.Doric.CarBook.R;
 
 public class PersonalCenter extends Activity implements View.OnClickListener {
 
     //定义控件
-    private Button btnInformation,btnComment, btnFavourite,btnLogOut;
+    private Button btnInformation,btnComment, btnFavourite,btnLogOut,btnBack;
+    private TextView tvUsername;
 
     //定义变量
     private String name;
@@ -27,23 +29,27 @@ public class PersonalCenter extends Activity implements View.OnClickListener {
         btnInformation = (Button) findViewById(R.id.head);
         btnComment = (Button) findViewById(R.id.sex);
         btnLogOut = (Button) findViewById(R.id.log_out);
+        btnBack = (Button) findViewById(R.id.back);
+        tvUsername = ( TextView ) findViewById(R.id.bar_username);
 
         //添加监听器
         btnComment.setOnClickListener(this);
         btnFavourite.setOnClickListener(this);
         btnInformation.setOnClickListener(this);
         btnLogOut.setOnClickListener(this);
+        btnBack.setOnClickListener(this);
 
-        //设置Actionbar
-        getActionBar().setTitle("我的主页");
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        //隐藏Actionbar
+        getActionBar().hide();
 
         //取得启动该Activity的Intent对象
         Intent intent =getIntent();
 
         //取出Intent中附加的数据
-        name = intent.getStringExtra("name");
-
+        if ( intent.getStringExtra("name") !=  null ) {
+            name = intent.getStringExtra("name");
+            tvUsername.setText(name);
+        }
     }
 
     public void onClick(View v) {
@@ -65,14 +71,19 @@ public class PersonalCenter extends Activity implements View.OnClickListener {
 
         //"我的收藏"按钮
         if (id == R.id.name) {
-            /*Intent intent = new Intent(PersonalCenter.this, favourite.class);
+            Intent intent = new Intent(PersonalCenter.this, UserCollection.class);
             intent.putExtra("name",name);
-            startActivity(intent);*/
+            startActivity(intent);
         }
 
         //"退出登录"按钮
         if (id == R.id.log_out) {
             logOutDialog();
+        }
+
+        //"返回"按钮
+        if (id == R.id.back) {
+            PersonalCenter.this.finish();
         }
     }
 
@@ -95,4 +106,5 @@ public class PersonalCenter extends Activity implements View.OnClickListener {
         });
         builder.create().show();
      }
+
 }
