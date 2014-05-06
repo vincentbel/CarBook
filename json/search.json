@@ -1,0 +1,54 @@
+// search brand
+// brand found
+{
+	"tag": "brand",
+	"success": 1,
+	"error": 0,
+	"brand_number": 2,
+	"brand_1": "BMW",
+	"brand_1_url": "picture\/BMW\/brand.jpg",
+	"brand_2": "\u5954\u9a70",
+	"brand_2_url": "picture\/\u5954\u9a70\/brand.jpg"
+}
+// brand not found
+{
+	"tag": "brand",
+	"success": 0,
+	"error": 1,
+	"error_msg": "Brand not found!"
+}
+
+// search brand series
+// brand series found
+{
+	"tag": "brand_series",
+	"success": 1,
+	"error": 0,
+	"brand_series_number": 2,
+	"brand_series_1": "7series",
+	"brand_series_2": "5series"
+}
+// brand series not found
+{
+	"tag": "brand_series",
+	"success": 0,
+	"error": 1,
+	"error_msg": "Brand series not found!"
+}
+
+// search model_number 
+// model_number found
+{
+	"tag": "model_number",
+	"success": 1,
+	"error": 0,
+	"model_number_amount": 1,
+	"model_number_1": "2013 740Li grand"
+}
+// model_number not found
+{
+	"tag": "model_number",
+	"success": 0,
+	"error": 1,
+	"error_msg": "model_number not found!"
+}
