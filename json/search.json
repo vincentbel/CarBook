@@ -52,3 +52,33 @@
 	"error": 1,
 	"error_msg": "model_number not found!"
 }
+
+// search
+// car found
+{
+	"tag": "conditional_search",
+	"success": 1,
+	"error": 0,
+	"search_number": 2,
+	"car_1": {
+		"brand": "BMW",
+		"brand_series": "7series",
+		"model_number": "2013 740Li grand",
+		"pictures_url": "picture\/BMW\/7series\/1.jpg",
+		"grade": "\u8c6a\u534e\u8f66"
+	},
+	"car_2": {
+		"brand": "BMW",
+		"brand_series": "7series",
+		"model_number": "2014 740Li grand",
+		"pictures_url": "picture\/BMW\/7series\/1.jpg",
+		"grade": "\u8c6a\u534e\u8f66"
+	}
+}
+// car not found
+{
+	"tag": "conditional_search",
+	"success": 0,
+	"error": 1,
+	"error_msg": "Car not found!"
+}

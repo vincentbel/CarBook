@@ -81,6 +81,71 @@
 				$response["error_msg"] = "Model_number not found!";
 				echo json_encode($response);
 			}
+		} else if ($tag = 'conditional_search') {
+			$low_price = $_POST['low_price'];
+			$high_price = $_POST['high_price'];
+			$grade = $_POST['grade'];
+			if ($low_price != '' && $high_price != '' && $grade == '') {
+				// the car search by prices
+				$car = $db->get_car_between_prices($low_price, $high_price);
+				// close connection
+				$db->close_dbc();
+				if ($car["number"] > 0) {
+					// car found
+					$response["success"] = 1;
+					$response["search_number"] = $car["number"];
+				
+					for ($i = 0; $i < $car["number"]; $i++) {
+						$response["car_".($i+1)] = $car[$i];
+					}
+					echo json_encode($response);
+				} else {
+					// car not found
+					$response["error"] = 1;
+					$response["error_msg"] = "Car not found!";
+					echo json_encode($response);
+				}
+			} else if ($low_price == '' && $high_price == '' && $grade != '') {
+				// the car search by prices
+				$car = $db->get_car_by_grade($grade);
+				// close connection
+				$db->close_dbc();
+				if ($car["number"] > 0) {
+					// car found
+					$response["success"] = 1;
+					$response["search_number"] = $car["number"];
+				
+					for ($i = 0; $i < $car["number"]; $i++) {
+						$response["car_".($i+1)] = $car[$i];
+					}
+					echo json_encode($response);
+				} else {
+					// car not found
+					$response["error"] = 1;
+					$response["error_msg"] = "Car not found!";
+					echo json_encode($response);
+				}				
+			} else if ($low_price != '' && $high_price != '' && $grade != '') {
+				// the car search by prices and grade
+				$car = $db->get_car_by_grade_price($low_price, $high_price, $grade);
+				// close connection
+				$db->close_dbc();
+				if ($car["number"] > 0) {
+					// car found
+					$response["success"] = 1;
+					$response["search_number"] = $car["number"];
+				
+					for ($i = 0; $i < $car["number"]; $i++) {
+						$response["car_".($i+1)] = $car[$i];
+					}
+					echo json_encode($response);
+				} else {
+					// car not found
+					$response["error"] = 1;
+					$response["error_msg"] = "Car not found!";
+					echo json_encode($response);
+				}				
+			}
 		}
 	}
 ?>

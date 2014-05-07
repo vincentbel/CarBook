@@ -89,5 +89,65 @@
 	    	$model_number["number"] = $counter; 
 	    	return $model_number;
 	    }
+	
+	// get car betweent low_price and high_price
+		public function get_car_between_prices($low_price, $high_price) {
+			$query = "SELECT  brand.name, brand_series.name, model_number, pictures_url, grade FROM car JOIN brand USING (brand_id) JOIN brand_series USING (series_id) JOIN car_grade USING (car_grade_id) WHERE price_lowest >= $low_price AND price_highest <= $high_price";
+			$result = mysqli_query($this->dbc, $query);
+			// check the query result
+			$this->check_sql_error($this->dbc, $query, $result);
+			// counter of brand_series
+			$counter = 0;
+			while ($row = mysqli_fetch_row($result)) {
+				$car_information[$counter]["brand"] = $row[0];
+				$car_information[$counter]["brand_series"] = $row[1];
+				$car_information[$counter]["model_number"] = $row[2];
+				$car_information[$counter]["pictures_url"] = $row[3]."/1.jpg";
+				$car_information[$counter]["grade"] = $row[4];
+				$counter++;
+			}
+			$car_information["number"] = $counter;
+			return $car_information;
+		}
+
+	// get car by grade
+		public function get_car_by_grade($grade) {
+			$query = "SELECT  brand.name, brand_series.name, model_number, pictures_url, grade FROM car JOIN brand USING (brand_id) JOIN brand_series USING (series_id) JOIN car_grade USING (car_grade_id) WHERE grade = '$grade'";
+			$result = mysqli_query($this->dbc, $query);
+			// check the query result
+			$this->check_sql_error($this->dbc, $query, $result);
+			// counter of brand_series
+			$counter = 0;
+			while ($row = mysqli_fetch_row($result)) {
+				$car_information[$counter]["brand"] = $row[0];
+				$car_information[$counter]["brand_series"] = $row[1];
+				$car_information[$counter]["model_number"] = $row[2];
+				$car_information[$counter]["pictures_url"] = $row[3]."/1.jpg";
+				$car_information[$counter]["grade"] = $row[4];
+				$counter++;
+			}
+			$car_information["number"] = $counter;
+			return $car_information;
+		}
+
+	// get car by price and grade
+		public function get_car_by_grade_price($low_price, $high_price, $grade) {
+			$query = "SELECT  brand.name, brand_series.name, model_number, pictures_url, grade FROM car JOIN brand USING (brand_id) JOIN brand_series USING (series_id) JOIN car_grade USING (car_grade_id) WHERE grade = '$grade' AND price_lowest >= $low_price AND price_highest <= $high_price";
+			$result = mysqli_query($this->dbc, $query);
+			// check the query result
+			$this->check_sql_error($this->dbc, $query, $result);
+			// counter of brand_series
+			$counter = 0;
+			while ($row = mysqli_fetch_row($result)) {
+				$car_information[$counter]["brand"] = $row[0];
+				$car_information[$counter]["brand_series"] = $row[1];
+				$car_information[$counter]["model_number"] = $row[2];
+				$car_information[$counter]["pictures_url"] = $row[3]."/1.jpg";
+				$car_information[$counter]["grade"] = $row[4];
+				$counter++;
+			}
+			$car_information["number"] = $counter;
+			return $car_information;
+		}		
 	}
 ?>
