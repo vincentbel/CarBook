@@ -4,6 +4,7 @@
 	"tag": "sale_companys",
 	"success": 1,
 	"error": 0,
+	"sale_company_num": 3,
 	"sale_company_1": {
 		"name": "\u5317\u4eac\u661f\u5f97\u5b9d",
 		"telephone": "400-868-9298",

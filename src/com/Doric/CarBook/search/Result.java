@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import com.Doric.CarBook.R;
-
+import com.Doric.CarBook.car.CarInfor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,24 +26,15 @@ public class Result extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent it = this.getIntent();
-        String type = it.getStringExtra("type");
-        if (type.equals("Search")) {
-            String sysmbol = it.getStringExtra("KeyW");
-            mCarList = PinyinSearch.search(sysmbol);
-            Collections.sort(mCarList, new ComparatorCarInfo());
-        } else if (type.equals("CondititionSearch")) {
-            String seable = it.getStringExtra("seablename");
-            int low = it.getIntExtra("pricelow", -1);
-            if (low == -1) return;
-            int hig = it.getIntExtra("pricehig", -1);
-            if (hig == -1) return;
-            String size = it.getStringExtra("size");
-            mCarList = PinyinSearch.conditionSearch(seable, size, low, hig);
-            Collections.sort(mCarList, new ComparatorCarInfo());
-        } else {
-            this.finish();
-            return;
-        }
+        String seable = it.getStringExtra("seablename");
+        int low = it.getIntExtra("pricelow", -1);
+        if (low == -1) return;
+        int hig = it.getIntExtra("pricehig", -1);
+        if (hig == -1) return;
+        Grade g = (Grade)it.getSerializableExtra("grade");
+        mCarList = PinyinSearch.conditionSearch(seable, g, low, hig);
+        Collections.sort(mCarList, new ComparatorCarInfo());
+
         mLinearLayout = new LinearLayout(this);
         LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(LinearLayout.
                 LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -64,12 +55,14 @@ public class Result extends Activity {
             TextView text = new TextView(this);
             text.setText(pair.first);
             text.setTextColor(Color.rgb(255, 255, 255));
+            text.setBackgroundColor(Color.rgb(230,230,230));
             text.setTextSize(20);
 
             mLinearLayout.addView(text);
             MyListView listview = new MyListView(this);
-
-            SimpleAdapter adapter = new SimpleAdapter(this, getUniformData(pair.second), R.layout.list_layout,
+            listview.setDivider(getResources().getDrawable(R.drawable.list_divider));
+            listview.setDividerHeight(1);
+            SimpleAdapter adapter = new SimpleAdapter(this, getUniformData(pair.second), R.layout.sea_list_layout,
                     new String[]{"title", "img"},
                     new int[]{R.id.title, R.id.img});
 
@@ -88,6 +81,8 @@ public class Result extends Activity {
         }
         mScrollView.addView(mLinearLayout);
         this.setContentView(mScrollView);
+        getActionBar().setTitle("ËÑË÷½á¹û");
+
     }
 
 

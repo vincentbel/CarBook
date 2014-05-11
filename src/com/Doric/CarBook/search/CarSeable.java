@@ -2,14 +2,16 @@ package com.Doric.CarBook.search;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
+import com.Doric.CarBook.car.CarInfor;
 
 class CarSeable {
 
-    private ArrayList<CarInfor> carList;    //车辆list
+    private ArrayList<CarSystem> carSystemList;    //车辆list
     private String carSeableName; //中文名
     private String carSeableId;        //id
-    private int count;   ///总数量
+    private String picPath;
 
     //初始化
     public CarSeable(String carSeableName, String id) {
@@ -18,40 +20,68 @@ class CarSeable {
 
     }
 
+    CarSystem findCarSystem(String name){
+        for(CarSystem cs : carSystemList){
+            if(cs.getName().equals(name))
+                return cs;
+        }
+        return null;
+    }
 
     public void LoadCar() {
-        carList = new ArrayList<CarInfor>();
+        carSystemList = new ArrayList<CarSystem>();
+
         if (carSeableName.equals("大众")) {
-            for (int i = 1; i < 10; i++) {
-                carList.add(new CarInfor(i, "M", "test", "test", 200.0, "D" + i, 20.0, 100.0, 200.0));
-                count++;
-            }
+
+                CarSystem  ci = new CarSystem();
+                ci.setCarSeableName(carSeableName);
+                ci.setName("D");
+                ci.gsetHighPrice(200.0);
+                ci.setLowPrice(100.0);
+                carSystemList.add(ci);
+
+                ci = new CarSystem();
+                ci.setName("F");
+                ci.setCarSeableName(carSeableName);
+                ci.gsetHighPrice(200.0);
+                ci.setLowPrice(100.0);
+                carSystemList.add(ci);
+
         } else if (carSeableName.equals("福特")) {
-            for (int i = 1; i < 10; i++) {
-                carList.add(new CarInfor(i, "S", "test", "test", 200.0, "F" + i, 20.0, 100.0, 200.0));
-                count++;
-            }
+
+                CarSystem  ci = new CarSystem();
+            ci.setCarSeableName(carSeableName);
+                ci.setName("F");
+                ci.gsetHighPrice(200.0);
+                ci.setLowPrice(100.0);
+                carSystemList.add(ci);
+
         } else if (carSeableName.equals("宝马")) {
-            for (int i = 1; i < 10; i++) {
-                carList.add(new CarInfor(i, "S", "test", "test", 200.0, "B" + i, 20.0, 100.0, 200.0));
-                count++;
-            }
+            CarSystem  ci = new CarSystem();
+            ci.setCarSeableName(carSeableName);
+            ci.setName("B");
+            ci.gsetHighPrice(200.0);
+            ci.setLowPrice(100.0);
+            carSystemList.add(ci);
         } else if (carSeableName.equals("三菱")) {
-            for (int i = 1; i < 10; i++) {
-                carList.add(new CarInfor(i, "L", "test", "test", 200.0, "S" + i, 20.0, 100.0, 200.0));
-                count++;
-            }
+            CarSystem  ci = new CarSystem();
+            ci.setCarSeableName(carSeableName);
+            ci.setName("S");
+            ci.gsetHighPrice(200.0);
+            ci.setLowPrice(100.0);
+            carSystemList.add(ci);
         }
-        Collections.sort(carList, new ComparatorCarInfo());
+        Collections.sort(carSystemList, new ComparatorCarSystem());
+
     }
 
 
-    public ArrayList<CarInfor> getCarList() {
-        return carList;
+    public ArrayList<CarSystem> getCarSystemList() {
+        return carSystemList;
     }
 
-    public void setCarList(ArrayList<CarInfor> carList) {
-        this.carList = carList;
+    public void setCarSystemList(ArrayList<CarSystem> carSystemList) {
+        this.carSystemList = carSystemList;
     }
 
     public String getCarSeableName() {
@@ -66,11 +96,17 @@ class CarSeable {
         return carSeableId;
     }
 
-    public void setCsId(String csId) {
+    public void setCarSeableId(String csId) {
         this.carSeableId = csId;
     }
 
+    public String getPicPath() {
+        return picPath;
+    }
 
+    public void setPicPath(String picPath) {
+        this.picPath = picPath;
+    }
 }
 
 
