@@ -98,7 +98,7 @@
 				$response["success"] = 1;
 				$response["pictures_num"] = $pictures_url["pictures_num"];
 				for ($i=1; $i <= $pictures_url["pictures_num"]; $i++) { 
-					$response["pictures"."_url_".$i] = $pictures_url[$i];
+					$response["pictures_".$i."_url"] = $pictures_url[$i];
 				}
 				echo json_encode($response);
 			} else {
