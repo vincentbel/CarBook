@@ -28,4 +28,6 @@
     <string name="border_top">上部边界</string>
     <string name="border_bottom">底部边界</string>
     <string name="image_url">图片链接</string>
+
+    <string name="hot_car_show">热门车辆</string>
 </resources>

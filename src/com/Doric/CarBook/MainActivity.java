@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import com.Doric.CarBook.car.CarShow;
+import com.Doric.CarBook.car.HotCarShow;
 import com.Doric.CarBook.member.Login;
 import com.Doric.CarBook.member.PersonalCenter;
 import com.Doric.CarBook.member.UserCollection;
@@ -67,6 +68,17 @@ public class MainActivity extends Activity {
                 Intent intent = new Intent ();
                 intent.setClass(MainActivity.this, UserCollection.class);
                 intent.putExtra("userName","defaultUser");
+                startActivity(intent);
+            }
+        });
+        //热门车辆展示测试
+        Button hotCarShowButton = (Button) findViewById(R.id.hot_car_show);
+        hotCarShowButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent ();
+                intent.setClass(MainActivity.this, HotCarShow.class);
+                intent.putExtra("tag","HotCarShow");
                 startActivity(intent);
             }
         });

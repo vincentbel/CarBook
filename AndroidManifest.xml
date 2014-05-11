@@ -67,5 +67,9 @@
         </activity>
         <activity android:name=".car.ImageDetailsActivity">
         </activity>
+        <activity android:name="com.Doric.CarBook.car.HotCarShow"
+                  android:theme="@style/Theme.CarShow"
+                  android:screenOrientation="portrait">
+        </activity>
     </application>
 </manifest>

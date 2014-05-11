@@ -1,6 +1,5 @@
 package com.Doric.CarBook.car;
 
-import android.app.ListActivity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,23 +8,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.Doric.CarBook.R;
 import org.json.JSONException;
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.util.Pair;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.*;
-import android.widget.AdapterView.OnItemClickListener;
-import com.Doric.CarBook.R;
 import org.json.JSONObject;
-import com.Doric.CarBook.car.CarShow;
-import com.Doric.CarBook.search.MyListView;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -74,7 +61,7 @@ public class SummaryFragment extends Fragment {
 
         return rootView;
     }
-    ArrayList<Map<String, Object>> getData(){
+    private ArrayList<Map<String, Object>> getData(){
         ArrayList<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
         try {
@@ -90,7 +77,10 @@ public class SummaryFragment extends Fragment {
         }
         return list;
     }
-    public void setListViewHeightBasedOnChildren(ListView listView) {
+    /*
+     * 计算ListView高度，以便ScrollView进行滚动
+     */
+    private void setListViewHeightBasedOnChildren(ListView listView) {
         // 获取ListView对应的Adapter
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {

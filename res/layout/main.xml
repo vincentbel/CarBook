@@ -33,5 +33,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="收藏"/>
+    <Button
+            android:id="@+id/hot_car_show"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="热门车辆展示"/>
 </LinearLayout>
 
