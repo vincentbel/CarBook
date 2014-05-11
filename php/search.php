@@ -51,6 +51,7 @@
 
 				for ($i = 0; $i < $brand_series["number"]; $i++) {
 					$response["brand_series_".($i+1)] = $brand_series[$i];
+					$response["brand_series_".($i+1)."_url"] = $brand_series[$i."_url"];
 				}
 				echo json_encode($response);
 			} else {

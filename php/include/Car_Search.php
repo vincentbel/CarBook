@@ -69,7 +69,9 @@
 			// counter of brand_series
 			$counter = 0;
 			while ($row = mysqli_fetch_row($result)) {
-				$brand_series[$counter++] = $row[0];
+				$brand_series[$counter] = $row[0];
+				$brand_series[$counter."_url"] = "picture/".$brand."/".$row[0]."/1.jpg";
+				$counter++;
 			}
 			$brand_series["number"] = $counter;
 			return $brand_series;

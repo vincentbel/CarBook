@@ -26,7 +26,9 @@
 	"error": 0,
 	"brand_series_number": 2,
 	"brand_series_1": "7series",
-	"brand_series_2": "5series"
+	"brand_series_1_url": "picture\/BMW\/7series\/1.jpg",
+	"brand_series_2": "5series",
+	"brand_series_2_url": "picture\/BMW\/5series\/1.jpg"
 }
 // brand series not found
 {
