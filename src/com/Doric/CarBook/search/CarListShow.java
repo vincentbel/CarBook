@@ -11,10 +11,10 @@ import android.view.View;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import com.Doric.CarBook.R;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import com.Doric.CarBook.car.CarInfor;
 
 public class CarListShow extends Activity {
 
@@ -52,47 +52,53 @@ public class CarListShow extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent it = this.getIntent();
-        String str = it.getStringExtra("CarSeableCName");
-        CarSeable cs = CarSeableData.find(str);
-        //setContentView(R.layout.activity_main);
-        if (cs == null) return;
+        String carSeableName = it.getStringExtra("CarSeableName");
+        String carSystemName = it.getStringExtra("CarSystemName");
+        CarSeable carSeable = CarSeableData.find(carSeableName);
+        if (carSeable == null) return;
+        CarSystem carSystem =  carSeable.findCarSystem(carSystemName);
+        if(carSystem == null) return ;
         mLinearLayout = new LinearLayout(this);
         LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(LinearLayout.
                 LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         mLinearLayout.setLayoutParams(param1);
         mLinearLayout.setOrientation(LinearLayout.VERTICAL);
-        mLinearLayout.setBackgroundColor(Color.rgb(0, 0, 0));
+        mLinearLayout.setBackgroundColor(Color.rgb(255, 255, 255));
 
-        ArrayList<Pair<String, ArrayList<CarInfor>>> al = PinYinIndex.getIndex_CarInfo(cs.getCarList(), this);
+
+       ArrayList<Pair<String, ArrayList<CarInfor>>> al = PinYinIndex.getIndex_CarInfo(carSystem.getCarList(), this);
 
         mScrollView = new ScrollView(this);
         mScrollView.setEnabled(true);
-        mScrollView.setBackgroundColor(Color.rgb(0, 0, 0));
+        mScrollView.setBackgroundColor(Color.rgb(255, 255, 255));
         ScrollView.LayoutParams param2 = new ScrollView.LayoutParams(ScrollView.
                 LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT);
         mScrollView.setLayoutParams(param2);
         for (Pair<String, ArrayList<CarInfor>> pair : al) {
             TextView text = new TextView(this);
             text.setText(pair.first);
-            text.setTextColor(Color.rgb(255, 255, 255));
+            text.setTextColor(Color.rgb(0, 0, 0));
+            text.setBackgroundColor(Color.rgb(230,230,230));
             text.setTextSize(20);
 
             mLinearLayout.addView(text);
             MyListView listview = new MyListView(this);
 
-            SimpleAdapter adapter = new SimpleAdapter(this, getUniformData(pair.second), R.layout.list_layout,
+            SimpleAdapter adapter = new SimpleAdapter(this, getUniformData(pair.second), R.layout.sea_list_layout,
                     new String[]{"title", "img"},
                     new int[]{R.id.title, R.id.img});
 
             listview.setAdapter(adapter);
+            listview.setDivider(getResources().getDrawable(R.drawable.list_divider));
+            listview.setDividerHeight(1);
             listview.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
                     ListView lv = (ListView) parent;
-                    HashMap<String, Object> Info = (HashMap<String, Object>) lv.getItemAtPosition(position);//SimpleAdapterï¿½ï¿½ï¿½ï¿½Map
+                    HashMap<String, Object> Info = (HashMap<String, Object>) lv.getItemAtPosition(position);//SimpleAdapterè¿”å›žMap
 
-                    Toast.makeText(getApplicationContext(), (String) Info.get("title"), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),(String)Info.get("title"),Toast.LENGTH_LONG).show();
 
                 }
 
@@ -100,13 +106,16 @@ public class CarListShow extends Activity {
             mLinearLayout.addView(listview);
         }
         mScrollView.addView(mLinearLayout);
+        mScrollView.setX(0);
+        mScrollView.setY(0);
         this.setContentView(mScrollView);
+        getActionBar().setTitle("³µÁ¾ÁÐ±í");
 
 		
 		
 		
 		/*
-		SimpleAdapter adapter = new SimpleAdapter(this,getData(),R.layout.list_layout,
+		SimpleAdapter adapter = new SimpleAdapter(this,getData(),R.layout.sea_list_layout,
 				new String[]{"title","img"},
 				new int[]{R.id.title,R.id.img});
 		

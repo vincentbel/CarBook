@@ -16,14 +16,33 @@
 
     <string name="call_4s_store">拨打电话</string>
 
-    <string name="action_search">Search</string>
-    <string name="action_ConditionSearch">ConditionSearch</string>
-    <string name="hint">Please write the key words</string>
-    <string name="carseable_name">CarSeable Name</string>
-    <string name="car_price">Car Price</string>
-    <string name="car_size">Car Size</string>
-    <string name="search">Search</string>
+   	<string name="action_search">搜索</string>
+    <string name="action_ConditionSearch">条件搜索</string>
+    <string name="hint">请输入关键字</string>
+    <string name="carseable_name">车辆品牌</string>
+    <string name="car_price">车辆价位</string>
+    <string name="car_size">车辆级别</string>
+    <string name="search">搜索</string>
     <string name="user_collection">我的收藏</string>
+
+
+    <string name="weixingche">微型车</string>
+    <string name="xiaoxingche">小型车</string>
+    <string name="jincouxingche">紧凑型车</string>
+    <string name="zongxingche">中型车</string>
+    <string name="zhongdaxingche">中大型车</string>
+    <string name="haohuache">豪华车</string>
+    <string name="xiaoxingSUV">小型SUV</string>
+    <string name="jincouxingSUV">紧凑型SUV</string>
+    <string name="zhongxingSUV">中型SUV</string>
+    <string name="zhongdaxingSUV">中大型SUV</string>
+    <string name="quanchicunSUV">全尺寸SUV</string>
+    <string name="MPV">MPV</string>
+    <string name="paoche">跑车</string>
+    <string name="pika">皮卡</string>
+    <string name="weimian">微面</string>
+    <string name="qingke">轻客</string>
+    <string name="weika">微卡</string>
 
     <string name="border_top">上部边界</string>
     <string name="border_bottom">底部边界</string>

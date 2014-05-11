@@ -228,5 +228,27 @@
 			//var_dump($sale_company_information);
 			return $sale_company_information;
 		}
+
+	/**
+	 * get picture url
+	 */
+		public function get_pictures_url() {
+			$car_id = $this->get_car_id();
+			$query = "SELECT pictures_url, pictures_num FROM car WHERE car_id = $car_id";
+			$result = mysqli_query($this->dbc, $query);
+			$result = mysqli_fetch_array($result);
+			$url = $result["pictures_url"];
+			$pictures_num = $result["pictures_num"];
+
+			$pictures_url;
+			$pictures_url["pictures_num"] = $pictures_num;
+			for ($i = 1; $i <= $pictures_num; $i++) {
+				$pictures_url[$i] = $url."/$i".".jpg";
+			}
+			//var_dump($pictures_url);
+							
+			return $pictures_url;
+		}
+
 	}
 ?>
