@@ -12,8 +12,10 @@ package com.Doric.CarBook.search;
 import android.content.Context;
 import android.util.Pair;
 
+import com.Doric.CarBook.car.CarInfor;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
+import java.io.Serializable;
 
 /**
  * 锟斤拷锟斤拷转锟斤拷为全??
@@ -646,19 +648,29 @@ class SpCarInfo implements Comparable<SpCarInfo> {
 class PinyinSearch {
     static private String mSysmbol;
 
-    static public ArrayList<CarInfor> conditionSearch(String carseable, String size, int low, int hig) {
+    static public ArrayList<CarInfor> conditionSearch(String carseable, Grade g, int low, int hig) {
         ArrayList<CarInfor> al = new ArrayList<CarInfor>();
         if (!carseable.trim().equals("")) {
             al = search(carseable);
         } else {
             for (CarSeable cs : CarSeableData.mCarSeable) {
-                al.addAll(cs.getCarList());
+                for(CarSystem css : cs.getCarSystemList()){
+                    al.addAll(css.getCarList());
+                }
             }
         }
 
         ArrayList<CarInfor> delete = new ArrayList<CarInfor>();
+        for(CarInfor ci : al){
+            for(int i=0;i<17;i++){
+                   if(g.getValue(Grade.mstring[i])==false && ci.getCarGrade().equals(Grade.mstring[i]))
+                       delete.add(ci);
+            }
+        }
+        al.removeAll(delete);
+        delete = new ArrayList<CarInfor>();
         for (CarInfor ci : al) {
-            if (!ci.getCarSize().equals(size) || ci.getLowPrice() > hig || ci.getHigPrice() < low) {
+            if (ci.getLowPrice() > hig || ci.getHigPrice() < low) {
                 delete.add(ci);
             }
         }
@@ -666,17 +678,17 @@ class PinyinSearch {
         return al;
     }
 
-    //搜索????用的函数。需要传入车辆品牌ArrayList , 关键??
-    //输出车辆列表
+
     static public ArrayList<CarInfor> search(String sysmbol) {
         String[] tmp = sysmbol.split(" ");
         ArrayList<CarInfor> returnlist = new ArrayList<CarInfor>();
         //如果直接输入车辆名称
         if (tmp.length == 1) {
-            //暴力搜索??
-            //待斟??
+            //暴力搜索
+            //待斟酌
             for (CarSeable cs : CarSeableData.mCarSeable) {
-                returnlist.addAll(cs.getCarList());
+                for(CarSystem css : cs.getCarSystemList())
+                    returnlist.addAll(css.getCarList());
             }
             returnlist = searchCarInfo(returnlist, sysmbol);
 
@@ -684,7 +696,11 @@ class PinyinSearch {
 
             ArrayList<CarSeable> al_cs = searchCarSeable(tmp[0]);
             //搜索到的第一个品??
-            returnlist = searchCarInfo(al_cs.get(0).getCarList(), tmp[1]);
+            for (CarSeable cs : CarSeableData.mCarSeable) {
+                for(CarSystem css : cs.getCarSystemList())
+                    returnlist.addAll(css.getCarList());
+            }
+            returnlist = searchCarInfo(returnlist, tmp[1]);
 
 
         }
@@ -810,18 +826,18 @@ class PinYinIndex {
             if (alphaIndex.equals(PinyinUtil.getFirstSpell(cs.getCarName()))) {
 
                 al.add(cs);
-                is_change = false;
+
             } else if (alphaIndex.equals("a")) {
                 alphaIndex = PinyinUtil.getFirstSpell(cs.getCarName());
                 al.add(cs);
-                is_change = true;
+
             } else {
                 Pair<String, ArrayList<CarInfor>> pair = new Pair<String, ArrayList<CarInfor>>(alphaIndex.toUpperCase(), al);
                 returnarr.add(pair);
                 alphaIndex = PinyinUtil.getFirstSpell(cs.getCarName());
                 al = new ArrayList<CarInfor>();
                 al.add(cs);
-                is_change = true;
+
             }
         }
         if (!al.isEmpty()) {
@@ -834,6 +850,51 @@ class PinYinIndex {
     }
 }
 
+class Grade implements Serializable{
+    public Map<String, Boolean>  gradeMap = new HashMap<String, Boolean>();
+    static String[] mstring;
+    public Grade(){
+           mstring = new String[17];
+           mstring[0] = "微型车";
+           mstring[1] = "小型车";
+           mstring[2] = "紧凑型车";
+           mstring[3] = "中型车";
+           mstring[4] = "中大型车";
+           mstring[5] = "豪华车";
+           mstring[6] = "小型SUV";
+           mstring[7] = "紧凑型SUV";
+           mstring[8] = "中型SUV";
+           mstring[9] = "中大型SUV";
+           mstring[10] = "全尺寸SUV";
+           mstring[11] = "MPV";
+           mstring[12] = "跑车";
+           mstring[13] = "皮卡";
+           mstring[14] = "微面";
+           mstring[15] = "轻客";
+           mstring[16] = "微卡";
 
+
+
+    }
+    public void setGradeMap(String s,Boolean b){
+        if(gradeMap.containsKey(s)){
+            gradeMap.remove(s);
+            gradeMap.put(s,b);
+        }
+        else {
+            gradeMap.put(s,b);
+        }
+    }
+
+    public boolean isChoose(){
+        Collection<Boolean> lb = gradeMap.values();
+        return lb.contains(Boolean.TRUE);
+    }
+
+    public boolean getValue(String key){
+        return gradeMap.get(key);
+    }
+
+}
 
 
