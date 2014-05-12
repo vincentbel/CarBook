@@ -250,8 +250,6 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
         if (hasSDCard()) {
             int startIndex = page * PAGE_SIZE;
             int endIndex = page * PAGE_SIZE + PAGE_SIZE;
-            if (CarImages.imageUrls == null)
-                System.out.println("Carbook");
             if (startIndex < CarImages.imageUrls.length) {
                 Toast.makeText(getContext(), "ÕýÔÚ¼ÓÔØ...", Toast.LENGTH_SHORT).show();
                 if (endIndex > CarImages.imageUrls.length) {

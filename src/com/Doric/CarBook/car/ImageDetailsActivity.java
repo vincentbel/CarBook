@@ -104,7 +104,7 @@ public class ImageDetailsActivity extends Activity implements
         int lastSlashIndex = imageUrl.lastIndexOf("/");
         String imageName = imageUrl.substring(lastSlashIndex + 1);
         String imageDir = Environment.getExternalStorageDirectory().getPath()
-                + "/PhotoWallFalls/";
+                + "/CarBook/Cache/";
         File file = new File(imageDir);
         if (!file.exists()) {
             file.mkdirs();

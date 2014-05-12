@@ -67,8 +67,13 @@
         <activity android:name="com.Doric.CarBook.search.ConditionSearch"
                   android:screenOrientation="portrait">
         </activity>
-        <!--
+
         <activity android:name=".car.ImageDetailsActivity">
-        </activity>-->
+        </activity>
+
+        <activity android:name="com.Doric.CarBook.car.HotCarShow"
+                  android:screenOrientation="portrait">
+        </activity>
+
     </application>
 </manifest>

@@ -9,8 +9,14 @@
         <style name="RegisterTheme" parent="android:style/Theme.Holo.Light">
             <item name="android:selectableItemBackground">@drawable/navigation</item>
         </style>
-
         <style name="Doric.CarBook" parent="android:style/Theme.Holo.Light">
             <item name="android:buttonStyle">@style/CBButton</item>
         </style>
-    </resources>  
+        <style name="dot_style">
+            <item name="android:layout_width">5dip</item>
+            <item name="android:layout_height">5dip</item>
+            <item name="android:background">@drawable/dot_normal</item>
+            <item name="android:layout_marginLeft">1.5dip</item>
+            <item name="android:layout_marginRight">1.5dip</item>
+        </style>
+</resources>

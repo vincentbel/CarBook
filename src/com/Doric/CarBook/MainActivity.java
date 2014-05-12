@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import com.Doric.CarBook.car.CarShow;
+import com.Doric.CarBook.car.HotCarShow;
 import com.Doric.CarBook.member.Login;
 import com.Doric.CarBook.member.PersonalCenter;
 import com.Doric.CarBook.member.UserCollection;
@@ -123,6 +124,7 @@ public class MainActivity extends Activity {
                 intent.putExtra("userName","defaultUser");
                 startActivity(intent);
             }
+<<<<<<< HEAD
         });*/
     }
 
@@ -212,5 +214,19 @@ public class MainActivity extends Activity {
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             selectItem(i);
         }
+/*=======
+        });
+        //热门车辆展示测试
+        Button hotCarShowButton = (Button) findViewById(R.id.hot_car_show);
+        hotCarShowButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent ();
+                intent.setClass(MainActivity.this, HotCarShow.class);
+                intent.putExtra("tag","HotCarShow");
+                startActivity(intent);
+            }
+        });
+>>>>>>> b7ca8867a4f94412651354bc2fcf7d95f6b5535d*/
     }
 }
