@@ -7,17 +7,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 import com.Doric.CarBook.R;
 
 public class MyInformation extends Activity implements View.OnClickListener {
 
     //定义控件
-    private Button btnHead,btnName, btnSex,btnLogOut;
+    private Button btnHead, btnName, btnSex, btnLogOut;
 
     //定义变量
-    private String name = "暂无",sex = null;
-    private String[] sexes = new String[]{"男","女"};
+    private String name = "暂无", sex = null;
+    private String[] sexes = new String[]{"男", "女"};
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +37,7 @@ public class MyInformation extends Activity implements View.OnClickListener {
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         //取得启动该Activity的Intent对象
-        Intent intent =getIntent();
+        Intent intent = getIntent();
 
         //取出Intent中附加的数据
         name = intent.getStringExtra("name");
@@ -70,8 +69,7 @@ public class MyInformation extends Activity implements View.OnClickListener {
     }
 
     //退出登录对话框
-    public void logOutDialog()
-    {
+    public void logOutDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MyInformation.this);
         builder.setMessage("确定要退出登录吗？");
         builder.setTitle("退出登录");

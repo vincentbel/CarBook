@@ -23,14 +23,14 @@ import java.util.List;
 
 public class CarShow extends FragmentActivity implements android.app.ActionBar.TabListener {
     public static final int MAX_TAB_SIZE = 5;
+    static JSONObject carInfo;
+    String url = Static.BASE_URL + "/showcar.php";
+    List<NameValuePair> carParamsRequest = new ArrayList<NameValuePair>();
+    ProgressDialog progressDialog;
     /*
     实现一个可以左右滑动的，包括“综述”“图片”“参数”“报价”“评论”的车辆信息展示页面
      */
     private ViewPager mViewPager;
-    static JSONObject carInfo;
-    String url = Static.BASE_URL+"/showcar.php";
-    List<NameValuePair> carParamsRequest = new ArrayList<NameValuePair>();
-    ProgressDialog progressDialog;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,56 +46,6 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
         //通过新线程构造car实例并初始化Activity
         new GetCarInfo().execute();
     }
-
-    private class GetCarInfo extends AsyncTask<Void, Void, Void> {
-
-        protected void onPreExecute() {
-            super.onPreExecute();
-            //加载时弹出
-            progressDialog = new ProgressDialog(CarShow.this);
-            progressDialog.setMessage("加载中..");
-            progressDialog.setCancelable(true);
-            progressDialog.show();
-        }
-
-        protected Void doInBackground(Void... params) {
-            //向服务器发送请求
-            JSONParser jsonParser = new JSONParser();
-            carInfo = jsonParser.getJSONFromUrl(url, carParamsRequest);
-            return null;
-        }
-
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            if (progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
-            if (carInfo!=null) {
-                CarInfor car = new CarInfor();
-                car.setCarName("BMW 7series 2013 740Li grand");
-                /*
-                try {
-                    car.setCarName("BMW 7series 2013 740Li grand");
-                    car.setCarGrade(carInfo.getString("car_grade"));
-                    car.setCarBodyStructure(carInfo.getString("car_body_structure"));
-                    car.setPrice(carInfo.getString("price"));
-                    car.setTransmission(carInfo.getString("transmission"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                */
-                if (getActionBar() != null) {
-                    getActionBar().setTitle(car.getCarName());
-                }
-                findViewById();
-                initView();
-            }
-            else {
-                Toast.makeText(CarShow.this.getApplicationContext(), "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
 
     private void findViewById() {
 
@@ -173,7 +123,55 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
 
     }
 
-    public  class TabFragmentPagerAdapter extends FragmentPagerAdapter {
+    private class GetCarInfo extends AsyncTask<Void, Void, Void> {
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //加载时弹出
+            progressDialog = new ProgressDialog(CarShow.this);
+            progressDialog.setMessage("加载中..");
+            progressDialog.setCancelable(true);
+            progressDialog.show();
+        }
+
+        protected Void doInBackground(Void... params) {
+            //向服务器发送请求
+            JSONParser jsonParser = new JSONParser();
+            carInfo = jsonParser.getJSONFromUrl(url, carParamsRequest);
+            return null;
+        }
+
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+            if (carInfo != null) {
+                CarInfor car = new CarInfor();
+                car.setCarName("BMW 7series 2013 740Li grand");
+                /*
+                try {
+                    car.setCarName("BMW 7series 2013 740Li grand");
+                    car.setCarGrade(carInfo.getString("car_grade"));
+                    car.setCarBodyStructure(carInfo.getString("car_body_structure"));
+                    car.setPrice(carInfo.getString("price"));
+                    car.setTransmission(carInfo.getString("transmission"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                */
+                if (getActionBar() != null) {
+                    getActionBar().setTitle(car.getCarName());
+                }
+                findViewById();
+                initView();
+            } else {
+                Toast.makeText(CarShow.this.getApplicationContext(), "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    public class TabFragmentPagerAdapter extends FragmentPagerAdapter {
 
         public TabFragmentPagerAdapter(FragmentManager fm) {
             super(fm);
