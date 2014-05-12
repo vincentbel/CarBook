@@ -66,6 +66,7 @@ public class UserCollection extends Activity{
                 new String[]{"carName","carGrade","carPrice"},
                 new int[]{R.id.carNameText,R.id.carGradeText,R.id.carPriceText});
         userCollectionList.setAdapter(adapter);
+
     }
     /*
     ArrayList<Map<String, Object>> getData(){

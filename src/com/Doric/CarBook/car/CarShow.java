@@ -2,7 +2,6 @@ package com.Doric.CarBook.car;
 
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,11 +13,9 @@ import android.view.Menu;
 import android.widget.Toast;
 import com.Doric.CarBook.R;
 import com.Doric.CarBook.Static;
-import com.Doric.CarBook.member.PersonalCenter;
 import com.Doric.CarBook.utility.JSONParser;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -32,7 +29,7 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
     private ViewPager mViewPager;
     static JSONObject carInfo;
     String url = Static.BASE_URL+"/showcar.php";
-    List<NameValuePair> carParams = new ArrayList<NameValuePair>();
+    List<NameValuePair> carParamsRequest = new ArrayList<NameValuePair>();
     ProgressDialog progressDialog;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -41,23 +38,20 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
 
         //发送请求并获取Json包
 
-        carParams.add(new BasicNameValuePair("tag", "showcar"));
-        carParams.add(new BasicNameValuePair("brand", "BMW"));
-        carParams.add(new BasicNameValuePair("series", "7series"));
-        carParams.add(new BasicNameValuePair("model_number", "2013 740Li grand"));
+        carParamsRequest.add(new BasicNameValuePair("tag", "showcar"));
+        carParamsRequest.add(new BasicNameValuePair("brand", "BMW"));
+        carParamsRequest.add(new BasicNameValuePair("series", "7series"));
+        carParamsRequest.add(new BasicNameValuePair("model_number", "2013 740Li grand"));
 
+        //通过新线程构造car实例并初始化Activity
         new GetCarInfo().execute();
-        //通过Json包构造car实例
-
-
-
     }
 
     private class GetCarInfo extends AsyncTask<Void, Void, Void> {
 
         protected void onPreExecute() {
             super.onPreExecute();
-            //弹出"正在登录"框
+            //加载时弹出
             progressDialog = new ProgressDialog(CarShow.this);
             progressDialog.setMessage("加载中..");
             progressDialog.setCancelable(true);
@@ -67,7 +61,7 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
         protected Void doInBackground(Void... params) {
             //向服务器发送请求
             JSONParser jsonParser = new JSONParser();
-            carInfo = jsonParser.getJSONFromUrl(url, carParams);
+            carInfo = jsonParser.getJSONFromUrl(url, carParamsRequest);
             return null;
         }
 
