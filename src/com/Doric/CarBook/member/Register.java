@@ -163,6 +163,7 @@ public class Register extends Activity implements View.OnClickListener {
             registerInfo = jsonParser.getJSONFromUrl(url, registerParams);
             return null;
         }
+
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             if (progressDialog.isShowing()) {
@@ -182,7 +183,7 @@ public class Register extends Activity implements View.OnClickListener {
                         Toast.makeText(Register.this, "注册失败", Toast.LENGTH_LONG).show();
                     }
                     //用户名已存在
-                    else if ( registerInfo.getString("error").equals("2") ) {
+                    else if (registerInfo.getString("error").equals("2")) {
                         Toast.makeText(Register.this, "用户名已存在，请重新输入", Toast.LENGTH_LONG).show();
                     }
                     //邮箱已被使用

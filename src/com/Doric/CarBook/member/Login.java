@@ -17,6 +17,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,7 +133,7 @@ public class Login extends Activity implements OnClickListener {
 
                         //跳转至个人中心
                         Intent intent = new Intent(Login.this, PersonalCenter.class);
-                        intent.putExtra("name",name);
+                        intent.putExtra("name", name);
                         startActivity(intent);
 
                     }

@@ -47,32 +47,11 @@
         </activity>-->
 
         <activity
-                android:name="com.Doric.CarBook.search.AlphaShow"
-                android:label="@string/app_name"
+                android:name="com.Doric.CarBook.search.SearchMain"
                 android:screenOrientation="portrait">
-        </activity>
-        <activity android:name="com.Doric.CarBook.search.Search"
-                  android:screenOrientation="portrait"
-                >
-
-        </activity>
-        <activity android:name="com.Doric.CarBook.search.Result"
-                  android:screenOrientation="portrait">
-
-        </activity>
-        <activity android:name="com.Doric.CarBook.search.CarListShow"
-                  android:screenOrientation="portrait">
-
-        </activity>
-        <activity android:name="com.Doric.CarBook.search.ConditionSearch"
-                  android:screenOrientation="portrait">
         </activity>
 
         <activity android:name=".car.ImageDetailsActivity">
-        </activity>
-
-        <activity android:name="com.Doric.CarBook.car.HotCarShow"
-                  android:screenOrientation="portrait">
         </activity>
 
     </application>

@@ -14,14 +14,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import com.Doric.CarBook.car.CarShow;
 import com.Doric.CarBook.car.HotCarShow;
 import com.Doric.CarBook.member.Login;
 import com.Doric.CarBook.member.PersonalCenter;
 import com.Doric.CarBook.member.UserCollection;
-import com.Doric.CarBook.search.AlphaShow;
+import com.Doric.CarBook.search.SearchMain;
 
 public class MainActivity extends Activity {
 
@@ -42,7 +41,7 @@ public class MainActivity extends Activity {
         title = drawerTitle = getTitle();
         leftDrawerTitles = getResources().getStringArray(R.array.left_drawer_array);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerList= (ListView) findViewById(R.id.left_drawer);
+        drawerList = (ListView) findViewById(R.id.left_drawer);
 
         drawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, leftDrawerTitles));
         drawerList.setOnItemClickListener(new DrawerItemSelectedListener());
@@ -51,7 +50,7 @@ public class MainActivity extends Activity {
         getActionBar().setHomeButtonEnabled(true);
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer,
-                R.string.drawer_open, R.string.drawer_close){
+                R.string.drawer_open, R.string.drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -71,61 +70,6 @@ public class MainActivity extends Activity {
         if (savedInstanceState == null) {
             selectItem(0);
         }
-
-
-        /*//登录测试
-        Button loginButton = (Button) findViewById(R.id.login);
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Login.class);
-                startActivity(intent);
-            }
-        });
-
-        //汽车展示测试
-        Button carShowButton = (Button) findViewById(R.id.car_show);
-        carShowButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.putExtra("carID", "123");
-                intent.setClass(MainActivity.this, CarShow.class);
-                startActivity(intent);
-            }
-        });
-
-        //搜索测试
-        Button searchButton = (Button) findViewById(R.id.search);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(MainActivity.this, AlphaShow.class);
-                startActivity(intent);
-            }
-        });
-        //个人中心测试
-        Button pcButton = (Button) findViewById(R.id.pc);
-        pcButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(MainActivity.this, PersonalCenter.class);
-            }
-        });
-        //收藏夹测试
-        Button userCollectionButton = (Button) findViewById(R.id.collection);
-        userCollectionButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent ();
-                intent.setClass(MainActivity.this, UserCollection.class);
-                intent.putExtra("userName","defaultUser");
-                startActivity(intent);
-            }
-<<<<<<< HEAD
-        });*/
     }
 
 
@@ -174,15 +118,24 @@ public class MainActivity extends Activity {
     private void selectItem(int position) {
         Fragment fragment;
         FragmentManager fragmentManager = getFragmentManager();
+        Bundle args;
         switch (position) {
             case 0:  //若用户已登录，则为「个人中心」，否则为「注册登录」
                 fragment = new PersonalCenter();
-                Bundle args = new Bundle();
+                args = new Bundle();
                 args.putString("name", "Vincent");
                 fragment.setArguments(args);
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
-            case 1:
+            case 1:  //「热门汽车排行」模块
+                fragment = new HotCarShow();
+                args = new Bundle();
+                args.putString("tag", "HotCarShow");
+                fragment.setArguments(args);
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                break;
+            case 2: //「找车」模块
+                startActivity(new Intent(getApplicationContext(), SearchMain.class));
                 break;
             case 3: // [我的收藏]模块
                 fragment = new UserCollection();
@@ -214,19 +167,5 @@ public class MainActivity extends Activity {
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             selectItem(i);
         }
-/*=======
-        });
-        //热门车辆展示测试
-        Button hotCarShowButton = (Button) findViewById(R.id.hot_car_show);
-        hotCarShowButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent ();
-                intent.setClass(MainActivity.this, HotCarShow.class);
-                intent.putExtra("tag","HotCarShow");
-                startActivity(intent);
-            }
-        });
->>>>>>> b7ca8867a4f94412651354bc2fcf7d95f6b5535d*/
     }
 }

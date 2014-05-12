@@ -1,21 +1,21 @@
 package com.Doric.CarBook.member;
 
 
-import android.app.Fragment;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.Button;
 import com.Doric.CarBook.R;
 
 public class PersonalCenter extends Fragment implements View.OnClickListener {
 
     //定义控件
-    private Button btnInformation,btnComment, btnFavourite,btnLogOut;
+    private Button btnInformation, btnComment, btnFavourite, btnLogOut;
 
     //定义变量
     private String name;
@@ -60,7 +60,7 @@ public class PersonalCenter extends Fragment implements View.OnClickListener {
         //"我的资料"按钮
         if (id == R.id.head) {
             Intent intent = new Intent(getActivity(), MyInformation.class);
-            intent.putExtra("name",name);
+            intent.putExtra("name", name);
             startActivity(intent);
         }
 
@@ -85,8 +85,7 @@ public class PersonalCenter extends Fragment implements View.OnClickListener {
     }
 
     //退出登录对话框
-    public void logOutDialog()
-    {
+    public void logOutDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("确定要退出登录吗？");
         builder.setTitle("退出登录");
@@ -102,5 +101,5 @@ public class PersonalCenter extends Fragment implements View.OnClickListener {
             }
         });
         builder.create().show();
-     }
+    }
 }
