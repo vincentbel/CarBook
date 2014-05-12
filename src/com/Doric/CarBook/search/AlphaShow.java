@@ -15,7 +15,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.Doric.CarBook.R;
 import com.Doric.CarBook.car.CarInfor;
 import com.Doric.CarBook.utility.JSONParser;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
