@@ -15,7 +15,6 @@
                     android:hint="请输入关键字"
                     android:textColor="#000000"
                     android:background="@xml/register_edt_background"
-                    android:textAlignment="viewStart"
                     android:textSize="20sp"
                     android:gravity="left"
                     android:drawableLeft="@android:drawable/ic_search_category_default"
@@ -29,9 +28,9 @@
                 android:clickable="true" android:layout_alignParentRight="true" android:layout_alignParentTop="true"/>
 
     </RelativeLayout>
-    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
-            android:id="@+id/searchreasult" android:layout_marginRight="58dp">
 
-    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+                  android:orientation="vertical"
+            android:id="@+id/searchreasult" android:layout_marginRight="58dp"/>
 
 </LinearLayout>
