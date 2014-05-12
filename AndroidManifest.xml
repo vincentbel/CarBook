@@ -50,31 +50,11 @@
         </activity>
 
         <activity
-                android:name="com.Doric.CarBook.search.AlphaShow"
-                android:label="@string/app_name"
+                android:name="com.Doric.CarBook.search.SearchMain"
                 android:theme="@style/Theme.CarShow"
                 android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.Doric.CarBook.search.Search"
-                  android:theme="@style/Theme.CarShow"
-                  android:screenOrientation="portrait"
-                >
 
-        </activity>
-        <activity android:name="com.Doric.CarBook.search.Result"
-                  android:theme="@style/Theme.CarShow"
-                  android:screenOrientation="portrait">
-
-        </activity>
-        <activity android:name="com.Doric.CarBook.search.CarListShow"
-                  android:theme="@style/Theme.CarShow"
-                  android:screenOrientation="portrait">
-
-        </activity>
-        <activity android:name="com.Doric.CarBook.search.ConditionSearch"
-                  android:theme="@style/Theme.CarShow"
-                  android:screenOrientation="portrait">
-        </activity>
         <!--
         <activity android:name=".car.ImageDetailsActivity">
         </activity>-->

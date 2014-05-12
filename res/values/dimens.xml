@@ -19,7 +19,9 @@
     <dimen name="slidingmenu_offset">60dp</dimen>
     <dimen name="list_padding">10dp</dimen>
     <dimen name="shadow_width">15dp</dimen>
-
+    <dimen name="comment_padding">10dp</dimen>
+    <dimen name="comment_name_size">25dp</dimen>
+    <dimen name="comment_text_size">20dp</dimen>
     <integer name="num_cols">1</integer>
-
+    
 </resources>

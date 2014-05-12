@@ -10,7 +10,7 @@ import com.Doric.CarBook.member.Login;
 import com.Doric.CarBook.member.PersonalCenter;
 import com.Doric.CarBook.member.UserCollection;
 import com.Doric.CarBook.search.AlphaShow;
-
+import com.Doric.CarBook.search.*;
 public class MainActivity extends Activity {
 
     @Override
@@ -45,8 +45,7 @@ public class MainActivity extends Activity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(MainActivity.this, AlphaShow.class);
+                Intent intent = new Intent(getApplicationContext(), SearchMain.class);
                 startActivity(intent);
             }
         });

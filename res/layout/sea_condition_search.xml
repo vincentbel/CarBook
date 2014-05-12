@@ -125,6 +125,7 @@
             android:layout_gravity="right"
             android:textColor="#ffffff"
             android:textSize="20dp"
+            android:background="#5555ff"
             android:id="@+id/csearchbutton"
             android:layout_below="@id/gridCarSize"
             android:text="@string/search"
