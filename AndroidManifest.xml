@@ -26,12 +26,11 @@
                   android:screenOrientation="portrait">
         </activity>
 
-        <!--<activity android:name=".member.PersonalCenter"
-                  android:theme="@style/Theme.CarShow"
-                  android:screenOrientation="portrait">
-        </activity>-->
-
         <activity android:name=".member.MyInformation"
+                  android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".member.FindPsd"
                   android:screenOrientation="portrait">
         </activity>
 

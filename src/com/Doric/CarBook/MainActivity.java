@@ -130,7 +130,7 @@ public class MainActivity extends Activity {
             case 0:  //若用户已登录，则为「个人中心」，否则为「注册登录」
                 fragment = new PersonalCenter();
                 args = new Bundle();
-                args.putString("name", "Vincent");
+                args.putString("name", "Doric");
                 fragment.setArguments(args);
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
@@ -162,7 +162,6 @@ public class MainActivity extends Activity {
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
         }
-
         drawerList.setItemChecked(position, true);
         setTitle(leftDrawerTitles[position]);
         drawerLayout.closeDrawer(drawerList);
