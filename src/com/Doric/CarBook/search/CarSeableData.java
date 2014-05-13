@@ -4,7 +4,7 @@ package com.Doric.CarBook.search;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
-import com.Doric.CarBook.Static;
+import com.Doric.CarBook.Constant;
 import com.Doric.CarBook.utility.JSONParser;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -23,7 +23,7 @@ public class CarSeableData {
     public static MyFragment context;
     public static JSONObject brandObj;
     public static List<NameValuePair> brandParams = new ArrayList<NameValuePair>();
-    public static String url = Static.BASE_URL + "/search.php";
+    public static String url = Constant.BASE_URL + "/search.php";
     public static boolean isload = false;
 
     //从服务器端获取数据
@@ -76,7 +76,7 @@ public class CarSeableData {
                         for (int i = 1; i <= num; i++) {
                             CarSeable cs = new CarSeable();
                             cs.setCarSeableName(brandObj.getString("brand_" + i));
-                            cs.setPicPath(Static.BASE_URL + "/" + brandObj.getString("brand_" + i + "_url"));
+                            cs.setPicPath(Constant.BASE_URL + "/" + brandObj.getString("brand_" + i + "_url"));
 
                             mCarSeable.add(cs);
                         }

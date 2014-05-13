@@ -1,6 +1,6 @@
 package com.Doric.CarBook.car;
 
-import com.Doric.CarBook.Static;
+import com.Doric.CarBook.Constant;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,7 +15,7 @@ public class CarImages {
         imageUrls = new String[n];
         for (Integer i = 1; i <= n; i++) {
             try {
-                imageUrls[i - 1] = Static.BASE_URL + "/" + carPic.getString("pictures_url_" + i.toString());
+                imageUrls[i - 1] = Constant.BASE_URL + "/" + carPic.getString("pictures_url_" + i.toString());
                 System.out.println(imageUrls[i - 1]);
             } catch (JSONException e) {
                 e.printStackTrace();

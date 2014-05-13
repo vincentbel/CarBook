@@ -3,7 +3,7 @@ package com.Doric.CarBook.search;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
-import com.Doric.CarBook.Static;
+import com.Doric.CarBook.Constant;
 import com.Doric.CarBook.utility.JSONParser;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -34,7 +34,7 @@ public class CarSeries {
 
     private List<NameValuePair> carParams = new ArrayList<NameValuePair>();
 
-    private String url = Static.BASE_URL + "/search.php";
+    private String url = Constant.BASE_URL + "/search.php";
 
     private boolean isload = false;
 

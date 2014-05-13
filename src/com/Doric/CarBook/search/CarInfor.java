@@ -20,6 +20,7 @@ public class CarInfor {
     private String price;
     private String carBodyStructure;
     private String carPicPath;
+
     //¹¹Ôìº¯Êý
     public CarInfor() {
 

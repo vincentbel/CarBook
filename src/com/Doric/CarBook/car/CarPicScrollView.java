@@ -18,8 +18,8 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
+import com.Doric.CarBook.Constant;
 import com.Doric.CarBook.R;
-import com.Doric.CarBook.Static;
 import com.Doric.CarBook.utility.JSONParser;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -90,7 +90,7 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
      */
 
     ProgressDialog progressDialog;
-    String picUrl = Static.BASE_URL + "/showcar.php";
+    String picUrl = Constant.BASE_URL + "/showcar.php";
     List<NameValuePair> carPicParams = new ArrayList<NameValuePair>();
     /**
      * 记录当前已加载到第几页

@@ -3,6 +3,7 @@ package com.Doric.CarBook.member;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,13 +13,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import com.Doric.CarBook.R;
+import com.Doric.CarBook.car.HotCarShow;
 
 public class PersonalCenter extends Fragment implements View.OnClickListener {
 
+    UserFunctions userFunctions;
     //定义控件
-    private Button btnInformation,btnComment, btnFavourite,btnLogOut,btnBack;
+    private Button btnInformation, btnComment, btnFavourite, btnLogOut, btnBack;
     private TextView tvUsername;
-
     //定义变量
     private String name;
 
@@ -32,13 +34,15 @@ public class PersonalCenter extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         View mView = getView();
 
+        userFunctions = new UserFunctions(getActivity().getApplicationContext());
+
         //设置控件
         btnFavourite = (Button) mView.findViewById(R.id.name);
         btnInformation = (Button) mView.findViewById(R.id.head);
         btnComment = (Button) mView.findViewById(R.id.sex);
         btnLogOut = (Button) mView.findViewById(R.id.log_out);
         btnBack = (Button) mView.findViewById(R.id.back);
-        tvUsername = ( TextView ) mView.findViewById(R.id.bar_username);
+        tvUsername = (TextView) mView.findViewById(R.id.bar_username);
 
         //添加监听器
         btnComment.setOnClickListener(this);
@@ -78,7 +82,7 @@ public class PersonalCenter extends Fragment implements View.OnClickListener {
         //"我的收藏"按钮
         if (id == R.id.name) {
             Intent intent = new Intent(getActivity(), UserCollection.class);
-            intent.putExtra("name",name);
+            intent.putExtra("name", name);
             startActivity(intent);
         }
 
@@ -105,10 +109,13 @@ public class PersonalCenter extends Fragment implements View.OnClickListener {
         });
         builder.setNegativeButton("确认", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
+                userFunctions.logoutUser();
                 dialog.dismiss();
-                //PersonalCenter.this.finish();
+                FragmentManager fragmentManager = getFragmentManager();
+                Fragment fragment = new HotCarShow();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
             }
         });
         builder.create().show();
-     }
+    }
 }

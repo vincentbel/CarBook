@@ -11,9 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import com.Doric.CarBook.MainActivity;
+import com.Doric.CarBook.Constant;
 import com.Doric.CarBook.R;
-import com.Doric.CarBook.Static;
 import com.Doric.CarBook.utility.JSONParser;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -39,7 +38,7 @@ public class HotCarShow extends Fragment {
     //  储存图片Url的字符串数组,ViewPager中固定只显示5张图片
     String[] imageUrls = new String[PicNum];
     //  服务器上对应的url
-    String url = Static.BASE_URL + "/hotcarshow.php";
+    String url = Constant.BASE_URL + "/hotcarshow.php";
 
     //  向服务器发送的请求
     List<NameValuePair> hotCarRequest = new ArrayList<NameValuePair>();
@@ -269,7 +268,7 @@ public class HotCarShow extends Fragment {
                 // 通过Json包，初始化ImageUrls
                 for (Integer i = 1; i <= 10; i++) {
                     try {
-                        imageUrls[i - 1] = Static.BASE_URL + "/" + hotCarShow.getString("pictures_url_" + i.toString());
+                        imageUrls[i - 1] = Constant.BASE_URL + "/" + hotCarShow.getString("pictures_url_" + i.toString());
                         if (i <= 5)
                             titles[i - 1] = hotCarShow.getString("title_" + i);
                     } catch (JSONException e) {

@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -16,32 +17,37 @@ import com.Doric.CarBook.car.HotCarShow;
 import com.Doric.CarBook.member.Login;
 import com.Doric.CarBook.member.PersonalCenter;
 import com.Doric.CarBook.member.UserCollection;
+import com.Doric.CarBook.member.UserFunctions;
 import com.Doric.CarBook.search.SearchMain;
+import com.Doric.CarBook.utility.DatabaseHelper;
 
 public class MainActivity extends Activity {
 
+    // 本地SQLite数据库辅助类
+    DatabaseHelper db;
+    UserFunctions userFunctions;
     private DrawerLayout drawerLayout;
     private ListView drawerList;
     private ActionBarDrawerToggle drawerToggle;
-
     private CharSequence drawerTitle;
     private CharSequence title;
     private String[] leftDrawerTitles;
     private int[] leftDrawerIcons;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        db = new DatabaseHelper(getApplicationContext());
+        userFunctions = new UserFunctions(getApplicationContext());
+
         title = drawerTitle = getTitle();
         leftDrawerTitles = getResources().getStringArray(R.array.left_drawer_array);
         leftDrawerIcons = new int[]{
-                R.drawable.ic_collection,
-                R.drawable.ic_collection,
+                R.drawable.pc_default_head,
+                R.drawable.ic_hot_car_show,
                 R.drawable.ic_search,
-                R.drawable.ic_collection,
                 R.drawable.ic_collection,
                 R.drawable.ic_collection,
                 R.drawable.ic_settings
@@ -75,7 +81,7 @@ public class MainActivity extends Activity {
 
         drawerLayout.setDrawerListener(drawerToggle);
         if (savedInstanceState == null) {
-            selectItem(0);
+            selectItem(1);
         }
     }
 
@@ -128,11 +134,15 @@ public class MainActivity extends Activity {
         Bundle args;
         switch (position) {
             case 0:  //若用户已登录，则为「个人中心」，否则为「注册登录」
-                fragment = new PersonalCenter();
-                args = new Bundle();
-                args.putString("name", "Doric");
-                fragment.setArguments(args);
-                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                if (userFunctions.isUserLoggedIn()) {
+                    fragment = new PersonalCenter();
+                    args = new Bundle();
+                    args.putString("name", "Doric");
+                    fragment.setArguments(args);
+                    fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                } else {
+                    startActivity(new Intent(this, Login.class));
+                }
                 break;
             case 1:  //「热门汽车排行」模块
                 fragment = new HotCarShow();
@@ -165,6 +175,11 @@ public class MainActivity extends Activity {
         drawerList.setItemChecked(position, true);
         setTitle(leftDrawerTitles[position]);
         drawerLayout.closeDrawer(drawerList);
+    }
+
+    static class ViewHolder {
+        TextView textView;
+        ImageView imageView;
     }
 
     private class DrawerItemSelectedListener implements ListView.OnItemClickListener {
@@ -201,14 +216,23 @@ public class MainActivity extends Activity {
             }
 
             ViewHolder viewHolder = (ViewHolder) rowView.getTag();
-            viewHolder.textView.setText(values[position]);
-            viewHolder.imageView.setImageResource(icons[position]);
+            if (position == 0) {
+                rowView.setBackgroundResource(R.drawable.left_drawer_user_bg);
+
+                //判断用户是否登录
+                if (userFunctions.isUserLoggedIn()) {
+                    String username = userFunctions.getUsername();
+                    viewHolder.textView.setText(username);
+                } else {
+                    viewHolder.textView.setText("注册登录");
+                }
+                viewHolder.textView.setTextColor(Color.WHITE);
+                viewHolder.imageView.setImageResource(icons[position]);
+            } else {
+                viewHolder.textView.setText(values[position]);
+                viewHolder.imageView.setImageResource(icons[position]);
+            }
             return rowView;
         }
-    }
-
-    static class ViewHolder {
-        TextView textView;
-        ImageView imageView;
     }
 }

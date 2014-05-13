@@ -11,8 +11,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.widget.Toast;
+import com.Doric.CarBook.Constant;
 import com.Doric.CarBook.R;
-import com.Doric.CarBook.Static;
 import com.Doric.CarBook.utility.JSONParser;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -24,7 +24,7 @@ import java.util.List;
 public class CarShow extends FragmentActivity implements android.app.ActionBar.TabListener {
     public static final int MAX_TAB_SIZE = 5;
     static JSONObject carInfo;
-    String url = Static.BASE_URL + "/showcar.php";
+    String url = Constant.BASE_URL + "/showcar.php";
     List<NameValuePair> carParamsRequest = new ArrayList<NameValuePair>();
     ProgressDialog progressDialog;
     /*
