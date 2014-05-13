@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.Doric.CarBook.MainActivity;
 import com.Doric.CarBook.R;
 import com.Doric.CarBook.Static;
 import com.Doric.CarBook.utility.JSONParser;
@@ -32,7 +33,7 @@ public class Register extends Activity implements View.OnClickListener {
     //定义控件
     private ProgressDialog progressDialog;   //异步任务时显示的进度条
     private EditText edtUsername, edtPassword, edtEnsurePsd, edtEmail;
-    private Button btnRegister;
+    private Button btnRegister,btnBack;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,18 +45,18 @@ public class Register extends Activity implements View.OnClickListener {
         edtEnsurePsd = (EditText) findViewById(R.id.ensure_password);
         edtEmail = (EditText) findViewById(R.id.email);
         btnRegister = (Button) findViewById(R.id.register);
+        btnBack = (Button) findViewById(R.id.back);
+
+        //添加监听器
+        btnRegister.setOnClickListener(this);
+        btnBack.setOnClickListener(this);
+
+        //隐藏Actionbar
+        getActionBar().hide();
 
         Intent intent = getIntent();
         edtUsername.setText(intent.getStringExtra("username"));
         edtPassword.setText(intent.getStringExtra("password"));
-
-        //添加监听器
-        btnRegister.setOnClickListener(this);
-
-        //设置Actionbar
-        getActionBar().setTitle("注册账号");
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     public void onClick(View v) {
@@ -112,7 +113,6 @@ public class Register extends Activity implements View.OnClickListener {
 
             //发送用户信息到服务器
             else {
-
                 //发送用户信息到服务器
                 registerParams = new ArrayList<NameValuePair>();
                 registerParams.add(new BasicNameValuePair("tag", "register"));
@@ -123,6 +123,11 @@ public class Register extends Activity implements View.OnClickListener {
                 //异步任务判断用户是否登录成功
                 new registerUser().execute();
             }
+        }
+
+        //"返回"按钮
+        if (id == R.id.back) {
+            Register.this.finish();
         }
     }
 

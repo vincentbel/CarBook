@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
+import com.Doric.CarBook.MainActivity;
 import com.Doric.CarBook.R;
 import com.Doric.CarBook.Static;
 import com.Doric.CarBook.utility.JSONParser;
@@ -278,7 +279,7 @@ public class HotCarShow extends Fragment {
                 initListView();
                 initViewPager();
             } else {
-                Toast.makeText(getActivity(), "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity().getApplicationContext(), "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
             }
         }
     }
