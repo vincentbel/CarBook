@@ -17,6 +17,7 @@
 
         <!-- new -->
         <item name="android:actionBarTabTextStyle">@style/ActionBarTabTextStyle.Carbook</item>
+        <item name="android:buttonStyle">@style/Button.Carbook</item>
 
     </style>
 
@@ -63,6 +64,9 @@
     <style name="Theme.Carbook.Widget" parent="@android:style/Theme.Holo">
         <item name="android:popupMenuStyle">@style/PopupMenu.Carbook</item>
         <item name="android:dropDownListViewStyle">@style/DropDownListView.Carbook</item>
+
+        <item name="android:spinnerDropDownItemStyle">@style/Widget.DropDownItem.Spinner.Carbook</item>
+
     </style>
 
     <!-- new -->
@@ -70,4 +74,16 @@
         <item name="android:textColor">@android:color/black</item>
     </style>
 
+    <style name="Widget.DropDownItem.Spinner.Carbook" parent="android:style/Widget.DropDownItem.Spinner">
+        <item name="android:textAppearance">@style/TextAppearance.Widget.DropDownItem.Carbook</item>
+    </style>
+
+    <style name="TextAppearance.Widget.DropDownItem.Carbook" parent="@android:style/TextAppearance.Widget.DropDownItem">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="Button.Carbook" parent="@android:style/Widget.Holo.Light.Button">
+        <item name="android:background">@xml/login_btn_background_white</item>
+        <item name="android:textColor">#000000</item>
+    </style>
 </resources>

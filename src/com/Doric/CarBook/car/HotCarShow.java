@@ -245,7 +245,6 @@ public class HotCarShow extends Fragment {
     private class GetHotCar extends AsyncTask<Void, Void, Void> {
 
         protected void onPreExecute() {
-            super.onPreExecute();
             //加载时弹出
             progressDialog = new ProgressDialog(getActivity());
             progressDialog.setMessage("加载中..");
@@ -261,7 +260,6 @@ public class HotCarShow extends Fragment {
         }
 
         protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }

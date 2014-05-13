@@ -3,18 +3,14 @@ package com.Doric.CarBook;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.view.*;
+import android.widget.*;
 import com.Doric.CarBook.car.CarShow;
 import com.Doric.CarBook.car.HotCarShow;
 import com.Doric.CarBook.member.Login;
@@ -31,6 +27,7 @@ public class MainActivity extends Activity {
     private CharSequence drawerTitle;
     private CharSequence title;
     private String[] leftDrawerTitles;
+    private int[] leftDrawerIcons;
 
 
     @Override
@@ -40,16 +37,26 @@ public class MainActivity extends Activity {
 
         title = drawerTitle = getTitle();
         leftDrawerTitles = getResources().getStringArray(R.array.left_drawer_array);
+        leftDrawerIcons = new int[]{
+                R.drawable.ic_collection,
+                R.drawable.ic_collection,
+                R.drawable.ic_search,
+                R.drawable.ic_collection,
+                R.drawable.ic_collection,
+                R.drawable.ic_collection,
+                R.drawable.ic_settings
+        };
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);
 
-        drawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, leftDrawerTitles));
+        LeftDrawerListAdapter adapter = new LeftDrawerListAdapter(this, leftDrawerTitles, leftDrawerIcons);
+        drawerList.setAdapter(adapter);
         drawerList.setOnItemClickListener(new DrawerItemSelectedListener());
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer,
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_navigation_drawer,
                 R.string.drawer_open, R.string.drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -167,5 +174,42 @@ public class MainActivity extends Activity {
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             selectItem(i);
         }
+    }
+
+    public class LeftDrawerListAdapter extends ArrayAdapter<String> {
+
+        private Context context;
+        private String[] values;
+        private int[] icons;
+
+        public LeftDrawerListAdapter(Context context, String[] values, int[] icons) {
+            super(context, R.layout.drawer_list_item, values);
+            this.context = context;
+            this.values = values;
+            this.icons = icons;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View rowView = convertView;
+            if (rowView == null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                rowView = inflater.inflate(R.layout.drawer_list_item, parent, false);
+                ViewHolder viewHolder = new ViewHolder();
+                viewHolder.textView = (TextView) rowView.findViewById(R.id.left_drawer_text);
+                viewHolder.imageView = (ImageView) rowView.findViewById(R.id.left_drawer_image);
+                rowView.setTag(viewHolder);
+            }
+
+            ViewHolder viewHolder = (ViewHolder) rowView.getTag();
+            viewHolder.textView.setText(values[position]);
+            viewHolder.imageView.setImageResource(icons[position]);
+            return rowView;
+        }
+    }
+
+    static class ViewHolder {
+        TextView textView;
+        ImageView imageView;
     }
 }
