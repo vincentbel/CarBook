@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="#ffffff"
+                android:orientation="vertical"
+                >
+
+
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                 android:text="@string/car_price"
+                 android:textColor="#000000"
+                 android:gravity="left"
+                 android:textSize="20sp"
+                 android:id="@+id/textCarPrice"
+                 android:layout_alignLeft="@+id/csearchbutton"
+                  android:layout_marginTop="10dp"/>
+
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:id="@+id/pricelayout"
+                  android:layout_centerHorizontal="true"
+                  android:layout_alignLeft="@+id/csearchbutton" android:layout_below="@+id/textCarPrice"
+                  android:layout_alignRight="@+id/csearchbutton" android:layout_marginTop="10dp">
+
+    <Spinner android:layout_width="match_parent" android:layout_height="match_parent"
+            android:id="@+id/carPrice"
+            >
+
+    </Spinner>
+
+    </LinearLayout>
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:text="@string/car_size"
+                  android:textColor="#000000"
+                  android:gravity="left"
+                  android:textSize="20sp"
+                  android:id="@+id/textCarSize"
+                  android:layout_alignLeft="@+id/csearchbutton" android:layout_below="@+id/pricelayout"
+                  android:layout_marginTop="10dp"/>
+    <GridLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:rowCount="6" android:columnCount="3"
+            android:layout_alignLeft="@+id/csearchbutton" android:id="@+id/gridCarSize"
+            android:layout_below="@+id/textCarSize"
+            android:layout_alignRight="@+id/csearchbutton" android:layout_marginTop="10dp">
+        <CheckBox android:layout_row="0" android:layout_column="0"
+                  android:text="@string/weixingche" android:textColor="#000000"
+                  android:checked="false"
+                  android:id="@+id/checkbox00"/>
+        <CheckBox android:layout_row="0" android:layout_column="1"
+                  android:text="@string/xiaoxingche" android:textColor="#000000"
+                  android:checked="false"
+                  android:id="@+id/checkbox01"/>
+        <CheckBox android:layout_row="0" android:layout_column="2"
+                  android:text="@string/jincouxingche" android:textColor="#000000"
+                  android:checked="false"
+                  android:id="@+id/checkbox02"/>
+        <CheckBox android:layout_row="1" android:layout_column="0"
+                  android:text="@string/zhongdaxingche" android:textColor="#000000"
+                  android:checked="false"
+                  android:id="@+id/checkbox10"/>
+        <CheckBox android:layout_row="1" android:layout_column="1"
+                  android:text="@string/zhongdaxingche" android:textColor="#000000"
+                  android:checked="false"
+                  android:id="@+id/checkbox11"/>
+        <CheckBox android:layout_row="1" android:layout_column="2"
+                  android:text="@string/haohuache" android:textColor="#000000"
+                  android:checked="false"
+                  android:id="@+id/checkbox12"/>
+        <CheckBox android:layout_row="2" android:layout_column="0"
+                  android:text="@string/xiaoxingSUV" android:textColor="#000000"
+                  android:checked="false"
+                  android:id="@+id/checkbox20"/>
+        <CheckBox android:layout_row="2" android:layout_column="1"
+                  android:text="@string/jincouxingSUV" android:textColor="#000000"
+                  android:checked="false"
+                  android:id="@+id/checkbox21"/>
+        <CheckBox android:layout_row="2" android:layout_column="2"
+                  android:text="@string/zhongxingSUV" android:textColor="#000000"
+                  android:checked="false"
+                  android:id="@+id/checkbox22"/>
+        <CheckBox android:layout_row="3" android:layout_column="0"
+                  android:text="@string/zhongdaxingSUV" android:textColor="#000000"
+                  android:checked="false"
+                  android:id="@+id/checkbox30"/>
+        <CheckBox android:layout_row="3" android:layout_column="1"
+                  android:text="@string/quanchicunSUV" android:textColor="#000000"
+                  android:checked="false"
+                  android:id="@+id/checkbox31"/>
+        <CheckBox android:layout_row="3" android:layout_column="2"
+                  android:text="@string/MPV" android:textColor="#000000"
+                  android:checked="false"
+                  android:id="@+id/checkbox32"/>
+        <CheckBox android:layout_row="4" android:layout_column="0"
+                  android:text="@string/paoche" android:textColor="#000000"
+                  android:checked="false"
+                  android:id="@+id/checkbox40"/>
+        <CheckBox android:layout_row="4" android:layout_column="1"
+                  android:text="@string/pika" android:textColor="#000000"
+                  android:checked="false"
+                  android:id="@+id/checkbox41"/>
+        <CheckBox android:layout_row="4" android:layout_column="2"
+                  android:text="@string/weimian" android:textColor="#000000"
+                  android:checked="false"
+                  android:id="@+id/checkbox42"/>
+        <CheckBox android:layout_row="5" android:layout_column="0"
+                  android:text="@string/qingke" android:textColor="#000000"
+                  android:checked="false"
+                  android:id="@+id/checkbox50"/>
+        <CheckBox android:layout_row="5" android:layout_column="1"
+                  android:text="@string/weika" android:textColor="#000000"
+                  android:checked="false"
+                  android:id="@+id/checkbox51"/>
+
+    </GridLayout>
+
+
+
+
+    <Button android:layout_width="fill_parent" android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="right"
+            android:textColor="#ffffff"
+            android:textSize="20dp"
+            android:background="#5555ff"
+            android:id="@+id/csearchbutton"
+            android:layout_below="@id/gridCarSize"
+            android:text="@string/search"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            />
+
+</RelativeLayout>

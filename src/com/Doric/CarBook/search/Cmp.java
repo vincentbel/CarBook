@@ -29,3 +29,15 @@ class ComparatorCarSeable implements Comparator<CarSeable> {
 }
 
 
+class ComparatorCarSeries implements Comparator<CarSeries> {
+    @Override
+    public int compare(CarSeries o1, CarSeries o2) {
+        return ToPinYinString(o1.getName()).compareTo(ToPinYinString(o2.getName()));
+    }
+
+    private String ToPinYinString(String str) {
+        return PinyinUtil.getFullSpell(str);
+    }
+}
+
+

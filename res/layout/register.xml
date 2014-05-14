@@ -2,19 +2,45 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#ffffff"
+    android:background="#EEEEEE"
     android:orientation="vertical" >
+
+    <RelativeLayout
+            android:id = "@+id/register_bar"
+            android:layout_width = "fill_parent"
+            android:layout_height = "50dp"
+            android:paddingLeft="10dp"
+            android:background="#0099FF"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true">
+        <TextView
+                android:text = "注  册"
+                android:textColor="#FFFFFF"
+                android:textSize="20dp"
+                android:layout_height = "wrap_content"
+                android:layout_width = "wrap_content"
+                android:id = "@+id/bar_register"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"/>
+        <Button
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@xml/login_back_btn"
+                android:id="@+id/back"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"/>
+    </RelativeLayout>
 
     <EditText
         android:id="@+id/username"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="23dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:textColor="#000000"
-        android:background="@xml/register_edt_background"
+        android:background="@xml/login_edt_background"
         android:hint="用户名"
-        android:layout_alignLeft="@+id/register"
+        android:layout_below="@+id/register_bar" android:layout_alignLeft="@+id/register"
         android:layout_alignRight="@+id/register"/>
 
     <EditText
@@ -24,7 +50,7 @@
         android:layout_below="@+id/username"
         android:layout_marginTop="20dp"
         android:ems="10"
-        android:background="@xml/register_edt_background"
+        android:background="@xml/login_edt_background"
         android:hint="密码"
         android:textColor="#000000" 
         android:inputType="textPassword"
@@ -42,7 +68,7 @@
         android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="确认密码"
-        android:background="@xml/register_edt_background"
+        android:background="@xml/login_edt_background"
         android:textColor="#000000" 
         android:inputType="textPassword"
         android:layout_alignLeft="@+id/password"
@@ -55,7 +81,7 @@
         android:layout_below="@+id/ensure_password"
         android:layout_marginTop="20dp"
         android:ems="10"
-        android:background="@xml/register_edt_background"
+        android:background="@xml/login_edt_background"
         android:textColor="#000000" 
         android:hint="邮箱地址"
         android:layout_alignLeft="@+id/ensure_password"

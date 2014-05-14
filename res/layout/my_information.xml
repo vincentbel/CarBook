@@ -3,55 +3,154 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#ffffff"
+        android:background="#EEEEEE"
         android:orientation="vertical" >
 
-    <Button
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:text="头像"
-            android:textColor="#000000"
-            android:id="@+id/head"
-            android:drawableRight="@drawable/right_go"
-            android:background="@xml/pc_button_with_corner"
-            android:paddingRight="10dip"
-            android:layout_alignParentTop="true" android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"/>
-
-    <Button
+    <RelativeLayout
+            android:id = "@+id/my_information_bar"
+            android:layout_width = "fill_parent"
+            android:layout_height = "50dp"
+            android:paddingLeft="10dp"
+            android:background="#0099FF"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true">
+        <TextView
+                android:text = "我的资料"
+                android:textColor="#FFFFFF"
+                android:textSize="20dp"
+                android:layout_height = "wrap_content"
+                android:layout_width = "wrap_content"
+                android:id = "@+id/bar_title"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"/>
+        <Button
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@xml/login_back_btn"
+                android:id="@+id/back"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"/>
+    </RelativeLayout>
+    <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="性别"
-            android:textColor="#000000"
-            android:id="@+id/sex"
-            android:drawableRight="@drawable/right_go"
-            android:background="@xml/pc_button_with_corner"
-            android:paddingLeft="10dip"
-            android:paddingRight="10dip"
-            android:layout_below="@+id/name" android:layout_alignLeft="@+id/name"
-            android:layout_marginTop="8dp" android:layout_alignRight="@+id/name"/>
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/my_information_margin"
+            android:layout_below="@id/my_information_bar">
+        <RelativeLayout
+            android:id = "@+id/head_layout"
+            android:layout_width = "370dp"
+            android:layout_height = "wrap_content"
+            android:background = "@xml/pc_button_with_corner"
+            android:paddingLeft = "15dp"
+            android:paddingRight = "15dp"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true">
 
-    <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="用户名"
-            android:textColor="#000000"
-            android:id="@+id/name"
-            android:drawableRight="@drawable/right_go"
-            android:background="@xml/pc_button_with_corner"
-            android:paddingRight="10dip"
-            android:layout_marginTop="8dp" android:layout_below="@+id/head"
-            android:layout_alignLeft="@+id/head" android:layout_alignRight="@+id/head"/>
+            <TextView
+                    android:text = "头像"
+                    android:textColor="#000000"
+                    android:textSize="18dp"
+                    android:layout_height = "wrap_content"
+                    android:layout_width = "fill_parent"
+                    android:layout_alignParentLeft = "true"
+                    android:layout_centerVertical = "true"
+                    android:id = "@+id/head_text"/>
+            <ImageView
+                    android:layout_height = "wrap_content"
+                    android:layout_width = "wrap_content"
+                    android:layout_alignParentRight = "true"
+                    android:layout_centerVertical = "true"
+                    android:background="@drawable/pc_default_head"
+                    android:id = "@+id/head_image"/>
+        </RelativeLayout>
 
-    <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="退出登录"
-            android:textColor="#FFFFFF"
-            android:id="@+id/log_out"
-            android:background="@xml/pc_button_log_out"
-            android:layout_marginBottom="35dp" android:layout_alignParentBottom="true"
-            android:layout_alignLeft="@+id/sex" android:layout_alignRight="@+id/sex"/>
+
+        <RelativeLayout
+                android:id = "@+id/username_layout"
+                android:layout_width = "fill_parent"
+                android:layout_height = "wrap_content"
+                android:background = "@xml/pc_button_with_corner"
+                android:paddingLeft = "15dp"
+                android:paddingRight = "15dp"
+                android:layout_below="@+id/head_layout"
+                android:layout_marginTop="15dp"
+                android:layout_alignRight="@+id/head_layout"
+                android:layout_alignLeft="@+id/head_layout">
+
+            <TextView
+                    android:text = "用户名"
+                    android:textColor="#000000"
+                    android:textSize="18dp"
+                    android:layout_height = "wrap_content"
+                    android:layout_width = "fill_parent"
+                    android:id = "@+id/username_text1"
+                    android:layout_centerVertical="true"/>
+
+            <TextView
+                    android:text = "暂无"
+                    android:textColor="#000000"
+                    android:textSize="18dp"
+                    android:layout_height = "wrap_content"
+                    android:layout_width = "fill_parent"
+                    android:id = "@+id/username_text2"
+                    android:gravity="right"
+                    android:layout_centerVertical="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:id = "@+id/sex_layout"
+                android:layout_width = "fill_parent"
+                android:layout_height = "wrap_content"
+                android:background = "@xml/pc_button_with_corner"
+                android:paddingLeft = "15dp"
+                android:paddingRight = "15dp"
+                android:layout_below="@+id/username_layout"
+                android:layout_marginTop="15dp"
+                android:layout_alignLeft="@+id/username_layout"
+                android:layout_alignRight="@+id/username_layout">
+
+            <TextView
+                    android:text = "性别"
+                    android:textColor="#000000"
+                    android:textSize="18dp"
+                    android:layout_height = "wrap_content"
+                    android:layout_width = "fill_parent"
+                    android:id = "@+id/sex_text1"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"/>
+
+            <TextView
+                    android:text = "男"
+                    android:textColor="#000000"
+                    android:textSize="18dp"
+                    android:layout_height = "wrap_content"
+                    android:layout_width = "fill_parent"
+                    android:id = "@+id/sex_text2"
+                    android:gravity="right"
+                    android:paddingRight="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"/>
+
+            <ImageView
+                    android:layout_height = "wrap_content"
+                    android:layout_width = "wrap_content"
+                    android:layout_alignParentRight = "true"
+                    android:layout_centerVertical = "true"
+                    android:background="@drawable/right_go"
+                    android:id = "@+id/sex_image"/>
+        </RelativeLayout>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="退出登录"
+                android:textColor="#FFFFFF"
+                android:id="@+id/button_log_out"
+                android:background="@xml/pc_button_log_out"
+                android:layout_marginBottom="40dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignLeft="@+id/sex_layout"
+                android:layout_alignRight="@+id/sex_layout"/>
+    </RelativeLayout>
 
 </RelativeLayout>
 

@@ -4,50 +4,61 @@ public class CarInfor {
 
     //成员变量
     //通过数字表示车辆大小类型,引擎类型
-    private int carId;
+
+
+    private String carSerie;
+    private String carSeable;
     private String carName;
     private String engineType;
     private String brandId;
-    private String carSize;
+    private String carGrade;
     private Double highSpeed;
     private Double timeTo100Km;
     private Double lowPrice;
     private Double higPrice;
+    private String transmission;
+    private String price;
+    private String carBodyStructure;
+    private String carPicPath;
 
     //构造函数
     public CarInfor() {
 
     }
 
-    public CarInfor(int carId, String carSize, String brandId,
-                    String engineType, Double highSpeed, String carName,
-                    Double timeTo100Km, Double lowPrice, Double higPrice) {
-        this.carId = carId;
-        this.carSize = carSize;
-        this.brandId = brandId;
-        this.engineType = engineType;
-        this.highSpeed = highSpeed;
-        this.carName = carName;
-        this.timeTo100Km = timeTo100Km;
-        this.lowPrice = lowPrice;
-        this.higPrice = higPrice;
+    public String getCarSerie() {
+        return carSerie;
     }
+
+    public void setCarSerie(String carSerie) {
+        this.carSerie = carSerie;
+    }
+
+    public String getCarSeable() {
+        return carSeable;
+    }
+
+    public void setCarSeable(String carSeable) {
+        this.carSeable = carSeable;
+    }
+
+    public String getCarPicPath() {
+        return carPicPath;
+    }
+
+    public void setCarPicPath(String carPicPath) {
+        this.carPicPath = carPicPath;
+    }
+
 
     //获取成员变量的值
-    public int getCarId() {
-        return carId;
+
+    public String getCarGrade() {
+        return carGrade;
     }
 
-    public void setCarId(int carId) {
-        this.carId = carId;
-    }
-
-    public String getCarSize() {
-        return carSize;
-    }
-
-    public void setCarSize(String carSize) {
-        this.carSize = carSize;
+    public void setCarGrade(String carGrade) {
+        this.carGrade = carGrade;
     }
 
     public String getBrandId() {
@@ -105,5 +116,29 @@ public class CarInfor {
 
     public void setHigPrice(Double higPrice) {
         this.higPrice = higPrice;
+    }
+
+    public String getTransmission() {
+        return transmission;
+    }
+
+    public void setTransmission(String transmission) {
+        this.transmission = transmission;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getCarBodyStructure() {
+        return carBodyStructure;
+    }
+
+    public void setCarBodyStructure(String carBodyStructure) {
+        this.carBodyStructure = carBodyStructure;
     }
 }

@@ -6,7 +6,6 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -26,16 +25,14 @@ public class ServiceHandler {
 
     public static final int GET = 1;
     public static final int POST = 2;
-
+    public static final String TAG = "service handler";
+    static String response = null;
     // Set the timeout in milliseconds until a connection is established.
     // The default value is zero, that means the timeout is not used.
     int timeoutConnection = 6000;
     // Set the default socket timeout (SO_TIMEOUT)
     // in milliseconds which is the timeout for waiting for data.
     int timeoutSocket = 10000;
-    static String response = null;
-
-    public static final String TAG = "service handler";
 
     public ServiceHandler() {
     }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/drawerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F6F6F6"
+        >
+    <!-- 抽屉底部遮罩层 默认不可见 -->
+    <FrameLayout
+            android:id="@+id/drawerFrame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    <!-- 抽屉打开后显示的菜单 默认不可见 -->
+    <ListView
+            android:id="@+id/drawerListView"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:choiceMode="singleChoice"
+            android:background="#FFF"
+            />
+
+</android.support.v4.widget.DrawerLayout>

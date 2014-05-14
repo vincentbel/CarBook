@@ -6,9 +6,12 @@
     <uses-sdk android:minSdkVersion="14"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
+    <application android:label="@string/app_name"
+                 android:theme="@style/Theme.Carbook"
+                 android:icon="@drawable/ic_launcher">
         <activity android:name="MainActivity"
-                  android:label="@string/app_name">
+                  android:label="@string/app_name"
+                  >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -16,56 +19,40 @@
         </activity>
 
         <activity android:name=".member.Login"
-                  android:theme="@style/Theme.CarShow"
-
                   android:screenOrientation="portrait" >
         </activity>
 
         <activity android:name=".member.Register"
-                  android:theme="@style/Theme.CarShow"
-
-                  android:screenOrientation="portrait">
-        </activity>
-
-        <activity android:name=".member.PersonalCenter"
-                  android:theme="@style/Theme.CarShow"
                   android:screenOrientation="portrait">
         </activity>
 
         <activity android:name=".member.MyInformation"
-                  android:theme="@style/Theme.CarShow"
+                  android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".member.FindPsd"
                   android:screenOrientation="portrait">
         </activity>
 
         <activity
                 android:name="com.Doric.CarBook.car.CarShow"
                 android:label="carShow"
-                android:theme="@style/Theme.CarShow"
+                android:parentActivityName=".MainActivity"
                 android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.Doric.CarBook.member.UserCollection"
+        <!--<activity android:name="com.Doric.CarBook.member.UserCollection"
                   android:label="userCollection"
                   android:theme="@style/Theme.CarShow"
                   android:screenOrientation="portrait">
-        </activity>
+        </activity>-->
 
         <activity
-                android:name="com.Doric.CarBook.search.AlphaShow"
-                android:label="@string/app_name" >
+                android:name="com.Doric.CarBook.search.SearchMain"
+                android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.Doric.CarBook.search.Search"
-                  android:theme="@android:style/Theme.Dialog">
 
-        </activity>
-        <activity android:name="com.Doric.CarBook.search.Result">
-
-        </activity>
-        <activity android:name="com.Doric.CarBook.search.CarListShow">
-
-        </activity>
-        <activity android:name="com.Doric.CarBook.search.ConditionSearch">
-        </activity>
         <activity android:name=".car.ImageDetailsActivity">
         </activity>
+
     </application>
 </manifest>

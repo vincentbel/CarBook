@@ -3,7 +3,6 @@ package com.Doric.CarBook.car;
 /**
  * Created by Sunyao_Will on 2014/4/27.
  */
-import java.io.File;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -19,6 +18,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
 import com.Doric.CarBook.R;
+
+import java.io.File;
 
 /**
  * 查看大图的Activity界面。
@@ -51,6 +52,41 @@ public class ImageDetailsActivity extends Activity implements
         viewPager.setEnabled(false);
         // 设定当前的页数和总页数
         pageText.setText((imagePosition + 1) + "/" + CarImages.imageUrls.length);
+    }
+
+    /**
+     * 获取图片的本地存储路径。
+     *
+     * @param imageUrl 图片的URL地址。
+     * @return 图片的本地存储路径。
+     */
+    private String getImagePath(String imageUrl) {
+        int lastSlashIndex = imageUrl.lastIndexOf("/");
+        String imageName = imageUrl.substring(lastSlashIndex + 1);
+        String imageDir = Environment.getExternalStorageDirectory().getPath()
+                + "/CarBook/Cache/";
+        File file = new File(imageDir);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        String imagePath = imageDir + imageName;
+        return imagePath;
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int arg0) {
+
+    }
+
+    @Override
+    public void onPageScrolled(int arg0, float arg1, int arg2) {
+
+    }
+
+    @Override
+    public void onPageSelected(int currentPage) {
+        // 每当页数发生改变时重新设定一遍当前的页数和总页数
+        pageText.setText((currentPage + 1) + "/" + CarImages.imageUrls.length);
     }
 
     /**
@@ -91,42 +127,6 @@ public class ImageDetailsActivity extends Activity implements
             container.removeView(view);
         }
 
-    }
-
-    /**
-     * 获取图片的本地存储路径。
-     *
-     * @param imageUrl
-     *            图片的URL地址。
-     * @return 图片的本地存储路径。
-     */
-    private String getImagePath(String imageUrl) {
-        int lastSlashIndex = imageUrl.lastIndexOf("/");
-        String imageName = imageUrl.substring(lastSlashIndex + 1);
-        String imageDir = Environment.getExternalStorageDirectory().getPath()
-                + "/PhotoWallFalls/";
-        File file = new File(imageDir);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        String imagePath = imageDir + imageName;
-        return imagePath;
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int arg0) {
-
-    }
-
-    @Override
-    public void onPageScrolled(int arg0, float arg1, int arg2) {
-
-    }
-
-    @Override
-    public void onPageSelected(int currentPage) {
-        // 每当页数发生改变时重新设定一遍当前的页数和总页数
-        pageText.setText((currentPage + 1) + "/" + CarImages.imageUrls.length);
     }
 
 }
