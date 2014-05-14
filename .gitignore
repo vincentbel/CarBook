@@ -32,3 +32,4 @@ local.properties
 proguard-project.txt
 project.properties
 php/include/config.php
+php/picture/
