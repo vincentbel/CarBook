@@ -16,6 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Logcat 标签
     private static final String LOG = "DatabaseHelper";
+
     private static final int DATABASE_VERSION = 1;
     // 数据库名称
     private static final String DATABASE_NAME = "carbook";
@@ -43,7 +44,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // user表 - 建表语句
     private static final String CREATE_TABLE_USER = "CREATE TABLE "
-            + TABLE_USER + "(" + KEY_ID + " INTEGER PRIMARY KEY," + KEY_USER_NAME
+            + TABLE_USER + "(" + KEY_ID + " INTEGER PRIMARY KEY," + KEY_USER_ID + " INTEGER,"  + KEY_USER_NAME
             + " TEXT," + KEY_CREATED_AT + " DATETIME" + ")";
 
     // collection表 - 建表语句
@@ -51,6 +52,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TABLE_COLLECTION + "(" + KEY_ID + " INTEGER PRIMARY KEY," + KEY_COLLECTION_UER_ID
             + " INTEGER," + KEY_COLLECTION_CAR_ID + " INTEGER," + KEY_CREATED_AT + " DATETIME" + ")";
 
+
+    //默认用户id，当用户没有登录时，收藏汽车时使用
+    private static final int DEFAULT_USER_ID = -1;
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -110,6 +114,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursor.getCount() > 0) {
             user.put(KEY_USER_NAME, cursor.getString(cursor.getColumnIndex(KEY_USER_NAME)));
             user.put(KEY_CREATED_AT, cursor.getString(cursor.getColumnIndex(KEY_CREATED_AT)));
+            user.put(KEY_USER_ID, cursor.getString(cursor.getColumnIndex(KEY_USER_ID)));
         }
         cursor.close();
         db.close();
@@ -130,6 +135,62 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return count;
     }
+
+    public boolean isCarCollected(int carId) {
+        String countQuery = "SELECT  * FROM " + TABLE_COLLECTION + " WHERE " + KEY_COLLECTION_CAR_ID + "=" + carId;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+
+        int count = cursor.getCount();
+        cursor.close();
+        db.close();
+        return (count > 0);
+    }
+
+    public long addCollection(int userId, int carId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_COLLECTION_UER_ID, userId);
+        values.put(KEY_COLLECTION_CAR_ID, carId);
+        values.put(KEY_CREATED_AT, getDateTime());
+
+        // insert row
+        long id = db.insert(TABLE_COLLECTION, null, values);
+        db.close();
+        return id;
+    }
+
+    public long addCollection(int carId) {
+        return addCollection(DEFAULT_USER_ID, carId);
+    }
+
+    public int deleteCollection(int userId, int carId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String whereClause = KEY_COLLECTION_UER_ID + "=" + userId + " AND " + KEY_COLLECTION_CAR_ID + "=" + carId;
+
+        // insert row
+        int id = db.delete(TABLE_COLLECTION, whereClause, null);
+        db.close();
+        return id;
+    }
+
+    public int deleteCollection(int carId) {
+        return deleteCollection(DEFAULT_USER_ID, carId);
+    }
+
+
+    public void addUserIdToCollection(int userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_COLLECTION_UER_ID, userId);
+        db.update(TABLE_COLLECTION, values, null, null);
+    }
+
+    public void resetCollection() {
+        addUserIdToCollection(DEFAULT_USER_ID);
+    }
+
 
     // closing database
     public void closeDB() {

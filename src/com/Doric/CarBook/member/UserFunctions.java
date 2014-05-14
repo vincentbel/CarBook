@@ -43,22 +43,6 @@ public class UserFunctions {
         JSONObject json = jsonParser.getJSONFromUrl(loginURL, params);
         addUserToDatabase(json);
         return json;
-
-    }
-
-    public void addUserToDatabase(JSONObject json) {
-        if (json != null) {
-            try {
-                if (json.getString("success").equals("1")) {
-                    db.addUser(json.getString("username"),
-                            Integer.parseInt(json.getString("user_id")),
-                            json.getString("created_at"));
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     /**
@@ -82,6 +66,22 @@ public class UserFunctions {
         return json;
     }
 
+    public void addUserToDatabase(JSONObject json) {
+        if (json != null) {
+            try {
+                if (json.getString("success").equals("1")) {
+                    db.addUser(json.getString("username"),
+                            Integer.parseInt(json.getString("user_id")),
+                            json.getString("created_at"));
+                    db.addUserIdToCollection(Integer.parseInt(json.getString("user_id")));
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     /**
      * Function get Login status
      */
@@ -99,6 +99,7 @@ public class UserFunctions {
      * Reset Database
      */
     public boolean logoutUser() {
+        db.resetCollection();
         db.resetTables();
         return true;
     }
@@ -108,17 +109,28 @@ public class UserFunctions {
         return db.getUserDetails().get(DatabaseHelper.KEY_USER_NAME);
     }
 
+    public int getUserId() {
+        return Integer.parseInt(db.getUserDetails().get(DatabaseHelper.KEY_USER_ID));
+    }
 
     //TODO ÊÕ²Ø
     boolean isCollected = false;
-    public void addToCollection(int carId) {
-        isCollected = true;
+    public boolean addToCollection(int carId) {
+        if (isUserLoggedIn()) {
+            return (db.addCollection(getUserId(), carId) > -1);
+        } else {
+            return (db.addCollection(carId) > -1);
+        }
     }
-    public void cancelCollect(int carId) {
-        isCollected = false;
+    public boolean cancelCollect(int carId) {
+        if (isUserLoggedIn()) {
+            return (db.deleteCollection(getUserId(), carId) > 0);
+        } else {
+            return (db.deleteCollection(carId) > 0);
+        }
     }
 
     public boolean isCollected(int carId) {
-        return isCollected;
+        return db.isCarCollected(carId);
     }
 }

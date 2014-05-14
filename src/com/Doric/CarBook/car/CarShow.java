@@ -61,9 +61,11 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the main; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.car_show, menu);
+        MenuItem collectItem = menu.findItem(R.id.action_add_to_collection);
         if (userFunctions.isCollected(carId)) {
-            MenuItem collectItem = menu.findItem(R.id.action_add_to_collection);
             collectItem.setIcon(R.drawable.ic_action_collected);
+        } else {
+            collectItem.setIcon(R.drawable.ic_action_add_to_collection);
         }
         return true;
     }
@@ -76,11 +78,13 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
                 return true;
             case R.id.action_add_to_collection:
                 if (!userFunctions.isCollected(carId)) {
-                    userFunctions.addToCollection(carId);
-                    Toast.makeText(getApplicationContext(), "已收藏", Toast.LENGTH_SHORT).show();
+                    if (userFunctions.addToCollection(carId)) {
+                        Toast.makeText(getApplicationContext(), "已收藏", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    userFunctions.cancelCollect(carId);
-                    Toast.makeText(getApplicationContext(), "已取消收藏", Toast.LENGTH_SHORT).show();
+                    if (userFunctions.cancelCollect(carId)) {
+                        Toast.makeText(getApplicationContext(), "已取消收藏", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 invalidateOptionsMenu();
                 return true;
@@ -167,6 +171,7 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
             if (carInfo != null) {
                 try {
                     carId = Integer.parseInt(carInfo.getString("car_id"));
+                    invalidateOptionsMenu();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
