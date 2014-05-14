@@ -35,6 +35,7 @@
 			if ($car != false) {
 				// car found
 				$response["success"] = 1;
+				$response["car_id"] = $car["car_id"];
 				$response["car_grade"] = $car["car_grade"];
 				$response["car_body_structure"] = $car["car_body_structure"];
 				$response["price"] = $car["price"];
