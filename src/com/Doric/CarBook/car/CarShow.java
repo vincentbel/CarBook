@@ -4,18 +4,18 @@ package com.Doric.CarBook.car;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 import com.Doric.CarBook.Constant;
 import com.Doric.CarBook.R;
+import com.Doric.CarBook.member.UserFunctions;
 import com.Doric.CarBook.utility.JSONParser;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -24,6 +24,7 @@ import java.util.List;
 public class CarShow extends FragmentActivity implements android.app.ActionBar.TabListener {
     public static final int MAX_TAB_SIZE = 5;
     static JSONObject carInfo;
+    int carId = 0;
     String url = Constant.BASE_URL + "/showcar.php";
     List<NameValuePair> carParamsRequest = new ArrayList<NameValuePair>();
     ProgressDialog progressDialog;
@@ -32,9 +33,13 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
      */
     private ViewPager mViewPager;
 
+    UserFunctions userFunctions;   //用户功能函数 用于添加和取消到收藏
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.car_show);
+
+        userFunctions = new UserFunctions(getApplicationContext());
 
         //发送请求并获取Json包
 
@@ -52,12 +57,41 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
         mViewPager = (ViewPager) this.findViewById(R.id.pager);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the main; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.car_show, menu);
+        if (userFunctions.isCollected(carId)) {
+            MenuItem collectItem = menu.findItem(R.id.action_add_to_collection);
+            collectItem.setIcon(R.drawable.ic_action_collected);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+            case R.id.action_add_to_collection:
+                if (!userFunctions.isCollected(carId)) {
+                    userFunctions.addToCollection(carId);
+                    Toast.makeText(getApplicationContext(), "已收藏", Toast.LENGTH_SHORT).show();
+                } else {
+                    userFunctions.cancelCollect(carId);
+                    Toast.makeText(getApplicationContext(), "已取消收藏", Toast.LENGTH_SHORT).show();
+                }
+                invalidateOptionsMenu();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void initView() {
         final android.app.ActionBar mActionBar = getActionBar();
-
-        if (mActionBar != null) {
-            mActionBar.setDisplayHomeAsUpEnabled(false);
-        }
+        mActionBar.setDisplayHomeAsUpEnabled(true);
 
         if (mActionBar != null) {
             mActionBar.setNavigationMode(android.app.ActionBar.NAVIGATION_MODE_TABS);
@@ -69,10 +103,7 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
 
             @Override
             public void onPageSelected(int arg0) {
-
-                if (mActionBar != null) {
-                    mActionBar.setSelectedNavigationItem(arg0);
-                }
+                mActionBar.setSelectedNavigationItem(arg0);
             }
 
             @Override
@@ -88,25 +119,12 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
 
         //初始化 ActionBar
         for (int i = 0; i < MAX_TAB_SIZE; i++) {
-            android.app.ActionBar.Tab tab = null;
-            if (mActionBar != null) {
-                tab = mActionBar.newTab();
-            }
-            if (tab != null) {
-                tab.setText(mAdapter.getPageTitle(i)).setTabListener(this);
-            }
-            if (mActionBar != null) {
-                mActionBar.addTab(tab);
-            }
+            mActionBar.addTab(mActionBar.newTab().
+                    setText(mAdapter.getPageTitle(i)).
+                    setTabListener(this));
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the main; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
 
     @Override
     public void onTabSelected(android.app.ActionBar.Tab tab, android.app.FragmentTransaction ft) {
@@ -147,6 +165,11 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
                 progressDialog.dismiss();
             }
             if (carInfo != null) {
+                try {
+                    carId = Integer.parseInt(carInfo.getString("car_id"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 CarInfor car = new CarInfor();
                 car.setCarName("BMW 7series 2013 740Li grand");
                 /*

@@ -14,22 +14,42 @@ import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    // user表 - 列名
-    public static final String KEY_ID = "id";
-    public static final String KEY_USER_NAME = "username";
-    public static final String KEY_CREATED_AT = "create_at";
     // Logcat 标签
     private static final String LOG = "DatabaseHelper";
     private static final int DATABASE_VERSION = 1;
     // 数据库名称
     private static final String DATABASE_NAME = "carbook";
-    // 表名
+
+    /***********     表名    *******************/
     private static final String TABLE_USER = "user";
-    // 建表语句
+    private static final String TABLE_COLLECTION = "collection";
+
+
+    /*****************    各表的列名      *************************/
+
+    // 通用列名
+    public static final String KEY_ID = "id";
+    public static final String KEY_CREATED_AT = "create_at";
+
+    // user表 - 列名
+    public static final String KEY_USER_NAME = "username";
+    public static final String KEY_USER_ID = "user_id";
+
+    // collection表 - 列名
+    public static final String KEY_COLLECTION_CAR_ID = "car_id";
+    public static final String KEY_COLLECTION_UER_ID = "user_id";
+
+    /*************** 建表语句    *********************/
+
+    // user表 - 建表语句
     private static final String CREATE_TABLE_USER = "CREATE TABLE "
             + TABLE_USER + "(" + KEY_ID + " INTEGER PRIMARY KEY," + KEY_USER_NAME
             + " TEXT," + KEY_CREATED_AT + " DATETIME" + ")";
-    private static final String TABLE_COLLECT = "user_collect";
+
+    // collection表 - 建表语句
+    private static final String CREATE_TABLE_COLLECTION = "CREATE TABLE "
+            + TABLE_COLLECTION + "(" + KEY_ID + " INTEGER PRIMARY KEY," + KEY_COLLECTION_UER_ID
+            + " INTEGER," + KEY_COLLECTION_CAR_ID + " INTEGER," + KEY_CREATED_AT + " DATETIME" + ")";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -40,13 +60,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // 建表
         db.execSQL(CREATE_TABLE_USER);
+        db.execSQL(CREATE_TABLE_COLLECTION);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // on upgrade drop older tables
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
-
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_COLLECTION);
         // create new tables
         onCreate(db);
     }
@@ -130,7 +151,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * get datetime
      */
-    private String getDateTime() {
+    public String getDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         Date date = new Date();

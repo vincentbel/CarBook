@@ -49,7 +49,7 @@ public class MyInformation extends Activity implements View.OnClickListener {
         loHead = (RelativeLayout) findViewById(R.id.head_layout);
         loSex = (RelativeLayout) findViewById(R.id.sex_layout);
         loUsername = (RelativeLayout) findViewById(R.id.username_layout);
-        btnLogOut = (Button) findViewById(R.id.log_out);
+        btnLogOut = (Button) findViewById(R.id.button_log_out);
         btnBack = (Button) findViewById(R.id.back);
         tvUsername = (TextView) findViewById(R.id.username_text2);
 
@@ -104,7 +104,7 @@ public class MyInformation extends Activity implements View.OnClickListener {
         }
 
         //"退出登录"按钮
-        if (id == R.id.log_out) {
+        if (id == R.id.button_log_out) {
             logOutDialog();
         }
 
@@ -119,12 +119,12 @@ public class MyInformation extends Activity implements View.OnClickListener {
         AlertDialog.Builder builder = new AlertDialog.Builder(MyInformation.this);
         builder.setMessage("确定要退出登录吗？");
         builder.setTitle("退出登录");
-        builder.setPositiveButton("取消", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
-        builder.setNegativeButton("确认", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 MyInformation.this.finish();

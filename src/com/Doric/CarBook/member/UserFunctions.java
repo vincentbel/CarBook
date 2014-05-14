@@ -105,4 +105,18 @@ public class UserFunctions {
     public String getUsername() {
         return db.getUserDetails().get(DatabaseHelper.KEY_USER_NAME);
     }
+
+
+    //TODO  ’≤ÿ
+    boolean isCollected = false;
+    public void addToCollection(int carId) {
+        isCollected = true;
+    }
+    public void cancelCollect(int carId) {
+        isCollected = false;
+    }
+
+    public boolean isCollected(int carId) {
+        return isCollected;
+    }
 }
