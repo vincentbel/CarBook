@@ -41,16 +41,18 @@ public class UserFunctions {
         params.add(new BasicNameValuePair("username", username));
         params.add(new BasicNameValuePair("password", password));
         JSONObject json = jsonParser.getJSONFromUrl(loginURL, params);
-        addUserToDatabase(username, json);
+        addUserToDatabase(json);
         return json;
 
     }
 
-    public void addUserToDatabase(String username, JSONObject json) {
+    public void addUserToDatabase(JSONObject json) {
         if (json != null) {
             try {
                 if (json.getString("success").equals("1")) {
-                    db.addUser(username, json.getString("created_at"));
+                    db.addUser(json.getString("username"),
+                            Integer.parseInt(json.getString("user_id")),
+                            json.getString("created_at"));
                 }
 
             } catch (JSONException e) {
@@ -75,7 +77,7 @@ public class UserFunctions {
         params.add(new BasicNameValuePair("password", password));
         // getting JSON Object
         JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
-        addUserToDatabase(name, json);
+        addUserToDatabase(json);
         // return json
         return json;
     }

@@ -77,11 +77,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /*
      *store user info in database
      */
-    public long addUser(String userName, String createAt) {
+    public long addUser(String userName, int uid, String createAt) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(KEY_USER_NAME, userName);
+        values.put(KEY_USER_ID, uid);
         values.put(KEY_CREATED_AT, createAt);
 
         // insert row

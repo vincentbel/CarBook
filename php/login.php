@@ -37,6 +37,7 @@
 				// user found
 				// echo json with success = 1
 				$response["success"] = 1;
+				$response["user_id"] = $user["user_id"];
 				$response["username"] = $user["username"];
 				$response["email"] = $user["email"];
 				$response["created_at"] = $user["created_at"];
