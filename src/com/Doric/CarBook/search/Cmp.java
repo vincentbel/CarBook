@@ -1,6 +1,7 @@
 package com.Doric.CarBook.search;
 
 import java.util.Comparator;
+
 class ComparatorCarInfo implements Comparator<CarInfor> {
     @Override
     public int compare(CarInfor o1, CarInfor o2) {

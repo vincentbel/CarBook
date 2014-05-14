@@ -1,69 +1,54 @@
 package com.Doric.CarBook.search;
 
-import android.content.Context;
-import android.content.Intent;
+import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Pair;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
+import com.Doric.CarBook.Constant;
 import com.Doric.CarBook.R;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
+import java.util.*;
 
-public class Result extends MyFragment {
+import android.app.Fragment;
 
-    private ArrayList<CarInfor> mCarList;
+import com.Doric.CarBook.utility.JSONParser;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class Result extends Fragment {
+
+    private static ArrayList<CarInfor> mCarList;
     private LinearLayout mLinearLayout;
     private ScrollView mScrollView;
-
-
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        super.onCreateView(inflater,container,savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
         //获取信息
-        Bundle bundle = getArguments();
-        if (bundle == null) return null;
-        Double low = bundle.getDouble("lowprice",-1);
-        if(low==-1) return null;
-        Double hig = bundle.getDouble("higprice",-1);
-        if(hig==-1) return null;
-        Grade g = (Grade)bundle.getSerializable("grade");
-        //mCarList = PinyinSearch.conditionSearch( g, low, hig);
 
-        /*
-                Intent it = this.getIntent();
-        String seable = it.getStringExtra("seablename");
-        int low = it.getIntExtra("lowprice", -1);
-        if (low == -1) return;
-        int hig = it.getIntExtra("higprice", -1);
-        if (hig == -1) return;
-        Grade g = (Grade)it.getSerializableExtra("grade");
-        mCarList = PinyinSearch.conditionSearch(seable, g, low, hig);
-        Collections.sort(mCarList, new ComparatorCarInfo());
-
-         */
         initPage();
         return mScrollView;
 
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         SearchMain.searchmain.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
+
     public ArrayList<Map<String, Object>> getUniformData(ArrayList<CarInfor> al_cs) {
         ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         for (CarInfor cs : al_cs) {
@@ -76,19 +61,19 @@ public class Result extends MyFragment {
 
         return list;
     }
-    public  void initPage()
-    {
+
+    public void initPage() {
         mLinearLayout = new LinearLayout(SearchMain.searchmain);
         LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(LinearLayout.
                 LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         mLinearLayout.setLayoutParams(param1);
         mLinearLayout.setOrientation(LinearLayout.VERTICAL);
-        mLinearLayout.setBackgroundColor(Color.rgb(0, 0, 0));
+        mLinearLayout.setBackgroundColor(Color.rgb(255, 255, 255));
         ArrayList<Pair<String, ArrayList<CarInfor>>> al = PinYinIndex.getIndex_CarInfo(mCarList, SearchMain.searchmain);
 
         mScrollView = new ScrollView(SearchMain.searchmain);
         mScrollView.setEnabled(true);
-        mScrollView.setBackgroundColor(Color.rgb(0, 0, 0));
+        mScrollView.setBackgroundColor(Color.rgb(255, 255, 255));
         ScrollView.LayoutParams param2 = new ScrollView.LayoutParams(ScrollView.
                 LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT);
         mScrollView.setLayoutParams(param2);
@@ -97,8 +82,8 @@ public class Result extends MyFragment {
         for (Pair<String, ArrayList<CarInfor>> pair : al) {
             TextView text = new TextView(SearchMain.searchmain);
             text.setText(pair.first);
-            text.setTextColor(Color.rgb(255, 255, 255));
-            text.setBackgroundColor(Color.rgb(230,230,230));
+            text.setTextColor(Color.rgb(0, 0, 0));
+            text.setBackgroundColor(Color.rgb(230, 230, 230));
             text.setTextSize(20);
 
             mLinearLayout.addView(text);
@@ -127,5 +112,109 @@ public class Result extends MyFragment {
 
     }
 
+    public static void  setCarList(ArrayList<CarInfor> cl){
+        mCarList= new ArrayList<CarInfor>();
+        mCarList.addAll(cl);
+    }
 
+
+}
+
+class CSearchGetData{
+    public  static  JSONObject carInfoObj;
+    public  static List<NameValuePair> carInfoParams = new ArrayList<NameValuePair>();
+    static FragmentTransaction fragmentTransaction;
+
+    public   static String url = Constant.BASE_URL + "/search.php";
+    private static Grade grade;
+    public static void getCSearchData(FragmentTransaction ft,Double hig,Double low,Grade gra){
+
+        grade= gra;
+        carInfoParams.add(new BasicNameValuePair("tag", "conditional_search"));
+        carInfoParams.add(new BasicNameValuePair("low_price",low.toString()));
+        carInfoParams.add(new BasicNameValuePair("high_price",hig.toString()));
+        carInfoParams.add(new BasicNameValuePair("grade",""));
+        fragmentTransaction=ft;
+        //Undone..
+        new GetCarInfo().execute();
+
+    }
+
+    static  class GetCarInfo extends AsyncTask<Void, Void, Void> {
+
+    public GetCarInfo(){
+        super();
+        //SearchMain.searchmain.InInitialize();
+
+    }
+
+    protected void onPreExecute() {
+        super.onPreExecute();
+        //加载时弹出
+        SearchMain.searchmain.loading();
+    }
+
+    protected Void doInBackground(Void... params) {
+        //向服务器发送请求
+        JSONParser jsonParser = new JSONParser();
+        carInfoObj = jsonParser.getJSONFromUrl(url, carInfoParams);
+        return null;
+    }
+
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        SearchMain.searchmain.stopLoading();
+        if (carInfoObj != null) {
+            ArrayList<CarInfor> carlist =new ArrayList<CarInfor>();
+            try {
+                int success = carInfoObj.getInt("success");
+                if(success==0){
+
+                    Toast.makeText(SearchMain.searchmain, "未找到符合的车辆", Toast.LENGTH_LONG).show();
+
+
+                }
+                else if (success == 1) {
+                    int num = carInfoObj.getInt("search_number");
+                    for (int i = 1; i <= num; i++) {
+                        CarInfor cs = new CarInfor();
+                        JSONObject ja= carInfoObj.getJSONObject("car_" + i);
+                        cs.setCarSeable(ja.getString("brand"));
+                        cs.setCarSerie(ja.getString("brand_series"));
+                        cs.setCarName(ja.getString("model_number"));
+                        cs.setCarPicPath(Constant.BASE_URL + "/" + ja.getString("pictures_url"));
+                        cs.setCarGrade(ja.getString("grade"));
+                        carlist.add(cs);
+
+                    }
+                    //品牌筛选
+                    ArrayList<CarInfor> delete = new ArrayList<CarInfor>();
+                    for (CarInfor ci : carlist) {
+                        if(grade.getValue(ci.getCarGrade())==false){
+                            delete.add(ci);
+                        }
+                    }
+                    carlist.removeAll(delete);
+
+
+                    if (carlist.size() > 0) {
+                        Collections.sort(carlist, new ComparatorCarInfo());
+                        Result.setCarList(carlist);
+                    }
+
+                    fragmentTransaction.commit();
+                    //context.initPage();
+                }
+            } catch (JSONException e) {
+
+                Toast.makeText(SearchMain.searchmain, e.toString(), Toast.LENGTH_LONG).show();
+            }
+
+
+
+        } else {
+            Toast.makeText(SearchMain.searchmain, "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
+        }
+    }
+    }
 }

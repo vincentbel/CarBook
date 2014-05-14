@@ -1,18 +1,21 @@
 package com.Doric.CarBook.search;
 
+import android.app.FragmentTransaction;
+import android.content.Context;
+import android.os.AsyncTask;
+import android.widget.Toast;
+import com.Doric.CarBook.Constant;
+import com.Doric.CarBook.Constant;
+import com.Doric.CarBook.utility.JSONParser;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import android.content.Context;
-import android.os.AsyncTask;
-import android.widget.Toast;
-import com.Doric.CarBook.Static;
-import com.Doric.CarBook.utility.JSONParser;
-import org.apache.http.NameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.apache.http.message.BasicNameValuePair;
 class CarSeable {
 
     private ArrayList<CarSeries> carSeriesList;    //车系list
@@ -20,15 +23,15 @@ class CarSeable {
     private String carSeableName;
     private String picPath;
 
-    private MyFragment context;            //用于调用其他Activity 中的loading 和 stopLoading
 
     private JSONObject seriesObj;
 
-    private  List<NameValuePair>  seriesParams= new ArrayList<NameValuePair>();
+    private List<NameValuePair> seriesParams = new ArrayList<NameValuePair>();
 
-    private  String url = Static.BASE_URL + "/search.php";
+    private String url = Constant.BASE_URL + "/search.php";
 
-    private boolean isload =false;
+    private boolean isload = false;
+
     //init
     public CarSeable() {
         carSeriesList = new ArrayList<CarSeries>();
@@ -36,24 +39,28 @@ class CarSeable {
     }
 
     //获取车系
-    CarSeries findCarSeries(String name){
-        for(CarSeries cs : carSeriesList){
-            if(cs.getName().equals(name))
+    CarSeries findCarSeries(String name) {
+        for (CarSeries cs : carSeriesList) {
+            if (cs.getName().equals(name))
                 return cs;
         }
         return null;
     }
 
     //从服务器获取车系信息
-    public void LoadCarSeries(MyFragment f) {
+    public void LoadCarSeries() {
 
         //brandParams
-        context= f;
-        if(!isload) {
+
+        if (!isload) {
             seriesParams.add(new BasicNameValuePair("tag", "brand_series"));
             seriesParams.add(new BasicNameValuePair("brand", carSeableName));
 
             new GetSeries().execute();
+        }
+        else{
+            SearchMain.searchmain.setListData(CarSeable.this.carSeriesList);
+            SearchMain.searchmain.OpenSliding();
         }
 
         /*
@@ -107,7 +114,8 @@ class CarSeable {
     }
 
     public void setCarSeriesist(ArrayList<CarSeries> carSeriesList) {
-        this.carSeriesList = carSeriesList;
+        this.carSeriesList.clear();
+        this.carSeriesList.addAll(carSeriesList);
     }
 
     public String getCarSeableName() {
@@ -128,13 +136,12 @@ class CarSeable {
     }
 
 
-
     private class GetSeries extends AsyncTask<Void, Void, Void> {
 
         protected void onPreExecute() {
             super.onPreExecute();
             //弹出"正在登录"框
-            context.loading();
+            SearchMain.searchmain.loading();
         }
 
         protected Void doInBackground(Void... params) {
@@ -146,36 +153,32 @@ class CarSeable {
 
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            context.stopLoading();
-            if (seriesObj!=null) {
+            SearchMain.searchmain.stopLoading();
+            if (seriesObj != null) {
                 try {
                     int success = seriesObj.getInt("success");
-                    if(success==1){
+                    if (success == 1) {
                         int num = seriesObj.getInt("brand_series_number");
-                        for(int i=1;i<=num;i++){
+                        for (int i = 1; i <= num; i++) {
                             CarSeries cs = new CarSeries();
-                            cs.setName(seriesObj.getString("brand_series_"+i));
+                            cs.setName(seriesObj.getString("brand_series_" + i));
                             cs.setCarSeableName(carSeableName);
 
                             carSeriesList.add(cs);
                         }
-                    isload = true;
-                        if(carSeriesList.size()>0)
-                    Collections.sort(carSeriesList, new ComparatorCarSeries());
-
+                        isload = true;
+                        if (carSeriesList.size() > 0)
+                            Collections.sort(carSeriesList, new ComparatorCarSeries());
+                        SearchMain.searchmain.setListData(CarSeable.this.carSeriesList);
+                        SearchMain.searchmain.OpenSliding();
                     }
+                } catch (JSONException e) {
+
+                    Toast.makeText(SearchMain.searchmain, e.toString(), Toast.LENGTH_LONG).show();
                 }
-                catch(JSONException e)
-                {
-                    Context c= context.getActivity().getApplicationContext();
-                    if(c==null) return;
-                    Toast.makeText(c, e.toString(), Toast.LENGTH_LONG).show();
-                }
-            }
-            else {
-                Context c= context.getActivity().getApplicationContext();
-                if(c==null) return;
-                Toast.makeText(c, "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
+            } else {
+
+                Toast.makeText(SearchMain.searchmain, "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
             }
         }
     }

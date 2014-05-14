@@ -1,17 +1,5 @@
 package com.Doric.CarBook.car;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -30,13 +18,21 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
+import com.Doric.CarBook.Constant;
 import com.Doric.CarBook.R;
-import com.Doric.CarBook.Static;
 import com.Doric.CarBook.utility.JSONParser;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 自定义的ScrollView，在其中动态地对图片进行添加。
@@ -47,93 +43,23 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
      * 每页要加载的图片数量
      */
     public static final int PAGE_SIZE = 15;
-
-    /**
-     * 记录当前已加载到第几页
-     */
-    private int page;
-
-    /**
-     * 每一列的宽度
-     */
-    private int columnWidth;
-
-    /**
-     * 当前第一列的高度
-     */
-    private int firstColumnHeight;
-
-    /**
-     * 当前第二列的高度
-     */
-    private int secondColumnHeight;
-
-    /**
-     * 当前第三列的高度
-     */
-    private int thirdColumnHeight;
-
-    /**
-     * 是否已加载过一次layout，这里onLayout中的初始化只需加载一次
-     */
-    private boolean loadOnce;
-
-    /**
-     * 对图片进行管理的工具类
-     */
-    private ImageLoader imageLoader;
-
-    /**
-     * 第一列的布局
-     */
-    private LinearLayout firstColumn;
-
-    /**
-     * 第二列的布局
-     */
-    private LinearLayout secondColumn;
-
-    /**
-     * 第三列的布局
-     */
-    private LinearLayout thirdColumn;
-
+    static JSONObject carPic;
     /**
      * 记录所有正在下载或等待下载的任务。
      */
     private static Set<LoadImageTask> taskCollection;
-
     /**
      * MyScrollView下的直接子布局。
      */
     private static View scrollLayout;
-
     /**
      * MyScrollView布局的高度。
      */
     private static int scrollViewHeight;
-
     /**
      * 记录上垂直方向的滚动距离。
      */
     private static int lastScrollY = -1;
-
-    /**
-     * 记录所有界面上的图片，用以可以随时控制对图片的释放。
-     */
-    private List<ImageView> imageViewList = new ArrayList<ImageView>();
-
-    /**
-     * 在Handler中进行图片可见性检查的判断，以及加载更多图片的操作。
-     */
-
-    ProgressDialog progressDialog;
-
-    static JSONObject carPic;
-
-    String picUrl = Static.BASE_URL+"/showcar.php";
-    List<NameValuePair> carPicParams = new ArrayList<NameValuePair>();
-
     private static Handler handler = new Handler() {
 
         public void handleMessage(android.os.Message msg) {
@@ -154,9 +80,62 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
                 // 5毫秒后再次对滚动位置进行判断
                 handler.sendMessageDelayed(message, 5);
             }
-        };
+        }
+
+        ;
 
     };
+    /**
+     * 在Handler中进行图片可见性检查的判断，以及加载更多图片的操作。
+     */
+
+    ProgressDialog progressDialog;
+    String picUrl = Constant.BASE_URL + "/showcar.php";
+    List<NameValuePair> carPicParams = new ArrayList<NameValuePair>();
+    /**
+     * 记录当前已加载到第几页
+     */
+    private int page;
+    /**
+     * 每一列的宽度
+     */
+    private int columnWidth;
+    /**
+     * 当前第一列的高度
+     */
+    private int firstColumnHeight;
+    /**
+     * 当前第二列的高度
+     */
+    private int secondColumnHeight;
+    /**
+     * 当前第三列的高度
+     */
+    private int thirdColumnHeight;
+    /**
+     * 是否已加载过一次layout，这里onLayout中的初始化只需加载一次
+     */
+    private boolean loadOnce;
+    /**
+     * 对图片进行管理的工具类
+     */
+    private ImageLoader imageLoader;
+    /**
+     * 第一列的布局
+     */
+    private LinearLayout firstColumn;
+    /**
+     * 第二列的布局
+     */
+    private LinearLayout secondColumn;
+    /**
+     * 第三列的布局
+     */
+    private LinearLayout thirdColumn;
+    /**
+     * 记录所有界面上的图片，用以可以随时控制对图片的释放。
+     */
+    private List<ImageView> imageViewList = new ArrayList<ImageView>();
 
     /**
      * MyScrollView的构造函数。
@@ -194,42 +173,6 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
         }
     }
 
-    private class GetCarInfo extends AsyncTask<Void, Void, Void> {
-
-        protected void onPreExecute() {
-            super.onPreExecute();
-            //弹出"正在登录"框
-            progressDialog = new ProgressDialog(getContext());
-            progressDialog.setMessage("加载中..");
-            progressDialog.setCancelable(true);
-            progressDialog.show();
-        }
-
-        protected Void doInBackground(Void... params) {
-            //向服务器发送请求
-            JSONParser jsonParser = new JSONParser();
-            carPic = jsonParser.getJSONFromUrl(picUrl, carPicParams);
-            return null;
-        }
-
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            if (progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
-            if (carPic!=null) {
-                try {
-                    CarImages.initImages(carPic.getInt("pictures_num"), carPic);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            else {
-                Toast.makeText(getContext(), "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
-            }
-            loadMoreImages();
-        }
-    }
     /**
      * 监听用户的触屏事件，如果用户手指离开屏幕则开始进行滚动检测。
      */
@@ -250,8 +193,6 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
         if (hasSDCard()) {
             int startIndex = page * PAGE_SIZE;
             int endIndex = page * PAGE_SIZE + PAGE_SIZE;
-            if (CarImages.imageUrls == null)
-                System.out.println("Carbook");
             if (startIndex < CarImages.imageUrls.length) {
                 Toast.makeText(getContext(), "正在加载...", Toast.LENGTH_SHORT).show();
                 if (endIndex > CarImages.imageUrls.length) {
@@ -301,6 +242,42 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
      */
     private boolean hasSDCard() {
         return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
+    }
+
+    private class GetCarInfo extends AsyncTask<Void, Void, Void> {
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //弹出"正在登录"框
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setMessage("加载中..");
+            progressDialog.setCancelable(true);
+            progressDialog.show();
+        }
+
+        protected Void doInBackground(Void... params) {
+            //向服务器发送请求
+            JSONParser jsonParser = new JSONParser();
+            carPic = jsonParser.getJSONFromUrl(picUrl, carPicParams);
+            return null;
+        }
+
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+            if (carPic != null) {
+                try {
+                    CarImages.initImages(carPic.getInt("pictures_num"), carPic);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Toast.makeText(getContext(), "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
+            }
+            loadMoreImages();
+        }
     }
 
     /**
@@ -359,8 +336,7 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
         /**
          * 根据传入的URL，对图片进行加载。如果这张图片已经存在于SD卡中，则直接从SD卡里读取，否则就从网络上下载。
          *
-         * @param imageUrl
-         *            图片的URL地址
+         * @param imageUrl 图片的URL地址
          * @return 加载到内存的图片。
          */
         private Bitmap loadImage(String imageUrl) {
@@ -382,12 +358,9 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
         /**
          * 向ImageView中添加一张图片
          *
-         * @param bitmap
-         *            待添加的图片
-         * @param imageWidth
-         *            图片的宽度
-         * @param imageHeight
-         *            图片的高度
+         * @param bitmap      待添加的图片
+         * @param imageWidth  图片的宽度
+         * @param imageHeight 图片的高度
          */
         private void addImage(Bitmap bitmap, int imageWidth, int imageHeight) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(imageWidth,
@@ -450,8 +423,7 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
         /**
          * 将图片下载到SD卡缓存起来。
          *
-         * @param imageUrl
-         *            图片的URL地址。
+         * @param imageUrl 图片的URL地址。
          */
         private void downloadImage(String imageUrl) {
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -510,8 +482,7 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
         /**
          * 获取图片的本地存储路径。
          *
-         * @param imageUrl
-         *            图片的URL地址。
+         * @param imageUrl 图片的URL地址。
          * @return 图片的本地存储路径。
          */
         private String getImagePath(String imageUrl) {

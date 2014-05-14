@@ -2,8 +2,34 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#ffffff"
+    android:background="#EEEEEE"
     android:orientation="vertical" >
+
+    <RelativeLayout
+            android:id = "@+id/login_bar"
+            android:layout_width = "fill_parent"
+            android:layout_height = "50dp"
+            android:paddingLeft="10dp"
+            android:background="#0099FF"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true">
+        <TextView
+                android:text = "登  录"
+                android:textColor="#FFFFFF"
+                android:textSize="20dp"
+                android:layout_height = "wrap_content"
+                android:layout_width = "wrap_content"
+                android:id = "@+id/bar_register"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"/>
+        <Button
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@xml/login_back_btn"
+                android:id="@+id/back"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"/>
+    </RelativeLayout>
 
     <Button
         android:id="@+id/register"
@@ -11,7 +37,7 @@
         android:layout_height="wrap_content"
         android:background="@xml/login_btn_background_white"
         android:text="注  册"
-        android:textColor="#000000"
+        android:textColor="#0099FF"
         android:layout_marginLeft="20dp"
         android:layout_alignTop="@+id/login"
         android:layout_alignParentLeft="true"/>
@@ -34,12 +60,12 @@
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/login_user"
         android:ems="10"
-        android:background="@xml/register_edt_background"
+        android:background="@xml/login_edt_background"
         android:textColor="#000000"  
         android:hint="@string/user_name"
         android:layout_marginTop="40dp"
-        android:layout_alignParentTop="true" android:layout_alignLeft="@+id/register"
-        android:layout_alignRight="@+id/login"/>
+        android:layout_below="@+id/login_bar" android:layout_alignRight="@+id/login"
+        android:layout_alignLeft="@+id/register"/>
 
     <EditText
             android:id="@+id/password"
@@ -48,14 +74,24 @@
             android:drawableLeft="@drawable/login_password"
             android:ems="10"
             android:hint="@string/password"
-            android:background="@xml/register_edt_background"
+            android:background="@xml/login_edt_background"
             android:textColor="#000000"
             android:inputType="textPassword"
-            android:layout_below="@+id/username" android:layout_marginTop="10dp"
-            android:layout_alignLeft="@+id/username" android:layout_alignRight="@+id/username">
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/username" android:layout_alignRight="@+id/username"
+            android:layout_alignLeft="@+id/username">
         <requestFocus />
     </EditText>
 
-
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="忘记密码？"
+            android:textColor="#0033FF"
+            android:background="@xml/login_text_click"
+            android:id="@+id/forget_psd"
+            android:layout_below="@+id/login"
+            android:layout_alignRight="@+id/login"
+            android:layout_marginTop="15dp"/>
 </RelativeLayout>
 

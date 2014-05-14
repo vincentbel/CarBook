@@ -17,9 +17,9 @@ import android.util.LruCache;
 import android.util.Pair;
 import android.widget.ListView;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
-import java.io.Serializable;
 
 /**
  * 锟斤拷锟斤拷转锟斤拷为全??
@@ -42,7 +42,7 @@ class PinyinUtil {
             spellMap = new LinkedHashMap(400);
         }
         initialize();
-        System.out.println("Chinese transfer Spell Done.");
+
     }
 
     private PinyinUtil() {
@@ -482,7 +482,7 @@ class PinyinUtil {
 
             int ascii = (256 * hightByte + lowByte) - 256 * 256;
 
-            //System.out.println("ASCII=" + ascii);
+
 
             return ascii;
         }
@@ -614,20 +614,20 @@ class SpCarSeable implements Comparable<SpCarSeable> {
 }
 
 
-class SpCarInfo implements Comparable<SpCarInfo> {
+class SpCarSeries implements Comparable<SpCarSeries> {
     public int matchCounter;
-    public CarInfor mCar;
+    public CarSeries mCar;
 
-    public SpCarInfo(CarInfor s) {
+    public SpCarSeries(CarSeries s) {
         mCar = s;
         matchCounter = 0;
     }
 
-    public CarInfor getmCar() {
+    public CarSeries getmCar() {
         return mCar;
     }
 
-    public void setmCarSeable(CarInfor mCar) {
+    public void setmCarSeable(CarSeries mCar) {
         this.mCar = mCar;
     }
 
@@ -640,7 +640,7 @@ class SpCarInfo implements Comparable<SpCarInfo> {
     }
 
     @Override
-    public int compareTo(SpCarInfo another) {
+    public int compareTo(SpCarSeries another) {
         // TODO Auto-generated method stub
         return (matchCounter < another.getMatchCounter() ? 1 : -1);
     }
@@ -655,21 +655,19 @@ class PinyinSearch {
     static public ArrayList<CarInfor> conditionSearch(String carseable, Grade g, int low, int hig) {
         ArrayList<CarInfor> al = new ArrayList<CarInfor>();
         //品牌筛选
-        if (!carseable.trim().equals("")) {
-            al = search(carseable);
-        } else {
+
             for (CarSeable cs : CarSeableData.mCarSeable) {
-                for(CarSeries css : cs.getCarSeriesList()){
+                for (CarSeries css : cs.getCarSeriesList()) {
                     al.addAll(css.getCarList());
                 }
             }
-        }
+
         //车型筛选
         ArrayList<CarInfor> delete = new ArrayList<CarInfor>();
-        for(CarInfor ci : al){
-            for(int i=0;i<17;i++){
-                   if(g.getValue(Grade.mstring[i])==false && ci.getCarGrade().equals(Grade.mstring[i]))
-                       delete.add(ci);
+        for (CarInfor ci : al) {
+            for (int i = 0; i < 17; i++) {
+                if (g.getValue(Grade.mstring[i]) == false && ci.getCarGrade().equals(Grade.mstring[i]))
+                    delete.add(ci);
             }
         }
         al.removeAll(delete);
@@ -686,36 +684,22 @@ class PinyinSearch {
     }
 
 
-    static public ArrayList<CarInfor> search(String sysmbol) {
+    static public ArrayList<CarSeries> search(String sysmbol) {
         String[] tmp = sysmbol.split(" ");
-        ArrayList<CarInfor> returnlist = new ArrayList<CarInfor>();
+        ArrayList<CarSeries> returnlist = new ArrayList<CarSeries>();
         //如果直接输入车辆名称
-        if (tmp.length == 1) {
-            //暴力搜索
-            //待斟酌
-            //把所有的数据存入内存
+
             for (CarSeable cs : CarSeableData.mCarSeable) {
-                for(CarSeries css : cs.getCarSeriesList())
-                    returnlist.addAll(css.getCarList());
+
+                    returnlist.addAll(cs.getCarSeriesList());
             }
-            returnlist = searchCarInfo(returnlist, sysmbol);
-
-        } else if (tmp.length == 2) {    //	品牌+车辆
-
-            //获取所有品牌
-            ArrayList<CarSeable> al_cs = searchCarSeable(tmp[0]);
-            //搜索到的第一个品??
-            for (CarSeable cs : CarSeableData.mCarSeable) {
-                for(CarSeries css : cs.getCarSeriesList())
-                    returnlist.addAll(css.getCarList());
-            }
-           //获取车辆；
-            returnlist = searchCarInfo(returnlist, tmp[1]);
+            returnlist = searchCarSeries(returnlist, sysmbol);
 
 
-        }
         return returnlist;
-    }
+        }
+
+
 
     static private ArrayList<CarSeable> searchCarSeable(String sysmbol) {
         ArrayList<CarSeable> returnlist = new ArrayList<CarSeable>();
@@ -729,7 +713,7 @@ class PinyinSearch {
 
         for (SpCarSeable scs : tmplist) {
             scs.setMatchCounter(match(scs.getmCarSeable().getCarSeableName()));
-            System.out.println(scs.getmCarSeable().getCarSeableName() + " " + scs.getMatchCounter());
+
         }
 
         Collections.sort(tmplist);
@@ -742,24 +726,24 @@ class PinyinSearch {
         return returnlist;
     }
 
-    static private ArrayList<CarInfor> searchCarInfo(ArrayList<CarInfor> clist, String sysmbol) {
-        ArrayList<CarInfor> returnlist = new ArrayList<CarInfor>();
-        ArrayList<SpCarInfo> tmplist = new ArrayList<SpCarInfo>();
-        for (CarInfor cs : clist) {
-            SpCarInfo sb = new SpCarInfo(cs);
+    static private ArrayList<CarSeries> searchCarSeries(ArrayList<CarSeries> clist, String sysmbol) {
+        ArrayList<CarSeries> returnlist = new ArrayList<CarSeries>();
+        ArrayList<SpCarSeries> tmplist = new ArrayList<SpCarSeries>();
+        for (CarSeries cs : clist) {
+           SpCarSeries sb = new SpCarSeries(cs);
             tmplist.add(sb);
         }
 
         mSysmbol = new String(sysmbol);
 
-        for (SpCarInfo scs : tmplist) {
-            scs.setMatchCounter(match(scs.getmCar().getCarName()));
-            System.out.println(scs.getmCar().getCarName() + " " + scs.getMatchCounter());
+        for (SpCarSeries scs : tmplist) {
+            scs.setMatchCounter(match(scs.getmCar().getCarSeableName()+scs.getmCar().getName()));
+
         }
 
         Collections.sort(tmplist);
 
-        for (SpCarInfo scs : tmplist) {
+        for (SpCarSeries scs : tmplist) {
             if (scs.getMatchCounter() != 0)
                 returnlist.add(scs.getmCar());
         }
@@ -792,32 +776,32 @@ class PinYinIndex {
     //首字????品牌列表????成的Pair的列??
     public static ArrayList<Pair<String, ArrayList<CarSeable>>> getIndex_CarSeable(ArrayList<CarSeable> list, Context context) {
         ArrayList<Pair<String, ArrayList<CarSeable>>> returnarr = new ArrayList<Pair<String, ArrayList<CarSeable>>>();
-        String alphaIndex = "a";
+        String alphaIndex = "A";
         boolean is_change = false;
 
         ArrayList<CarSeable> al = new ArrayList<CarSeable>();
 
         for (CarSeable cs : list) {
-            System.out.println(PinyinUtil.getFirstSpell(cs.getCarSeableName()));
-            if (alphaIndex.equals(PinyinUtil.getFirstSpell(cs.getCarSeableName()))) {
+
+            if (alphaIndex.equals(PinyinUtil.getFirstSpell(cs.getCarSeableName()).toUpperCase())) {
 
                 al.add(cs);
                 is_change = false;
-            } else if (alphaIndex.equals("a")) {
-                alphaIndex = PinyinUtil.getFirstSpell(cs.getCarSeableName());
+            } else if (alphaIndex.equals("A")) {
+                alphaIndex = PinyinUtil.getFirstSpell(cs.getCarSeableName().toUpperCase());
                 al.add(cs);
                 is_change = true;
             } else {
-                Pair<String, ArrayList<CarSeable>> pair = new Pair<String, ArrayList<CarSeable>>(alphaIndex.toUpperCase(), al);
+                Pair<String, ArrayList<CarSeable>> pair = new Pair<String, ArrayList<CarSeable>>(alphaIndex, al);
                 returnarr.add(pair);
-                alphaIndex = PinyinUtil.getFirstSpell(cs.getCarSeableName());
+                alphaIndex = PinyinUtil.getFirstSpell(cs.getCarSeableName().toUpperCase());
                 al = new ArrayList<CarSeable>();
                 al.add(cs);
                 is_change = true;
             }
         }
         if (!al.isEmpty()) {
-            Pair<String, ArrayList<CarSeable>> pair = new Pair<String, ArrayList<CarSeable>>(alphaIndex.toUpperCase(), al);
+            Pair<String, ArrayList<CarSeable>> pair = new Pair<String, ArrayList<CarSeable>>(alphaIndex, al);
             returnarr.add(pair);
         }
         return returnarr;
@@ -826,32 +810,67 @@ class PinYinIndex {
     //为车辆排??
     public static ArrayList<Pair<String, ArrayList<CarInfor>>> getIndex_CarInfo(ArrayList<CarInfor> list, Context context) {
         ArrayList<Pair<String, ArrayList<CarInfor>>> returnarr = new ArrayList<Pair<String, ArrayList<CarInfor>>>();
-        String alphaIndex = "a";
+        String alphaIndex = "A";
         boolean is_change = false;
 
         ArrayList<CarInfor> al = new ArrayList<CarInfor>();
 
         for (CarInfor cs : list) {
-            System.out.println(PinyinUtil.getFirstSpell(cs.getCarName()));
-            if (alphaIndex.equals(PinyinUtil.getFirstSpell(cs.getCarName()))) {
+
+            if (alphaIndex.equals(PinyinUtil.getFirstSpell(cs.getCarName()).toUpperCase())) {
 
                 al.add(cs);
 
-            } else if (alphaIndex.equals("a")) {
-                alphaIndex = PinyinUtil.getFirstSpell(cs.getCarName());
+            } else if (alphaIndex.equals("A")) {
+                alphaIndex = PinyinUtil.getFirstSpell(cs.getCarName().toUpperCase());
                 al.add(cs);
 
             } else {
-                Pair<String, ArrayList<CarInfor>> pair = new Pair<String, ArrayList<CarInfor>>(alphaIndex.toUpperCase(), al);
+                Pair<String, ArrayList<CarInfor>> pair = new Pair<String, ArrayList<CarInfor>>(alphaIndex, al);
                 returnarr.add(pair);
-                alphaIndex = PinyinUtil.getFirstSpell(cs.getCarName());
+                alphaIndex = PinyinUtil.getFirstSpell(cs.getCarName()).toUpperCase();
                 al = new ArrayList<CarInfor>();
                 al.add(cs);
 
             }
         }
         if (!al.isEmpty()) {
-            Pair<String, ArrayList<CarInfor>> pair = new Pair<String, ArrayList<CarInfor>>(alphaIndex.toUpperCase(), al);
+            Pair<String, ArrayList<CarInfor>> pair = new Pair<String, ArrayList<CarInfor>>(alphaIndex, al);
+            returnarr.add(pair);
+        }
+
+
+        return returnarr;
+    }
+
+    public static ArrayList<Pair<String, ArrayList<CarSeries>>> getIndex_CarSeries(ArrayList<CarSeries> list, Context context) {
+        ArrayList<Pair<String, ArrayList<CarSeries>>> returnarr = new ArrayList<Pair<String, ArrayList<CarSeries>>>();
+        String alphaIndex = "A";
+        boolean is_change = false;
+
+        ArrayList<CarSeries> al = new ArrayList<CarSeries>();
+
+        for (CarSeries cs : list) {
+
+            if (alphaIndex.equals(PinyinUtil.getFirstSpell(cs.getName()).toUpperCase())) {
+
+                al.add(cs);
+
+            } else if (alphaIndex.equals("A")) {
+                alphaIndex = PinyinUtil.getFirstSpell(cs.getName().toUpperCase());
+                al.add(cs);
+
+            } else {
+                Pair<String, ArrayList<CarSeries>> pair = new Pair<String, ArrayList<CarSeries>>(alphaIndex, al);
+                returnarr.add(pair);
+                alphaIndex = PinyinUtil.getFirstSpell(cs.getName()).toUpperCase();
+                al = new ArrayList<CarSeries>();
+                al.add(cs);
+
+            }
+        }
+        if (!al.isEmpty()) {
+            Pair<String, ArrayList<CarSeries>> pair = new Pair<String, ArrayList<CarSeries>>(alphaIndex, al);
             returnarr.add(pair);
         }
 
@@ -860,55 +879,15 @@ class PinYinIndex {
     }
 }
 
-class Grade implements Serializable{
-    public Map<String, Boolean>  gradeMap = new HashMap<String, Boolean>();
-    static String[] mstring;
-    public Grade(){
-           mstring = new String[17];
-           mstring[0] = "微型车";
-           mstring[1] = "小型车";
-           mstring[2] = "紧凑型车";
-           mstring[3] = "中型车";
-           mstring[4] = "中大型车";
-           mstring[5] = "豪华车";
-           mstring[6] = "小型SUV";
-           mstring[7] = "紧凑型SUV";
-           mstring[8] = "中型SUV";
-           mstring[9] = "中大型SUV";
-           mstring[10] = "全尺寸SUV";
-           mstring[11] = "MPV";
-           mstring[12] = "跑车";
-           mstring[13] = "皮卡";
-           mstring[14] = "微面";
-           mstring[15] = "轻客";
-           mstring[16] = "微卡";
 
 
 
-    }
-    public void setGradeMap(String s,Boolean b){
-        if(gradeMap.containsKey(s)){
-            gradeMap.remove(s);
-            gradeMap.put(s,b);
-        }
-        else {
-            gradeMap.put(s,b);
-        }
-    }
-
-    public boolean isChoose(){
-        Collection<Boolean> lb = gradeMap.values();
-        return lb.contains(Boolean.TRUE);
-    }
-
-    public boolean getValue(String key){
-        return gradeMap.get(key);
-    }
-
-}
 
 
- class MyListView extends ListView {
+
+
+
+class MyListView extends ListView {
 
     public MyListView(android.content.Context context) {
         super(context);
@@ -964,31 +943,6 @@ class ImageLoader {
         return mImageLoader;
     }
 
-    /**
-     * 将一张图片存储到LruCache中。
-     *
-     * @param key
-     *            LruCache的键，这里传入图片的URL地址。
-     * @param bitmap
-     *            LruCache的键，这里传入从网络上下载的Bitmap对象。
-     */
-    public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
-        if (getBitmapFromMemoryCache(key) == null) {
-            mMemoryCache.put(key, bitmap);
-        }
-    }
-
-    /**
-     * 从LruCache中获取一张图片，如果不存在就返回null。
-     *
-     * @param key
-     *            LruCache的键，这里传入图片的URL地址。
-     * @return 对应传入键的Bitmap对象，或者null。
-     */
-    public Bitmap getBitmapFromMemoryCache(String key) {
-        return mMemoryCache.get(key);
-    }
-
     public static int calculateInSampleSize(BitmapFactory.Options options,
                                             int reqWidth) {
         // 源图片的宽度
@@ -1013,6 +967,28 @@ class ImageLoader {
         // 使用获取到的inSampleSize值再次解析图片
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeFile(pathName, options);
+    }
+
+    /**
+     * 将一张图片存储到LruCache中。
+     *
+     * @param key    LruCache的键，这里传入图片的URL地址。
+     * @param bitmap LruCache的键，这里传入从网络上下载的Bitmap对象。
+     */
+    public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
+        if (getBitmapFromMemoryCache(key) == null) {
+            mMemoryCache.put(key, bitmap);
+        }
+    }
+
+    /**
+     * 从LruCache中获取一张图片，如果不存在就返回null。
+     *
+     * @param key LruCache的键，这里传入图片的URL地址。
+     * @return 对应传入键的Bitmap对象，或者null。
+     */
+    public Bitmap getBitmapFromMemoryCache(String key) {
+        return mMemoryCache.get(key);
     }
 
 }

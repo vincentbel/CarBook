@@ -1,29 +1,28 @@
 package com.Doric.CarBook.search;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Pair;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import com.Doric.CarBook.R;
-import android.support.v4.widget.DrawerLayout;
+import android.app.Fragment;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 
+public class AlphaShow extends Fragment {
 
-public class AlphaShow extends MyFragment {
-
+    public static CarSeable carseable;
     private LinearLayout mLinearLayout;
     private ScrollView mScrollView;
     private ImageLoader imageLoader;
-    public static  CarSeable carseable;
+    public static boolean isok =false;
     /*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -54,21 +53,23 @@ public class AlphaShow extends MyFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        super.onCreateView(inflater,container,savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
         //获取车辆品牌信息
-        CarSeableData.getData(this);
-        SearchMain.searchmain.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+
+
         initPage();
+        SearchMain.searchmain.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         return mScrollView;
 
     }
+
     @Override
-    public  void onResume(){
+    public void onResume() {
         super.onResume();
         SearchMain.searchmain.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 
-    public void initPage(){
+    public void initPage() {
 
         //字母分组列表的实现
 
@@ -112,10 +113,9 @@ public class AlphaShow extends MyFragment {
                     ListView lv = (ListView) parent;
                     HashMap<String, Object> Info = (HashMap<String, Object>) lv.getItemAtPosition(position);//SimpleAdapter返回Map
 
-                    carseable= CarSeableData.find((String) Info.get("title"));
-                    carseable.LoadCarSeries(AlphaShow.this);
-                    SearchMain.searchmain.setListData(carseable.getCarSeriesList());
-                    SearchMain.searchmain.OpenSliding();
+                    carseable = CarSeableData.find((String) Info.get("title"));
+                    carseable.LoadCarSeries();
+
                 }
 
             });
@@ -126,7 +126,7 @@ public class AlphaShow extends MyFragment {
         mScrollView.addView(mLinearLayout);
         //this.setContentView(mScrollView);
 
-       // getActionBar().setTitle("拼音索引");
+        // getActionBar().setTitle("拼音索引");
 
         //初始化侧拉菜单
         //initSlidingDrawer();
@@ -174,7 +174,6 @@ public class AlphaShow extends MyFragment {
     }
 
     */
-
 
 
 }

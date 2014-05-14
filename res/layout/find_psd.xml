@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="#EEEEEE"
+                android:orientation="vertical" >
+
+    <RelativeLayout
+            android:id = "@+id/find_psd_bar"
+            android:layout_width = "fill_parent"
+            android:layout_height = "50dp"
+            android:paddingLeft="10dp"
+            android:background="#0099FF"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true">
+        <TextView
+                android:text = "找回密码"
+                android:textColor="#FFFFFF"
+                android:textSize="20dp"
+                android:layout_height = "wrap_content"
+                android:layout_width = "wrap_content"
+                android:id = "@+id/text_find_psd"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"/>
+        <Button
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@xml/login_back_btn"
+                android:id="@+id/back"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"/>
+    </RelativeLayout>
+
+    <Button
+            android:id="@+id/submit"
+            android:layout_width="380dp"
+            android:layout_height="wrap_content"
+            android:background="@xml/login_btn_background_blue"
+            android:text="提  交"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="50dp"
+            android:layout_below="@+id/email"
+            android:layout_alignLeft="@+id/email" android:layout_alignRight="@+id/email"/>
+
+    <EditText
+            android:id="@+id/username"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:background="@xml/login_edt_background"
+            android:textColor="#000000"
+            android:paddingLeft="20dp"
+            android:hint="请输入用户名"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_below="@+id/find_psd_bar"/>
+
+    <EditText
+            android:id="@+id/email"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:paddingLeft="20dp"
+            android:hint="请输入注册时填写的电子邮箱"
+            android:background="@xml/login_edt_background"
+            android:textColor="#000000"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/username" android:layout_alignRight="@+id/username"
+            android:layout_alignLeft="@+id/username">
+        <requestFocus />
+    </EditText>
+</RelativeLayout>
+

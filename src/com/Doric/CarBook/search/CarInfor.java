@@ -6,6 +6,25 @@ public class CarInfor {
     //通过数字表示车辆大小类型,引擎类型
 
 
+    private String carSerie;
+    private String carSeable;
+    private String carName;
+    private String engineType;
+    private String brandId;
+    private String carGrade;
+    private Double highSpeed;
+    private Double timeTo100Km;
+    private Double lowPrice;
+    private Double higPrice;
+    private String transmission;
+    private String price;
+    private String carBodyStructure;
+    private String carPicPath;
+    //构造函数
+    public CarInfor() {
+
+    }
+
     public String getCarSerie() {
         return carSerie;
     }
@@ -22,20 +41,6 @@ public class CarInfor {
         this.carSeable = carSeable;
     }
 
-    private String carSerie;
-    private String carSeable;
-    private String carName;
-    private String engineType;
-    private String brandId;
-    private String carGrade;
-    private Double highSpeed;
-    private Double timeTo100Km;
-    private Double lowPrice;
-    private Double higPrice;
-    private String transmission;
-    private String price;
-    private String carBodyStructure;
-
     public String getCarPicPath() {
         return carPicPath;
     }
@@ -44,17 +49,8 @@ public class CarInfor {
         this.carPicPath = carPicPath;
     }
 
-    private String carPicPath;
-
-    //构造函数
-    public CarInfor() {
-
-    }
-
-
 
     //获取成员变量的值
-
 
     public String getCarGrade() {
         return carGrade;

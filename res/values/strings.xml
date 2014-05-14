@@ -3,6 +3,18 @@
     <string name="app_name">CarBook</string>
     <string name="action_settings">Settings</string>
 
+    <!--侧拉菜单项目-->
+    <string-array name="left_drawer_array">
+        <item>个人中心</item>
+        <item>热门汽车排行</item>
+        <item>找车</item>
+        <item>我的收藏</item>
+        <item>汽车展示</item>
+        <item>设置</item>
+    </string-array>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
     <string name="register">注册</string>
     <string name="login">登录</string>
     <string name="back">返回</string>
@@ -47,4 +59,6 @@
     <string name="border_top">上部边界</string>
     <string name="border_bottom">底部边界</string>
     <string name="image_url">图片链接</string>
+
+    <string name="hot_car_show">热门车辆</string>
 </resources>
