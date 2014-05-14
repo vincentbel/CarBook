@@ -18,7 +18,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        //µÇÂ¼²âÊÔ
+        //ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½
         Button loginButton = (Button) findViewById(R.id.login);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        //Æû³µÕ¹Ê¾²âÊÔ
+        //ï¿½ï¿½Õ¹Ê¾ï¿½ï¿½ï¿½ï¿½
         Button carShowButton = (Button) findViewById(R.id.car_show);
         carShowButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,8 +39,7 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
-
-        //ËÑË÷²âÊÔ
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         Button searchButton = (Button) findViewById(R.id.search);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,8 +48,7 @@ public class MainActivity extends Activity {
                 intent.setClass(MainActivity.this, AlphaShow.class);
                 startActivity(intent);
             }
-        });
-        //¸öÈËÖÐÐÄ²âÊÔ
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä²ï¿½ï¿½ï¿½
         Button pcButton = (Button) findViewById(R.id.pc);
         pcButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +58,7 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
-        //ÊÕ²Ø¼Ð²âÊÔ
+        //ï¿½Õ²Ø¼Ð²ï¿½ï¿½ï¿½
         Button userCollectionButton = (Button) findViewById(R.id.collection);
         userCollectionButton.setOnClickListener(new View.OnClickListener(){
             @Override

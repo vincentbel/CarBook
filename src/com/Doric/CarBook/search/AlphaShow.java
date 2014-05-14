@@ -40,7 +40,7 @@ public class AlphaShow extends FragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // TODO Auto-generated method stub
         switch (item.getItemId()) {
-            //ÏìÓ¦Ã¿¸ö²Ëµ¥Ïî(Í¨¹ý²Ëµ¥ÏîµÄID)
+            //ï¿½ï¿½Ó¦Ã¿ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½(Í¨ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ID)
 
             case R.id.action_search:
                 //Toast.makeText(getApplicationContext(), "Search", Toast.LENGTH_LONG).show();
@@ -55,7 +55,7 @@ public class AlphaShow extends FragmentActivity {
                 break;
             default:
 
-                //¶ÔÃ»ÓÐ´¦ÀíµÄÊÂ¼þ£¬½»¸ø¸¸ÀàÀ´´¦Àí
+                //ï¿½ï¿½Ã»ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 return super.onOptionsItemSelected(item);
         }
         return true;
@@ -107,7 +107,7 @@ public class AlphaShow extends FragmentActivity {
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
                     ListView lv = (ListView) parent;
-                    HashMap<String, Object> Info = (HashMap<String, Object>) lv.getItemAtPosition(position);//SimpleAdapter·µ»ØMap
+                    HashMap<String, Object> Info = (HashMap<String, Object>) lv.getItemAtPosition(position);//SimpleAdapterï¿½ï¿½ï¿½ï¿½Map
                     //Toast.makeText(getApplicationContext(),(String)Info.get("title"),Toast.LENGTH_LONG).show();
                     samplelist.carSeableName = (String)Info.get("title");
                     samplelist.setData(getUniformDataSystem(CarSeableData.find((String)Info.get("title")).getCarSystemList()));
@@ -121,7 +121,7 @@ public class AlphaShow extends FragmentActivity {
         mScrollView.addView(mLinearLayout);
         this.setContentView(mScrollView);
 
-        getActionBar().setTitle("Æ´ÒôË÷Òý");
+        getActionBar().setTitle("Æ´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
         init();
         /*int titleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
         TextView title = (TextView) findViewById(titleId);
@@ -197,7 +197,7 @@ public class AlphaShow extends FragmentActivity {
         menu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
         menu.setFadeDegree(0.35f);
         menu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
-        // ÉèÖÃ»¬¶¯²Ëµ¥µÄÊÓÍ¼½çÃæ
+        // ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½
         menu.setMenu(R.layout.sea_menu_frame);
         getSupportFragmentManager().beginTransaction().replace(R.id.menu_frame,  samplelist).commit();
 
@@ -206,7 +206,7 @@ public class AlphaShow extends FragmentActivity {
 
     @Override
     public void onBackPressed() {
-        //µã»÷·µ»Ø¼ü¹Ø±Õ»¬¶¯²Ëµ¥
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½Ø±Õ»ï¿½ï¿½ï¿½ï¿½Ëµï¿½
         if (menu.isMenuShowing()) {
             menu.showContent();
         } else {
@@ -219,15 +219,15 @@ public class AlphaShow extends FragmentActivity {
 
         protected void onPreExecute() {
             super.onPreExecute();
-            //µ¯³ö"ÕýÔÚµÇÂ¼"¿ò
+            //ï¿½ï¿½ï¿½ï¿½"ï¿½ï¿½ï¿½Úµï¿½Â¼"ï¿½ï¿½
             progressDialog = new ProgressDialog(AlphaShow.this);
-            progressDialog.setMessage("¼ÓÔØÖÐ..");
+            progressDialog.setMessage("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½..");
             progressDialog.setCancelable(true);
             progressDialog.show();
         }
 
         protected Void doInBackground(Void... params) {
-            //Ïò·þÎñÆ÷·¢ËÍÇëÇó
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             JSONParser jsonParser = new JSONParser();
             brandObj = jsonParser.getJSONFromUrl(url, brandParams);
             return null;
@@ -243,12 +243,8 @@ public class AlphaShow extends FragmentActivity {
 
             }
             else {
-                Toast.makeText(AlphaShow.this.getApplicationContext(), "ÎÞ·¨Á¬½ÓÍøÂç£¬Çë¼ì²éÄúµÄÊÖ»úÍøÂçÉèÖÃ", Toast.LENGTH_LONG).show();
+                Toast.makeText(AlphaShow.this.getApplicationContext(), "ï¿½Þ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ç£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", Toast.LENGTH_LONG).show();
             }
         }
     }
 }
-
-
-
-
