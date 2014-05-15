@@ -13,5 +13,6 @@
     <dimen name="comment_text_size">20dp</dimen>
 
     <dimen name="my_information_margin">8dp</dimen>
+
     
 </resources>

@@ -99,7 +99,11 @@
 				$response["success"] = 1;
 				$response["pictures_num"] = $pictures_url["pictures_num"];
 				for ($i=1; $i <= $pictures_url["pictures_num"]; $i++) { 
+<<<<<<< HEAD
+					$response["pictures_".$i."_url"] = $pictures_url[$i];
+=======
 					$response["pictures_"."url_".$i] = $pictures_url[$i];
+>>>>>>> e0ddfe11355833b5f0071d7cc10bdd2eab10b04b
 				}
 				echo json_encode($response);
 			} else {

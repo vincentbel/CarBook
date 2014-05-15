@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<!--android:drawableLeft="@android:drawable/ic_search_category_default"-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,27 +11,31 @@
 
     <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
             android:orientation="horizontal" android:id="@+id/relativeLayout" android:background="#FFFFFF"
-            android:layout_margin ="10dp">
+            android:layout_margin ="5dp">
             <EditText android:layout_width="fill_parent" android:layout_height="wrap_content"
                     android:hint="请输入关键字"
                     android:textColor="#000000"
                     android:background="@xml/register_edt_background"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
+
                     android:gravity="left"
-                    android:drawableLeft="@android:drawable/ic_search_category_default"
                     android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
                     android:layout_alignBottom="@+id/searchbutton"
                     android:id="@+id/searchkeyword" android:layout_alignParentRight="true"/>
-        <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:text="搜索"
+        <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
                 android:id="@+id/searchbutton"
-                android:background="@drawable/btn_0"
-                android:clickable="true" android:layout_alignParentRight="true" android:layout_alignParentTop="true"/>
+                android:background="#00000000"
+                android:src="@drawable/ic_search"
+                android:clickable="true"
+                android:layout_gravity="right" android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"/>
 
     </RelativeLayout>
 
     <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
                   android:orientation="vertical"
-            android:id="@+id/searchreasult" android:layout_marginRight="58dp"/>
+            android:id="@+id/searchreasult" android:layout_marginRight="58dp">
+    </LinearLayout>
+
 
 </LinearLayout>

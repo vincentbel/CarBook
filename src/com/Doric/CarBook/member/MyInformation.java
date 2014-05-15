@@ -49,6 +49,7 @@ public class MyInformation extends Activity implements View.OnClickListener {
         loHead = (RelativeLayout) findViewById(R.id.head_layout);
         loSex = (RelativeLayout) findViewById(R.id.sex_layout);
         loUsername = (RelativeLayout) findViewById(R.id.username_layout);
+
         btnLogOut = (Button) findViewById(R.id.button_log_out);
         btnBack = (Button) findViewById(R.id.back);
         tvUsername = (TextView) findViewById(R.id.username_text2);

@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import com.Doric.CarBook.Constant;
 import com.Doric.CarBook.R;
+
 import com.Doric.CarBook.member.UserFunctions;
 import com.Doric.CarBook.utility.JSONParser;
 import org.apache.http.NameValuePair;
@@ -24,7 +25,9 @@ import java.util.List;
 public class CarShow extends FragmentActivity implements android.app.ActionBar.TabListener {
     public static final int MAX_TAB_SIZE = 5;
     static JSONObject carInfo;
+
     int carId = 0;
+
     String url = Constant.BASE_URL + "/showcar.php";
     List<NameValuePair> carParamsRequest = new ArrayList<NameValuePair>();
     ProgressDialog progressDialog;
@@ -33,7 +36,9 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
      */
     private ViewPager mViewPager;
 
+
     UserFunctions userFunctions;   //用户功能函数 用于添加和取消到收藏
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +60,7 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
     private void findViewById() {
 
         mViewPager = (ViewPager) this.findViewById(R.id.pager);
+
     }
 
     @Override
@@ -87,6 +93,7 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
         }
 
         return super.onOptionsItemSelected(item);
+
     }
 
     private void initView() {
@@ -165,6 +172,7 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
                 progressDialog.dismiss();
             }
             if (carInfo != null) {
+
                 try {
                     carId = Integer.parseInt(carInfo.getString("car_id"));
                 } catch (JSONException e) {

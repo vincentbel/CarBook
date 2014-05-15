@@ -151,6 +151,5 @@
                 android:layout_alignLeft="@+id/sex_layout"
                 android:layout_alignRight="@+id/sex_layout"/>
     </RelativeLayout>
-
 </RelativeLayout>
 

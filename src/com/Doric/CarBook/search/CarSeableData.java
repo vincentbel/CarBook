@@ -1,6 +1,7 @@
 package com.Doric.CarBook.search;
 
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -20,28 +21,35 @@ public class CarSeableData {
     //品牌list
     public static ArrayList<CarSeable> mCarSeable;
 
-    public static MyFragment context;
+    public static FragmentTransaction fragmentTransaction;
     public static JSONObject brandObj;
     public static List<NameValuePair> brandParams = new ArrayList<NameValuePair>();
     public static String url = Constant.BASE_URL + "/search.php";
     public static boolean isload = false;
 
-    //从服务器端获取数据
+
+
     static {
         mCarSeable = new ArrayList<CarSeable>();
     }
+    //从服务器端获取数据
+    public static void getData(FragmentTransaction ft) {
+        fragmentTransaction = ft;
 
-    public static void getData(MyFragment c) {
-        context = c;
         if (!isload) {
             brandParams.add(new BasicNameValuePair("tag", "brand"));
 
             new GetBrand().execute();
         } else
-            context.initPage();
+
+            ft.commit();
 
     }
-
+    //直接从内存拷贝
+    public static void setData(ArrayList<CarSeable> al){
+        mCarSeable.clear();
+        mCarSeable.addAll(al);
+    }
     public static CarSeable find(String cName) {
         for (CarSeable cs : mCarSeable) {
             if (cs.getCarSeableName().equals(cName))
@@ -55,7 +63,7 @@ public class CarSeableData {
         protected void onPreExecute() {
             super.onPreExecute();
             //弹出"正在登录"框
-            context.loading();
+            SearchMain.searchmain.loading();
         }
 
         protected Void doInBackground(Void... params) {
@@ -67,7 +75,8 @@ public class CarSeableData {
 
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            context.stopLoading();
+            SearchMain.searchmain.stopLoading();
+
             if (brandObj != null) {
                 try {
                     int success = brandObj.getInt("success");
@@ -83,17 +92,17 @@ public class CarSeableData {
                         isload = true;
                         if (mCarSeable.size() > 0)
                             Collections.sort(mCarSeable, new ComparatorCarSeable());
-                        context.initPage();
+
+                        fragmentTransaction.commit();
+                        //context.initPage();
                     }
                 } catch (JSONException e) {
-                    Context c = context.getActivity().getApplicationContext();
-                    if (c == null) return;
-                    Toast.makeText(c, e.toString(), Toast.LENGTH_LONG).show();
+
+                    Toast.makeText(SearchMain.searchmain, e.toString(), Toast.LENGTH_LONG).show();
                 }
             } else {
-                Context c = context.getActivity().getApplicationContext();
-                if (c == null) return;
-                Toast.makeText(c, "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
+                Toast.makeText(SearchMain.searchmain, "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
+
             }
         }
     }

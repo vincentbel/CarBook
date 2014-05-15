@@ -29,11 +29,13 @@ public class PersonalCenter extends Fragment implements View.OnClickListener {
     }
 
     @Override
+
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View mView = getView();
 
         userFunctions = new UserFunctions(getActivity().getApplicationContext());
+
         name = userFunctions.getUsername();
 
         //设置控件
@@ -48,6 +50,7 @@ public class PersonalCenter extends Fragment implements View.OnClickListener {
         btnComment.setOnClickListener(this);
         btnInformation.setOnClickListener(this);
         btnLogOut.setOnClickListener(this);
+        //btnBack.setOnClickListener(this);
 
         //隐藏Actionbar
         //getActivity().getActionBar().hide();
@@ -74,6 +77,11 @@ public class PersonalCenter extends Fragment implements View.OnClickListener {
         if (id == R.id.button_log_out) {
             logOutDialog();
         }
+
+        /*//"返回"按钮
+        if (id == R.id.back) {
+            PersonalCenter.this.finish();
+        }*/
     }
 
     //退出登录对话框

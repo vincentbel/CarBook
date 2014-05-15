@@ -20,6 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // 数据库名称
     private static final String DATABASE_NAME = "carbook";
 
+
     /***********     表名    *******************/
     private static final String TABLE_USER = "user";
     private static final String TABLE_COLLECTION = "collection";

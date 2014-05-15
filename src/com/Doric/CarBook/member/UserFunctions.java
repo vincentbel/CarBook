@@ -41,6 +41,7 @@ public class UserFunctions {
         params.add(new BasicNameValuePair("username", username));
         params.add(new BasicNameValuePair("password", password));
         JSONObject json = jsonParser.getJSONFromUrl(loginURL, params);
+
         addUserToDatabase(json);
         return json;
 
@@ -77,6 +78,7 @@ public class UserFunctions {
         params.add(new BasicNameValuePair("password", password));
         // getting JSON Object
         JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
+
         addUserToDatabase(json);
         // return json
         return json;
@@ -107,7 +109,6 @@ public class UserFunctions {
     public String getUsername() {
         return db.getUserDetails().get(DatabaseHelper.KEY_USER_NAME);
     }
-
 
     //TODO  ’≤ÿ
     boolean isCollected = false;
