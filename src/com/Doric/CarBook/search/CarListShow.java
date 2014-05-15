@@ -22,7 +22,8 @@ public class CarListShow extends Fragment {
     private LinearLayout mLinearLayout;
     private ScrollView mScrollView;
     private ImageLoader imageLoader;
-
+    public static String CarBrand;
+    public static String CarSeries;
     private static ArrayList<CarInfor> carlist;
 
     public static void setCarList(ArrayList<CarInfor> cl){

@@ -127,6 +127,8 @@ public class SearchMain extends Activity {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.drawerFrame, fragment, "CarListShow");
         transaction.addToBackStack("CarListShow");
+        CarListShow.CarBrand = carbrand;
+        CarListShow.CarSeries=carSerie;
         CarSeries carSeries = CarSeableData.find(carbrand).findCarSeries(carSerie);
         carSeries.loadCar(transaction);
     }
