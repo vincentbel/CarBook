@@ -23,16 +23,15 @@ import com.Doric.CarBook.utility.DatabaseHelper;
 
 public class MainActivity extends Activity {
 
-    // 本地SQLite数据库辅助类
-    DatabaseHelper db;
-    UserFunctions userFunctions;
-    private DrawerLayout drawerLayout;
-    private ListView drawerList;
+    DatabaseHelper db; // 本地SQLite数据库辅助类
+    UserFunctions userFunctions;  //用户功能函数辅助类
+    private DrawerLayout drawerLayout;  //用于侧拉布局
+    private ListView drawerList;      //左侧侧拉的listView
     private ActionBarDrawerToggle drawerToggle;
-    private CharSequence drawerTitle;
-    private CharSequence title;
-    private String[] leftDrawerTitles;
-    private int[] leftDrawerIcons;
+    private CharSequence mTitle;  // Activity的标题
+    private CharSequence mLeftDrawerTitle; //当前侧拉模块的标题
+    private String[] leftDrawerTitles;  //侧拉各模块的标题
+    private int[] leftDrawerIcons;   //侧拉各模块的icon
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,49 +41,61 @@ public class MainActivity extends Activity {
         db = new DatabaseHelper(getApplicationContext());
         userFunctions = new UserFunctions(getApplicationContext());
 
-        title = drawerTitle = getTitle();
+        mLeftDrawerTitle = mTitle = getTitle();
+
+        //左侧侧拉标题存于 strings.xml 中的 left_drawer_array 数组中
         leftDrawerTitles = getResources().getStringArray(R.array.left_drawer_array);
         leftDrawerIcons = new int[]{
-                R.drawable.pc_default_head,
-                R.drawable.ic_hot_car_show,
-                R.drawable.ic_search,
-                R.drawable.ic_collection,
-                R.drawable.ic_collection,
-                R.drawable.ic_settings
+                R.drawable.pc_default_head,  //个人中心
+                R.drawable.ic_hot_car_show,  //热门汽车排行
+                R.drawable.ic_search,        //找车
+                R.drawable.ic_collection,    //我的收藏
+                R.drawable.ic_settings,       //设置
+                R.drawable.ic_collection    //汽车展示「测试用」
         };
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);
 
+        //给左侧侧拉的 listView 设置自定义的adapter
         LeftDrawerListAdapter adapter = new LeftDrawerListAdapter(this, leftDrawerTitles, leftDrawerIcons);
         drawerList.setAdapter(adapter);
+
+        //给左侧侧拉的 listView 添加监听器
         drawerList.setOnItemClickListener(new DrawerItemSelectedListener());
 
+        //enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_navigation_drawer,
-                R.string.drawer_open, R.string.drawer_close) {
+        // ActionBarDrawerToggle 保证「左侧侧拉」和「Actionbar上的应用图标」之间的交互
+        drawerToggle = new ActionBarDrawerToggle(
+                this,                             // 所属的Activity
+                drawerLayout,                     // DrawerLayout布局
+                R.drawable.ic_navigation_drawer,  // nav drawer image to replace 'Up' caret
+                R.string.drawer_open,         // 打开侧拉栏的说明文字
+                R.string.drawer_close         // 关闭侧拉栏的说明文字
+        ) {
+
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                setTitle(drawerTitle);
-                invalidateOptionsMenu();
+                getActionBar().setTitle(mTitle);
+                invalidateOptionsMenu();  //提示Actionbar更新，将会调用 onPrepareOptionsMenu() 函数
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                setTitle(title);
-                invalidateOptionsMenu();
+                getActionBar().setTitle(mLeftDrawerTitle);
+                invalidateOptionsMenu();  //提示Actionbar更新，将会调用 onPrepareOptionsMenu() 函数
             }
         };
-
+        //将drawerToggle设置为 DrawerLayout 的监听器
         drawerLayout.setDrawerListener(drawerToggle);
         if (savedInstanceState == null) {
-            selectItem(1);
+            selectItem(1);  //设置默认的显示页面为「热门汽车排行」
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -93,8 +104,10 @@ public class MainActivity extends Activity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    // 当调用invalidateOptionsMenu()函数时onPrepareOptionsMenu()将会被调用
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        // 当左侧侧拉栏打开时，如果actionbar上有item,则将其隐藏
         boolean drawerOpen = drawerLayout.isDrawerOpen(drawerList);
         //menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
@@ -118,20 +131,14 @@ public class MainActivity extends Activity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggls
+        // Pass any configuration change to the drawer toggles
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
-    @Override
-    public void setTitle(CharSequence title) {
-        this.title = title;
-        getActionBar().setTitle(title);
-    }
-
     private void selectItem(int position) {
-        Fragment fragment;
+        Fragment fragment;  //每个模块的Fragment
         FragmentManager fragmentManager = getFragmentManager();
-        Bundle args;
+        Bundle args;        //给每个模块传递的参数
         switch (position) {
             case 0:  //若用户已登录，则为「个人中心」，否则为「注册登录」
                 if (userFunctions.isUserLoggedIn()) {
@@ -155,27 +162,28 @@ public class MainActivity extends Activity {
                 fragment = new UserCollection();
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
-            case 4: //「汽车展示」测试模块
+            case 4: // 「设置」模块
+                fragment = new Fragment();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                break;
+            case 5: //「汽车展示」测试模块
                 Intent intent = new Intent();
                 intent.putExtra("carID", "123");
                 intent.setClass(MainActivity.this, CarShow.class);
                 startActivity(intent);
                 break;
             default:
-                fragment = new Fragment();
-                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
         }
+
+        //更新选择的item和标题，然后关闭左侧侧拉栏
         drawerList.setItemChecked(position, true);
-        setTitle(leftDrawerTitles[position]);
+        mLeftDrawerTitle = leftDrawerTitles[position];
+        getActionBar().setTitle(mLeftDrawerTitle);
         drawerLayout.closeDrawer(drawerList);
     }
 
-    static class ViewHolder {
-        TextView textView;
-        ImageView imageView;
-    }
-
+    //左侧侧拉栏的ListView的监听器
     private class DrawerItemSelectedListener implements ListView.OnItemClickListener {
 
         @Override
@@ -184,11 +192,24 @@ public class MainActivity extends Activity {
         }
     }
 
+
+    /**
+     * 用于提高ListView的性能
+     *  @link http://www.vogella.com/tutorials/AndroidListView/article.html#adapterperformance_holder
+     *  由于 findViewById() 方法较费时间，所以使用此内部类保存ListView中相应的views
+     *  可以通过setTag()方法保存views到ViewHolder类中，再通过getTag()方法取得views，避免了重复使用findViewById()
+     */
+    static class ViewHolder {
+        TextView textView;
+        ImageView imageView;
+    }
+
+    //自定义的左侧侧拉栏的ListView的adapter
     public class LeftDrawerListAdapter extends ArrayAdapter<String> {
 
         private Context context;
-        private String[] values;
-        private int[] icons;
+        private String[] values;   //各模块标题
+        private int[] icons;       //各模块icon
 
         public LeftDrawerListAdapter(Context context, String[] values, int[] icons) {
             super(context, R.layout.drawer_list_item, values);
@@ -206,16 +227,16 @@ public class MainActivity extends Activity {
                 ViewHolder viewHolder = new ViewHolder();
                 viewHolder.textView = (TextView) rowView.findViewById(R.id.left_drawer_text);
                 viewHolder.imageView = (ImageView) rowView.findViewById(R.id.left_drawer_image);
-                rowView.setTag(viewHolder);
+                rowView.setTag(viewHolder);  //保存views到viewHolder中
             }
 
-            ViewHolder viewHolder = (ViewHolder) rowView.getTag();
-            if (position == 0) {
-                rowView.setBackgroundResource(R.drawable.left_drawer_user_bg);
+            ViewHolder viewHolder = (ViewHolder) rowView.getTag();  //取得viewHolder中的views
+            if (position == 0) {  //当模块为个人中心模块时
+                rowView.setBackgroundResource(R.drawable.left_drawer_user_bg);  //设置个性化背景
 
                 //判断用户是否登录
                 if (userFunctions.isUserLoggedIn()) {
-                    String username = userFunctions.getUsername();
+                    String username = userFunctions.getUsername(); //获取用户名
                     viewHolder.textView.setText(username);
                 } else {
                     viewHolder.textView.setText("注册登录");

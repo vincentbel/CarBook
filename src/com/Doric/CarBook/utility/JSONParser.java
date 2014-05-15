@@ -29,11 +29,11 @@ public class JSONParser {
      */
     public JSONObject getJSONFromUrl(String url, List<NameValuePair> params) {
         json = serviceHandler.makeServiceCall(url, ServiceHandler.POST, params);
-        Log.i(TAG, json);
         if (json == null) {
             return null;
         }
         try {
+            Log.i(TAG, json);
             jsonObject = new JSONObject(json);
         } catch (JSONException e) {
             e.printStackTrace();
