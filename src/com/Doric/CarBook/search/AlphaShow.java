@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import com.Doric.CarBook.R;
+
 import android.app.Fragment;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +24,9 @@ public class AlphaShow extends Fragment {
     private LinearLayout mLinearLayout;
     private ScrollView mScrollView;
     private ImageLoader imageLoader;
+
     public static boolean isok =false;
+
     /*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -114,7 +118,9 @@ public class AlphaShow extends Fragment {
                     HashMap<String, Object> Info = (HashMap<String, Object>) lv.getItemAtPosition(position);//SimpleAdapter·µ»ØMap
 
                     carseable = CarSeableData.find((String) Info.get("title"));
+
                     carseable.LoadCarSeries();
+
 
                 }
 

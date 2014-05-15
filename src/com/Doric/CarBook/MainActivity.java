@@ -136,9 +136,11 @@ public class MainActivity extends Activity {
             case 0:  //若用户已登录，则为「个人中心」，否则为「注册登录」
                 if (userFunctions.isUserLoggedIn()) {
                     fragment = new PersonalCenter();
+
                     args = new Bundle();
                     args.putString("name", "Doric");
                     fragment.setArguments(args);
+
                     fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 } else {
                     startActivity(new Intent(this, Login.class));
@@ -158,10 +160,8 @@ public class MainActivity extends Activity {
                 fragment = new UserCollection();
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
-            case 4:
-                startActivity(new Intent(getApplicationContext(), Login.class));
-                break;
-            case 5:
+
+            case 4: //「汽车展示」
                 Intent intent = new Intent();
                 intent.putExtra("carID", "123");
                 intent.setClass(MainActivity.this, CarShow.class);

@@ -28,17 +28,20 @@ public class CarSeableData {
     public static boolean isload = false;
 
 
+
     static {
         mCarSeable = new ArrayList<CarSeable>();
     }
     //从服务器端获取数据
     public static void getData(FragmentTransaction ft) {
         fragmentTransaction = ft;
+
         if (!isload) {
             brandParams.add(new BasicNameValuePair("tag", "brand"));
 
             new GetBrand().execute();
         } else
+
             ft.commit();
 
     }
@@ -73,6 +76,7 @@ public class CarSeableData {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             SearchMain.searchmain.stopLoading();
+
             if (brandObj != null) {
                 try {
                     int success = brandObj.getInt("success");
@@ -88,6 +92,7 @@ public class CarSeableData {
                         isload = true;
                         if (mCarSeable.size() > 0)
                             Collections.sort(mCarSeable, new ComparatorCarSeable());
+
                         fragmentTransaction.commit();
                         //context.initPage();
                     }
@@ -97,6 +102,7 @@ public class CarSeableData {
                 }
             } else {
                 Toast.makeText(SearchMain.searchmain, "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
+
             }
         }
     }

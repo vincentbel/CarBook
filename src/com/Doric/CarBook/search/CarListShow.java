@@ -30,6 +30,9 @@ public class CarListShow extends Fragment {
         carlist =new ArrayList<CarInfor>();
         carlist.addAll(cl);
     }
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -66,7 +69,9 @@ public class CarListShow extends Fragment {
     public void initPage() {
 
 
+
         ArrayList<Pair<String, ArrayList<CarInfor>>> al = PinYinIndex.getIndex_CarInfo(carlist, SearchMain.searchmain);
+
         //ΩÁ√Êœ‘ æ
         mLinearLayout = new LinearLayout(SearchMain.searchmain);
         LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(LinearLayout.

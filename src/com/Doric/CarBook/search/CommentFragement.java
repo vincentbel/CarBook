@@ -50,9 +50,11 @@ class Comment {
 
 
 public class CommentFragement extends LinearLayout {
+
     private ListView listView;
     private ArrayList<Comment> comments;
     private Context mycontext;
+
 
     public CommentFragement(Context context) {
         super(context);

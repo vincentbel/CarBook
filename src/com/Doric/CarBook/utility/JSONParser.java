@@ -1,5 +1,6 @@
 package com.Doric.CarBook.utility;
 
+import android.util.Log;
 import org.apache.http.NameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,6 +13,8 @@ public class JSONParser {
     private JSONObject jsonObject = null;   //获取到的json对象
     private String json = "";
     private ServiceHandler serviceHandler = null;
+
+    private static final String TAG = "JSONParser";
 
     public JSONParser() {
         serviceHandler = new ServiceHandler();
@@ -31,6 +34,7 @@ public class JSONParser {
             return null;
         }
         try {
+            Log.i(TAG, json);
             jsonObject = new JSONObject(json);
         } catch (JSONException e) {
             e.printStackTrace();

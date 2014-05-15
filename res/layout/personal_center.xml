@@ -43,62 +43,54 @@
                 android:layout_alignParentLeft="true"/>
     </RelativeLayout>
 
-    <Button
-            android:layout_width="380dp"
-            android:layout_height="wrap_content"
-            android:text="我的资料"
-            android:textColor="#000000"
-            android:id="@+id/head"
-            android:drawableLeft="@drawable/btn_my_information"
-            android:drawableRight="@drawable/right_go"
-            android:background="@xml/pc_button_with_corner"
-            android:paddingLeft="10dip"
-            android:paddingRight="10dip"
-            android:layout_below="@+id/pc_bar"
-            android:layout_marginTop="20dp"
-            android:layout_centerHorizontal="true"/>
-
-    <Button
+    <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="我的评论"
-            android:textColor="#000000"
-            android:id="@+id/sex"
-            android:drawableLeft="@drawable/btn_comment"
-            android:drawableRight="@drawable/right_go"
-            android:background="@xml/pc_button_with_corner"
-            android:paddingLeft="10dip"
-            android:paddingRight="10dip"
-            android:layout_below="@+id/name" android:layout_alignLeft="@+id/name"
-            android:layout_marginTop="8dp" android:layout_alignRight="@+id/name"/>
+            android:layout_height="match_parent"
+            android:layout_below="@id/pc_bar"
+            android:layout_margin="@dimen/my_information_margin">
+        <Button
+                android:layout_width="380dp"
+                android:layout_height="wrap_content"
+                android:text="我的资料"
+                android:textColor="#000000"
+                android:id="@+id/button_my_information"
+                android:drawableLeft="@drawable/btn_my_information"
+                android:drawableRight="@drawable/right_go"
+                android:background="@xml/pc_button_with_corner"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true"/>
 
-    <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="我的收藏"
-            android:textColor="#000000"
-            android:id="@+id/name"
-            android:drawableLeft="@drawable/btn_favourite"
-            android:drawableRight="@drawable/right_go"
-            android:background="@xml/pc_button_with_corner"
-            android:paddingLeft="10dip"
-            android:paddingRight="10dip"
-            android:layout_marginTop="8dp" android:layout_below="@+id/head"
-            android:layout_alignLeft="@+id/head" android:layout_alignRight="@+id/head"/>
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="我的评论"
+                android:textColor="#000000"
+                android:id="@+id/button_my_comments"
+                android:drawableLeft="@drawable/btn_comment"
+                android:drawableRight="@drawable/right_go"
+                android:background="@xml/pc_button_with_corner"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:layout_below="@id/button_my_information"
+                android:layout_marginTop="8dp"/>
 
-    <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="退出登录"
-            android:textColor="#000000"
-            android:id="@+id/log_out"
-            android:drawableLeft="@drawable/btn_log_out"
-            android:drawableRight="@drawable/right_go"
-            android:background="@xml/pc_button_with_corner"
-            android:paddingLeft="10dip"
-            android:paddingRight="10dip"
-            android:layout_below="@+id/sex" android:layout_marginTop="8dp"
-            android:layout_alignRight="@+id/sex" android:layout_alignLeft="@+id/sex"/>
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="退出登录"
+                android:textColor="#000000"
+                android:id="@+id/button_log_out"
+                android:drawableLeft="@drawable/btn_log_out"
+                android:drawableRight="@drawable/right_go"
+                android:background="@xml/pc_button_with_corner"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:layout_marginTop="8dp"
+                android:layout_below="@id/button_my_comments"
+                />
 
+    </RelativeLayout>
 </RelativeLayout>
 

@@ -1,7 +1,9 @@
 package com.Doric.CarBook.search;
 
+
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import com.Doric.CarBook.Constant;
 import com.Doric.CarBook.R;
 
+
 import java.util.*;
 
 import android.app.Fragment;
@@ -26,10 +29,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Result extends Fragment {
-
     private static ArrayList<CarInfor> mCarList;
     private LinearLayout mLinearLayout;
     private ScrollView mScrollView;
+
 
 
     @Override
@@ -37,7 +40,6 @@ public class Result extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         //获取信息
-
         initPage();
         return mScrollView;
 
@@ -82,7 +84,9 @@ public class Result extends Fragment {
         for (Pair<String, ArrayList<CarInfor>> pair : al) {
             TextView text = new TextView(SearchMain.searchmain);
             text.setText(pair.first);
+
             text.setTextColor(Color.rgb(0, 0, 0));
+
             text.setBackgroundColor(Color.rgb(230, 230, 230));
             text.setTextSize(20);
 

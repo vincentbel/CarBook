@@ -17,7 +17,9 @@ import java.util.Map;
 import android.app.Fragment;
 import org.apache.http.NameValuePair;
 
+
 public class ConditionSearch extends Fragment {
+
     Spinner spinner;
     CheckBox carSize;
     Button search;
@@ -75,8 +77,10 @@ public class ConditionSearch extends Fragment {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 createGrade(grade);
                 if (grade.isChoose()) {
+
 
                     String text = (String) spinner.getSelectedItem();
                     Double l = new Double(0.0);
@@ -224,6 +228,7 @@ public class ConditionSearch extends Fragment {
         public Double low;
     }
 
+
     private Price findPrice(String text) {
         for (int i = 0; i < priceGrades.size(); i++) {
             PriceGrade pg= priceGrades.get(i);
@@ -232,6 +237,7 @@ public class ConditionSearch extends Fragment {
                 p.low = pg.lowPrice;
                 p.high = pg.higPrice;
                 return p;
+
             }
         }
         Price price =new Price();

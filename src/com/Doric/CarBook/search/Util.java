@@ -689,11 +689,14 @@ class PinyinSearch {
         ArrayList<CarSeries> returnlist = new ArrayList<CarSeries>();
         //如果直接输入车辆名称
 
+
             for (CarSeable cs : CarSeableData.mCarSeable) {
+
 
                     returnlist.addAll(cs.getCarSeriesList());
             }
             returnlist = searchCarSeries(returnlist, sysmbol);
+
 
 
         return returnlist;
@@ -843,6 +846,7 @@ class PinYinIndex {
         return returnarr;
     }
 
+
     public static ArrayList<Pair<String, ArrayList<CarSeries>>> getIndex_CarSeries(ArrayList<CarSeries> list, Context context) {
         ArrayList<Pair<String, ArrayList<CarSeries>>> returnarr = new ArrayList<Pair<String, ArrayList<CarSeries>>>();
         String alphaIndex = "A";
@@ -872,12 +876,15 @@ class PinYinIndex {
         if (!al.isEmpty()) {
             Pair<String, ArrayList<CarSeries>> pair = new Pair<String, ArrayList<CarSeries>>(alphaIndex, al);
             returnarr.add(pair);
+
         }
+
 
 
         return returnarr;
     }
 }
+
 
 
 

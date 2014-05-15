@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import com.Doric.CarBook.R;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +26,7 @@ public class SearchMain extends Activity {
     public static SearchMain searchmain;
     public DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
+
     private  ProgressDialog progressDialog;
 
 
@@ -65,6 +68,7 @@ public class SearchMain extends Activity {
         inflater.inflate(R.menu.search, menu);
         return true;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +103,9 @@ public class SearchMain extends Activity {
     }
 
     public void setListData(ArrayList<CarSeries> serieslist) {
+
         mDrawerList = (ListView) findViewById(R.id.drawerListView);
+
         SimpleAdapter adapter = new SimpleAdapter(this, getUniformDataSeries(serieslist), R.layout.sea_row,
                 new String[]{"title", "img"/*,"price"*/},
                 new int[]{R.id.row_title, R.id.row_icon/*,R.id.row_price*/});
@@ -114,12 +120,18 @@ public class SearchMain extends Activity {
                 ListView lv = (ListView) parent;
                 HashMap<String, Object> Info = (HashMap<String, Object>) lv.getItemAtPosition(position);//SimpleAdapter·µ»ØMap
                 mDrawerLayout.closeDrawer(mDrawerList);
+
                 ToCarListShow(AlphaShow.carseable.getCarSeableName(),(String)Info.get("title"));
+
+
+
+
             }
 
         });
 
     }
+
 
     public void ToCarListShow(String carbrand,String carSerie){
         FragmentManager fragmentManager = getFragmentManager();
@@ -159,6 +171,7 @@ public class SearchMain extends Activity {
         Fragment fragment = new Result();
         transaction.replace(R.id.drawerFrame, fragment, "Result");
         transaction.addToBackStack("Result");
+
         CSearchGetData.getCSearchData(transaction,higprice,lowprice,grade);
 
 

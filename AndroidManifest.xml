@@ -37,6 +37,7 @@
         <activity
                 android:name="com.Doric.CarBook.car.CarShow"
                 android:label="carShow"
+                android:parentActivityName=".MainActivity"
                 android:screenOrientation="portrait">
         </activity>
         <!--<activity android:name="com.Doric.CarBook.member.UserCollection"

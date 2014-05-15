@@ -3,6 +3,7 @@ package com.Doric.CarBook.search;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -17,6 +18,7 @@ import android.widget.*;
 import com.Doric.CarBook.Constant;
 import com.Doric.CarBook.R;
 
+
 import java.util.*;
 
 import android.app.Fragment;
@@ -27,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Search extends Fragment {
+
     private EditText mEditText;
     private ImageButton mButton;
     private LinearLayout mLinearLayout;
@@ -39,7 +42,9 @@ public class Search extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         linearLayout = (LinearLayout) inflater.inflate(R.layout.sea_search, container, false);
+
         mCarSeriesList=new ArrayList<CarSeries>();
+
         initPage();
         return linearLayout;
 
@@ -68,18 +73,23 @@ public class Search extends Fragment {
 
     public void initPage() {
         mButton = (ImageButton) linearLayout.findViewById(R.id.searchbutton);
+
         mEditText = (EditText) linearLayout.findViewById(R.id.searchkeyword);
         mButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 String key = mEditText.getText().toString();
 
 
                 if (!key.trim().equals(""))
+
                     mCarSeriesList = PinyinSearch.search(key);
                 else {
                     Toast.makeText(SearchMain.searchmain, "关键字不可为空", Toast.LENGTH_LONG).show();
                     return;
+
                 }
                 SearchMain.searchmain.SearchToSearch(key);
             }
@@ -173,6 +183,7 @@ class SearchGetData {
         else{
             Search.setData(PinyinSearch.search(sysmbol));
         }
+
     }
     private static class GetSearchData extends AsyncTask<Void, Void, Void> {
 

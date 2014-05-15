@@ -1,11 +1,14 @@
 package com.Doric.CarBook.search;
 
+
 import android.app.FragmentTransaction;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 import com.Doric.CarBook.Constant;
 import com.Doric.CarBook.Constant;
+
 import com.Doric.CarBook.utility.JSONParser;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -51,7 +54,6 @@ class CarSeable {
     public void LoadCarSeries() {
 
         //brandParams
-
         if (!isload) {
             seriesParams.add(new BasicNameValuePair("tag", "brand_series"));
             seriesParams.add(new BasicNameValuePair("brand", carSeableName));
@@ -153,7 +155,9 @@ class CarSeable {
 
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+
             SearchMain.searchmain.stopLoading();
+
             if (seriesObj != null) {
                 try {
                     int success = seriesObj.getInt("success");
@@ -179,6 +183,7 @@ class CarSeable {
             } else {
 
                 Toast.makeText(SearchMain.searchmain, "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
+
             }
         }
     }
