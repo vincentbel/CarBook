@@ -8,10 +8,18 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.Doric.CarBook.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import android.app.Fragment;
+import org.apache.http.NameValuePair;
 
 
-public class ConditionSearch extends MyFragment {
+public class ConditionSearch extends Fragment {
+
     Spinner spinner;
     CheckBox carSize;
     Button search;
@@ -40,11 +48,12 @@ public class ConditionSearch extends MyFragment {
         SearchMain.searchmain.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
-    @Override
+
     public void initPage() {
 
         priceGrades = new ArrayList<PriceGrade>();
         grade = new Grade();
+
         spinner = (Spinner) relativeLayout.findViewById(R.id.carPrice);
         search = (Button) relativeLayout.findViewById(R.id.csearchbutton);
         createCarPriceGrades();
@@ -68,13 +77,17 @@ public class ConditionSearch extends MyFragment {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!grade.isChoose()) {
-                    createGrade(grade);
+
+                createGrade(grade);
+                if (grade.isChoose()) {
+
+
                     String text = (String) spinner.getSelectedItem();
                     Double l = new Double(0.0);
                     Double h = new Double(0.0);
-                    findPrice(text, l, h);
+                    Price p =findPrice(text);
 
+                    SearchMain.searchmain.SearchToResult(p.low,p.high,grade);
                     /*
                     Intent it = new Intent();
                     Toast.makeText(ConditionSearch.this, text,Toast.LENGTH_LONG).show();
@@ -123,6 +136,7 @@ public class ConditionSearch extends MyFragment {
     }
 
     private void createGrade(Grade g) {
+
         carSize = (CheckBox) relativeLayout.findViewById(R.id.checkbox00);
         CharSequence cs = carSize.getText();
         Boolean b = carSize.isChecked();
@@ -209,15 +223,27 @@ public class ConditionSearch extends MyFragment {
         g.setGradeMap(cs.toString(), b);
 
     }
+    class Price{
+        public Double high;
+        public Double low;
+    }
 
-    private void findPrice(String text, Double lowPrice, Double higPrice) {
+
+    private Price findPrice(String text) {
         for (int i = 0; i < priceGrades.size(); i++) {
-            PriceGrade p = priceGrades.get(i);
-            if (p.text.equals(text)) {
-                lowPrice = p.lowPrice;
-                higPrice = p.higPrice;
+            PriceGrade pg= priceGrades.get(i);
+            if (pg.text.equals(text)) {
+                Price p= new Price();
+                p.low = pg.lowPrice;
+                p.high = pg.higPrice;
+                return p;
+
             }
         }
+        Price price =new Price();
+        price.high = 0.0;
+        price.low  = 0.0;
+        return price;
     }
 
 }
@@ -227,3 +253,52 @@ class PriceGrade {
     public Double lowPrice;
     public Double higPrice;
 }
+
+
+class Grade implements Serializable {
+    static String[] mstring;
+    public  Map<String, Boolean> gradeMap = new HashMap<String, Boolean>();
+
+    public Grade() {
+        mstring = new String[17];
+        mstring[0] = "微型车";
+        mstring[1] = "小型车";
+        mstring[2] = "紧凑型车";
+        mstring[3] = "中型车";
+        mstring[4] = "中大型车";
+        mstring[5] = "豪华车";
+        mstring[6] = "小型SUV";
+        mstring[7] = "紧凑型SUV";
+        mstring[8] = "中型SUV";
+        mstring[9] = "中大型SUV";
+        mstring[10] = "全尺寸SUV";
+        mstring[11] = "MPV";
+        mstring[12] = "跑车";
+        mstring[13] = "皮卡";
+        mstring[14] = "微面";
+        mstring[15] = "轻客";
+        mstring[16] = "微卡";
+
+
+    }
+
+    public void setGradeMap(String s, Boolean b) {
+        if (gradeMap.containsKey(s)) {
+            gradeMap.remove(s);
+            gradeMap.put(s, b);
+        } else {
+            gradeMap.put(s, b);
+        }
+    }
+
+    public boolean isChoose() {
+        Collection<Boolean> lb = gradeMap.values();
+        return lb.contains(Boolean.TRUE);
+    }
+
+    public boolean getValue(String key) {
+        return gradeMap.get(key);
+    }
+
+}
+

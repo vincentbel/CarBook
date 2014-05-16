@@ -15,27 +15,30 @@ import com.Doric.CarBook.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import android.app.Fragment;
 
-
-public class CarListShow extends MyFragment {
+public class CarListShow extends Fragment {
 
     private LinearLayout mLinearLayout;
     private ScrollView mScrollView;
     private ImageLoader imageLoader;
+    public static String CarBrand;
+    public static String CarSeries;
+    private static ArrayList<CarInfor> carlist;
 
-    private CarSeries carSeries;
+    public static void setCarList(ArrayList<CarInfor> cl){
+        carlist =new ArrayList<CarInfor>();
+        carlist.addAll(cl);
+    }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        //获取车辆品牌信息
-        Bundle bundle = getArguments();
-        if (bundle == null)
-            return null;
-        String carBrand = bundle.getString("carBrand");
-        String carSerie = bundle.getString("carSerie");
-        carSeries = CarSeableData.find(carBrand).findCarSeries(carSerie);
+
+
         initPage();
         return mScrollView;
 
@@ -64,34 +67,36 @@ public class CarListShow extends MyFragment {
     }
 
     public void initPage() {
-        Context context = getActivity().getApplicationContext();
-        if (context == null) return;
-        ArrayList<Pair<String, ArrayList<CarInfor>>> al = PinYinIndex.getIndex_CarInfo(carSeries.getCarList(), context);
+
+
+
+        ArrayList<Pair<String, ArrayList<CarInfor>>> al = PinYinIndex.getIndex_CarInfo(carlist, SearchMain.searchmain);
+
         //界面显示
-        mLinearLayout = new LinearLayout(context);
+        mLinearLayout = new LinearLayout(SearchMain.searchmain);
         LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(LinearLayout.
                 LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         mLinearLayout.setLayoutParams(param1);
         mLinearLayout.setOrientation(LinearLayout.VERTICAL);
         mLinearLayout.setBackgroundColor(Color.rgb(255, 255, 255));
 
-        mScrollView = new ScrollView(context);
+        mScrollView = new ScrollView(SearchMain.searchmain);
         mScrollView.setEnabled(true);
         mScrollView.setBackgroundColor(Color.rgb(255, 255, 255));
         ScrollView.LayoutParams param2 = new ScrollView.LayoutParams(ScrollView.
                 LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT);
         mScrollView.setLayoutParams(param2);
         for (Pair<String, ArrayList<CarInfor>> pair : al) {
-            TextView text = new TextView(context);
+            TextView text = new TextView(SearchMain.searchmain);
             text.setText(pair.first);
             text.setTextColor(Color.rgb(0, 0, 0));
             text.setBackgroundColor(Color.rgb(230, 230, 230));
             text.setTextSize(20);
 
             mLinearLayout.addView(text);
-            MyListView listview = new MyListView(context);
+            MyListView listview = new MyListView(SearchMain.searchmain);
 
-            SimpleAdapter adapter = new SimpleAdapter(context, getUniformData(pair.second), R.layout.sea_list_layout,
+            SimpleAdapter adapter = new SimpleAdapter(SearchMain.searchmain, getUniformData(pair.second), R.layout.sea_list_layout,
                     new String[]{"title", "img"},
                     new int[]{R.id.title, R.id.img});
 
