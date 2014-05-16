@@ -11,17 +11,22 @@ import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import com.Doric.CarBook.R;
 
+import android.app.Fragment;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class AlphaShow extends MyFragment {
+public class AlphaShow extends Fragment {
 
     public static CarSeable carseable;
     private LinearLayout mLinearLayout;
     private ScrollView mScrollView;
     private ImageLoader imageLoader;
+
+    public static boolean isok =false;
+
     /*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -54,9 +59,10 @@ public class AlphaShow extends MyFragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         //获取车辆品牌信息
-        CarSeableData.getData(this);
-        SearchMain.searchmain.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+
+
         initPage();
+        SearchMain.searchmain.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         return mScrollView;
 
     }
@@ -112,9 +118,10 @@ public class AlphaShow extends MyFragment {
                     HashMap<String, Object> Info = (HashMap<String, Object>) lv.getItemAtPosition(position);//SimpleAdapter返回Map
 
                     carseable = CarSeableData.find((String) Info.get("title"));
-                    carseable.LoadCarSeries(AlphaShow.this);
-                    SearchMain.searchmain.setListData(carseable.getCarSeriesList());
-                    SearchMain.searchmain.OpenSliding();
+
+                    carseable.LoadCarSeries();
+
+
                 }
 
             });

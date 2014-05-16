@@ -1,5 +1,6 @@
 package com.Doric.CarBook.search;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -28,7 +29,7 @@ public class CarSeries {
     private ArrayList<CarInfor> carList;
 
 
-    private MyFragment context;
+    private  FragmentTransaction fragmentTransaction;
 
     private JSONObject carObj;
 
@@ -43,8 +44,8 @@ public class CarSeries {
     }
 
     //获取该品牌，车系下的车辆信息
-    public boolean loadCar(MyFragment f) {
-        context = f;
+    public boolean loadCar(FragmentTransaction ft) {
+        fragmentTransaction = ft;
         if (!isload) {
             carParams.add(new BasicNameValuePair("tag", "model_number"));
             carParams.add(new BasicNameValuePair("brand", carSeableName));
@@ -52,7 +53,7 @@ public class CarSeries {
 
             new GetCarInfor().execute();
         } else
-            context.initPage();
+            fragmentTransaction.commit();
         return true;
     }
 
@@ -109,7 +110,7 @@ public class CarSeries {
         protected void onPreExecute() {
             super.onPreExecute();
             //弹出"正在登录"框
-            context.loading();
+            SearchMain.searchmain.loading();
         }
 
         protected Void doInBackground(Void... params) {
@@ -121,7 +122,7 @@ public class CarSeries {
 
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            context.stopLoading();
+            SearchMain.searchmain.stopLoading();
             if (carObj != null) {
                 try {
                     int success = carObj.getInt("success");
@@ -137,17 +138,15 @@ public class CarSeries {
                         isload = true;
                         if (carList.size() > 0)
                             Collections.sort(carList, new ComparatorCarInfo());
-                        context.initPage();
+                        CarListShow.setCarList(carList);
+                        fragmentTransaction.commit();
                     }
                 } catch (JSONException e) {
-                    Context c = context.getActivity().getApplicationContext();
-                    if (c == null) return;
-                    Toast.makeText(c, e.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(SearchMain.searchmain, e.toString(), Toast.LENGTH_LONG).show();
                 }
             } else {
-                Context c = context.getActivity().getApplicationContext();
-                if (c == null) return;
-                Toast.makeText(c, "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
+
+                Toast.makeText(SearchMain.searchmain, "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
             }
         }
     }
