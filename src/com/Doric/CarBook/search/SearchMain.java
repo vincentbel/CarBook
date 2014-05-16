@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import android.app.Fragment;
 import android.view.*;
-import android.content.Intent;
+
 /**
  * Created by Administrator on 2014/5/12.
  */
