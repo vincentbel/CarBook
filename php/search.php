@@ -82,7 +82,7 @@
 				$response["error_msg"] = "Model_number not found!";
 				echo json_encode($response);
 			}
-		} else if ($tag = 'conditional_search') {
+		} else if ($tag == 'conditional_search') {
 			$low_price = $_POST['low_price'];
 			$high_price = $_POST['high_price'];
 			$grade = $_POST['grade'];
@@ -146,6 +146,25 @@
 					$response["error_msg"] = "Car not found!";
 					echo json_encode($response);
 				}				
+			}
+		} else if ($tag == 'violent_search') {
+			$car = $db->get_all_car_information();
+			// close connection
+			$db->close_dbc();
+			if ($car["number"] > 0) {
+				// car found
+					$response["success"] = 1;
+					$response["search_number"] = $car["number"];
+				
+					for ($i = 0; $i < $car["number"]; $i++) {
+						$response["car_".($i+1)] = $car[$i];
+					}
+					echo json_encode($response);
+			} else {
+				// car not found
+				$response["error"] = 1;
+				$response["error_msg"] = "Car not found!";
+				echo json_encode($response);
 			}
 		}
 	}

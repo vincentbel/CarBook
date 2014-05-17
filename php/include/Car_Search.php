@@ -154,7 +154,7 @@
 
 	// get all car information
 		public function get_all_car_information() {
-			$query = "SELECT SELECT  brand.name, brand_series.name, pictures_url, grade FROM car JOIN brand USING (brand_id) JOIN brand_series USING (series_id) JOIN car_grade USING (car_grade_id) ";
+			$query = "SELECT brand.name, brand_series.name, pictures_url, grade FROM car JOIN brand USING (brand_id) JOIN brand_series USING (series_id) JOIN car_grade USING (car_grade_id) ";
 			$result = mysqli_query($this->dbc, $query);
 			// check the query result
 			$this->check_sql_error($this->dbc, $query, $result);
