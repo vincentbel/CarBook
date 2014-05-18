@@ -38,6 +38,10 @@
                   android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name=".member.FindPsd2"
+                  android:screenOrientation="portrait">
+        </activity>
+
         <activity
                 android:name="com.Doric.CarBook.car.CarShow"
                 android:label="carShow"

@@ -85,7 +85,7 @@ public class SampleListFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
 
 
-        SampleItem Info = (SampleItem) l.getItemAtPosition(position);//SimpleAdapter����Map
+        SampleItem Info = (SampleItem) l.getItemAtPosition(position);//SimpleAdapter????Map
         Toast.makeText(alphashow, carSeableName+"  "+Info.tag,Toast.LENGTH_LONG).show();
         if (carSeableName.trim().equals("")) {
             return;

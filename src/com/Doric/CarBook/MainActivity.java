@@ -18,7 +18,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        //��¼����
+        //???????
         Button loginButton = (Button) findViewById(R.id.login);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        //��չʾ����
+        //????????
         Button carShowButton = (Button) findViewById(R.id.car_show);
         carShowButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
-        //��������
+        //????????
         Button searchButton = (Button) findViewById(R.id.search);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,8 +48,9 @@ public class MainActivity extends Activity {
                 intent.setClass(MainActivity.this, AlphaShow.class);
                 startActivity(intent);
             }
-        //�������Ĳ���
-        Button pcButton = (Button) findViewById(R.id.pc);
+        });
+         //???????????
+         Button pcButton = (Button) findViewById(R.id.pc);
         pcButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,7 +59,7 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
-        //�ղؼв���
+        //???��???
         Button userCollectionButton = (Button) findViewById(R.id.collection);
         userCollectionButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -69,5 +70,6 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
+
     }
 }
