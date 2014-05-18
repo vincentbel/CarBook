@@ -15,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.*;
 import android.widget.*;
 import cn.jpush.android.api.InstrumentedActivity;
+import cn.jpush.android.api.JPushInterface;
 import com.Doric.CarBook.car.CarShow;
 import com.Doric.CarBook.car.HotCarShow;
 import com.Doric.CarBook.member.Login;
@@ -44,8 +45,9 @@ public class MainActivity extends InstrumentedActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-
+        JPushInterface.init(getApplicationContext());
         registerMessageReceiver();  // 用来接收推送
+
 
         db = new DatabaseHelper(getApplicationContext());
         userFunctions = new UserFunctions(getApplicationContext());
