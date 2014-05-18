@@ -17,8 +17,8 @@ public class UserFunctions {
     //服务器请求相关变量
     private static String loginURL = Constant.BASE_URL + "/login.php"; //登录请求的url,务必加上http://或https://
     private static String registerURL = Constant.BASE_URL + "/register.php";
-    private static String login_tag = "login";
-    private static String register_tag = "register";
+    private static String loginTag = "login";
+    private static String registerTag = "register";
     DatabaseHelper db;
     private JSONParser jsonParser;
 
@@ -37,7 +37,7 @@ public class UserFunctions {
     public JSONObject loginUser(String username, String password) {
         // Building Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("tag", login_tag));
+        params.add(new BasicNameValuePair("tag", loginTag));
         params.add(new BasicNameValuePair("username", username));
         params.add(new BasicNameValuePair("password", password));
         JSONObject json = jsonParser.getJSONFromUrl(loginURL, params);
@@ -55,7 +55,7 @@ public class UserFunctions {
     public JSONObject registerUser(String name, String email, String password) {
         // Building Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("tag", register_tag));
+        params.add(new BasicNameValuePair("tag", registerTag));
         params.add(new BasicNameValuePair("username", name));
         params.add(new BasicNameValuePair("email", email));
         params.add(new BasicNameValuePair("password", password));
@@ -114,7 +114,6 @@ public class UserFunctions {
     }
 
     //TODO 收藏
-    boolean isCollected = false;
     public boolean addToCollection(int carId) {
         if (isUserLoggedIn()) {
             return (db.addCollection(getUserId(), carId) > -1);
