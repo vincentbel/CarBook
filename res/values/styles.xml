@@ -1,6 +1,6 @@
     <resources xmlns:android="http://schemas.android.com/apk/res/android">  
       
-        <style name="AppBaseTheme" parent="android:Theme"></style>  
+        <style name="AppBaseTheme" parent="android:Theme"></style>
       
         <style name="LoginTheme" parent="android:style/Theme.Holo.Light">
             <item name="android:selectableItemBackground">@drawable/navigation</item>
@@ -17,5 +17,4 @@
             <item name="android:layout_marginLeft">1.5dip</item>
             <item name="android:layout_marginRight">1.5dip</item>
         </style>
-
-    </resources>  
+</resources>

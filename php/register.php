@@ -39,6 +39,7 @@
 				// user is already existed - error response
 				$response["error"] = 3;
 				$response["error_msg"] = "User email already existed!";
+				echo json_encode($response);
 			} else {
 				// store user
 				$user = $db->storeUser($username, $email, $password);
@@ -48,6 +49,7 @@
 					// user stored successfully
 					$response["success"] = 1;
 					$response["username"] = $user["username"];
+					$response["user_id"] = $user["user_id"];
 					$response["email"] = $user["email"];
 					$response["created_at"] = $user["created_at"];
 					echo json_encode($response);

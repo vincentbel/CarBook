@@ -3,6 +3,7 @@
  	"tag": "register",
  	"success": 1,
  	"error": 0,
+ 	"user_id":"13",
  	"username": "Amy",
  	"email": "616690602@qq.com",
  	"created_at": "2014-04-13 22:01:40"
@@ -38,6 +39,7 @@
  	"success": 1,
  	"error": 0,
  	"username": "a",
+ 	"user_id":"13",
  	"email": "616690602@qq.com",
  	"created_at": "2014-04-13 22:04:07"
  }

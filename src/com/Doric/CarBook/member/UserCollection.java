@@ -1,34 +1,32 @@
 package com.Doric.CarBook.member;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
+import android.app.Fragment;
 import android.os.Bundle;
-import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import com.Doric.CarBook.R;
-import com.Doric.CarBook.car.CarShow;
-import com.Doric.CarBook.car.SummaryFragment;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Sunyao_Will on 2014/4/16.
- */
-public class UserCollection extends Activity{
+public class UserCollection extends Fragment {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.user_collection);
-        if (getActionBar() != null) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.user_collection, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        View mView = getView();
+        //setContentView(R.layout.user_collection);
+        /*if (getActionBar() != null) {
             getActionBar().setTitle(R.string.user_collection);
-        }
+        }*/
         /*
 
         Intent intent = getIntent();
@@ -55,16 +53,16 @@ public class UserCollection extends Activity{
             setListViewHeightBasedOnChildren(userCollectionList);
         }
         */
-        ListView userCollectionList = (ListView) findViewById(R.id.userCollectionList);
+        ListView userCollectionList = (ListView) mView.findViewById(R.id.userCollectionList);
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("carName","BMW 7 series 2013 740Li");
-        map.put("carGrade","豪华车");
-        map.put("carPrice","117万-144.4万");
-        ArrayList<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+        map.put("carName", "BMW 7 series 2013 740Li");
+        map.put("carGrade", "豪华车");
+        map.put("carPrice", "117万-144.4万");
+        ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         list.add(map);
-        SimpleAdapter adapter = new SimpleAdapter(this,list,R.layout.user_collection_list,
-                new String[]{"carName","carGrade","carPrice"},
-                new int[]{R.id.carNameText,R.id.carGradeText,R.id.carPriceText});
+        SimpleAdapter adapter = new SimpleAdapter(getActivity(), list, R.layout.user_collection_list,
+                new String[]{"carName", "carGrade", "carPrice"},
+                new int[]{R.id.carNameText, R.id.carGradeText, R.id.carPriceText});
         userCollectionList.setAdapter(adapter);
 
     }

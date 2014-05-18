@@ -35,6 +35,7 @@
 			if ($car != false) {
 				// car found
 				$response["success"] = 1;
+				$response["car_id"] = $car["car_id"];
 				$response["car_grade"] = $car["car_grade"];
 				$response["car_body_structure"] = $car["car_body_structure"];
 				$response["price"] = $car["price"];
@@ -98,7 +99,7 @@
 				$response["success"] = 1;
 				$response["pictures_num"] = $pictures_url["pictures_num"];
 				for ($i=1; $i <= $pictures_url["pictures_num"]; $i++) { 
-					$response["pictures"."_url_".$i] = $pictures_url[$i];
+					$response["pictures_"."url_".$i] = $pictures_url[$i];
 				}
 				echo json_encode($response);
 			} else {
