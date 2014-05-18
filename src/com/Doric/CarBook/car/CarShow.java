@@ -2,6 +2,7 @@ package com.Doric.CarBook.car;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.*;
@@ -43,10 +44,19 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
 
         //发送请求并获取Json包
 
-        carParamsRequest.add(new BasicNameValuePair("tag", "showcar"));
-        carParamsRequest.add(new BasicNameValuePair("brand", "BMW"));
-        carParamsRequest.add(new BasicNameValuePair("series", "7series"));
-        carParamsRequest.add(new BasicNameValuePair("model_number", "2013 740Li grand"));
+        Bundle bundle = getIntent().getExtras();
+        JSONObject jo = null;
+        try {
+            jo = new JSONObject(bundle.getString("cn.jpush.android.EXTRA"));
+
+            // 为向服务器发送请求做准备
+            carParamsRequest.add(new BasicNameValuePair("tag", jo.getString("tag")));
+            carParamsRequest.add(new BasicNameValuePair("brand", jo.getString("brand")));
+            carParamsRequest.add(new BasicNameValuePair("series", jo.getString("series")));
+            carParamsRequest.add(new BasicNameValuePair("model_number", jo.getString("model_number")));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         //通过新线程构造car实例并初始化Activity
         new GetCarInfo().execute();
