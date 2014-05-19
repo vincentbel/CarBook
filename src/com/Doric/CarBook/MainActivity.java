@@ -3,8 +3,10 @@ package com.Doric.CarBook;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,16 +14,20 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.*;
 import android.widget.*;
+import cn.jpush.android.api.InstrumentedActivity;
+import cn.jpush.android.api.JPushInterface;
 import com.Doric.CarBook.car.CarShow;
 import com.Doric.CarBook.car.HotCarShow;
 import com.Doric.CarBook.member.Login;
 import com.Doric.CarBook.member.PersonalCenter;
 import com.Doric.CarBook.member.UserCollection;
+import com.Doric.CarBook.push.CarShowUtil;
 import com.Doric.CarBook.member.UserFunctions;
 import com.Doric.CarBook.search.SearchMain;
 import com.Doric.CarBook.utility.DatabaseHelper;
+import android.view.View;
 
-public class MainActivity extends Activity {
+public class MainActivity extends InstrumentedActivity {
 
     DatabaseHelper db; // 本地SQLite数据库辅助类
     UserFunctions userFunctions;  //用户功能函数辅助类
@@ -33,10 +39,16 @@ public class MainActivity extends Activity {
     private String[] leftDrawerTitles;  //侧拉各模块的标题
     private int[] leftDrawerIcons;   //侧拉各模块的icon
 
+    public static boolean isForeground = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        JPushInterface.init(getApplicationContext());
+        registerMessageReceiver();  // 用来接收推送
+
 
         db = new DatabaseHelper(getApplicationContext());
         userFunctions = new UserFunctions(getApplicationContext());
@@ -183,6 +195,47 @@ public class MainActivity extends Activity {
         drawerLayout.closeDrawer(drawerList);
     }
 
+    // 从Jpush服务器接收信息
+    private MessageReceiver mMessageReceiver;
+    public static final String MESSAGE_RECEIVED_ACTION = "com.example.jpushdemo.MESSAGE_RECEIVED_ACTION";
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_MESSAGE = "message";
+    public static final String KEY_EXTRAS = "extras";
+
+    public void registerMessageReceiver() {
+        mMessageReceiver = new MessageReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+        filter.addAction(MESSAGE_RECEIVED_ACTION);
+        registerReceiver(mMessageReceiver, filter);
+    }
+
+    public class MessageReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (MESSAGE_RECEIVED_ACTION.equals(intent.getAction())) {
+                String messge = intent.getStringExtra(KEY_MESSAGE);
+                String extras = intent.getStringExtra(KEY_EXTRAS);
+                StringBuilder showMsg = new StringBuilder();
+                showMsg.append(KEY_MESSAGE + " : " + messge + "\n");
+                if (!CarShowUtil.isEmpty(extras)) {
+                    showMsg.append(KEY_EXTRAS + " : " + extras + "\n");
+                }
+                //setCostomMsg(showMsg.toString());
+            }
+            context.unregisterReceiver(this);
+        }
+    }
+    /*
+    private void setCostomMsg(String msg){
+        if (null != msgText) {
+            msgText.setText(msg);
+            msgText.setVisibility(android.view.View.VISIBLE);
+        }
+    }
+    */
+
     //左侧侧拉栏的ListView的监听器
     private class DrawerItemSelectedListener implements ListView.OnItemClickListener {
 
@@ -191,7 +244,6 @@ public class MainActivity extends Activity {
             selectItem(i);
         }
     }
-
 
     /**
      * 用于提高ListView的性能
