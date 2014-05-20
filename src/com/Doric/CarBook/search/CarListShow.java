@@ -103,9 +103,9 @@ public class CarListShow extends Fragment {
         mScrollView.setLayoutParams(param2);
         for (Pair<String, ArrayList<CarInfor>> pair : al) {
             TextView text = new TextView(SearchMain.searchmain);
-            text.setText(pair.first);
+            text.setText("  " +pair.first);
             text.setTextColor(Color.rgb(0, 0, 0));
-            text.setBackgroundColor(Color.rgb(230, 230, 230));
+            text.setBackgroundColor(Color.rgb(255, 255, 255));
             text.setTextSize(20);
 
             mLinearLayout.addView(text);
@@ -116,6 +116,7 @@ public class CarListShow extends Fragment {
                     new int[]{R.id.title, R.id.img});
 
             listview.setAdapter(adapter);
+            adapter.setViewBinder(new ListViewBinder());
             listview.setDivider(getResources().getDrawable(R.drawable.list_divider));
             listview.setDividerHeight(1);
             listview.setOnItemClickListener(new OnItemClickListener() {
@@ -144,6 +145,23 @@ public class CarListShow extends Fragment {
         mScrollView.addView(mLinearLayout);
         mScrollView.setX(0);
         mScrollView.setY(0);
+
+    }
+
+    private class ListViewBinder implements SimpleAdapter.ViewBinder {
+
+        @Override
+        public boolean setViewValue(View view, Object data,
+                                    String textRepresentation) {
+            // TODO Auto-generated method stub
+            if ((view instanceof ImageView) && (data instanceof Bitmap)) {
+                ImageView imageView = (ImageView) view;
+                Bitmap bmp = (Bitmap) data;
+                imageView.setImageBitmap(bmp);
+                return true;
+            }
+            return false;
+        }
 
     }
 
@@ -209,7 +227,7 @@ public class CarListShow extends Fragment {
 
                         }
                         else{
-                            bitmap = BitmapFactory.decodeFile(getImagePath(getImagePath(imageUrl)));
+                            bitmap = BitmapFactory.decodeFile(getImagePath(imageUrl));
                         }
                         if (bitmap!= null) {
                             map.put("img", bitmap);
@@ -241,12 +259,14 @@ public class CarListShow extends Fragment {
 
         private String getImagePath(String imageUrl) {
             int lastSlashIndex = imageUrl.lastIndexOf("/");
-            String imageTPath = imageUrl.substring(0,lastSlashIndex );
+            String imageTPath = imageUrl.substring(0, lastSlashIndex);
             String extra = imageUrl.substring(imageUrl.lastIndexOf("."));
             lastSlashIndex = imageTPath.lastIndexOf("/");
-            String imageName = imageTPath.substring(lastSlashIndex+1);
-            imageName += extra;
-
+            String imageSeries = imageTPath.substring(lastSlashIndex + 1);  //  Series
+            imageTPath = imageTPath.substring(0, lastSlashIndex);
+            String imageName = imageTPath.substring(imageTPath.lastIndexOf("/") + 1);
+            imageName = imageName + imageSeries + extra;
+            System.out.println(imageName);
             String imageDir = getSDPath()
                     + "/CarBook/Cache/";
             File file = new File(imageDir);

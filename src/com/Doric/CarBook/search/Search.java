@@ -42,7 +42,7 @@ public class Search extends Fragment {
     private ImageButton mButton;
     private LinearLayout mLinearLayout;
     private ScrollView mScrollView;
-    public static ArrayList<CarSeries> mCarSeriesList;
+    public static ArrayList<CarSeries> mCarSeriesList= new ArrayList<CarSeries>();
     private LinearLayout linearLayout;
     private ArrayList<Pair<String,MyListView>> listarray;
 
@@ -52,7 +52,7 @@ public class Search extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         listarray= new ArrayList<Pair<String, MyListView>>();
         linearLayout = (LinearLayout) inflater.inflate(R.layout.sea_search, container, false);
-        mCarSeriesList=new ArrayList<CarSeries>();
+
         initPage();
         new GetPicData().run();
         return linearLayout;
@@ -130,7 +130,7 @@ public class Search extends Fragment {
 
             for (Pair<String, ArrayList<CarSeries>> pair : al) {
                 TextView text = new TextView(SearchMain.searchmain);
-                text.setText(pair.first);
+                text.setText("  "+ pair.first);
                 text.setTextColor(Color.rgb(0, 0, 0));
                 text.setBackgroundColor(Color.rgb(255, 255, 255));
                 text.setTextSize(20);
@@ -144,6 +144,7 @@ public class Search extends Fragment {
                 listview.setDivider(getResources().getDrawable(R.drawable.list_divider));
                 listview.setDividerHeight(1);
                 listview.setAdapter(adapter);
+                adapter.setViewBinder(new ListViewBinder());
                 listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view,
@@ -177,6 +178,24 @@ public class Search extends Fragment {
 
     }
 
+
+
+    private class ListViewBinder implements SimpleAdapter.ViewBinder {
+
+        @Override
+        public boolean setViewValue(View view, Object data,
+                                    String textRepresentation) {
+            // TODO Auto-generated method stub
+            if ((view instanceof ImageView) && (data instanceof Bitmap)) {
+                ImageView imageView = (ImageView) view;
+                Bitmap bmp = (Bitmap) data;
+                imageView.setImageBitmap(bmp);
+                return true;
+            }
+            return false;
+        }
+
+    }
 
 
     final Handler cwjHandler = new Handler();
@@ -274,12 +293,14 @@ public class Search extends Fragment {
 
         private String getImagePath(String imageUrl) {
             int lastSlashIndex = imageUrl.lastIndexOf("/");
-            String imageTPath = imageUrl.substring(0,lastSlashIndex );
+            String imageTPath = imageUrl.substring(0, lastSlashIndex);
             String extra = imageUrl.substring(imageUrl.lastIndexOf("."));
             lastSlashIndex = imageTPath.lastIndexOf("/");
-            String imageName = imageTPath.substring(lastSlashIndex+1);
-            imageName += extra;
-
+            String imageSeries = imageTPath.substring(lastSlashIndex + 1);  //  Series
+            imageTPath = imageTPath.substring(0, lastSlashIndex);
+            String imageName = imageTPath.substring(imageTPath.lastIndexOf("/") + 1);
+            imageName = imageName + imageSeries + extra;
+            System.out.println(imageName);
             String imageDir = getSDPath()
                     + "/CarBook/Cache/";
             File file = new File(imageDir);
@@ -308,7 +329,7 @@ class SearchGetData {
     public static void getSearchData(FragmentTransaction ft,String sysmbol){
             fragmentTransaction =ft;
             key = sysmbol;
-            searchParams.add(new BasicNameValuePair("tag", "search"));
+            searchParams.add(new BasicNameValuePair("tag", "violent_search"));
             new GetSearchData().execute();
 
 
@@ -352,15 +373,17 @@ class SearchGetData {
                             cs.setName(ja.getString("brand_series"));
 
                             cs.setPicPath(Constant.BASE_URL + "/" + ja.getString("pictures_url"));
+
                             carSerieses.add(cs);
 
                         }
                         if(carSerieses.size()>0) {
                             Collections.sort(carSerieses, new ComparatorCarSeries());
                             carSerieses = PinyinSearch.search(carSerieses, key);
-                            Search.setData(carSerieses);
+
                         }
-                       fragmentTransaction.commit();
+                        Search.setData(carSerieses);
+                        fragmentTransaction.commit();
                     }
                 } catch (JSONException e) {
 

@@ -5,6 +5,11 @@ import java.util.Comparator;
 class ComparatorCarInfo implements Comparator<CarInfor> {
     @Override
     public int compare(CarInfor o1, CarInfor o2) {
+        if(!o1.getCarSeable().equals(o2.getCarSeable()))
+            return ToPinYinString(o1.getCarSeable()).toUpperCase().compareTo(ToPinYinString(o2.getCarSeable()).toUpperCase());
+        else if(!o1.getCarSerie().equals((o2.getCarSerie())))
+            return ToPinYinString(o1.getCarSerie()).toUpperCase().compareTo(ToPinYinString(o2.getCarSerie()).toUpperCase());
+        else
         return ToPinYinString(o1.getCarName().toUpperCase()).compareTo(ToPinYinString(o2.getCarName()).toUpperCase());
     }
 
@@ -33,6 +38,8 @@ class ComparatorCarSeable implements Comparator<CarSeable> {
 class ComparatorCarSeries implements Comparator<CarSeries> {
     @Override
     public int compare(CarSeries o1, CarSeries o2) {
+        if(!o1.getCarSeableName().equals(o2.getCarSeableName()))
+            return ToPinYinString(o1.getCarSeableName()).toUpperCase().compareTo(ToPinYinString(o2.getCarSeableName()).toUpperCase());
         return ToPinYinString(o1.getName()).toUpperCase().compareTo(ToPinYinString(o2.getName()).toUpperCase());
     }
 

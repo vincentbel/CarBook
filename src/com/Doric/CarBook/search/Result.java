@@ -96,11 +96,11 @@ public class Result extends Fragment {
 
         for (Pair<String, ArrayList<CarInfor>> pair : al) {
             TextView text = new TextView(SearchMain.searchmain);
-            text.setText(pair.first);
+            text.setText(" "+pair.first);
 
             text.setTextColor(Color.rgb(0, 0, 0));
 
-            text.setBackgroundColor(Color.rgb(230, 230, 230));
+            text.setBackgroundColor(Color.rgb(255, 255, 255));
             text.setTextSize(20);
 
             mLinearLayout.addView(text);
@@ -112,6 +112,7 @@ public class Result extends Fragment {
                     new int[]{R.id.title, R.id.img});
 
             listview.setAdapter(adapter);
+            adapter.setViewBinder(new ListViewBinder());
             listview.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
@@ -141,6 +142,24 @@ public class Result extends Fragment {
         mCarList.addAll(cl);
     }
 
+
+
+    private class ListViewBinder implements SimpleAdapter.ViewBinder {
+
+        @Override
+        public boolean setViewValue(View view, Object data,
+                                    String textRepresentation) {
+            // TODO Auto-generated method stub
+            if ((view instanceof ImageView) && (data instanceof Bitmap)) {
+                ImageView imageView = (ImageView) view;
+                Bitmap bmp = (Bitmap) data;
+                imageView.setImageBitmap(bmp);
+                return true;
+            }
+            return false;
+        }
+
+    }
 
     final Handler cwjHandler = new Handler();
     class UpdateRunnable implements  Runnable{
@@ -174,8 +193,8 @@ public class Result extends Fragment {
                 for (int i = 0; i < simpleAdapter.getCount(); i++) {
                     Map<String, Object> map = (Map<String, Object>) simpleAdapter.getItem(i);
                     CarInfor ci = mCarList.get(i);
-                    Bitmap bitmap =null;
-                    String imageUrl=CarSeableData.find(ci.getCarSeable()).findCarSeries(ci.getCarSerie()).getPicPath();
+                    Bitmap bitmap = null;
+                    String imageUrl = CarSeableData.find(ci.getCarSeable()).findCarSeries(ci.getCarSerie()).getPicPath();
                     imageFile = new File(getImagePath(imageUrl));
                     try {
                         if (!imageFile.exists()) {
@@ -203,11 +222,10 @@ public class Result extends Fragment {
                             }
                             bitmap = BitmapFactory.decodeFile(getImagePath(imageUrl));
 
-                        }
-                        else{
+                        } else {
                             bitmap = BitmapFactory.decodeFile(getImagePath(imageUrl));
                         }
-                        if (bitmap!= null) {
+                        if (bitmap != null) {
                             map.put("img", bitmap);
                             cwjHandler.post(new UpdateRunnable(simpleAdapter));
                         }
@@ -222,12 +240,11 @@ public class Result extends Fragment {
             }
         }
 
-        private String getSDPath(){
+        private String getSDPath() {
             File sdDir = null;
             boolean sdCardExist = Environment.getExternalStorageState()
                     .equals(Environment.MEDIA_MOUNTED);   //判断sd卡是否存在
-            if   (sdCardExist)
-            {
+            if (sdCardExist) {
                 sdDir = Environment.getExternalStorageDirectory();//获取跟目录
             }
             return sdDir.toString();
@@ -237,12 +254,14 @@ public class Result extends Fragment {
 
         private String getImagePath(String imageUrl) {
             int lastSlashIndex = imageUrl.lastIndexOf("/");
-            String imageTPath = imageUrl.substring(0,lastSlashIndex );
+            String imageTPath = imageUrl.substring(0, lastSlashIndex);
             String extra = imageUrl.substring(imageUrl.lastIndexOf("."));
             lastSlashIndex = imageTPath.lastIndexOf("/");
-            String imageName = imageTPath.substring(lastSlashIndex+1);
-            imageName += extra;
-
+            String imageSeries = imageTPath.substring(lastSlashIndex + 1);  //  Series
+            imageTPath = imageTPath.substring(0, lastSlashIndex);
+            String imageName = imageTPath.substring(imageTPath.lastIndexOf("/") + 1);
+            imageName = imageName + imageSeries + extra;
+            System.out.println(imageName);
             String imageDir = getSDPath()
                     + "/CarBook/Cache/";
             File file = new File(imageDir);
@@ -253,7 +272,6 @@ public class Result extends Fragment {
 
             return imagePath;
         }
-
     }
 
 
@@ -269,6 +287,7 @@ class CSearchGetData{
     public static void getCSearchData(FragmentTransaction ft,Double hig,Double low,Grade gra){
 
         grade= gra;
+
         carInfoParams.add(new BasicNameValuePair("tag", "conditional_search"));
         carInfoParams.add(new BasicNameValuePair("low_price", low.toString()));
         carInfoParams.add(new BasicNameValuePair("high_price",hig.toString()));
@@ -302,7 +321,7 @@ class CSearchGetData{
 
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-
+        SearchMain.searchmain.stopLoading();;
         if (carInfoObj != null) {
             ArrayList<CarInfor> carlist =new ArrayList<CarInfor>();
             try {
@@ -336,8 +355,9 @@ class CSearchGetData{
 
                     if (carlist.size() > 0) {
                         Collections.sort(carlist, new ComparatorCarInfo());
-                        Result.setCarList(carlist);
+
                     }
+                    Result.setCarList(carlist);
                     SearchMain.searchmain.stopLoading();
                     fragmentTransaction.commit();
                     //context.initPage();

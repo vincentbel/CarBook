@@ -18,6 +18,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import com.Doric.CarBook.R;
@@ -133,6 +134,7 @@ public class SearchMain extends Activity {
         mDrawerList.setDivider(getResources().getDrawable(R.drawable.list_divider));
         mDrawerList.setDividerHeight(1);
         mDrawerList.setAdapter(adapter);
+        adapter.setViewBinder(new ListViewBinder());
         //µã»÷³µÏµ
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -223,6 +225,22 @@ public class SearchMain extends Activity {
         }
     }
 
+    private class ListViewBinder implements SimpleAdapter.ViewBinder {
+
+        @Override
+        public boolean setViewValue(View view, Object data,
+                                    String textRepresentation) {
+            // TODO Auto-generated method stub
+            if ((view instanceof ImageView) && (data instanceof Bitmap)) {
+                ImageView imageView = (ImageView) view;
+                Bitmap bmp = (Bitmap) data;
+                imageView.setImageBitmap(bmp);
+                return true;
+            }
+            return false;
+        }
+
+    }
 
     private static Map<String, Bitmap> i_map = new HashMap<String, Bitmap>();
 
@@ -312,10 +330,10 @@ public class SearchMain extends Activity {
                         if (bos != null) {
                             bos.close();
                         }
-                        bitmap = BitmapFactory.decodeFile(imageUrl);
+                        bitmap = BitmapFactory.decodeFile(getImagePath(imageUrl));
 
                     } else {
-                        bitmap = BitmapFactory.decodeFile(imageUrl);
+                        bitmap = BitmapFactory.decodeFile(getImagePath(imageUrl));
                     }
                     if (bitmap != null) {
                         i_map.put(cs.getName(), bitmap);
