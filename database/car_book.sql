@@ -106,7 +106,7 @@
 
 
     CREATE TABLE user_collect
-  	(collect_id	int(10) NOT NULL,
+  	(collect_id	int(10) NOT NULL AUTO_INCREMENT,
   	 user_id	int(10) NOT NULL,
   	 car_id		int(10) NOT NULL,
   	 collect_time       datetime NOT NULL COMMENT '用户收藏时间',
