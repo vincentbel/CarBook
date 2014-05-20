@@ -1,9 +1,18 @@
 package com.Doric.CarBook.search;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.LevelListDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +21,10 @@ import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import com.Doric.CarBook.R;
 
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,10 +34,10 @@ public class CarListShow extends Fragment {
 
     private LinearLayout mLinearLayout;
     private ScrollView mScrollView;
-    private ImageLoader imageLoader;
     public static String CarBrand;
     public static String CarSeries;
     private static ArrayList<CarInfor> carlist;
+    private ArrayList<Pair<String,MyListView>> listarray;
 
     public static void setCarList(ArrayList<CarInfor> cl){
         carlist =new ArrayList<CarInfor>();
@@ -38,8 +51,9 @@ public class CarListShow extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-
+        listarray = new ArrayList<Pair<String, MyListView>>();
         initPage();
+        new GetPicData().run();
         return mScrollView;
 
     }
@@ -57,6 +71,7 @@ public class CarListShow extends Fragment {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("title", cs.getCarName());
             //Bitmap imageBitmap = imageLoader.getBitmapFromMemoryCache(cs.getCarPicPath());
+
             map.put("img", R.drawable.ic_launcher);
             list.add(map);
 
@@ -123,6 +138,7 @@ public class CarListShow extends Fragment {
                 }
 
             });
+            listarray.add(new Pair<String, MyListView>(pair.first,listview));
             mLinearLayout.addView(listview);
         }
         mScrollView.addView(mLinearLayout);
@@ -131,6 +147,118 @@ public class CarListShow extends Fragment {
 
     }
 
+    final Handler cwjHandler = new Handler();
+    class UpdateRunnable implements  Runnable{
+        SimpleAdapter simpleAdapter = null;
+        public UpdateRunnable(SimpleAdapter sa){
+            simpleAdapter = sa;
+        }
+        public void run() {
+            simpleAdapter.notifyDataSetChanged();
+        }
+    };
+
+
+    public class GetPicData extends Thread {
+        // private Set<LoadImage> taskSet;
+
+        public GetPicData() {
+
+            //taskSet = new HashSet<LoadImage>();
+        }
+
+        public void run() {
+            for (Pair<String, MyListView> pair : listarray) {
+                //LoadImage i =  new LoadImage(cs.getCarSeableName(),cs.getPicPath());
+                HttpURLConnection con = null;
+                FileOutputStream fos = null;
+                BufferedOutputStream bos = null;
+                BufferedInputStream bis = null;
+                File imageFile = null;
+                SimpleAdapter simpleAdapter = (SimpleAdapter) pair.second.getAdapter();
+                for (int i = 0; i < simpleAdapter.getCount(); i++) {
+                    Map<String, Object> map = (Map<String, Object>) simpleAdapter.getItem(i);
+                    Bitmap bitmap =null;
+                    String imageUrl=CarSeableData.find(CarBrand).findCarSeries(CarSeries).getPicPath();
+                    imageFile = new File(getImagePath(imageUrl));
+                    try {
+                        if (!imageFile.exists()) {
+                            URL url = new URL(imageUrl);
+                            con = (HttpURLConnection) url.openConnection();
+                            con.setConnectTimeout(5 * 1000);
+                            con.setReadTimeout(15 * 1000);
+                            con.setDoInput(true);
+                            con.setDoOutput(true);
+                            bis = new BufferedInputStream(con.getInputStream());
+                            imageFile = new File(getImagePath(imageUrl));
+                            fos = new FileOutputStream(imageFile);
+                            bos = new BufferedOutputStream(fos);
+                            byte[] b = new byte[1024];
+                            int length;
+                            while ((length = bis.read(b)) != -1) {
+                                bos.write(b, 0, length);
+                                bos.flush();
+                            }
+                            if (bis != null) {
+                                bis.close();
+                            }
+                            if (bos != null) {
+                                bos.close();
+                            }
+                            bitmap = BitmapFactory.decodeFile(getImagePath(imageUrl));
+
+                        }
+                        else{
+                            bitmap = BitmapFactory.decodeFile(getImagePath(getImagePath(imageUrl)));
+                        }
+                        if (bitmap!= null) {
+                            map.put("img", bitmap);
+                            cwjHandler.post(new UpdateRunnable(simpleAdapter));
+                        }
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            }
+        }
+
+        private String getSDPath(){
+            File sdDir = null;
+            boolean sdCardExist = Environment.getExternalStorageState()
+                    .equals(Environment.MEDIA_MOUNTED);   //判断sd卡是否存在
+            if   (sdCardExist)
+            {
+                sdDir = Environment.getExternalStorageDirectory();//获取跟目录
+            }
+            return sdDir.toString();
+
+        }
+
+
+        private String getImagePath(String imageUrl) {
+            int lastSlashIndex = imageUrl.lastIndexOf("/");
+            String imageTPath = imageUrl.substring(0,lastSlashIndex );
+            String extra = imageUrl.substring(imageUrl.lastIndexOf("."));
+            lastSlashIndex = imageTPath.lastIndexOf("/");
+            String imageName = imageTPath.substring(lastSlashIndex+1);
+            imageName += extra;
+
+            String imageDir = getSDPath()
+                    + "/CarBook/Cache/";
+            File file = new File(imageDir);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            String imagePath = imageDir + imageName;
+
+            return imagePath;
+        }
+
+    }
 
 }
 

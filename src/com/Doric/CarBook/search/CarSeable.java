@@ -61,52 +61,9 @@ class CarSeable {
             new GetSeries().execute();
         }
         else{
-            SearchMain.searchmain.setListData(CarSeable.this.carSeriesList);
+            SearchMain.searchmain.setListData(carSeriesList);
             SearchMain.searchmain.OpenSliding();
         }
-
-        /*
-        if (carSeableName.equals("大众")) {
-
-                CarSeries  ci = new CarSeries();
-                ci.setCarSeableName(carSeableName);
-                ci.setName("D");
-                ci.gsetHighPrice(200.0);
-                ci.setLowPrice(100.0);
-                carSeriesList.add(ci);
-
-                ci = new CarSeries();
-                ci.setName("F");
-                ci.setCarSeableName(carSeableName);
-                ci.gsetHighPrice(200.0);
-                ci.setLowPrice(100.0);
-                carSeriesList.add(ci);
-
-        } else if (carSeableName.equals("福特")) {
-
-                CarSeries  ci = new CarSeries();
-            ci.setCarSeableName(carSeableName);
-                ci.setName("F");
-                ci.gsetHighPrice(200.0);
-                ci.setLowPrice(100.0);
-                carSeriesList.add(ci);
-
-        } else if (carSeableName.equals("宝马")) {
-            CarSeries  ci = new CarSeries();
-            ci.setCarSeableName(carSeableName);
-            ci.setName("B");
-            ci.gsetHighPrice(200.0);
-            ci.setLowPrice(100.0);
-            carSeriesList.add(ci);
-        } else if (carSeableName.equals("三菱")) {
-            CarSeries  ci = new CarSeries();
-            ci.setCarSeableName(carSeableName);
-            ci.setName("S");
-            ci.gsetHighPrice(200.0);
-            ci.setLowPrice(100.0);
-            carSeriesList.add(ci);
-        }*/
-
 
     }
 
@@ -142,7 +99,7 @@ class CarSeable {
 
         protected void onPreExecute() {
             super.onPreExecute();
-            //弹出"正在登录"框
+
             SearchMain.searchmain.loading();
         }
 
@@ -166,6 +123,7 @@ class CarSeable {
                         for (int i = 1; i <= num; i++) {
                             CarSeries cs = new CarSeries();
                             cs.setName(seriesObj.getString("brand_series_" + i));
+                            cs.setPicPath(Constant.BASE_URL + "/" +seriesObj.getString("brand_series_"+ i+"_url"));
                             cs.setCarSeableName(carSeableName);
 
                             carSeriesList.add(cs);
@@ -173,8 +131,8 @@ class CarSeable {
                         isload = true;
                         if (carSeriesList.size() > 0)
                             Collections.sort(carSeriesList, new ComparatorCarSeries());
-                        SearchMain.searchmain.setListData(CarSeable.this.carSeriesList);
-                        SearchMain.searchmain.OpenSliding();
+                        new SearchMain.GetPicData(carSeriesList).execute();
+
                     }
                 } catch (JSONException e) {
 

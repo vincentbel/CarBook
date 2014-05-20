@@ -122,7 +122,7 @@ public class CarSeries {
 
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            SearchMain.searchmain.stopLoading();
+
             if (carObj != null) {
                 try {
                     int success = carObj.getInt("success");
