@@ -44,7 +44,7 @@
 				$response["error_msg"] = "Delete failed!";
 				echo json_encode($response);
 			}
-		} else if ($_POST['tag'] == 'show_collect') {
+		} else if ($_POST['tag'] == 'my_collection') {
 			$user_id = $_POST['user_id'];
 			$result = $uc->show_collected_cars($user_id);
 
@@ -61,6 +61,47 @@
 			} else {
 				$response["error"] = 1;
 				$response["error_msg"] = "Show Collect failed!";
+				echo json_encode($response);
+			}
+		} else if ($_POST['tag'] == 'default_collection') {
+			$car_id = json_decode($_POST['car_id']);
+			$counter = 0;
+			foreach ($car_id as $key => $value) {
+				$car_id = $value->car_id;
+				$car = $uc->get_information_by_car_id($car_id);
+				if (!$car) {
+					break;
+				}
+				$response["car_".($counter + 1)] = $car;
+				$counter++;
+			}
+			if ($counter > 0) {
+				$response["success"] = 1;
+				$response["number"] = $counter;
+				echo json_encode($response);
+			} else {
+				$response["error"] = 1;
+				$response["error_msg"] = "Show collections failed!";
+				echo json_encode($response);
+			}
+		} else if ($_POST['tag'] == 'collect_sync') {
+			$result = json_decode($_POST['collect_data']);
+			$ans; // check the sync status
+			foreach ($result as $key => $value) {
+				$user_id = $value->user_id;
+				$car_id = $value->car_id;
+				$ans = $uc->collect_cars($user_id, $car_id);
+				if (!$ans) {
+					break;
+				}
+			}
+			$uc->close_dbc();
+			if ($ans) {
+				$response["success"] = 1;
+				echo json_encode($response);
+			} else {
+				$response["error"] = 1;
+				$response["error_msg"] = "Sync failed!";
 				echo json_encode($response);
 			}
 		}

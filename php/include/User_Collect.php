@@ -30,17 +30,23 @@
 			}
 		}
 
-		public function collect_cars($user_id,$car_id){
-			$query = "INSERT INTO user_collect(user_id,car_id,collect_time) VALUES ($user_id,$car_id,NOW())";
+		public function collect_cars($user_id, $car_id){
+			$query = "SELECT collect_id FROM user_collect WHERE user_id = $user_id and car_id=$car_id";
 			$result = mysqli_query($this->dbc,$query);
-			$this->check_sql_error($this->dbc,$query,$result);
-			if($result){
-				$c_id = mysqli_insert_id($this->dbc);
-				$query = "SELECT * FROM user_collect WHERE collect_id = $c_id";
+			if (!$result) {
+				$query = "INSERT INTO user_collect(user_id,car_id,collect_time) VALUES ($user_id,$car_id,NOW())";
 				$result = mysqli_query($this->dbc,$query);
-				return mysqli_fetch_array($result);
-			}else{
-				return false;
+				$this->check_sql_error($this->dbc,$query,$result);
+				if($result){
+					$c_id = mysqli_insert_id($this->dbc);
+					$query = "SELECT * FROM user_collect WHERE collect_id = $c_id";
+					$result = mysqli_query($this->dbc,$query);
+					return mysqli_fetch_array($result);
+				}else{
+					return false;
+				}
+			} else {
+				return true;
 			}
 		}
 
@@ -70,6 +76,7 @@
 				$query = "SELECT car_id, grade FROM car NATURAL JOIN car_grade WHERE car.car_id = $car_id";
 				$result = mysqli_query($this->dbc, $query);
 				$result = mysqli_fetch_array($result);
+				$collect_information[$counter]["car_id"] = $result["car_id"];
 				$collect_information[$counter]["grade"] = $result["grade"];
 
 				// query car's price
@@ -99,6 +106,28 @@
 
 			return $collect_information;
 		}
+
+		// get car_information by car_id
+		public function get_information_by_car_id($car_id) {
+			$query = "SELECT car_id, brand.name, brand_series.name, model_number, price_highest, price_lowest, pictures_url FROM car JOIN brand USING (brand_id) JOIN brand_series USING (series_id) WHERE car.car_id = $car_id";
+			$result = mysqli_query($this->dbc, $query);
+			$result = mysqli_fetch_array($result);
+
+			$car["car_id"] = $result[0];
+			$car["brand_name"] = $result[1];
+			$car["brand_series"] = $result[2];
+			$car["model_number"] = $result[3];
+			$car["price"] = ($result["price_lowest"]/10000)."万-".($result["price_highest"]/10000)."万";
+			$car["pictures_url"] = $result["pictures_url"]."/1.jpg";
+
+			$query = "SELECT grade FROM car NATURAL JOIN car_grade WHERE car.car_id = $car_id";			
+			$result = mysqli_query($this->dbc, $query);
+			$result = mysqli_fetch_array($result);
+			$car["grade"] = $result[0];
+
+			return $car;
+		}
+
 	}
 
 ?>
