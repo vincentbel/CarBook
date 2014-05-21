@@ -2,7 +2,6 @@ package com.Doric.CarBook.car;
 
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.*;
@@ -23,12 +22,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CarShow extends FragmentActivity implements android.app.ActionBar.TabListener {
+    // 设置标签个数
     public static final int MAX_TAB_SIZE = 5;
+    // 用来保存数据的JSONObject
     static JSONObject carInfo;
+    // 初始化carId
     int carId = 0;
-    String url = Constant.BASE_URL + "/showcar.php";
+    // 获取车辆信息的Url
+    String CarInfoUrl = Constant.BASE_URL + "/showcar.php";
+    // 用来向服务器发送请求的参数列表
     List<NameValuePair> carParamsRequest = new ArrayList<NameValuePair>();
+    // 进度条
     ProgressDialog progressDialog;
+    // 实例化车辆信息
+    CarInfor car = new CarInfor();
     /*
     实现一个可以左右滑动的，包括“综述”“图片”“参数”“报价”“评论”的车辆信息展示页面
      */
@@ -43,7 +50,7 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
         userFunctions = new UserFunctions(getApplicationContext());
 
         //发送请求并获取Json包
-
+        /*
         Bundle bundle = getIntent().getExtras();
         JSONObject jo = null;
         try {
@@ -57,13 +64,26 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        */
+
+        carParamsRequest.add(new BasicNameValuePair("tag","showcar"));
+        carParamsRequest.add(new BasicNameValuePair("brand", "BMW"));
+        carParamsRequest.add(new BasicNameValuePair("series", "7series"));
+        carParamsRequest.add(new BasicNameValuePair("model_number", "2013 740li grand"));
+
+        String carName = "BMW"+" "+"7series"+" "+"2013 740li grand";
+        System.out.println("sd" + carName);
+        car.setCarName(carName);
+
+        if (getActionBar() != null) {
+            getActionBar().setTitle(car.getCarName());
+        }
 
         //通过新线程构造car实例并初始化Activity
         new GetCarInfo().execute();
     }
 
     private void findViewById() {
-
         mViewPager = (ViewPager) this.findViewById(R.id.pager);
     }
 
@@ -165,7 +185,7 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
         protected Void doInBackground(Void... params) {
             //向服务器发送请求
             JSONParser jsonParser = new JSONParser();
-            carInfo = jsonParser.getJSONFromUrl(url, carParamsRequest);
+            carInfo = jsonParser.getJSONFromUrl(CarInfoUrl, carParamsRequest);
             return null;
         }
 
@@ -180,9 +200,7 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                CarInfor car = new CarInfor();
-                car.setCarName("BMW 7series 2013 740Li grand");
-                /*
+                 /*
                 try {
                     car.setCarName("BMW 7series 2013 740Li grand");
                     car.setCarGrade(carInfo.getString("car_grade"));
@@ -193,10 +211,9 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
                     e.printStackTrace();
                 }
                 */
-                if (getActionBar() != null) {
-                    getActionBar().setTitle(car.getCarName());
-                }
+
                 findViewById();
+                // 初始化fragment
                 initView();
             } else {
                 Toast.makeText(CarShow.this.getApplicationContext(), "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();

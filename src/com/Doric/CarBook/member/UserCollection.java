@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserCollection extends Fragment {
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.user_collection, container, false);
