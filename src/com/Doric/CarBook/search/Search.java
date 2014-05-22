@@ -329,7 +329,8 @@ class SearchGetData {
     public static void getSearchData(FragmentTransaction ft,String sysmbol){
             fragmentTransaction =ft;
             key = sysmbol;
-            searchParams.add(new BasicNameValuePair("tag", "violent_search"));
+            searchParams.add(new BasicNameValuePair("tag", "keywords_search"));
+            searchParams.add(new BasicNameValuePair("keywords",sysmbol));
             new GetSearchData().execute();
 
 
@@ -379,7 +380,7 @@ class SearchGetData {
                         }
                         if(carSerieses.size()>0) {
                             Collections.sort(carSerieses, new ComparatorCarSeries());
-                            carSerieses = PinyinSearch.search(carSerieses, key);
+
 
                         }
                         Search.setData(carSerieses);

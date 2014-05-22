@@ -2,6 +2,7 @@ package com.Doric.CarBook.search;
 
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import android.app.Fragment;
+import com.Doric.CarBook.car.CarShow;
 
 public class CarListShow extends Fragment {
 
@@ -125,16 +127,15 @@ public class CarListShow extends Fragment {
                                         int position, long id) {
                     ListView lv = (ListView) parent;
                     HashMap<String, Object> Info = (HashMap<String, Object>) lv.getItemAtPosition(position);//SimpleAdapter杩??Map
-                    //
-                    //
-                    //跳转至车辆展示、
-                    //
-                    //
-                    //
-                    Context context = getActivity().getApplicationContext();
-                    if (context == null)
-                        return;
-                    Toast.makeText(context, (String) Info.get("title"), Toast.LENGTH_LONG).show();
+
+                    Intent it = new Intent();
+                    it.putExtra("brand",CarBrand);
+                    it.putExtra("series",CarSeries);
+                    it.putExtra("model_number",(String)Info.get("title"));
+                    it.setClass(SearchMain.searchmain, CarShow.class);
+                    SearchMain.searchmain.startActivity(it);
+
+
 
                 }
 

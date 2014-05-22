@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.util.Pair;
@@ -71,6 +72,9 @@ public class SearchMain extends Activity {
                 //根据android api所说，用当前的PlanetFragment来替换之前存在的Fragment。
 
                 return true;
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -92,6 +96,7 @@ public class SearchMain extends Activity {
         //获取数据
 
         //获取控件
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         progressDialog = new ProgressDialog(this);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mDrawerList = (ListView) findViewById(R.id.drawerListView);
@@ -99,7 +104,6 @@ public class SearchMain extends Activity {
 
 
     }
-
 
     //打包车系
     private ArrayList<Map<String, Object>> getUniformDataSeries(ArrayList<CarSeries> al_cs) {

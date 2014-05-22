@@ -287,11 +287,14 @@ class CSearchGetData{
     public static void getCSearchData(FragmentTransaction ft,Double hig,Double low,Grade gra){
 
         grade= gra;
-
+        ArrayList<String> stringArrayList = grade.getSelected();
         carInfoParams.add(new BasicNameValuePair("tag", "conditional_search"));
         carInfoParams.add(new BasicNameValuePair("low_price", low.toString()));
         carInfoParams.add(new BasicNameValuePair("high_price",hig.toString()));
-        carInfoParams.add(new BasicNameValuePair("grade",""));
+        carInfoParams.add(new BasicNameValuePair("grade_num",new Integer(stringArrayList.size()).toString()));
+        for(int i=1;i<=stringArrayList.size();i++){
+            carInfoParams.add(new BasicNameValuePair("grade_"+i,stringArrayList.get(i)));
+        }
         fragmentTransaction=ft;
         //Undone..
         new GetCarInfo().execute();
@@ -343,7 +346,7 @@ class CSearchGetData{
                         carlist.add(cs);
 
                     }
-
+                    /*
                     ArrayList<CarInfor> delete = new ArrayList<CarInfor>();
                     for (CarInfor ci : carlist) {
                         if(grade.getValue(ci.getCarGrade())==false){
@@ -351,7 +354,7 @@ class CSearchGetData{
                         }
                     }
                     carlist.removeAll(delete);
-
+                    */
 
                     if (carlist.size() > 0) {
                         Collections.sort(carlist, new ComparatorCarInfo());

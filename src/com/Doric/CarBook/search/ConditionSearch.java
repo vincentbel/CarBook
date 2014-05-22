@@ -9,6 +9,7 @@ import android.widget.*;
 import com.Doric.CarBook.R;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -79,26 +80,12 @@ public class ConditionSearch extends Fragment {
             public void onClick(View v) {
 
                 createGrade(grade);
-                if (grade.isChoose()) {
+                String text = (String) spinner.getSelectedItem();
+                Double l = new Double(0.0);
+                Double h = new Double(0.0);
+                Price p =findPrice(text);
+                SearchMain.searchmain.SearchToResult(p.low,p.high,grade);
 
-
-                    String text = (String) spinner.getSelectedItem();
-                    Double l = new Double(0.0);
-                    Double h = new Double(0.0);
-                    Price p =findPrice(text);
-
-                    SearchMain.searchmain.SearchToResult(p.low,p.high,grade);
-                    /*
-                    Intent it = new Intent();
-                    Toast.makeText(ConditionSearch.this, text,Toast.LENGTH_LONG).show();
-                    it.putExtra("pricelow",l);
-                    it.putExtra("pricehig",h);
-                    it.putExtra("grade",grade);
-                    it.setClass(ConditionSearch.this, Result.class);
-                    */
-                    //ConditionSearch.this.startActivity(it);
-                    //ConditionSearch.this.finish();
-                }
             }
 
         });
@@ -117,21 +104,57 @@ public class ConditionSearch extends Fragment {
 
     private void createCarPriceGrades() {
         PriceGrade p = new PriceGrade();
-        p.text = "5万以下";
-        p.higPrice = 50000.0;
+        p.text = "10万以下";
+        p.higPrice = 100000.0;
         p.lowPrice = 0.0;
         priceGrades.add(p);
 
         p = new PriceGrade();
-        p.text = "5万到8万";
-        p.higPrice = 80000.0;
-        p.lowPrice = 50000.0;
+        p.text = "10万到20万";
+        p.higPrice = 200000.0;
+        p.lowPrice = 100000.0;
         priceGrades.add(p);
 
         p = new PriceGrade();
-        p.text = "8万以上";
-        p.higPrice = 999999999.0;
-        p.lowPrice = 80000.0;
+        p.text = "20万到40万";
+        p.higPrice = 400000.0;
+        p.lowPrice = 200000.0;
+        priceGrades.add(p);
+
+        p = new PriceGrade();
+        p.text = "40万到60万";
+        p.higPrice = 600000.0;
+        p.lowPrice = 400000.0;
+        priceGrades.add(p);
+
+        p = new PriceGrade();
+        p.text = "60万到100万";
+        p.higPrice = 600000.0;
+        p.lowPrice = 1000000.0;
+        priceGrades.add(p);
+
+        p = new PriceGrade();
+        p.text = "100万到150万";
+        p.higPrice = 1500000.0;
+        p.lowPrice = 1000000.0;
+        priceGrades.add(p);
+
+        p = new PriceGrade();
+        p.text = "150万到200万";
+        p.higPrice = 2000000.0;
+        p.lowPrice = 1500000.0;
+        priceGrades.add(p);
+
+        p = new PriceGrade();
+        p.text = "200万到300万";
+        p.higPrice = 3000000.0;
+        p.lowPrice = 2000000.0;
+        priceGrades.add(p);
+
+        p = new PriceGrade();
+        p.text = "300万以上";
+        p.higPrice = 9999999999.0;
+        p.lowPrice = 3000000.0;
         priceGrades.add(p);
     }
 
@@ -256,7 +279,7 @@ class PriceGrade {
 
 
 class Grade implements Serializable {
-    static String[] mstring;
+    public static String[] mstring;
     public  Map<String, Boolean> gradeMap = new HashMap<String, Boolean>();
 
     public Grade() {
@@ -294,6 +317,15 @@ class Grade implements Serializable {
     public boolean isChoose() {
         Collection<Boolean> lb = gradeMap.values();
         return lb.contains(Boolean.TRUE);
+    }
+
+    public ArrayList<String> getSelected(){
+        ArrayList<String>  re=new ArrayList<String>();
+        for(int i=0;i<17;i++){
+            if(getValue(Grade.mstring[i]))
+                re.add(Grade.mstring[i]);
+        }
+        return  re;
     }
 
     public boolean getValue(String key) {
