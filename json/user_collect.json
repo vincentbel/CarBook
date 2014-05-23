@@ -1,0 +1,45 @@
+// collect car succeed
+{
+	"success": 1,
+	"error": 0,
+	"collect_time": "2014-05-19 13:12:52"
+}
+// failed
+{
+	"success": 0,
+	"error": 1,
+	"error_msg": "Collect failed!"
+}
+
+// delect collect succeed
+{
+	"success": 1,
+	"error": 0
+}
+// failed
+{
+	"success": 0,
+	"error": 1
+}
+
+// show collected car
+{
+	"success": 1,
+	"error": 0,
+	"number": 1,
+	"car_1": {
+		"car_id": 1,
+		"grade": "\u8c6a\u534e\u8f66",
+		"price": "117\u4e07-144.4\u4e07",
+		"brand": "BMW",
+		"brand_series": "7series",
+		"model_number": "2013 740Li grand",
+		"pictures_url": "picture\/BMW\/7series\/1.jpg"
+	}
+}
+// failed
+{
+	"success": 0,
+	"error": 1,
+	"error_msg": "Show Collect failed!"
+}

@@ -61,6 +61,52 @@
 			}
 		}
 
+		public function verify_password($user_id, $password) {
+			$query = "SELECT * FROM user WHERE user_id = $user_id";
+			$result = mysqli_query($this->dbc, $query);
+			// check the query
+			$this->check_sql_error($this->dbc, $query, $result);
+			$no_of_rows = mysqli_num_rows($result);
+			if ($no_of_rows > 0) {
+				$result = mysqli_fetch_array($result);
+				$salt = $result['salt'];
+				$encrypted_password = $result['encrypted_password'];
+				$hash = $this->checkhashSSHA($salt, $password);
+				// check for password equality
+				if ($encrypted_password == $hash) {
+					return true;
+				}
+			} else {
+				return false;
+			}
+		}
+
+		public function change_password($user_id, $password) {
+			$hash = $this->hashSSHA($password);
+			$encrypted_password = $hash["encrypted"]; // encrypted password
+			$salt = $hash["salt"]; // salt
+		
+			$query = "UPDATE user SET encrypted_password = '$encrypted_password',salt = '$salt' WHERE user_id = $user_id";
+			$result = mysqli_query($this->dbc, $query);
+
+			if ($result) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		public function update_avatar($user_id, $status) {
+			$query = "UPDATE user SET avatar_status = $status WHERE user_id = $user_id";
+			$result = mysqli_query($this->dbc, $query);
+			// check the query
+			$this->check_sql_error($this->dbc, $query, $result);
+			if ($result) {
+				return true;
+			} else {
+				return false;
+			}
+		}
 
 		/*
 		Has not tested yet.
@@ -91,6 +137,12 @@
 			$salt = substr($salt, 0, 10);
 			$encrypted = base64_encode(sha1($password . $salt, true). $salt);
 			$hash = array("salt" => $salt, "encrypted" => $encrypted);
+			return $hash;
+		}
+
+		public function checkhashSSHA($salt, $password) {
+			
+			$hash = base64_encode(sha1($password . $salt, true). $salt);
 			return $hash;
 		}
 	}
