@@ -6,11 +6,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.jar.JarException;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -39,18 +43,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // collection表 - 列名
     public static final String KEY_COLLECTION_CAR_ID = "car_id";
     public static final String KEY_COLLECTION_UER_ID = "user_id";
+    //public static final String KEY_IS_SYNC = "is_sync";
 
     /*************** 建表语句    *********************/
 
     // user表 - 建表语句
-    private static final String CREATE_TABLE_USER = "CREATE TABLE "
-            + TABLE_USER + "(" + KEY_ID + " INTEGER PRIMARY KEY," + KEY_USER_ID + " INTEGER,"  + KEY_USER_NAME
-            + " TEXT," + KEY_CREATED_AT + " DATETIME" + ")";
+    private static final String CREATE_TABLE_USER =
+            "CREATE TABLE " + TABLE_USER + "("
+            + KEY_ID + " INTEGER PRIMARY KEY,"
+            + KEY_USER_ID + " INTEGER DEFAULT -1,"
+            + KEY_USER_NAME + " TEXT,"
+            + KEY_CREATED_AT + " DATETIME" + ")";
 
     // collection表 - 建表语句
-    private static final String CREATE_TABLE_COLLECTION = "CREATE TABLE "
-            + TABLE_COLLECTION + "(" + KEY_ID + " INTEGER PRIMARY KEY," + KEY_COLLECTION_UER_ID
-            + " INTEGER," + KEY_COLLECTION_CAR_ID + " INTEGER," + KEY_CREATED_AT + " DATETIME" + ")";
+    private static final String CREATE_TABLE_COLLECTION =
+            "CREATE TABLE " + TABLE_COLLECTION + "("
+            + KEY_ID + " INTEGER PRIMARY KEY,"
+            + KEY_COLLECTION_UER_ID + " INTEGER,"
+            + KEY_COLLECTION_CAR_ID + " INTEGER,"
+            //+ KEY_IS_SYNC + " INTEGER DEFAULT 0,"
+            + KEY_CREATED_AT  + " DATETIME" + ")";
 
 
     //默认用户id，当用户没有登录时，收藏汽车时使用
@@ -147,18 +159,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return (count > 0);
     }
 
-    public long addCollection(int userId, int carId) {
+    public long addCollection(int userId, int carId, String datetime) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(KEY_COLLECTION_UER_ID, userId);
         values.put(KEY_COLLECTION_CAR_ID, carId);
-        values.put(KEY_CREATED_AT, getDateTime());
+        values.put(KEY_CREATED_AT, datetime);
 
         // insert row
         long id = db.insert(TABLE_COLLECTION, null, values);
         db.close();
         return id;
+    }
+
+    public long addCollection(int userId, int carId) {
+        return addCollection(userId,carId, getDateTime());
     }
 
     public long addCollection(int carId) {
@@ -179,18 +195,54 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return deleteCollection(DEFAULT_USER_ID, carId);
     }
 
-
-    public void addUserIdToCollection(int userId) {
+    /**
+     * 将collection表所有的user_id都改为@param userId
+     * @param userId  用户在服务器上的保存的user_id
+     * @return  更新的表的行数
+     */
+    public int addUserIdToCollection(int userId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_COLLECTION_UER_ID, userId);
-        db.update(TABLE_COLLECTION, values, null, null);
+        return db.update(TABLE_COLLECTION, values, null, null);
     }
-
+/*
     public void resetCollection() {
         addUserIdToCollection(DEFAULT_USER_ID);
     }
+*/
 
+
+    public String getAllCollection() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_COLLECTION;
+
+        Log.i(LOG, selectQuery);
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor == null)
+            return null;
+
+        cursor.moveToFirst();
+
+        JSONObject jsonObject;
+        JSONArray jsonArray = new JSONArray();
+
+         do {
+            try {
+                jsonObject = new JSONObject();
+                //jsonObject.put(KEY_COLLECTION_UER_ID, cursor.getInt(cursor.getColumnIndex(KEY_COLLECTION_UER_ID)));
+                jsonObject.put(KEY_COLLECTION_CAR_ID, cursor.getInt(cursor.getColumnIndex(KEY_COLLECTION_CAR_ID)));
+                jsonObject.put(KEY_CREATED_AT, cursor.getString(cursor.getColumnIndex(KEY_CREATED_AT)));
+                jsonArray.put(jsonObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } while(cursor.moveToNext());
+        return jsonArray.toString();
+    }
 
     // closing database
     public void closeDB() {
@@ -207,6 +259,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         // Delete All Rows
         db.delete(TABLE_USER, null, null);
+        db.delete(TABLE_COLLECTION,null, null);
+        db.close();
+    }
+
+    public void resetCollection() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_COLLECTION, null, null);
         db.close();
     }
 
