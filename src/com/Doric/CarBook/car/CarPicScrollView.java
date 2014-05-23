@@ -258,6 +258,7 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
         protected Void doInBackground(Void... params) {
             //向服务器发送请求
             JSONParser jsonParser = new JSONParser();
+            System.out.println("获取carPicJson");
             carPic = jsonParser.getJSONFromUrl(picUrl, carPicParams);
             return null;
         }
@@ -314,11 +315,15 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
 
         @Override
         protected Bitmap doInBackground(Integer... params) {
+            System.out.println("后台加载图片");
             mItemPosition = params[0];
             mImageUrl = CarImages.imageUrls[mItemPosition];
             Bitmap imageBitmap = imageLoader.getBitmapFromMemoryCache(mImageUrl);
             if (imageBitmap == null) {
+                System.out.println("缓存中不存在位图，需要加载图片");
                 imageBitmap = loadImage(mImageUrl);
+            }else {
+                System.out.println("缓存中存在位图，不需要加载图片");
             }
             return imageBitmap;
         }
@@ -342,9 +347,13 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
         private Bitmap loadImage(String imageUrl) {
             File imageFile = new File(getImagePath(imageUrl));
             if (!imageFile.exists()) {
+                System.out.println("sd卡中不存在准备从服务器下载");
                 downloadImage(imageUrl);
+            } else {
+                System.out.println("sd卡中存在");
             }
             if (imageUrl != null) {
+                System.out.println("从服务器下载");
                 Bitmap bitmap = ImageLoader.decodeSampledBitmapFromResource(imageFile.getPath(),
                         columnWidth);
                 if (bitmap != null) {
@@ -366,8 +375,10 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(imageWidth,
                     imageHeight);
             if (mImageView != null) {
+
                 mImageView.setImageBitmap(bitmap);
             } else {
+                System.out.println("添加图片");
                 ImageView imageView = new ImageView(getContext());
                 imageView.setLayoutParams(params);
                 imageView.setImageBitmap(bitmap);
@@ -383,6 +394,7 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
                     }
                 });
                 findColumnToAdd(imageView, imageHeight).addView(imageView);
+                System.out.println("向imageViewList中添加imageView");
                 imageViewList.add(imageView);
             }
         }
@@ -471,11 +483,14 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
                 }
             }
             if (imageFile != null) {
+                System.out.println("网络图片获取成功");
                 Bitmap bitmap = ImageLoader.decodeSampledBitmapFromResource(imageFile.getPath(),
                         columnWidth);
                 if (bitmap != null) {
                     imageLoader.addBitmapToMemoryCache(imageUrl, bitmap);
                 }
+            }else {
+                System.out.println("网络图片获取不成功");
             }
         }
 
