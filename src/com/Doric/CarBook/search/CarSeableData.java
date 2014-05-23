@@ -75,7 +75,7 @@ public class CarSeableData {
 
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            SearchMain.searchmain.stopLoading();
+
 
             if (brandObj != null) {
                 try {
@@ -93,6 +93,8 @@ public class CarSeableData {
                         if (mCarSeable.size() > 0)
                             Collections.sort(mCarSeable, new ComparatorCarSeable());
 
+
+                        SearchMain.searchmain.stopLoading();
                         fragmentTransaction.commit();
                         //context.initPage();
                     }
