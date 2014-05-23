@@ -19,7 +19,7 @@ public class ImageLoader {
      */
     private static ImageLoader mImageLoader;
 
-    private ImageLoader() {
+    public ImageLoader() {
         // 获取应用程序最大可用内存
         int maxMemory = (int) Runtime.getRuntime().maxMemory();
         int cacheSize = maxMemory / 8;
