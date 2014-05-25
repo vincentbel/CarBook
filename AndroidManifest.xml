@@ -38,14 +38,18 @@
                  android:icon="@drawable/ic_launcher"
                  android:name="com.Doric.CarBook.CarBookApplication">
 
-        <activity android:name="MainActivity"
+        <activity android:name=".Splash"
                   android:label="@string/app_name"
-                  >
+                >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity android:name="MainActivity">
+        </activity>
+
 
         <activity android:name=".member.Login"
                   android:screenOrientation="portrait" >
@@ -63,6 +67,7 @@
                   android:screenOrientation="portrait">
         </activity>
         <!-- 测试状态通知栏，需要打开的Activity -->
+
         <activity
                 android:name="com.Doric.CarBook.car.CarShow"
                 android:label="carShow"
