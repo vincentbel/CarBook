@@ -101,11 +101,12 @@
 			$com_information;
 			$car_id = $this->get_car_id();
 			// query car's grade
-			$query = "SELECT grade FROM car NATURAL JOIN car_grade WHERE car.car_id = $car_id";
+			$query = "SELECT car_id, grade FROM car NATURAL JOIN car_grade WHERE car.car_id = $car_id";
 			$result = mysqli_query($this->dbc, $query);
 			$result = mysqli_fetch_array($result);
 			$this->check_sql_error($this->dbc, $query, $result);
 			$com_information["car_grade"] = $result["grade"];
+			$com_information["car_id"] = $result["car_id"];
 			
 			// query car's body structure
 			$query = "SELECT door_number, seat_number FROM car NATURAL JOIN car_body_structure WHERE car.car_id = $car_id ";

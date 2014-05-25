@@ -3,6 +3,7 @@ package com.Doric.CarBook.car;
 /**
  * Created by Sunyao_Will on 2014/4/27.
  */
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -147,8 +148,7 @@ public class ZoomImageView extends View {
     /**
      * 将待展示的图片设置进来。
      *
-     * @param bitmap
-     *            待展示的Bitmap对象
+     * @param bitmap 待展示的Bitmap对象
      */
     public void setImageBitmap(Bitmap bitmap) {
         sourceBitmap = bitmap;

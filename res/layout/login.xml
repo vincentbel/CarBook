@@ -33,7 +33,7 @@
 
     <Button
         android:id="@+id/register"
-        android:layout_width="160dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:background="@xml/login_btn_background_white"
         android:text="注  册"
@@ -44,7 +44,7 @@
 
     <Button
         android:id="@+id/login"
-        android:layout_width="160dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:background="@xml/login_btn_background_blue"
         android:text="登  录"

@@ -1,90 +1,102 @@
 package com.Doric.CarBook.search;
 
-import android.app.Activity;
-import android.content.Intent;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Pair;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import com.Doric.CarBook.R;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import com.Doric.CarBook.car.CarInfor;
+import android.app.Fragment;
 
-public class CarListShow extends Activity {
+public class CarListShow extends Fragment {
 
     private LinearLayout mLinearLayout;
     private ScrollView mScrollView;
+    private ImageLoader imageLoader;
+    public static String CarBrand;
+    public static String CarSeries;
+    private static ArrayList<CarInfor> carlist;
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // TODO Auto-generated method stub
-        switch (item.getItemId()) {
-            //
-            case R.id.action_settings:
-                Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_LONG).show();
-                break;
-            case R.id.action_search:
-                //Toast.makeText(getApplicationContext(), "Search", Toast.LENGTH_LONG).show();
-                Intent it = new Intent();
-                it.setClass(CarListShow.this, Search.class);
-                CarListShow.this.startActivity(it);
-                break;
-            case R.id.action_conditionSearch:
-                Intent it1 = new Intent();
-                it1.setClass(CarListShow.this, ConditionSearch.class);
-                CarListShow.this.startActivity(it1);
-                break;
-            default:
-
-                //
-                return super.onOptionsItemSelected(item);
-        }
-        return true;
+    public static void setCarList(ArrayList<CarInfor> cl){
+        carlist =new ArrayList<CarInfor>();
+        carlist.addAll(cl);
     }
 
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Intent it = this.getIntent();
-        String carSeableName = it.getStringExtra("CarSeableName");
-        String carSystemName = it.getStringExtra("CarSystemName");
-        CarSeable carSeable = CarSeableData.find(carSeableName);
-        if (carSeable == null) return;
-        CarSystem carSystem =  carSeable.findCarSystem(carSystemName);
-        if(carSystem == null) return ;
-        mLinearLayout = new LinearLayout(this);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
+
+
+        initPage();
+        return mScrollView;
+
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SearchMain.searchmain.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+    public ArrayList<Map<String, Object>> getUniformData(ArrayList<CarInfor> al_cs) {
+        ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        for (CarInfor cs : al_cs) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("title", cs.getCarName());
+            //Bitmap imageBitmap = imageLoader.getBitmapFromMemoryCache(cs.getCarPicPath());
+            map.put("img", R.drawable.ic_launcher);
+            list.add(map);
+
+        }
+
+        return list;
+
+    }
+
+    public void initPage() {
+
+
+
+        ArrayList<Pair<String, ArrayList<CarInfor>>> al = PinYinIndex.getIndex_CarInfo(carlist, SearchMain.searchmain);
+
+        //界面显示
+        mLinearLayout = new LinearLayout(SearchMain.searchmain);
         LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(LinearLayout.
                 LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         mLinearLayout.setLayoutParams(param1);
         mLinearLayout.setOrientation(LinearLayout.VERTICAL);
         mLinearLayout.setBackgroundColor(Color.rgb(255, 255, 255));
 
-
-       ArrayList<Pair<String, ArrayList<CarInfor>>> al = PinYinIndex.getIndex_CarInfo(carSystem.getCarList(), this);
-
-        mScrollView = new ScrollView(this);
+        mScrollView = new ScrollView(SearchMain.searchmain);
         mScrollView.setEnabled(true);
         mScrollView.setBackgroundColor(Color.rgb(255, 255, 255));
         ScrollView.LayoutParams param2 = new ScrollView.LayoutParams(ScrollView.
                 LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT);
         mScrollView.setLayoutParams(param2);
         for (Pair<String, ArrayList<CarInfor>> pair : al) {
-            TextView text = new TextView(this);
+            TextView text = new TextView(SearchMain.searchmain);
             text.setText(pair.first);
             text.setTextColor(Color.rgb(0, 0, 0));
-            text.setBackgroundColor(Color.rgb(230,230,230));
+            text.setBackgroundColor(Color.rgb(230, 230, 230));
             text.setTextSize(20);
 
             mLinearLayout.addView(text);
-            MyListView listview = new MyListView(this);
+            MyListView listview = new MyListView(SearchMain.searchmain);
 
-            SimpleAdapter adapter = new SimpleAdapter(this, getUniformData(pair.second), R.layout.sea_list_layout,
+            SimpleAdapter adapter = new SimpleAdapter(SearchMain.searchmain, getUniformData(pair.second), R.layout.sea_list_layout,
                     new String[]{"title", "img"},
                     new int[]{R.id.title, R.id.img});
 
@@ -96,9 +108,17 @@ public class CarListShow extends Activity {
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
                     ListView lv = (ListView) parent;
-                    HashMap<String, Object> Info = (HashMap<String, Object>) lv.getItemAtPosition(position);//SimpleAdapter杩斿洖Map
-
-                    Toast.makeText(getApplicationContext(),(String)Info.get("title"),Toast.LENGTH_LONG).show();
+                    HashMap<String, Object> Info = (HashMap<String, Object>) lv.getItemAtPosition(position);//SimpleAdapter杩??Map
+                    //
+                    //
+                    //跳转至车辆展示、
+                    //
+                    //
+                    //
+                    Context context = getActivity().getApplicationContext();
+                    if (context == null)
+                        return;
+                    Toast.makeText(context, (String) Info.get("title"), Toast.LENGTH_LONG).show();
 
                 }
 
@@ -108,50 +128,6 @@ public class CarListShow extends Activity {
         mScrollView.addView(mLinearLayout);
         mScrollView.setX(0);
         mScrollView.setY(0);
-        this.setContentView(mScrollView);
-        getActionBar().setTitle("车辆列表");
-
-		
-		
-		
-		/*
-		SimpleAdapter adapter = new SimpleAdapter(this,getData(),R.layout.sea_list_layout,
-				new String[]{"title","img"},
-				new int[]{R.id.title,R.id.img});
-		
-		mMainList.setAdapter(adapter);
-		mMainList.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				CarSeable s= mCarSeable.get(position);
-				Toast.makeText(getApplicationContext(),s.getcName(),Toast.LENGTH_LONG).show();
-				
-			}
-			
-		});
-		*/
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-
-    public ArrayList<Map<String, Object>> getUniformData(ArrayList<CarInfor> al_cs) {
-        ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        for (CarInfor cs : al_cs) {
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("title", cs.getCarName());
-            map.put("img", R.drawable.ic_launcher);
-            list.add(map);
-
-        }
-
-        return list;
 
     }
 

@@ -6,12 +6,16 @@ import android.os.Handler;
 
 public class Splash extends Activity {
 
-    private final int SPLASH_DISPLAY_LENGHT = 3000; //延迟三秒 
+    private final int SPLASH_DISPLAY_LENGTH = 2000; //延迟时间
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
+
+        //隐藏Actionbar
+        getActionBar().hide();
+
         new Handler().postDelayed(new Runnable(){
 
             @Override
@@ -21,6 +25,6 @@ public class Splash extends Activity {
                 Splash.this.finish();
             }
 
-        }, SPLASH_DISPLAY_LENGHT);
+        }, SPLASH_DISPLAY_LENGTH);
     }
 }

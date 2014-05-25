@@ -24,7 +24,6 @@ proguard/
 
 .idea/
 doc/
-libs/
 ant.properties
 build.xml
 CarBook.iml
@@ -32,3 +31,4 @@ local.properties
 proguard-project.txt
 project.properties
 php/include/config.php
+php/picture/

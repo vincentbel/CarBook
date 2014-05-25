@@ -1,31 +1,20 @@
 package com.Doric.CarBook.car;
 
-import android.app.ListActivity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import com.Doric.CarBook.R;
 import org.json.JSONException;
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.util.Pair;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.*;
-import android.widget.AdapterView.OnItemClickListener;
-import com.Doric.CarBook.R;
 import org.json.JSONObject;
-import com.Doric.CarBook.car.CarShow;
-import com.Doric.CarBook.search.MyListView;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,7 +26,6 @@ public class SummaryFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.car_summary, container, false);
 
 
-
         TextView bodyStruText = (TextView) (rootView != null ? rootView.findViewById(R.id.bodyStruText) : null);
         TextView SCBText = (TextView) (rootView != null ? rootView.findViewById(R.id.SCBText) : null);
         TextView driveModeText = (TextView) (rootView != null ? rootView.findViewById(R.id.driveModeText) : null);
@@ -45,17 +33,17 @@ public class SummaryFragment extends Fragment {
 
 
         try {
-            if(driveModeText!=null){
-                driveModeText.setText("级别:"+CarShow.carInfo.getString("car_grade"));
+            if (driveModeText != null) {
+                driveModeText.setText("级别:" + CarShow.carInfo.getString("car_grade"));
             }
-            if (bodyStruText != null ) {
-                bodyStruText.setText("车身结构:"+CarShow.carInfo.getString("car_body_structure"));
+            if (bodyStruText != null) {
+                bodyStruText.setText("车身结构:" + CarShow.carInfo.getString("car_body_structure"));
             }
-            if(SCBText!=null){
-                SCBText.setText("变速箱:"+CarShow.carInfo.getString("transmission"));
+            if (SCBText != null) {
+                SCBText.setText("变速箱:" + CarShow.carInfo.getString("transmission"));
             }
-            if(lowCostText!=null){
-                lowCostText.setText("价格区间:"+CarShow.carInfo.getString("price"));
+            if (lowCostText != null) {
+                lowCostText.setText("价格区间:" + CarShow.carInfo.getString("price"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -64,9 +52,9 @@ public class SummaryFragment extends Fragment {
         //构建车行信息
         ListView storeList = (ListView) (rootView != null ? rootView.findViewById(R.id.storeList) : null);
         ArrayList<Map<String, Object>> list = getData();
-        SimpleAdapter adapter = new SimpleAdapter(getActivity().getApplicationContext(),list,R.layout.sale_company_list,
-                        new String[]{"storeName","storeAddr"},
-                        new int[]{R.id.storeName,R.id.storeAddr});
+        SimpleAdapter adapter = new SimpleAdapter(getActivity().getApplicationContext(), list, R.layout.sale_company_list,
+                new String[]{"storeName", "storeAddr"},
+                new int[]{R.id.storeName, R.id.storeAddr});
         if (storeList != null) {
             storeList.setAdapter(adapter);
             setListViewHeightBasedOnChildren(storeList);
@@ -74,15 +62,16 @@ public class SummaryFragment extends Fragment {
 
         return rootView;
     }
-    ArrayList<Map<String, Object>> getData(){
-        ArrayList<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+
+    private ArrayList<Map<String, Object>> getData() {
+        ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-            for (Integer i=1;i<=CarShow.carInfo.getInt("sale_company_num");i++){
-                map =  new HashMap<String, Object>();
-                JSONObject carSaleCompany = CarShow.carInfo.getJSONObject("sale_company_"+i.toString());
-                map.put("storeName",carSaleCompany.getString("name"));
-                map.put("storeAddr",carSaleCompany.getString("address"));
+            for (Integer i = 1; i <= CarShow.carInfo.getInt("sale_company_num"); i++) {
+                map = new HashMap<String, Object>();
+                JSONObject carSaleCompany = CarShow.carInfo.getJSONObject("sale_company_" + i.toString());
+                map.put("storeName", carSaleCompany.getString("name"));
+                map.put("storeAddr", carSaleCompany.getString("address"));
                 list.add(map);
             }
         } catch (JSONException e) {
@@ -90,7 +79,11 @@ public class SummaryFragment extends Fragment {
         }
         return list;
     }
-    public void setListViewHeightBasedOnChildren(ListView listView) {
+
+    /*
+     * 计算ListView高度，以便ScrollView进行滚动
+     */
+    private void setListViewHeightBasedOnChildren(ListView listView) {
         // 获取ListView对应的Adapter
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
@@ -113,7 +106,7 @@ public class SummaryFragment extends Fragment {
 
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         if (params != null) {
-            params.height = totalHeight+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+            params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         }
         // listView.getDividerHeight()获取子项间分隔符占用的高度
         // params.height最后得到整个ListView完整显示需要的高度

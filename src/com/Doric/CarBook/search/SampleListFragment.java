@@ -86,7 +86,7 @@ public class SampleListFragment extends ListFragment {
 
 
         SampleItem Info = (SampleItem) l.getItemAtPosition(position);//SimpleAdapter????Map
-        Toast.makeText(alphashow, carSeableName+"  "+Info.tag,Toast.LENGTH_LONG).show();
+        //Toast.makeText(alphashow, carSeableName+"  "+Info.tag,Toast.LENGTH_LONG).show();
         if (carSeableName.trim().equals("")) {
             return;
         }
@@ -94,7 +94,7 @@ public class SampleListFragment extends ListFragment {
         Intent it = new Intent();
         it.putExtra("CarSeableName", carSeableName);
         it.putExtra("CarSystemName", (String)Info.tag);
-        it.setClass(alphashow, CarListShow.class);
+        //it.setClass(alphashow, CarListShow.class);
         alphashow.startActivity(it);
     }
 }

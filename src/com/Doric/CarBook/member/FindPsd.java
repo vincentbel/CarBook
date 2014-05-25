@@ -9,9 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.Doric.CarBook.MainActivity;
+import com.Doric.CarBook.Constant;
 import com.Doric.CarBook.R;
-import com.Doric.CarBook.Static;
 import com.Doric.CarBook.utility.JSONParser;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -24,7 +23,7 @@ import java.util.List;
 public class FindPsd  extends Activity implements View.OnClickListener {
 
     //服务器请求相关变量
-    private String url = Static.BASE_URL + "/findPsd.php";  //登录请求的url,务必加上http://或https://
+    private String url = Constant.BASE_URL + "/findPsd.php";  //登录请求的url,务必加上http://或https://
     private List<NameValuePair> findPsdParams;    //登录时发送给服务器的数据
     private JSONObject findPsdInfo;       //向服务器请求得到的json对象
 

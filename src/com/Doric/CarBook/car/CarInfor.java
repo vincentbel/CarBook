@@ -24,7 +24,6 @@ public class CarInfor {
     }
 
 
-
     //获取成员变量的值
     public int getCarId() {
         return carId;
