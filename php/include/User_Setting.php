@@ -61,6 +61,40 @@
 			}
 		}
 
+		public function changePSD($username,$password){
+			$hash = $this->hashSSHA($password);
+			$encrypted_password = $hash["encrypted"]; // encrypted password
+			$salt = $hash["salt"]; // salt			
+
+			$query = "UPDATE user SET encrypted_password='$encrypted_password' ,salt = '$salt' WHERE username='$username'";
+
+			$result = mysqli_query($this->dbc,$query);
+
+			$this->check_sql_error($this->dbc, $query, $result);
+
+			if ($result){
+				return true;
+			}else{
+				return false;
+			}
+
+		}
+
+		public function changeGender($username,$gender){
+			$query = "UPDATE user SET gender = $gender,updated_at=NOW() WHERE username='$username'";
+
+			$result = mysqli_query($this->dbc,$query);
+			$this->check_sql_error($this->dbc, $query, $result);
+
+			if ($result) {
+
+				return true;
+				//return mysqli_fetch_array($result);
+			}else {
+				return false;
+			}
+
+		}
 
 		/*
 		Has not tested yet.
