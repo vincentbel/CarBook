@@ -19,7 +19,12 @@
 			
 			$this->brand = $brand;
 			$this->series = $series;
-			$this->model_number = $model_number;	
+			$this->model_number = $model_number;
+
+			// 修改汽车的浏览次数，每浏览一次，浏览次数增加一
+			$car_id = $this->get_car_id();
+			$query = "UPDATE car SET view_times = view_times + 1 WHERE car_id = $car_id";
+			mysqli_query($this->dbc, $query);	
 		}
 
 		// destructor
