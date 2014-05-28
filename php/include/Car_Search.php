@@ -165,24 +165,6 @@
 			return $car_information;
 		}
 
-	// get all car information
-		public function get_all_car_information() {
-			$query = "SELECT brand.name, brand_series.name, pictures_url, grade FROM car JOIN brand USING (brand_id) JOIN brand_series USING (series_id) JOIN car_grade USING (car_grade_id) ";
-			$result = mysqli_query($this->dbc, $query);
-			// check the query result
-			$this->check_sql_error($this->dbc, $query, $result);
-			// counter of car
-			$counter = 0;
-			while ($row = mysqli_fetch_row($result)) {
-				$car_information[$counter]["brand"] = $row[0];
-				$car_information[$counter]["brand_series"] = $row[1];
-				$car_information[$counter]["pictures_url"] = $row[2]."/1.jpg";
-				$car_information[$counter]["grade"] = $row[3];
-				$counter++;
-			}
-			$car_information["number"] = $counter;
-			return $car_information;
-		}
 
 	// search cars by keywords
 		public function search_cars_by_keywords($keywords) {

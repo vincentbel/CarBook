@@ -1,0 +1,97 @@
+{
+    "tag": "compare",
+    "success": 1,
+    "error": 0,
+    "car_1": {
+        "car_engine": {
+            "engine_model_number": "-",
+            "emission_amount": "1798",
+            "intake_form": "涡轮增压",
+            "cylinder_number": "4",
+            "cylinder_arrangement": "L",
+            "value_per_cylinder_number": "4",
+            "compression_ration": "9.6",
+            "maximum_horsepower": "160",
+            "maximum_power": "118",
+            "maximum_power_speed": "6200",
+            "fuel_type": "汽油",
+            "fuel_grade": "97号",
+            "environmental_level": "国IV(国V)"
+        },
+        "car_body_structure": {
+            "length": "4761",
+            "width": "1826",
+            "height": "1439",
+            "weight": "1550",
+            "wheelbase": "2869",
+            "minimum_ground_clearance": "188",
+            "door_number": "4",
+            "seat_number": "5",
+            "fuel_tank_capacity": "65",
+            "luggage_compartment_volume": "480"
+        },
+        "car_multimedia": {
+            "GPS": "1",
+            "bluetooth": "0",
+            "car_phone": "0",
+            "car_TV": "0",
+            "rear_LCD_screen": "0",
+            "external_audio_interface": "3",
+            "USB": "1",
+            "AUX": "1",
+            "iPod": "1",
+            "Speaker_number": "8"
+        },
+        "car_hightech": {
+            "automatic_parking": "0",
+            "night_version_system": "0",
+            "panoramic_camera": "0"
+        }
+    },
+    "car_2": {
+        "car_engine": {
+            "engine_model_number": "EA888",
+            "emission_amount": "1984",
+            "intake_form": "涡轮增压",
+            "cylinder_number": "4",
+            "cylinder_arrangement": "L",
+            "value_per_cylinder_number": "4",
+            "compression_ration": null,
+            "maximum_horsepower": "180",
+            "maximum_power": "132",
+            "maximum_power_speed": "6000",
+            "fuel_type": "汽油",
+            "fuel_grade": "97号",
+            "environmental_level": "国IV(国V)"
+        },
+        "car_body_structure": {
+            "length": "5015",
+            "width": "1874",
+            "height": "1455",
+            "weight": "1720",
+            "wheelbase": "3012",
+            "minimum_ground_clearance": "132",
+            "door_number": "4",
+            "seat_number": "5",
+            "fuel_tank_capacity": "75",
+            "luggage_compartment_volume": "460"
+        },
+        "car_multimedia": {
+            "GPS": "1",
+            "bluetooth": "0",
+            "car_phone": "0",
+            "car_TV": "0",
+            "rear_LCD_screen": "0",
+            "external_audio_interface": "3",
+            "USB": "1",
+            "AUX": "1",
+            "iPod": "1",
+            "Speaker_number": "8"
+        },
+        "car_hightech": {
+            "automatic_parking": "0",
+            "night_version_system": "0",
+            "panoramic_camera": "0"
+        }
+    }
+}

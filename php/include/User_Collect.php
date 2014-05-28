@@ -33,15 +33,17 @@
 		public function collect_cars($user_id, $car_id){
 			$query = "SELECT collect_id FROM user_collect WHERE user_id = $user_id and car_id=$car_id";
 			$result = mysqli_query($this->dbc,$query);
+			$result = mysqli_fetch_array($result);
 			if (!$result) {
 				$query = "INSERT INTO user_collect(user_id,car_id,collect_time) VALUES ($user_id,$car_id,NOW())";
 				$result = mysqli_query($this->dbc,$query);
 				$this->check_sql_error($this->dbc,$query,$result);
 				if($result){
-					$c_id = mysqli_insert_id($this->dbc);
-					$query = "SELECT * FROM user_collect WHERE collect_id = $c_id";
-					$result = mysqli_query($this->dbc,$query);
-					return mysqli_fetch_array($result);
+					// $c_id = mysqli_insert_id($this->dbc);
+					// $query = "SELECT * FROM user_collect WHERE collect_id = $c_id";
+					// $result = mysqli_query($this->dbc,$query);
+					// return mysqli_fetch_array($result);
+					return true;
 				}else{
 					return false;
 				}
@@ -125,6 +127,19 @@
 			$result = mysqli_fetch_array($result);
 			$car["grade"] = $result[0];
 
+			return $car;
+		}
+
+		public function get_cars_collect_time($user_id) {
+			$query = "SELECT car_id, collect_time FROM user_collect WHERE user_id = $user_id";
+			$result = mysqli_query($this->dbc, $query);
+			$car = array();
+			$counter = 0;
+			while ($row = mysqli_fetch_row($result)) {
+				$car[$counter]["car_id"] = $row[0];
+				$car[$counter]["collect_time"] = $row[1];
+				$counter++;
+			}
 			return $car;
 		}
 

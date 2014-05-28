@@ -35,3 +35,54 @@
  	"error": 1,
  	"error_msg": "Car not found!"
  }
+
+ // configuration
+ {
+    "tag": "configuration",
+    "success": 1,
+    "error": 0,
+    "car_engine": {
+        "engine_model_number": "N55B30A",
+        "emission_amount": "2979",
+        "intake_form": "涡轮增压",
+        "cylinder_number": "6",
+        "cylinder_arrangement": "L",
+        "value_per_cylinder_number": "4",
+        "compression_ration": null,
+        "maximum_horsepower": "320",
+        "maximum_power": "235",
+        "maximum_power_speed": "5800",
+        "fuel_type": "汽油",
+        "fuel_grade": "97号",
+        "environmental_level": "欧IV"
+    },
+    "car_body_structure": {
+        "length": "5223",
+        "width": "1902",
+        "height": "1498",
+        "weight": null,
+        "wheelbase": "3210",
+        "minimum_ground_clearance": null,
+        "door_number": "4",
+        "seat_number": "5",
+        "fuel_tank_capacity": "80",
+        "luggage_compartment_volume": null
+    },
+    "car_multimedia": {
+        "GPS": "1",
+        "bluetooth": "1",
+        "car_phone": "1",
+        "car_TV": "1",
+        "rear_LCD_screen": "2",
+        "external_audio_interface": "3",
+        "USB": "1",
+        "AUX": "1",
+        "iPod": "1",
+        "Speaker_number": "8"
+    },
+    "car_hightech": {
+        "automatic_parking": "0",
+        "night_version_system": "1",
+        "panoramic_camera": "1"
+    }
+}

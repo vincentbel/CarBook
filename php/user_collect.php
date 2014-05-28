@@ -86,22 +86,25 @@
 			}
 		} else if ($_POST['tag'] == 'collect_sync') {
 			$result = json_decode($_POST['collect_data']);
-			$ans; // check the sync status
+			$ans = true; // check the sync status
+			$user_id = $_POST['user_id'];
 			foreach ($result as $key => $value) {
-				$user_id = $value->user_id;
+				//$user_id = $value->user_id;
 				$car_id = $value->car_id;
 				$ans = $uc->collect_cars($user_id, $car_id);
 				if (!$ans) {
 					break;
 				}
 			}
-			$uc->close_dbc();
 			if ($ans) {
 				$response["success"] = 1;
+				$response["cars"] = $uc->get_cars_collect_time($user_id);
+				$uc->close_dbc();
 				echo json_encode($response);
 			} else {
 				$response["error"] = 1;
 				$response["error_msg"] = "Sync failed!";
+				$uc->close_dbc();
 				echo json_encode($response);
 			}
 		}

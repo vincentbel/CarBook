@@ -56,3 +56,27 @@ INSERT INTO car_engine(car_id, engine_model_number, emission_amount, intake_form
 INSERT INTO car_body_structure(car_id, length, width, height, weight, wheelbase, minimum_ground_clearance, door_number, seat_number, fuel_tank_capacity, luggage_compartment_volume) VALUES (21, 4319, 1785, 1441, 1340, 2629, NULL, 5, 5, 50, 1220);
 INSERT INTO car_multimedia_configuration(car_id, GPS, bluetooth, car_phone, car_TV, rear_LCD_screen, external_audio_interface, USB, AUX, iPod, Speaker_number) VALUES (21, 1, 0, 0, 0, 0, 3, 1, 1, 1, 8);
 INSERT INTO car_tech_configuration(car_id, automatic_parking, night_version_system, panoramic_camera) VALUES (21, 0, 0, 0);
+
+
+INSERT INTO car_engine(car_id, engine_model_number, emission_amount, intake_form, cylinder_number, cylinder_arrangement, value_per_cylinder_number, compression_ration, maximum_horsepower, maximum_power, maximum_power_speed, fuel_type, fuel_grade, environmental_level) VALUES (22, '-', 1798, '涡轮增压', 4, 'L', 4, 9.6, 160, 118, 6200, '汽油', '97号', '国IV(国V)');
+INSERT INTO car_body_structure(car_id, length, width, height, weight, wheelbase, minimum_ground_clearance, door_number, seat_number, fuel_tank_capacity, luggage_compartment_volume) VALUES (22, 4761, 1826, 1439, 1550, 2869, 188, 4, 5, 65, 480);
+INSERT INTO car_multimedia_configuration(car_id, GPS, bluetooth, car_phone, car_TV, rear_LCD_screen, external_audio_interface, USB, AUX, iPod, Speaker_number) VALUES (22, 1, 0, 0, 0, 0, 3, 1, 1, 1, 8);
+INSERT INTO car_tech_configuration(car_id, automatic_parking, night_version_system, panoramic_camera) VALUES (22, 0, 0, 0);
+
+
+INSERT INTO car_engine(car_id, engine_model_number, emission_amount, intake_form, cylinder_number, cylinder_arrangement, value_per_cylinder_number, compression_ration, maximum_horsepower, maximum_power, maximum_power_speed, fuel_type, fuel_grade, environmental_level) VALUES (23, '-', 1798, '涡轮增压', 4, 'L', 4, 9.6, 160, 118, 6200, '汽油', '97号', '国IV(国V)');
+INSERT INTO car_body_structure(car_id, length, width, height, weight, wheelbase, minimum_ground_clearance, door_number, seat_number, fuel_tank_capacity, luggage_compartment_volume) VALUES (23, 4761, 1826, 1439, 1550, 2869, 188, 4, 5, 65, 480);
+INSERT INTO car_multimedia_configuration(car_id, GPS, bluetooth, car_phone, car_TV, rear_LCD_screen, external_audio_interface, USB, AUX, iPod, Speaker_number) VALUES (23, 1, 0, 0, 0, 0, 3, 1, 1, 1, 8);
+INSERT INTO car_tech_configuration(car_id, automatic_parking, night_version_system, panoramic_camera) VALUES (23, 0, 0, 0);
+
+
+INSERT INTO car_engine(car_id, engine_model_number, emission_amount, intake_form, cylinder_number, cylinder_arrangement, value_per_cylinder_number, compression_ration, maximum_horsepower, maximum_power, maximum_power_speed, fuel_type, fuel_grade, environmental_level) VALUES (24, 'EA888', 1984, '涡轮增压', 4, 'L', 4, NULL, 180, 132, 6000, '汽油', '97号', '国IV(国V)');
+INSERT INTO car_body_structure(car_id, length, width, height, weight, wheelbase, minimum_ground_clearance, door_number, seat_number, fuel_tank_capacity, luggage_compartment_volume) VALUES (24, 5015, 1874, 1455, 1720, 3012, 132, 4, 5, 75, 460);
+INSERT INTO car_multimedia_configuration(car_id, GPS, bluetooth, car_phone, car_TV, rear_LCD_screen, external_audio_interface, USB, AUX, iPod, Speaker_number) VALUES (24, 1, 0, 0, 0, 0, 3, 1, 1, 1, 8);
+INSERT INTO car_tech_configuration(car_id, automatic_parking, night_version_system, panoramic_camera) VALUES (24, 0, 0, 0);
+
+
+INSERT INTO car_engine(car_id, engine_model_number, emission_amount, intake_form, cylinder_number, cylinder_arrangement, value_per_cylinder_number, compression_ration, maximum_horsepower, maximum_power, maximum_power_speed, fuel_type, fuel_grade, environmental_level) VALUES (25, 'EA888', 1984, '涡轮增压', 4, 'L', 4, NULL, 180, 132, 6000, '汽油', '97号', '国IV(国V)');
+INSERT INTO car_body_structure(car_id, length, width, height, weight, wheelbase, minimum_ground_clearance, door_number, seat_number, fuel_tank_capacity, luggage_compartment_volume) VALUES (25, 5015, 1874, 1455, 1720, 3012, 132, 4, 5, 75, 460);
+INSERT INTO car_multimedia_configuration(car_id, GPS, bluetooth, car_phone, car_TV, rear_LCD_screen, external_audio_interface, USB, AUX, iPod, Speaker_number) VALUES (25, 1, 0, 0, 0, 0, 3, 1, 1, 1, 8);
+INSERT INTO car_tech_configuration(car_id, automatic_parking, night_version_system, panoramic_camera) VALUES (25, 0, 0, 0);

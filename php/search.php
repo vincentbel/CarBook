@@ -40,6 +40,11 @@
 			}
 		} else if ($tag == 'brand_series') {
 			$brand = $_POST['brand'];
+			//$brand = iconv('gbk', 'UTF-8', $brand);
+			// $f = fopen("file.txt", "w");
+			// fwrite($f, $brand);
+			// fclose($f);
+
 			$brand_series = $db->get_brand_series($brand);
 			// close connection
 			$db->close_dbc();
@@ -85,38 +90,56 @@
 		} else if ($tag == 'conditional_search') {
 			$low_price = $_POST['low_price'];
 			$high_price = $_POST['high_price'];
-			$grade = $_POST['grade'];
+			$grade_num = $_POST['grade_num'];
+			$grade;
+			if ($grade_num > 0) {
+				for ($i = 0; $i < $grade_num; $i++) {
+					$grade[$i] = $_POST["grade_".($i + 1)];
+				}
+			}
 
 			// conditional search result;
 			$car;
-			
-			if ($low_price != '' && $high_price != '' && $grade == '') {
+			$car["types_number"] = $grade_num;
+
+			if ($low_price != '' && $high_price != '' && $grade_num == 0) {
 				// the car search by prices
-				$car = $db->get_car_between_prices($low_price, $high_price);
+				$car[0] = $db->get_car_between_prices($low_price, $high_price);
+				$car["types_number"] = 1;
 				// close connection
 				$db->close_dbc();
 
-			} else if ($low_price == '' && $high_price == '' && $grade != '') {
+			} else if ($low_price == '' && $high_price == '' && $grade_num > 0) {
 				// the car search by prices
-				$car = $db->get_car_by_grade($grade);
+				for ($i = 0; $i < $grade_num; $i++) {
+					$car[$i] = $db->get_car_by_grade($grade[$i]);
+				}
 				// close connection
 				$db->close_dbc();
 
-			} else if ($low_price != '' && $high_price != '' && $grade != '') {
+			} else if ($low_price != '' && $high_price != '' && $grade_num > 0) {
 				// the car search by prices and grade
-				$car = $db->get_car_by_grade_price($low_price, $high_price, $grade);
+				for ($i = 0; $i < $grade_num; $i++) {
+					$car[$i] = $db->get_car_by_grade_price($low_price, $high_price, $grade[$i]);
+				}
 				// close connection
 				$db->close_dbc();
 			
 			}
-			if ($car["number"] > 0) {
+			if ($car["types_number"] > 0) {
 				// car found
 				$response["success"] = 1;
-				$response["search_number"] = $car["number"];
-			
-				for ($i = 0; $i < $car["number"]; $i++) {
-					$response["car_".($i+1)] = $car[$i];
+				$response["search_number"] = 0;
+				for ($i = 0; $i < $car["types_number"]; $i++){
+					$response["search_number"] += $car[$i]["number"];
 				}
+				$counter = 0;
+				for ($i = 0; $i < $car["types_number"]; $i++){
+					for ($j = 0; $j < $car[$i]["number"]; $j++) {
+						$response["car_".($counter+1)] = $car[$i][$j];
+						$counter++;
+					}					
+				}			
 				echo json_encode($response);
 			} else {
 				// car not found
