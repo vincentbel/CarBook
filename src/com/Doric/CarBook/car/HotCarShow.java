@@ -278,7 +278,7 @@ public class HotCarShow extends Fragment {
                 initListView();
                 initViewPager();
             } else {
-                Toast.makeText(getActivity().getApplicationContext(), "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity().getApplicationContext(), "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
             }
         }
     }

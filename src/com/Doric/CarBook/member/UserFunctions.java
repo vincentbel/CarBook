@@ -20,6 +20,7 @@ public class UserFunctions {
     private static String loginURL = Constant.BASE_URL + "/login.php";
     private static String registerURL = Constant.BASE_URL + "/register.php";
     private static String collectionURL = Constant.BASE_URL + "/user_collect.php";
+    private static String myCommentsURL = Constant.BASE_URL + "/user_comments.php";
 
     //标签
     private static String loginTag = "login";
@@ -29,6 +30,8 @@ public class UserFunctions {
     private static String collectionSyncTag = "collect_sync";
     private static String myCollection = "my_collection";
     private static String defaultCollection = "default_collection";
+    private static String myCommentsTag = "my_comments";
+
 
     DatabaseHelper db;   //本地SQLite数据库辅助类
     private JSONParser jsonParser;     //json传输数据工具类
@@ -237,5 +240,14 @@ public class UserFunctions {
 
     public boolean isCollected(int carId) {
         return db.isCarCollected(carId);
+    }
+
+
+
+    public JSONObject getMyComments() {
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("tag", myCommentsTag));
+        params.add(new BasicNameValuePair("user_id", getUserId() + ""));
+        return jsonParser.getJSONFromUrl(myCommentsURL, params);
     }
 }

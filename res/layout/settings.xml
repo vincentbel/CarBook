@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_height="match_parent"
+              android:layout_width="match_parent"
+              android:divider="?android:listDivider"
+              android:showDividers="middle"
+              android:layout_margin="8dp"
+              >
+
+    <ListView android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:id="@+id/system_settings_list"
+              android:divider="?android:listDivider"
+              android:dividerHeight="0.5dp"
+              android:headerDividersEnabled="true"
+              android:layout_marginBottom="32dp"
+            />
+
+    <ListView android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:id="@+id/base_settings_list"
+              android:divider="?android:listDivider"
+              android:dividerHeight="0.5dp"
+              android:footerDividersEnabled="true"
+            />
+
+</LinearLayout>
+
+<!--
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#EEEEEE"
+                android:padding="8dp"
+                android:orientation="vertical" >
+
+    <LinearLayout android:id="@+id/base_setting"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:divider="?android:attr/listDivider"
+                  android:dividerPadding="8dp"
+                  android:showDividers="middle"
+                  android:layout_margin="8dp">
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/setting_text_padding"
+                android:text="@string/clear_cache"
+                android:textSize="@dimen/setting_font_size" />
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/setting_text_padding"
+                android:text="@string/push_settings"
+                android:textSize="@dimen/setting_font_size" />
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/setting_text_padding"
+                android:text="@string/feed_back"
+                android:textSize="@dimen/setting_font_size" />
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/setting_text_padding"
+                android:text="@string/new_version"
+                android:textSize="@dimen/setting_font_size" />
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/setting_text_padding"
+                android:text="@string/about"
+                android:textSize="@dimen/setting_font_size" />
+
+    </LinearLayout>
+
+    <ImageView android:id="@+id/settings_divider"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="8dp"
+               android:layout_margin="8dp"
+               android:src="@android:color/black"
+               android:layout_below="@id/base_setting"/>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:divider="?android:attr/listDivider"
+                  android:dividerPadding="8dp"
+                  android:layout_below="@id/settings_divider"
+                  android:showDividers="end"
+                  android:layout_margin="8dp">
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/setting_text_padding"
+                android:text="@string/exit"
+                android:textSize="@dimen/setting_font_size" />
+
+    </LinearLayout>
+
+</RelativeLayout>
+-->
