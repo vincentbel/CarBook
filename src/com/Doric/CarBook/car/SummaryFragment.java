@@ -31,7 +31,7 @@ import java.util.Map;
  */
 public class SummaryFragment extends Fragment {
 
-    private int picWidth = 100; // 图片宽度。
+    private final int picWidth = 150; // 图片宽度。
 
     private ImageLoader imageLoader; // 对图片管理的工具类
 
@@ -370,7 +370,7 @@ public class SummaryFragment extends Fragment {
             if (convertView == null) {
 
                 holder=new ViewHolder();
-
+                //  关联R中控件
                 convertView = mInflater.inflate(R.layout.sale_company_list, null);
                 holder.storeAddrText = (TextView)convertView.findViewById(R.id.storeAddr);
                 holder.storeNameText = (TextView)convertView.findViewById(R.id.storeName);

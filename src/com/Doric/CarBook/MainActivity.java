@@ -18,11 +18,8 @@ import cn.jpush.android.api.InstrumentedActivity;
 import cn.jpush.android.api.JPushInterface;
 import com.Doric.CarBook.car.CarShow;
 import com.Doric.CarBook.car.HotCarShow;
-import com.Doric.CarBook.member.Login;
-import com.Doric.CarBook.member.PersonalCenter;
-import com.Doric.CarBook.member.UserCollection;
+import com.Doric.CarBook.member.*;
 import com.Doric.CarBook.push.CarShowUtil;
-import com.Doric.CarBook.member.UserFunctions;
 import com.Doric.CarBook.search.SearchMain;
 import com.Doric.CarBook.utility.DatabaseHelper;
 import android.view.View;
@@ -172,6 +169,10 @@ public class MainActivity extends InstrumentedActivity {
                 intent.setClass(MainActivity.this, CarShow.class);
                 startActivity(intent);
                 break;
+            case 5: // [ÉèÖÃ]Ä£¿é
+                fragment = new Setting();
+                fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
+                break;
             default:
                 fragment = new Fragment();
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
@@ -256,8 +257,8 @@ public class MainActivity extends InstrumentedActivity {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 rowView = inflater.inflate(R.layout.drawer_list_item, parent, false);
                 ViewHolder viewHolder = new ViewHolder();
-                viewHolder.textView = (TextView) rowView.findViewById(R.id.left_drawer_text);
-                viewHolder.imageView = (ImageView) rowView.findViewById(R.id.left_drawer_image);
+                viewHolder.textView = (TextView) (rowView != null ? rowView.findViewById(R.id.left_drawer_text) : null);
+                viewHolder.imageView = (ImageView) (rowView != null ? rowView.findViewById(R.id.left_drawer_image) : null);
                 rowView.setTag(viewHolder);
             }
 
@@ -280,5 +281,29 @@ public class MainActivity extends InstrumentedActivity {
             }
             return rowView;
         }
+    }
+
+
+    @Override
+    protected void onResume() {
+        isForeground = true;
+        super.onResume();
+    }
+    @Override
+    protected void onPause() {
+        isForeground = false;
+
+        super.onPause();
+    }
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
+    }
+    public void pushOnResume (){
+        JPushInterface.resumePush(getApplicationContext());
+    }
+    public void pushOnPause(){
+        JPushInterface.stopPush(getApplicationContext());
     }
 }

@@ -62,4 +62,9 @@
     <string name="image_url">图片链接</string>
 
     <string name="hot_car_show">热门车辆</string>
+
+    <string name="push_setting_btn">推送设置</string>
+    <string name="accept_pushing">接收推送</string>
+    <string name="start_push_time">开始接收时间</string>
+    <string name="end_push_time">结束接收时间</string>
 </resources>
