@@ -10,7 +10,7 @@
 		if($tag == 'changePsd'){
 			$username = $_POST['username'];
 			$password = $_POST['password'];
-			$result = $setting->changePSD($username,$password);
+			$result = $setting->change_password($username,$password);
 
 			if($result){
 				$response['success'] = 1;
@@ -23,7 +23,7 @@
 		if($tag == 'sex'){
 			$username = $_POST['username'];
 			$sex = $_POST['sex'];
-			$result = $setting->changeGender($username,$sex);
+			$result = $setting->update_avatar($username,$sex);
 
 			if($result){
 				$response['success'] = 1;
