@@ -41,6 +41,7 @@
 				$response["price"] = $car["price"];
 				$response["transmission"] = $car["transmission"];
 				$response["sale_company_num"] = $car["sale_company_num"];
+				$response["pictures_url"] = $car["pictures_url"];
 				for ($i = 0; $i < $car["sale_company_num"]; $i++) {
 					$response["sale_company_".($i+1)] = $car["sale_company_".($i+1)];
 				}

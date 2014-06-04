@@ -26,6 +26,8 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
     public static final int MAX_TAB_SIZE = 5;
     // 用来保存数据的JSONObject
     static JSONObject carInfo;
+    // 获取的bundle
+    static Bundle bundle;
     // 初始化carId
     int carId = 0;
     // 获取车辆信息的Url
@@ -50,28 +52,35 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
         userFunctions = new UserFunctions(getApplicationContext());
 
         //发送请求并获取Json包
-        /*
-        Bundle bundle = getIntent().getExtras();
+        bundle = getIntent().getExtras();
         JSONObject jo = null;
-        try {
+        /*try {
             jo = new JSONObject(bundle.getString("cn.jpush.android.EXTRA"));
 
             // 为向服务器发送请求做准备
-            carParamsRequest.add(new BasicNameValuePair("tag", jo.getString("tag")));
+            carParamsRequest.add(new BasicNameValuePair("tag", "showcar"));
             carParamsRequest.add(new BasicNameValuePair("brand", jo.getString("brand")));
             carParamsRequest.add(new BasicNameValuePair("series", jo.getString("series")));
             carParamsRequest.add(new BasicNameValuePair("model_number", jo.getString("model_number")));
         } catch (JSONException e) {
             e.printStackTrace();
-        }
-        */
 
-        carParamsRequest.add(new BasicNameValuePair("tag","showcar"));
-        carParamsRequest.add(new BasicNameValuePair("brand", "BMW"));
-        carParamsRequest.add(new BasicNameValuePair("series", "7series"));
-        carParamsRequest.add(new BasicNameValuePair("model_number", "2013 740li grand"));
+        }*/
 
-        String carName = "BMW"+" "+"7series"+" "+"2013 740li grand";
+
+        carParamsRequest.add(new BasicNameValuePair("tag", HotCarShow.Transform("showcar")));
+        carParamsRequest.add(new BasicNameValuePair("car_id", HotCarShow.Transform(bundle.getString("car_id"))));
+        /*carParamsRequest.add(new BasicNameValuePair("series", HotCarShow.Transform(bundle.getString("series"))));
+        carParamsRequest.add(new BasicNameValuePair("model_number", HotCarShow.Transform(bundle.getString("model_number"))));
+*/
+        /*carParamsRequest.add(new BasicNameValuePair("tag", HotCarShow.Transform("showcar")));
+        carParamsRequest.add(new BasicNameValuePair("brand", HotCarShow.Transform("奥迪")));
+        carParamsRequest.add(new BasicNameValuePair("series", HotCarShow.Transform("奥迪A6L")));
+        carParamsRequest.add(new BasicNameValuePair("model_number", HotCarShow.Transform("2014款 TFSI 手动基本型")));*/
+
+
+
+        String carName = bundle.getString("series")+" "+bundle.getString("model_number");
         System.out.println("sd" + carName);
         car.setCarName(carName);
 
@@ -90,10 +99,12 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the main; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.car_show, menu);
+        getMenuInflater().inflate(R.menu.car_show, menu)   ;
+        MenuItem collectItem = menu.findItem(R.id.action_add_to_collection);
         if (userFunctions.isCollected(carId)) {
-            MenuItem collectItem = menu.findItem(R.id.action_add_to_collection);
             collectItem.setIcon(R.drawable.ic_action_collected);
+        } else {
+            collectItem.setIcon(R.drawable.ic_action_add_to_collection);
         }
         return true;
     }
@@ -102,17 +113,11 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                //NavUtils.navigateUpFromSameTask(this);
+                this.finish();
                 return true;
             case R.id.action_add_to_collection:
-                if (!userFunctions.isCollected(carId)) {
-                    userFunctions.addToCollection(carId);
-                    Toast.makeText(getApplicationContext(), "已收藏", Toast.LENGTH_SHORT).show();
-                } else {
-                    userFunctions.cancelCollect(carId);
-                    Toast.makeText(getApplicationContext(), "已取消收藏", Toast.LENGTH_SHORT).show();
-                }
-                invalidateOptionsMenu();
+                new CollectAsync().execute();
                 return true;
         }
 
@@ -196,7 +201,12 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
             }
             if (carInfo != null) {
                 try {
-                    carId = Integer.parseInt(carInfo.getString("car_id"));
+                    if (carInfo.getInt("success")==0){
+                        Toast.makeText(CarShow.this.getApplicationContext(), "没有这破车", Toast.LENGTH_LONG).show();
+                    }else{
+                        carId = Integer.parseInt(carInfo.getString("car_id"));
+                        invalidateOptionsMenu();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -217,6 +227,37 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
                 initView();
             } else {
                 Toast.makeText(CarShow.this.getApplicationContext(), "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private class CollectAsync extends AsyncTask<Void, Void, Integer> {
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        protected Integer doInBackground(Void... params) {
+            //userFunctions.getMyCollection();   //测试用
+            if (!userFunctions.isCollected(carId)) {
+                if (userFunctions.addToCollection(carId)) {
+                    return 1;  //收藏成功，返回1
+                }
+            } else {
+                if (userFunctions.cancelCollect(carId)) {
+                    return 2;  //取消收藏成功，返回2
+                }
+            }
+            return 0;  //失败，返回0
+        }
+
+        protected void onPostExecute(Integer result) {
+            if (result == 1) {
+                invalidateOptionsMenu();
+                Toast.makeText(getApplicationContext(), "已收藏", Toast.LENGTH_SHORT).show();
+            } else if (result == 2) {
+                invalidateOptionsMenu();
+                Toast.makeText(getApplicationContext(), "已取消收藏", Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -62,10 +62,6 @@
                         <View
                                 android:id="@+id/v_dot4"
                                 style="@style/dot_style" />
-
-                        <View
-                                android:id="@+id/v_dot5"
-                                style="@style/dot_style" />
                     </LinearLayout>
                 </LinearLayout>
             </FrameLayout>

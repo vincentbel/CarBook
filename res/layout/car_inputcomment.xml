@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_height="fill_parent" android:layout_width="fill_parent"
+        android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android">
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:id="@+id/mycomment_layout"
+              android:background="#ffffff">
+                <EditText android:layout_width="match_parent" android:layout_height="40dp"
+                        android:singleLine="false"
+                        android:id="@+id/mycomment_text"
+                        android:hint="说点儿什么呗"
+                        android:textColor="#000000"
+                        android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/mycomment_btn"/>
+                <ImageButton android:layout_width="40dp" android:layout_height="30dp"
+                        android:id="@+id/mycomment_btn"
+                        android:background="@drawable/btn_comment"
+                        android:layout_centerVertical="true" android:layout_alignParentRight="true"/>
+
+        </RelativeLayout>
+
+
+        <ListView android:layout_width="fill_parent" android:layout_height="wrap_content"
+                  android:id="@+id/comment_list">
+
+        </ListView>
+  </LinearLayout>

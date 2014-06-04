@@ -135,6 +135,12 @@
 				$com_information["sale_company_".$counter]["address"] = $result["address"];
 				$counter++;
 			}
+
+			$query = "SELECT pictures_url FROM car WHERE car_id = $car_id";
+			$result = mysqli_query($this->dbc, $query);
+			$result = mysqli_fetch_array($result);
+			$url = $result["pictures_url"]."/1.jpg";
+			$com_information["pictures_url"] = $url;
 			//var_dump($com_information);
 			return $com_information;
 		}

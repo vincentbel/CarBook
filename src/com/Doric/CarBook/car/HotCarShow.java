@@ -2,6 +2,7 @@ package com.Doric.CarBook.car;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.*;
 import android.support.v4.view.PagerAdapter;
@@ -32,33 +33,34 @@ import java.util.concurrent.TimeUnit;
 
 
 public class HotCarShow extends Fragment {
-
+    //  热门车列表
+    ListView hotCarShowList = null;
     //  滚动ViewPager中显示的图片数量
     private final Integer PicNum = 5;
-    //  储存图片Url的字符串数组,ViewPager中固定只显示5张图片
-    String[] imageUrls = new String[PicNum];
     //  服务器上对应的url
-    String url = Constant.BASE_URL + "/hotcarshow.php";
-
+    String url = Constant.BASE_URL + "/favour.php";
+    // 图片管理工具类
+    private ImageLoader imageLoader = ImageLoader.getInstance();
     //  向服务器发送的请求
     List<NameValuePair> hotCarRequest = new ArrayList<NameValuePair>();
-
+    // 判断线程是否结束
+    boolean threadTag = false;
     //  进度条
     ProgressDialog progressDialog;
     // Fragment的view;
     View mView;
     //  用来接收数据的Json对象
     private JSONObject hotCarShow;
-    //  对图片管理的工具类
-    private ImageLoader imageLoader;
     //  储存所有图片
     private List<ImageView> imageViews = new ArrayList<ImageView>();
+    //  用于添加imageViews的可复用的imageView
+    private ImageView imageView = null;
     //  记录所加载的图片宽度，避免内存溢出
-    private int columnWidth;
+    private final int columnWidth = 480 ;
     //  滑动组件
     private ViewPager viewPager;
     //  图片标题
-    private String[] titles;
+    private String[] titles = new String[PicNum];
     //  图片标题的白点
     private List<View> dots;
     //  显示标题的TextView
@@ -75,6 +77,7 @@ public class HotCarShow extends Fragment {
     // or to execute periodically.
     private ScheduledExecutorService scheduledExecutorService;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.hot_car_show, container, false);
@@ -84,100 +87,119 @@ public class HotCarShow extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mView = getView();
-        columnWidth = ((FrameLayout) mView.findViewById(R.id.vp_frame_layout)).getWidth();
+        /*columnWidth = ((FrameLayout) mView.findViewById(R.id.vp_frame_layout)).getWidth();*/
         // 构建请求
-        hotCarRequest.add(new BasicNameValuePair("tag", "hotcarshow"));
-
+        hotCarRequest.add(new BasicNameValuePair("tag", "favour"));
+        // 初始化imags
+        for (int i=0;i<5;i++){
+            imageView = new ImageView(getActivity());
+            imageView.setImageResource(R.drawable.ic_launcher);
+            imageViews.add(imageView);
+        }
+        Log.d("onActivityCreated","初始化imageViews");
         // 通过新线程获取JSONObject,并初始化Activity
         new GetHotCar().execute();
     }
-
     /*
-     *  初始化ViewPager
+     *  异步进行信息的获取
      */
-    private void initViewPager() {
+    private class GetHotCar extends AsyncTask<Void, Void, Void> {
 
-        // 设置滚动图片的图片宽度
-        columnWidth = (mView.findViewById(R.id.vp_frame_layout)).getWidth();
-        // 异步获取图片信息，并构建完成ImageView的集合
-        for (Integer i = 1; i <= 5; i++) {
-            GetPicTask task = new GetPicTask();
-            task.execute(i - 1);
+        protected void onPreExecute() {
+            //加载时弹出
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage("加载中..");
+            progressDialog.setCancelable(true);
+            progressDialog.show();
         }
-        // 初始化切换用的点
-        dots = new ArrayList<View>();
-        dots.add(mView.findViewById(R.id.v_dot0));
-        dots.add(mView.findViewById(R.id.v_dot1));
-        dots.add(mView.findViewById(R.id.v_dot2));
-        dots.add(mView.findViewById(R.id.v_dot3));
-        dots.add(mView.findViewById(R.id.v_dot4));
-        dots.add(mView.findViewById(R.id.v_dot5));
-        // 初始化文字标题
-        tv_title = (TextView) mView.findViewById(R.id.tv_title);
-        tv_title.setText(titles[0]);
 
-        viewPager = (ViewPager) mView.findViewById(R.id.vp);
-        viewPager.setAdapter(new MyAdapter());// 设置填充ViewPager页面的适配器
-        // 设置一个监听器，当ViewPager中的页面改变时调用
-        viewPager.setOnPageChangeListener(new MyPageChangeListener());
+        protected Void doInBackground(Void... params) {
+            //向服务器发送请求
+            Log.d("doInBackground","获取Json包");
+            JSONParser jsonParser = new JSONParser();
+            hotCarShow = jsonParser.getJSONFromUrl(url, hotCarRequest);
+            return null;
+        }
+
+        protected void onPostExecute(Void aVoid) {
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+            // 如果检测到获取了Json包，就构建上方ViewPager和下方的ListView
+            if (hotCarShow != null) {
+                Log.d("onPostExecute","构建titles");
+                // 通过Json包，初始化ImageUrls
+                for (Integer i = 1; i <= 5; i++) {
+                    try {
+                            JSONObject car = hotCarShow.getJSONObject("car_"+i.toString());
+                            titles[i - 1] = car.getString("brand_series")+" "+
+                                            car.getString("model_number");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                initListView();
+                new GetPicData().execute();
+            } else {
+                Toast.makeText(getActivity().getApplicationContext(), "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
+            }
+        }
     }
-
-    /*
-     *  显示时ViewPager进行滚动
-     */
-    @Override
-    public void onStart() {
-        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        // 当Activity显示出来后，每两秒钟切换一次图片显示
-        scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 1, 2, TimeUnit.SECONDS);
-        super.onStart();
-    }
-
-    /*
-     *  不显示时ViewPager停止滚动
-     */
-    @Override
-    public void onStop() {
-        // 当Activity不可见的时候停止切换
-        scheduledExecutorService.shutdown();
-        super.onStop();
-    }
-
     /*
      *  初始化ListView
      */
     private void initListView() {
+        Log.d("initListView","初始化listView");
         // 设置滚动图片的图片宽度
-        columnWidth = (mView.findViewById(R.id.carPicImageView)).getWidth();
-        for (Integer i = 1; i <= 10; i++) {
-            GetPicTask task = new GetPicTask();
-            task.execute(i - 1);
-        }
+        /*columnWidth = 150;*/
+//        for (Integer i = 1; i <= 10; i++) {
+//            GetPicTask task = new GetPicTask();
+//            task.execute(i - 1);
+//        }
         // 创建热门车辆列表
-        ListView hotCarShowList = (ListView) mView.findViewById(R.id.hot_car_show_List);
+        hotCarShowList = (ListView) mView.findViewById(R.id.hot_car_show_List);
         ArrayList<Map<String, Object>> list = getData();
         SimpleAdapter adapter = new SimpleAdapter(getActivity(), list, R.layout.hot_car_show_list,
-                new String[]{"carNameTextView", "carPicImageView"},
-                new int[]{R.id.carNameTextView, R.id.carPicImageView});
-        adapter.setViewBinder(new SimpleAdapter.ViewBinder() {
-            @Override
-            public boolean setViewValue(View view, Object data, String textRepresentation) {
-                // 判断要处理的对象
-                if (view instanceof ImageView && data instanceof Bitmap) {
-                    ImageView iv = (ImageView) view;
-                    iv.setImageBitmap((Bitmap) data);
-                    return true;
-                } else
-                    return false;
-            }
-        });
+                new String[]{"car_id","carBrandTextView","carModelNumberTextView", "carPicImageView"},
+                new int[]{R.id.car_id,R.id.carBrandTextView, R.id.carModelNumberTextView,R.id.carPicImageView});
+        adapter.setViewBinder(new myViewBinder());
         if (hotCarShowList != null) {
             hotCarShowList.setAdapter(adapter);
             setListViewHeightBasedOnChildren(hotCarShowList);
         }
+        hotCarShowList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ListView tempList = (ListView) parent;
+                HashMap<String, String> map = (HashMap<String, String>) tempList.getItemAtPosition(position);
+                String car_id = map.get("car_id");
+                String brand_series = map.get("carBrandTextView");
+                String model_number = map.get("carModelNumberTextView");
+
+                Bundle bundle = new Bundle();
+                bundle.putString("car_id",car_id);
+                bundle.putString("series",brand_series);
+                bundle.putString("model_number",model_number);
+
+                Intent intent = new Intent(getActivity(),CarShow.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
 
     }
-
+    class myViewBinder implements SimpleAdapter.ViewBinder {
+        @Override
+        public boolean setViewValue(View view, Object data, String textRepresentation) {
+            if ((view instanceof ImageView) & (data instanceof Bitmap)) {
+                ImageView iv = (ImageView) view;
+                Bitmap bmp = (Bitmap) data;
+                iv.setImageBitmap(bmp);
+                return true;
+            }
+            return false;
+        }
+    }
     /*
      *  从JSONObject中获取信息
      */
@@ -185,19 +207,14 @@ public class HotCarShow extends Fragment {
         ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
 
-        // 下载十张图片
-        for (Integer i = 1; i <= 10; i++) {
-            GetPicTask task = new GetPicTask();
-            task.execute(i - 1);
-        }
-
         try {
             for (Integer i = 1; i <= 10; i++) {
+                JSONObject car = hotCarShow.getJSONObject("car_"+i.toString());
                 map = new HashMap<String, Object>();
-                map.put("carNameTextView", hotCarShow.getString("car_brand_" + i) + " " +
-                        hotCarShow.getString("car_series_" + i) + " " +
-                        hotCarShow.getString("car_model_number_" + i));
-                map.put("carPicImageView", imageViews.get(i - 1));
+                map.put("car_id",car.getString("car_id"));
+                map.put("carBrandTextView", car.getString("brand_series"));
+                map.put("carModelNumberTextView",car.getString("model_number"));
+                map.put("carPicImageView", R.drawable.ic_launcher);
                 list.add(map);
             }
         } catch (JSONException e) {
@@ -238,51 +255,78 @@ public class HotCarShow extends Fragment {
         // params.height最后得到整个ListView完整显示需要的高度
         listView.setLayoutParams(params);
     }
-
     /*
-     *  异步进行信息的获取
+     *  初始化ViewPager
      */
-    private class GetHotCar extends AsyncTask<Void, Void, Void> {
-
-        protected void onPreExecute() {
-            //加载时弹出
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage("加载中..");
-            progressDialog.setCancelable(true);
-            progressDialog.show();
-        }
-
-        protected Void doInBackground(Void... params) {
-            //向服务器发送请求
-            JSONParser jsonParser = new JSONParser();
-            hotCarShow = jsonParser.getJSONFromUrl(url, hotCarRequest);
-            return null;
-        }
-
-        protected void onPostExecute(Void aVoid) {
-            if (progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
-            // 如果检测到获取了Json包，就构建上方ViewPager和下方的ListView
-            if (hotCarShow != null) {
-                // 通过Json包，初始化ImageUrls
-                for (Integer i = 1; i <= 10; i++) {
+    private void initViewPager() {
+        for (Integer i=1;i<=5;i++){
+            imageViews.get(i-1).setTag(i);
+            imageViews.get(i-1).setOnClickListener( new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    JSONObject car = null;
                     try {
-                        imageUrls[i - 1] = Constant.BASE_URL + "/" + hotCarShow.getString("pictures_url_" + i.toString());
-                        if (i <= 5)
-                            titles[i - 1] = hotCarShow.getString("title_" + i);
+                        car = hotCarShow.getJSONObject("car_"+v.getTag());
+                        Bundle bundle = new Bundle();
+                        bundle.putString("car_id",car.getString("car_id"));
+                        bundle.putString("series",car.getString("brand_series"));
+                        bundle.putString("model_number",car.getString("model_number"));
+
+                        Intent intent = new Intent(getActivity(),CarShow.class);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                initListView();
-                initViewPager();
-            } else {
-                //Toast.makeText(getActivity().getApplicationContext(), "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
-            }
+            });
         }
+
+
+        // 设置滚动图片的图片宽度
+        /*columnWidth = (mView.findViewById(R.id.vp_frame_layout)).getWidth();*/
+        // 异步获取图片信息，并构建完成ImageView的集合
+//        for (Integer i = 1; i <= 5; i++) {
+//            GetPicTask task = new GetPicTask();
+//            task.execute(i - 1);
+//        }
+        // 初始化切换用的点
+        dots = new ArrayList<View>();
+        dots.add(mView.findViewById(R.id.v_dot0));
+        dots.add(mView.findViewById(R.id.v_dot1));
+        dots.add(mView.findViewById(R.id.v_dot2));
+        dots.add(mView.findViewById(R.id.v_dot3));
+        dots.add(mView.findViewById(R.id.v_dot4));
+        // 初始化文字标题
+        tv_title = (TextView) mView.findViewById(R.id.tv_title);
+        tv_title.setText(titles[0]);
+
+        viewPager = (ViewPager) mView.findViewById(R.id.vp);
+        viewPager.setAdapter(new MyAdapter());// 设置填充ViewPager页面的适配器
+        // 设置一个监听器，当ViewPager中的页面改变时调用
+        viewPager.setOnPageChangeListener(new MyPageChangeListener());
     }
 
+    /*
+     *  显示时ViewPager进行滚动
+     */
+    @Override
+    public void onStart() {
+        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        // 当Activity显示出来后，每两秒钟切换一次图片显示
+        scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 1, 2, TimeUnit.SECONDS);
+        super.onStart();
+    }
+
+    /*
+     *  不显示时ViewPager停止滚动
+     */
+    @Override
+    public void onStop() {
+        // 当Activity不可见的时候停止切换
+        scheduledExecutorService.shutdown();
+        super.onStop();
+    }
     /*
      *  换行切换任务
      *
@@ -291,8 +335,10 @@ public class HotCarShow extends Fragment {
 
         public void run() {
             synchronized (viewPager) {
-                System.out.println("currentItem: " + currentItem);
+                //System.out.println("currentItem: " + currentItem);
                 currentItem = (currentItem + 1) % imageViews.size();
+                Integer i = imageViews.size();
+                //Log.d("imageViews.size()",i.toString());
                 handler.obtainMessage().sendToTarget(); // 通过Handler切换图片
             }
         }
@@ -376,78 +422,132 @@ public class HotCarShow extends Fragment {
         }
     }
 
-    /*
-     *  异步下载图片的工具类
-     */
-    class GetPicTask extends AsyncTask<Integer, Void, Bitmap> {
+    final Handler cwjHandler = new Handler();
+    class UpdateRunnable implements  Runnable{
+        SimpleAdapter simpleAdapter = null;
+        public UpdateRunnable(SimpleAdapter sa){
+            simpleAdapter = sa;
+        }
+        public void run() {
+            simpleAdapter.notifyDataSetChanged();
+        }
+    };
 
-        private String mImageUrl;   // 图片的url地址
-        private ImageView mImageView; // 用来向imageViewList添加图片的可重复使用的ImageView
+    private class GetPicData extends AsyncTask<Void, Void, Void> {
 
-
-        public GetPicTask() {
+        protected void onPreExecute() {
+            //加载时弹出
+            /*progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage("加载中..");
+            progressDialog.setCancelable(true);
+            progressDialog.show();*/
         }
 
-        /**
-         * 将可重复使用的ImageView传入
-         *
-         * @param imageView
-         */
-        public GetPicTask(ImageView imageView) {
-            mImageView = imageView;
-        }
+        /*protected Void doInBackground(Void... params) {
+            Log.d("GetPicData", "获取图片");
+            //LoadImage i =  new LoadImage(cs.getCarSeableName(),cs.getPicPath());
+            HttpURLConnection con = null;
+            FileOutputStream fos = null;
+            BufferedOutputStream bos = null;
+            BufferedInputStream bis = null;
+            File imageFile = null;
+            JSONObject car = null;
 
-        @Override
-        protected Bitmap doInBackground(Integer... params) {
-            mImageUrl = imageUrls[params[0]];
-            Bitmap imageBitmap = imageLoader.getBitmapFromMemoryCache(mImageUrl);
-            if (imageBitmap == null) {
-                imageBitmap = loadImage(mImageUrl);
-            }
-            return imageBitmap;
-        }
+            SimpleAdapter simpleAdapter = (SimpleAdapter) hotCarShowList.getAdapter();
+            for (Integer i = 1; i <= simpleAdapter.getCount(); i++) {
+                Log.d("GetPicData", "download" + i.toString());
+                Map<String, Object> map = (Map<String, Object>) simpleAdapter.getItem(i - 1);
+                Bitmap bitmap = null;
+                String imageUrl = null;
+                try {
+                    car = hotCarShow.getJSONObject("car_" + i.toString());
+                    imageUrl = Constant.BASE_URL + "/" + car.getString("pictures_url");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                imageFile = new File(getImagePath(imageUrl));
+                try {
+                    if (!imageFile.exists()) {
+                        URL url = new URL(Transform(imageUrl.replace(" ", "%20")));
+                        System.out.println(url);
+                        con = (HttpURLConnection) url.openConnection();
+                        con.setConnectTimeout(5 * 1000);
+                        con.setReadTimeout(15 * 1000);
+                        con.setDoInput(true);
+                        con.setDoOutput(true);
+                        bis = new BufferedInputStream(con.getInputStream());
+                        imageFile = new File(getImagePath(imageUrl));
+                        fos = new FileOutputStream(imageFile);
+                        bos = new BufferedOutputStream(fos);
+                        byte[] b = new byte[1024];
+                        int length;
+                        while ((length = bis.read(b)) != -1) {
+                            bos.write(b, 0, length);
+                            bos.flush();
+                        }
+                        if (bis != null) {
+                            bis.close();
+                        }
+                        if (bos != null) {
+                            bos.close();
+                        }
+                        bitmap = BitmapFactory.decodeFile(getImagePath(imageUrl));
 
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            if (bitmap != null) {
-                double ratio = bitmap.getWidth() / (columnWidth * 1.0);
-                int scaledHeight = (int) (bitmap.getHeight() / ratio);
-                addImage(bitmap, columnWidth, scaledHeight);
-            }
-            //taskCollection.remove(this);
-        }
-
-        /**
-         * 向ImageView中添加一张图片
-         *
-         * @param bitmap      待添加的图片
-         * @param imageWidth  图片的宽度
-         * @param imageHeight 图片的高度
-         */
-        private void addImage(Bitmap bitmap, int imageWidth, int imageHeight) {
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(imageWidth,
-                    imageHeight);
-            if (mImageView != null) {
-                mImageView.setImageBitmap(bitmap);
-            } else {
-                ImageView imageView = new ImageView(getActivity());
-                imageView.setLayoutParams(params);
-                imageView.setImageBitmap(bitmap);
-                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setTag(R.string.image_url, mImageUrl);
-                /*
-                imageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
+                    } else {
+                        bitmap = BitmapFactory.decodeFile(getImagePath(imageUrl));
                     }
-                });
-                */
-                imageViews.add(imageView);
+                    if (bitmap != null) {
+
+                        map.put("carPicImageView", bitmap);
+                        cwjHandler.post(new UpdateRunnable(simpleAdapter));
+                        if (i <= 5) {
+                            imageViews.get(i - 1).setImageBitmap(bitmap);
+                            imageViews.get(i - 1).setScaleType(ImageView.ScaleType.CENTER_CROP);
+                        }
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
+            return null;
+        }
+*/
+        @Override
+        protected Void doInBackground(Void... params) {
+            JSONObject car = null;
+            SimpleAdapter simpleAdapter = (SimpleAdapter) hotCarShowList.getAdapter();
+
+            for (Integer i = 1; i <= simpleAdapter.getCount(); i++) {
+                Log.d("GetPicData", "download" + i.toString());
+                Map<String, Object> map = (Map<String, Object>) simpleAdapter.getItem(i - 1);
+                String mImageUrl = null;
+                try {
+                    car = hotCarShow.getJSONObject("car_" + i.toString());
+                    mImageUrl = Constant.BASE_URL + "/" + car.getString("pictures_url");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Bitmap imageBitmap = imageLoader.getBitmapFromMemoryCache(mImageUrl);
+                if (imageBitmap == null) {
+                    System.out.println("缓存中不存在位图，需要加载图片");
+                    imageBitmap = loadImage(mImageUrl);
+                }else {
+                    System.out.println("缓存中存在位图，不需要加载图片");
+                }
+                map.put("carPicImageView", imageBitmap);
+                cwjHandler.post(new UpdateRunnable(simpleAdapter));
+                if (i<=5){
+                    imageViews.get(i - 1).setImageBitmap(imageBitmap);
+                    imageViews.get(i - 1).setScaleType(ImageView.ScaleType.CENTER_CROP);
+                }
+            }
+            return null;
         }
 
-        /**
+        /*
          * 根据传入的URL，对图片进行加载。如果这张图片已经存在于SD卡中，则直接从SD卡里读取，否则就从网络上下载。
          *
          * @param imageUrl 图片的URL地址
@@ -456,9 +556,13 @@ public class HotCarShow extends Fragment {
         private Bitmap loadImage(String imageUrl) {
             File imageFile = new File(getImagePath(imageUrl));
             if (!imageFile.exists()) {
+                System.out.println("sd卡中不存在准备从服务器下载");
                 downloadImage(imageUrl);
+            } else {
+                System.out.println("sd卡中存在");
             }
             if (imageUrl != null) {
+                System.out.println("从服务器下载");
                 Bitmap bitmap = ImageLoader.decodeSampledBitmapFromResource(imageFile.getPath(),
                         columnWidth);
                 if (bitmap != null) {
@@ -469,11 +573,10 @@ public class HotCarShow extends Fragment {
             return null;
         }
 
-
-        /**
+        /*
          * 将图片下载到SD卡缓存起来。
          *
-         * @param imageUrl 图片的URL地址。
+         * @param  。
          */
         private void downloadImage(String imageUrl) {
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -487,7 +590,7 @@ public class HotCarShow extends Fragment {
             BufferedInputStream bis = null;
             File imageFile = null;
             try {
-                URL url = new URL(imageUrl);
+                URL url = new URL(Transform(imageUrl));
                 con = (HttpURLConnection) url.openConnection();
                 con.setConnectTimeout(5 * 1000);
                 con.setReadTimeout(15 * 1000);
@@ -521,31 +624,84 @@ public class HotCarShow extends Fragment {
                 }
             }
             if (imageFile != null) {
+                System.out.println("网络图片获取成功");
                 Bitmap bitmap = ImageLoader.decodeSampledBitmapFromResource(imageFile.getPath(),
                         columnWidth);
                 if (bitmap != null) {
                     imageLoader.addBitmapToMemoryCache(imageUrl, bitmap);
                 }
+            }else {
+                System.out.println("网络图片获取不成功");
             }
         }
 
-        /**
-         * 获取图片的本地存储路径。
-         *
-         * @param imageUrl 图片的URL地址。
-         * @return 图片的本地存储路径。
-         */
-        private String getImagePath(String imageUrl) {
-            int lastSlashIndex = imageUrl.lastIndexOf("/");
-            String imageName = imageUrl.substring(lastSlashIndex + 1);
-            String imageDir = Environment.getExternalStorageDirectory().getPath()
-                    + "/CarBook/Cache/";
-            File file = new File(imageDir);
-            if (!file.exists()) {
-                file.mkdirs();
-            }
-            String imagePath = imageDir + imageName;
-            return imagePath;
+        protected void onPostExecute(Void aVoid) {
+            initViewPager();
+            scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+            // 当Activity显示出来后，每两秒钟切换一次图片显示
+            scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 1, 2, TimeUnit.SECONDS);
         }
+    }
+
+
+    private String getSDPath(){
+        File sdDir = null;
+        boolean sdCardExist = Environment.getExternalStorageState()
+                .equals(Environment.MEDIA_MOUNTED);   //判断sd卡是否存在
+        if   (sdCardExist)
+        {
+            sdDir = Environment.getExternalStorageDirectory();//获取跟目录
+        }
+        return sdDir.toString();
+
+    }
+
+    /**
+     * 获取图片的本地存储路径。
+     *
+     * @param imageUrl 图片的URL地址。
+     * @return 图片的本地存储路径。
+     */
+    /*private String getImagePath(String imageUrl) {
+        int lastSlashIndex = imageUrl.lastIndexOf("/");
+        String imageName = imageUrl.substring(lastSlashIndex + 1);
+        String imageDir = Environment.getExternalStorageDirectory().getPath()
+                + "/CarBook/Cache/";
+        File file = new File(imageDir);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        String imagePath = imageDir + imageName;
+        return imagePath;
+    }*/
+    private String getImagePath(String imageUrl) {
+        int lastSlashIndex = imageUrl.lastIndexOf("/");
+        String imageTPath = imageUrl.substring(0, lastSlashIndex);
+        String extra ="_"+ imageUrl.substring(imageUrl.lastIndexOf("/")+1);
+        lastSlashIndex = imageTPath.lastIndexOf("/");
+        String imageSeries = imageTPath.substring(lastSlashIndex + 1);  //  Series
+        imageTPath = imageTPath.substring(0, lastSlashIndex);
+        String imageName = imageTPath.substring(imageTPath.lastIndexOf("/") + 1);
+        imageName = imageName + imageSeries + extra;
+        System.out.println(imageName);
+        String imageDir = getSDPath()
+                + "/CarBook/Cache/";
+        File file = new File(imageDir);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        String imagePath = imageDir + imageName;
+
+        return imagePath;
+    }
+    public static String Transform(String str){
+        byte[] b = str.getBytes();
+        char[] c = new char[b.length];
+        for (int i=0;i<b.length;i++){
+            if(b[i]!=' ')
+                c[i] = (char)(b[i]&0x00FF);
+
+        }
+        return new String(c);
     }
 }

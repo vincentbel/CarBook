@@ -12,8 +12,8 @@
         <item>热门汽车排行</item>
         <item>找车</item>
         <item>我的收藏</item>
-        <item>汽车展示</item>
         <item>设置</item>
+        <item>汽车展示</item>
     </string-array>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
@@ -42,7 +42,7 @@
     <string name="weixingche">微型车</string>
     <string name="xiaoxingche">小型车</string>
     <string name="jincouxingche">紧凑型车</string>
-    <string name="zongxingche">中型车</string>
+    <string name="zhongxingche">中型车</string>
     <string name="zhongdaxingche">中大型车</string>
     <string name="haohuache">豪华车</string>
     <string name="xiaoxingSUV">小型SUV</string>

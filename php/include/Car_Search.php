@@ -28,6 +28,19 @@
 		}
 
 	/**
+	 * get car_id by brand, series and model_number
+	 */
+		public function get_car_id($brand, $brand_series, $model_number) {
+			$query = "SELECT car_id FROM car NATURAL JOIN brand JOIN brand_series USING (series_id) JOIN car_grade USING (car_grade_id) WHERE brand.name = '$brand' AND brand_series.name = '$brand_series' AND model_number = '$model_number'";
+			$result = mysqli_query($this->dbc, $query);
+			// check the query result
+			$this->check_sql_error($this->dbc, $query, $result);
+			$result = mysqli_fetch_array($result);
+
+			return $result["car_id"];
+		}
+
+	/**
 	 *	Check SQL error and echo the error message
 	 */
 
@@ -138,7 +151,7 @@
 			$result = mysqli_query($this->dbc, $query);
 			// check the query result
 			$this->check_sql_error($this->dbc, $query, $result);
-			// counter of brand_series
+			// counter of car
 			$counter = 0;
 			while ($row = mysqli_fetch_row($result)) {
 				$car_information[$counter]["brand"] = $row[0];
@@ -150,6 +163,45 @@
 			}
 			$car_information["number"] = $counter;
 			return $car_information;
-		}		
+		}
+
+	// get all car information
+		public function get_all_car_information() {
+			$query = "SELECT brand.name, brand_series.name, pictures_url, grade FROM car JOIN brand USING (brand_id) JOIN brand_series USING (series_id) JOIN car_grade USING (car_grade_id) ";
+			$result = mysqli_query($this->dbc, $query);
+			// check the query result
+			$this->check_sql_error($this->dbc, $query, $result);
+			// counter of car
+			$counter = 0;
+			while ($row = mysqli_fetch_row($result)) {
+				$car_information[$counter]["brand"] = $row[0];
+				$car_information[$counter]["brand_series"] = $row[1];
+				$car_information[$counter]["pictures_url"] = $row[2]."/1.jpg";
+				$car_information[$counter]["grade"] = $row[3];
+				$counter++;
+			}
+			$car_information["number"] = $counter;
+			return $car_information;
+		}
+
+	// search cars by keywords
+		public function search_cars_by_keywords($keywords) {
+			$query = "SELECT brand.name, brand_series.name, model_number, pictures_url, grade FROM car JOIN brand USING (brand_id) JOIN brand_series USING (series_id) JOIN car_grade USING (car_grade_id) WHERE brand.name like '"."%".$keywords."%'"."or"." brand_series.name like '"."%".$keywords."%'";
+			$result = mysqli_query($this->dbc, $query);
+			// check the query result
+			$this->check_sql_error($this->dbc, $query, $result);
+			// counter of car
+			$counter = 0;
+			while ($row = mysqli_fetch_row($result)) {
+				$car_information[$counter]["brand"] = $row[0];
+				$car_information[$counter]["brand_series"] = $row[1];
+				$car_information[$counter]["model_number"] = $row[2];
+				$car_information[$counter]["pictures_url"] = $row[3]."/1.jpg";
+				$car_information[$counter]["grade"] = $row[4];
+				$counter++;
+			}
+			$car_information["number"] = $counter;
+			return $car_information;
+		}
 	}
 ?>

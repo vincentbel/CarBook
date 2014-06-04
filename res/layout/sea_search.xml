@@ -34,7 +34,7 @@
 
     <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
                   android:orientation="vertical"
-            android:id="@+id/searchreasult" android:layout_marginRight="58dp">
+            android:id="@+id/searchreasult" android:layout_margin="10dp">
     </LinearLayout>
 
 
