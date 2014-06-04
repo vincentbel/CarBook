@@ -3,7 +3,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.Doric.CarBook.search.SearchMain"
-      >
+      android:layout_width="match_parent">
 
     <item
             android:id="@+id/action_search"
@@ -17,4 +17,10 @@
             android:orderInCategory="100"
             android:showAsAction="ifRoom|withText"
             android:title="@string/action_ConditionSearch"/>
+    <item
+            android:id="@+id/action_cmp"
+            android:icon="@android:drawable/ic_input_add"
+            android:orderInCategory="100"
+            android:showAsAction="ifRoom|withText"
+            android:title="@string/action_cmp"/>
 </menu>

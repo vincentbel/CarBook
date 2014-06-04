@@ -3,6 +3,8 @@ package com.Doric.CarBook.settings;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import com.Doric.CarBook.R;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class SettingsFragment extends Fragment {
@@ -48,6 +51,27 @@ public class SettingsFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i) {
                     case 0: //「清除缓存」
+                        File sdDir = null;
+                        boolean sdCardExist = Environment.getExternalStorageState()
+                                .equals(Environment.MEDIA_MOUNTED);   //判断sd卡是否存在
+                        if (sdCardExist) {
+                            sdDir = Environment.getExternalStorageDirectory();//获取跟目录
+                        }
+                        String Dir = sdDir+ "/CarBook/Cache";
+                        File file = new File(Dir);
+                        if(file.isDirectory()){
+                            File[] files=file.listFiles();
+                            for(int j=0;j<files.length;j++){
+                                files[j].delete();
+                            }
+                            file.delete();
+                            Toast.makeText(getActivity().getApplicationContext(),"清除完成",Toast.LENGTH_LONG);
+                        }
+                        else{
+                            Log.d("Wrong","Delete Wrong");
+
+
+                        }
                         break;
                     //「推送设置」
                     case 1: {
@@ -87,5 +111,10 @@ public class SettingsFragment extends Fragment {
             }
         });
     }
+
+    /**
+     *获取SD卡路径
+     * @return
+     */
 
 }

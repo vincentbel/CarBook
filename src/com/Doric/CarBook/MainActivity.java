@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -17,8 +18,11 @@ import cn.jpush.android.api.InstrumentedActivity;
 import cn.jpush.android.api.JPushInterface;
 import com.Doric.CarBook.settings.SettingsFragment;
 import com.Doric.CarBook.car.HotCarShow;
+
 import com.Doric.CarBook.member.*;
+
 import com.Doric.CarBook.push.CarShowUtil;
+
 import com.Doric.CarBook.search.SearchMain;
 import com.Doric.CarBook.utility.DatabaseHelper;
 import android.view.View;
@@ -42,8 +46,10 @@ public class MainActivity extends InstrumentedActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+
         JPushInterface.init(getApplicationContext());
         registerMessageReceiver();  // 用来接收推送
+
 
 
         db = new DatabaseHelper(getApplicationContext());
@@ -102,6 +108,7 @@ public class MainActivity extends InstrumentedActivity {
         if (savedInstanceState == null) {
             selectItem(1);  //设置默认的显示页面为「热门汽车排行」
         }
+
     }
 
     @Override
@@ -163,7 +170,9 @@ public class MainActivity extends InstrumentedActivity {
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
             case 2: //「找车」模块
-                startActivity(new Intent(getApplicationContext(), SearchMain.class));
+                Intent it  =new Intent();
+                it.setClass(getApplicationContext(),SearchMain.class);
+                startActivity(it);
                 break;
             case 3: // [我的收藏]模块
                 fragment = new UserCollection();
@@ -173,6 +182,7 @@ public class MainActivity extends InstrumentedActivity {
                 fragment = new SettingsFragment();
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
+
             default:
                 break;
         }
@@ -293,6 +303,8 @@ public class MainActivity extends InstrumentedActivity {
             return rowView;
         }
     }
+
+
 
 
     @Override

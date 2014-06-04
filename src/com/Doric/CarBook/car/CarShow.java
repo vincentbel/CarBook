@@ -56,6 +56,7 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
 
         //发送请求并获取Json包
         bundle = getIntent().getExtras();
+
         // 判断是否从推送服务中获取信息
         if (bundle.get("cn.jpush.android.EXTRA")!=null) {
             Log.d("CarShow","bundle.get(\"cn.jpush.android.EXTRA\")!=null");
@@ -70,6 +71,7 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
                 car_id = jo.getString("car_id");
             } catch (JSONException e) {
                 e.printStackTrace();
+
 
             }
         }else{

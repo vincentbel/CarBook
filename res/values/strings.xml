@@ -5,7 +5,7 @@
     <string name="action_collection">收藏</string>
     <string name="action_search">搜索</string>
     <string name="action_ConditionSearch">条件搜索</string>
-
+    <string name="action_cmp">车辆对比</string>
     <!--侧拉菜单项目-->
     <string-array name="left_drawer_array">
         <item>个人中心</item>
@@ -55,6 +55,9 @@
     <string name="weimian">微面</string>
     <string name="qingke">轻客</string>
     <string name="weika">微卡</string>
+    <string name="add">添加</string>
+    <string name="add_btn">添加车型</string>
+    <string name="cmp_btn">对比</string>
 
     <string name="border_top">上部边界</string>
     <string name="border_bottom">底部边界</string>

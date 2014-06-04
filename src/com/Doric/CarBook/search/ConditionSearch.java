@@ -9,16 +9,17 @@ import android.widget.*;
 import com.Doric.CarBook.R;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import android.app.Fragment;
-import org.apache.http.NameValuePair;
 
 
+/**
+ * 条件搜索
+ */
 public class ConditionSearch extends Fragment {
 
     Spinner spinner;
@@ -81,8 +82,6 @@ public class ConditionSearch extends Fragment {
 
                 createGrade(grade);
                 String text = (String) spinner.getSelectedItem();
-                Double l = new Double(0.0);
-                Double h = new Double(0.0);
                 Price p =findPrice(text);
                 SearchMain.searchmain.SearchToResult(p.low,p.high,grade);
 
@@ -146,6 +145,7 @@ public class ConditionSearch extends Fragment {
         priceGrades.add(p);
 
         p = new PriceGrade();
+
         p.text = "200万到300万";
         p.higPrice = 3000000.0;
         p.lowPrice = 2000000.0;

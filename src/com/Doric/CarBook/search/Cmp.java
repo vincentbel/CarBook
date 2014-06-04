@@ -2,6 +2,9 @@ package com.Doric.CarBook.search;
 
 import java.util.Comparator;
 
+/**
+ * 三个比较类
+ */
 class ComparatorCarInfo implements Comparator<CarInfor> {
     @Override
     public int compare(CarInfor o1, CarInfor o2) {

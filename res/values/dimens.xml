@@ -12,6 +12,8 @@
     <dimen name="comment_name_size">15dp</dimen>
     <dimen name="comment_text_size">15dp</dimen>
 
+    <dimen name="btn_width">120dp</dimen>
+
     <dimen name="my_information_margin">8dp</dimen>
 
     <!--设置-->

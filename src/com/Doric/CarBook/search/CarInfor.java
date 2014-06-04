@@ -1,6 +1,8 @@
 package com.Doric.CarBook.search;
 
-public class CarInfor {
+import java.io.Serializable;
+
+public class CarInfor implements Serializable {
 
     //成员变量
     //通过数字表示车辆大小类型,引擎类型
@@ -9,22 +11,59 @@ public class CarInfor {
     private String carSerie;
     private String carSeable;
     private String carName;
-    private String engineType;
-    private String brandId;
     private String carGrade;
-    private Double highSpeed;
-    private Double timeTo100Km;
     private Double lowPrice;
     private Double higPrice;
-    private String transmission;
-    private String price;
-    private String carBodyStructure;
+
     private String carPicPath;
+    private String carId;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || this.getClass()!= o.getClass()) return false;
+
+        CarInfor carInfor = (CarInfor) o;
+
+
+        if (carGrade != null ? !carGrade.equals(carInfor.carGrade) : carInfor.carGrade != null) return false;
+        if (carName != null ? !carName.equals(carInfor.carName) : carInfor.carName != null) return false;
+        if (carPicPath != null ? !carPicPath.equals(carInfor.carPicPath) : carInfor.carPicPath != null) return false;
+        if (carSeable != null ? !carSeable.equals(carInfor.carSeable) : carInfor.carSeable != null) return false;
+        if (carSerie != null ? !carSerie.equals(carInfor.carSerie) : carInfor.carSerie != null) return false;
+
+        if (higPrice != null ? !higPrice.equals(carInfor.higPrice) : carInfor.higPrice != null) return false;
+
+        if (lowPrice != null ? !lowPrice.equals(carInfor.lowPrice) : carInfor.lowPrice != null) return false;
+
+
+        return true;
+    }
+
+
+    @Override
+    public int hashCode() {
+        int result = carSerie != null ? carSerie.hashCode() : 0;
+        result = 31 * result + (carSeable != null ? carSeable.hashCode() : 0);
+        result = 31 * result + (carName != null ? carName.hashCode() : 0);
+
+        result = 31 * result + (carGrade != null ? carGrade.hashCode() : 0);
+
+        result = 31 * result + (lowPrice != null ? lowPrice.hashCode() : 0);
+        result = 31 * result + (higPrice != null ? higPrice.hashCode() : 0);
+
+        result = 31 * result + (carPicPath != null ? carPicPath.hashCode() : 0);
+        return result;
+    }
 
     //构造函数
     public CarInfor() {
 
     }
+
+    public String getCarId(){    return carId; }
+
+    public void setCarId(String id){carId = id;}
 
     public String getCarSerie() {
         return carSerie;
@@ -61,30 +100,10 @@ public class CarInfor {
         this.carGrade = carGrade;
     }
 
-    public String getBrandId() {
-        return brandId;
-    }
 
-    public void setBrandId(String brandId) {
-        this.brandId = brandId;
-    }
-
-    public String getEngineType() {
-        return engineType;
-    }
-
-    public void setEngineType(String engineType) {
-        this.engineType = engineType;
-    }
-
-    public Double getHighSpeed() {
-        return highSpeed;
-    }
     //初始化变量
 
-    public void setHighSpeed(Double highSpeed) {
-        this.highSpeed = highSpeed;
-    }
+
 
     public String getCarName() {
         return carName;
@@ -94,13 +113,7 @@ public class CarInfor {
         this.carName = carName;
     }
 
-    public Double getTimeTo100Km() {
-        return timeTo100Km;
-    }
 
-    public void setTimeTo100Km(Double timeTo100Km) {
-        this.timeTo100Km = timeTo100Km;
-    }
 
     public Double getLowPrice() {
         return lowPrice;
@@ -118,27 +131,5 @@ public class CarInfor {
         this.higPrice = higPrice;
     }
 
-    public String getTransmission() {
-        return transmission;
-    }
 
-    public void setTransmission(String transmission) {
-        this.transmission = transmission;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public String getCarBodyStructure() {
-        return carBodyStructure;
-    }
-
-    public void setCarBodyStructure(String carBodyStructure) {
-        this.carBodyStructure = carBodyStructure;
-    }
 }

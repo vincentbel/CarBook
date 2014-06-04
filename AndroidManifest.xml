@@ -5,6 +5,7 @@
           android:versionName="1.0">
     <uses-sdk android:minSdkVersion="14"/>
 
+
     <permission
             android:name="com.Doric.CarBook.permission.JPUSH_MESSAGE"
             android:protectionLevel="signature" />
@@ -33,14 +34,14 @@
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
+
     <application android:label="@string/app_name"
                  android:theme="@style/Theme.Carbook"
                  android:icon="@drawable/ic_launcher"
                  android:name="com.Doric.CarBook.CarBookApplication">
 
         <activity android:name=".Splash"
-                  android:label="@string/app_name"
-                >
+                  android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -79,18 +80,27 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Settings.PushSetting"
+        <activity android:name=".settings.PushSetting"
                   android:screenOrientation="portrait">
         </activity>
 
         <activity
                 android:name="com.Doric.CarBook.search.SearchMain"
+                android:launchMode="singleInstance"
                 android:screenOrientation="portrait">
         </activity>
 
 
         <activity android:name=".car.ImageDetailsActivity">
         </activity>
+        <activity android:name=".search.CarComparison"
+                  android:launchMode="singleInstance"
+                  android:screenOrientation="portrait"
+                  />
+        <activity android:name=".search.CarCmpShow"
+                  android:screenOrientation="portrait"
+                   android:theme="@style/AppTheme"
+                  />
 
         <activity android:name=".settings.Feedback"/>
 
