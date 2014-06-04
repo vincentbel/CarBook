@@ -219,23 +219,29 @@ public class UserFunctions {
     }
 
     public JSONObject getMyCollection() {
-        if (isUserLoggedIn()) {
-            return getCollectionFromURL();
+        if (isUserLoggedIn()) {List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("tag", myCollection));
+            params.add(new BasicNameValuePair("user_id", getUserId() + ""));
+            return jsonParser.getJSONFromUrl(collectionURL, params);
         } else {
             String collectJsonString = db.getAllCollection();
+            if (collectJsonString == null) {
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("number", 0);
+                    jsonObject.put("success", 1);
+                    jsonObject.put("error", 0);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return jsonObject;
+            }
             Log.i(defaultCollection, collectJsonString);
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("tag", defaultCollection));
             params.add(new BasicNameValuePair("car_id", collectJsonString));
             return jsonParser.getJSONFromUrl(collectionURL, params);
         }
-    }
-
-    private JSONObject getCollectionFromURL() {
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("tag", myCollection));
-        params.add(new BasicNameValuePair("user_id", getUserId() + ""));
-        return jsonParser.getJSONFromUrl(collectionURL, params);
     }
 
     public boolean isCollected(int carId) {

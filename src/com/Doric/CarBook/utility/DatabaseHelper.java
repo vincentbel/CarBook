@@ -222,10 +222,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        if (cursor == null)
-            return null;
-
-        cursor.moveToFirst();
+       if (!cursor.moveToFirst())
+           return null;
 
         JSONObject jsonObject;
         JSONArray jsonArray = new JSONArray();
