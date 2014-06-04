@@ -166,9 +166,11 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
             loadOnce = true;
 
             carPicParams.add(new BasicNameValuePair("tag", "show_pictures"));
-            carPicParams.add(new BasicNameValuePair("brand", "BMW"));
-            carPicParams.add(new BasicNameValuePair("series", "7series"));
-            carPicParams.add(new BasicNameValuePair("model_number", "2013 740Li grand"));
+            carPicParams.add(new BasicNameValuePair("car_id", HotCarShow.Transform(CarShow.bundle.getString("car_id"))));
+            /*carPicParams.add(new BasicNameValuePair("brand",  HotCarShow.Transform("奥迪")));
+            carPicParams.add(new BasicNameValuePair("series", HotCarShow.Transform("奥迪A6L")));
+            carPicParams.add(new BasicNameValuePair("model_number", HotCarShow.Transform("2014款 TFSI 手动基本型")));
+            */
             new GetCarInfo().execute();
         }
     }
@@ -353,7 +355,7 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
                 System.out.println("sd卡中存在");
             }
             if (imageUrl != null) {
-                System.out.println("从服务器下载");
+                System.out.println("从缓存读取");
                 Bitmap bitmap = ImageLoader.decodeSampledBitmapFromResource(imageFile.getPath(),
                         columnWidth);
                 if (bitmap != null) {
@@ -375,7 +377,6 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(imageWidth,
                     imageHeight);
             if (mImageView != null) {
-
                 mImageView.setImageBitmap(bitmap);
             } else {
                 System.out.println("添加图片");
@@ -449,7 +450,7 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
             BufferedInputStream bis = null;
             File imageFile = null;
             try {
-                URL url = new URL(imageUrl);
+                URL url = new URL(HotCarShow.Transform(imageUrl.replace(" ", "%20")));
                 con = (HttpURLConnection) url.openConnection();
                 con.setConnectTimeout(5 * 1000);
                 con.setReadTimeout(15 * 1000);
@@ -497,19 +498,44 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
         /**
          * 获取图片的本地存储路径。
          *
+         * @return 图片的本地存储路径。
+         */
+        private String getSDPath(){
+            File sdDir = null;
+            boolean sdCardExist = Environment.getExternalStorageState()
+                    .equals(Environment.MEDIA_MOUNTED);   //判断sd卡是否存在
+            if   (sdCardExist)
+            {
+                sdDir = Environment.getExternalStorageDirectory();//获取跟目录
+            }
+            return sdDir.toString();
+
+        }
+
+        /**
+         * 获取图片的本地存储路径。
+         *
          * @param imageUrl 图片的URL地址。
          * @return 图片的本地存储路径。
          */
         private String getImagePath(String imageUrl) {
             int lastSlashIndex = imageUrl.lastIndexOf("/");
-            String imageName = imageUrl.substring(lastSlashIndex + 1);
-            String imageDir = Environment.getExternalStorageDirectory().getPath()
+            String imageTPath = imageUrl.substring(0, lastSlashIndex);
+            String extra ="_"+ imageUrl.substring(imageUrl.lastIndexOf("/")+1);
+            lastSlashIndex = imageTPath.lastIndexOf("/");
+            String imageSeries = imageTPath.substring(lastSlashIndex + 1);  //  Series
+            imageTPath = imageTPath.substring(0, lastSlashIndex);
+            String imageName = imageTPath.substring(imageTPath.lastIndexOf("/") + 1);
+            imageName = imageName + imageSeries + extra;
+            System.out.println(imageName);
+            String imageDir = getSDPath()
                     + "/CarBook/Cache/";
             File file = new File(imageDir);
             if (!file.exists()) {
                 file.mkdirs();
             }
             String imagePath = imageDir + imageName;
+
             return imagePath;
         }
     }

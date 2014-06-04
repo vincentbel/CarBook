@@ -26,6 +26,8 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
     public static final int MAX_TAB_SIZE = 5;
     // 用来保存数据的JSONObject
     static JSONObject carInfo;
+    // 获取的bundle
+    static Bundle bundle;
     // 初始化carId
     int carId = 0;
     // 获取车辆信息的Url
@@ -50,28 +52,35 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
         userFunctions = new UserFunctions(getApplicationContext());
 
         //发送请求并获取Json包
-       /* Bundle bundle = getIntent().getExtras();
+        bundle = getIntent().getExtras();
         JSONObject jo = null;
-        try {
+        /*try {
             jo = new JSONObject(bundle.getString("cn.jpush.android.EXTRA"));
 
             // 为向服务器发送请求做准备
-            carParamsRequest.add(new BasicNameValuePair("tag", jo.getString("tag")));
+            carParamsRequest.add(new BasicNameValuePair("tag", "showcar"));
             carParamsRequest.add(new BasicNameValuePair("brand", jo.getString("brand")));
             carParamsRequest.add(new BasicNameValuePair("series", jo.getString("series")));
             carParamsRequest.add(new BasicNameValuePair("model_number", jo.getString("model_number")));
         } catch (JSONException e) {
             e.printStackTrace();
 
-        }
-        */
+        }*/
 
-        carParamsRequest.add(new BasicNameValuePair("tag","showcar"));
-        carParamsRequest.add(new BasicNameValuePair("brand", "BMW"));
-        carParamsRequest.add(new BasicNameValuePair("series", "7series"));
-        carParamsRequest.add(new BasicNameValuePair("model_number", "2013 740li grand"));
 
-        String carName = "BMW"+" "+"7series"+" "+"2013 740li grand";
+        carParamsRequest.add(new BasicNameValuePair("tag", HotCarShow.Transform("showcar")));
+        carParamsRequest.add(new BasicNameValuePair("car_id", HotCarShow.Transform(bundle.getString("car_id"))));
+        /*carParamsRequest.add(new BasicNameValuePair("series", HotCarShow.Transform(bundle.getString("series"))));
+        carParamsRequest.add(new BasicNameValuePair("model_number", HotCarShow.Transform(bundle.getString("model_number"))));
+*/
+        /*carParamsRequest.add(new BasicNameValuePair("tag", HotCarShow.Transform("showcar")));
+        carParamsRequest.add(new BasicNameValuePair("brand", HotCarShow.Transform("奥迪")));
+        carParamsRequest.add(new BasicNameValuePair("series", HotCarShow.Transform("奥迪A6L")));
+        carParamsRequest.add(new BasicNameValuePair("model_number", HotCarShow.Transform("2014款 TFSI 手动基本型")));*/
+
+
+
+        String carName = bundle.getString("series")+" "+bundle.getString("model_number");
         System.out.println("sd" + carName);
         car.setCarName(carName);
 
@@ -192,8 +201,12 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
             }
             if (carInfo != null) {
                 try {
-                    carId = Integer.parseInt(carInfo.getString("car_id"));
-                    invalidateOptionsMenu();
+                    if (carInfo.getInt("success")==0){
+                        Toast.makeText(CarShow.this.getApplicationContext(), "没有这破车", Toast.LENGTH_LONG).show();
+                    }else{
+                        carId = Integer.parseInt(carInfo.getString("car_id"));
+                        invalidateOptionsMenu();
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
