@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+        android:background="#ffffff">
+        <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#DDDDDD"
+                >
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:id="@+id/first_car"
+                      android:text="first_car"
+                      android:textSize="15dp"
+                      android:singleLine="false"
+                      android:maxWidth="100dp"
+                      android:textColor="#000000"
+                      android:layout_alignParentTop="true" android:layout_centerHorizontal="true"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:id="@+id/second_car"
+                      android:text="second_car"
+                      android:textSize="15dp"
+                      android:singleLine="false"
+                      android:maxWidth="100dp"
+                      android:textColor="#000000"
+                      android:layout_marginRight="23dp"
+                      android:layout_alignParentTop="true" android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/item_list"
+              android:name="com.Doric.CarBook.search.CarArgumentFragment"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context=".ItemListActivity"
+              tools:ignore="NewApi"
+              tools:layout="@android:layout/list_content"
+              android:background="#ffffff"/>
+
+
+
+</LinearLayout>
