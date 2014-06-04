@@ -90,9 +90,9 @@ public class FindPsd2 extends Activity implements View.OnClickListener {
             else{
                 //发送用户信息到服务器
                 changePsdParams = new ArrayList<NameValuePair>();
-                changePsdParams.add(new BasicNameValuePair("tag", "findPsd"));
+                changePsdParams.add(new BasicNameValuePair("tag", "changePsd"));
                 changePsdParams.add(new BasicNameValuePair("username", name));
-                changePsdParams.add(new BasicNameValuePair("psd", psd));
+                changePsdParams.add(new BasicNameValuePair("password", psd));
 
                 //异步任务判断用户是否登录成功
                 new changePsd().execute();

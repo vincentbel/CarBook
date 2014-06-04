@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import com.Doric.CarBook.MainActivity;
 import com.Doric.CarBook.R;
 import com.Doric.CarBook.car.HotCarShow;
 
@@ -90,9 +91,11 @@ public class PersonalCenter extends Fragment implements View.OnClickListener {
             public void onClick(DialogInterface dialog, int which) {
                 userFunctions.logoutUser();
                 dialog.dismiss();
-                FragmentManager fragmentManager = getFragmentManager();
+                /*FragmentManager fragmentManager = getFragmentManager();
                 Fragment fragment = new HotCarShow();
-                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();*/
+                getActivity().finish();
+                startActivity(getActivity().getIntent());
             }
         });
         builder.create().show();

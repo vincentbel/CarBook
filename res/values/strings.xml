@@ -13,7 +13,6 @@
         <item>找车</item>
         <item>我的收藏</item>
         <item>设置</item>
-        <item>汽车展示</item>
     </string-array>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>

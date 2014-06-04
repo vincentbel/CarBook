@@ -93,7 +93,9 @@
         <activity android:name=".car.ImageDetailsActivity">
         </activity>
 
-        <activity android:name=".Settings.About"/>
+        <activity android:name=".settings.About"/>
+
+        <activity android:name=".settings.Feedback"/>
 
         <!-- Required SDK核心功能-->
         <activity

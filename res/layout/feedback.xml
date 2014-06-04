@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="#EEEEEE"
+                android:orientation="vertical" >
+
+    <RelativeLayout
+            android:id = "@+id/find_psd_bar"
+            android:layout_width = "fill_parent"
+            android:layout_height = "50dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:background="#0099FF"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true">
+        <TextView
+                android:text = "意见反馈"
+                android:textColor="#FFFFFF"
+                android:textSize="20dp"
+                android:layout_height = "wrap_content"
+                android:layout_width = "wrap_content"
+                android:id = "@+id/feedback"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"/>
+        <Button
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@xml/login_back_btn"
+                android:id="@+id/back"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"/>
+        <Button
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:background="@xml/login_btn_background_white"
+                android:id="@+id/send"
+                android:text="发送"
+                android:textSize="14dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+    <EditText
+            android:id="@+id/content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:maxEms="800"
+            android:background="@xml/login_edt_background"
+            android:gravity="start"
+            android:textColor="#000000"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_below="@+id/find_psd_bar"/>
+
+</RelativeLayout>
+

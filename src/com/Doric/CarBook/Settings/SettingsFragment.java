@@ -1,9 +1,7 @@
-package com.Doric.CarBook.Settings;
+package com.Doric.CarBook.settings;
 
 import android.app.Fragment;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,6 +63,8 @@ public class SettingsFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i) {
                     case 0: //「反馈」
+                        Intent feedbackIntent = new Intent(getActivity(), Feedback.class);
+                        startActivity(feedbackIntent);
                         break;
                     case 1: // 「新版本检测」
                         Toast.makeText(getActivity().getApplicationContext(), "当前是最新版本", Toast.LENGTH_LONG).show();
