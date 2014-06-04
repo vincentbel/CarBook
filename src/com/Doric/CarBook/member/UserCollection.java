@@ -113,6 +113,14 @@ public class UserCollection extends Fragment {
             }
             super.onPostExecute(aVoid);
             if (userCollection!=null){
+                try {
+                    if(userCollection.getInt("number")==0){
+                        noCollectionTextView.setVisibility(View.VISIBLE);
+                        return;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 initFragment();
                 new GetPicData().start();
             }else{
@@ -123,14 +131,7 @@ public class UserCollection extends Fragment {
     }
     private void initFragment(){
         Log.d("GetUserCollection","initFragment");
-        try {
-            if(userCollection.getInt("number")==0){
-                noCollectionTextView.setVisibility(View.VISIBLE);
-                return;
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
         ArrayList<Map<String, Object>> list = getData();
         SimpleAdapter adapter = new SimpleAdapter(getActivity(),list,R.layout.user_collection_list,
                 new String[]{"userCollectionThumPic","carNameText","carGradeText",

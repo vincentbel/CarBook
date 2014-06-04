@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
@@ -18,8 +19,10 @@ public class About extends Activity {
     /**
      * Hold a reference to the current animator, so that it can be canceled mid-way.
      */
+    public static final String TAG = "About";
     private Animator mCurrentAnimator;
     private int mShortAnimationDuration;
+    private ImageView appImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +30,40 @@ public class About extends Activity {
         setContentView(R.layout.about);
         getActionBar().hide();
 
+        appImageView = (ImageView) findViewById(R.id.about_doric);
         mShortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
+        //zoomOutAppIcon();
+    }
 
+    public void zoomOutAppIcon() {
+
+        final Rect startBounds = new Rect();
+        final Point globalOffset = new Point();
+
+        boolean res = findViewById(R.id.container).getGlobalVisibleRect(startBounds, globalOffset);
+        Log.e(TAG, res + "");
+        final int zoomDegree = 3;
+        int finalHeight = startBounds.height()/zoomDegree;
+        int finalWidth = startBounds.width()/zoomDegree;
+        int finalLeft = startBounds.left + (startBounds.width() - finalWidth)/2;
+        int finalRight = finalLeft + finalWidth;
+        int finalTop = startBounds.top;
+        int finalBottom = finalTop + finalHeight;
+        final Rect finalBounds = new Rect(finalLeft, finalTop, finalRight, finalBottom);
+        Log.e(TAG, startBounds.toString());
+        Log.e(TAG, finalBounds.toString());
+        startBounds.offset(-globalOffset.x, -globalOffset.y);
+        finalBounds.offset(-globalOffset.x, -globalOffset.y);
+
+        float startScale = 10.0f;
+        AnimatorSet set = new AnimatorSet();
+        set.play(ObjectAnimator.ofFloat(appImageView, View.X, startBounds.left, finalBounds.left))
+                .with(ObjectAnimator.ofFloat(appImageView, View.Y, startBounds.top, finalBounds.top))
+                .with(ObjectAnimator.ofFloat(appImageView, View.SCALE_X, startScale, 1f))
+                .with(ObjectAnimator.ofFloat(appImageView, View.SCALE_Y, startScale, 1f));
+        set.setDuration(mShortAnimationDuration);
+        set.setInterpolator(new DecelerateInterpolator());
+        set.start();
     }
 
 
