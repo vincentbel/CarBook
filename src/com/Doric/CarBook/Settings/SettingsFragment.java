@@ -51,7 +51,11 @@ public class SettingsFragment extends Fragment {
                 switch (i) {
                     case 0: //「清除缓存」
                         break;
-                    case 1: //「推送设置」
+                    //「推送设置」
+                    case 1: {
+                        Intent intent = new Intent(getActivity(),PushSetting.class);
+                        startActivity(intent);
+                    }
                         break;
                 }
             }

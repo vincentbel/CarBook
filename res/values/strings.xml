@@ -68,7 +68,7 @@
     <string name="start_push_time">开始接收时间</string>
     <string name="end_push_time">结束接收时间</string>
 
-
+    <string name="no_collection">暂无用户收藏</string>
 
     <!--设置-->
     <string name="clear_cache">清除缓存</string>

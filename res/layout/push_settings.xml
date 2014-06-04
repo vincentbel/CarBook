@@ -4,6 +4,7 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:padding="8dp"
               android:weightSum="1">
 
     <Switch
@@ -11,12 +12,14 @@
             android:layout_height="wrap_content"
             android:text="@string/accept_pushing"
             android:id="@+id/acceptPushSwitch"
+            android:layout_marginBottom="8dp"
             android:checked="true"
             />
     <Button
             android:id="@+id/startPushTimeBtn"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             />
     <Button
             android:id="@+id/endPushTimeBtn"

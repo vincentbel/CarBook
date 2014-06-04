@@ -1,5 +1,21 @@
-package com.Doric.CarBook.member;
+package com.Doric.CarBook.Settings;
 
+import android.app.Activity;
+import android.app.TimePickerDialog;
+import android.content.Context;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.*;
+import cn.jpush.android.api.InstrumentedActivity;
+import cn.jpush.android.api.JPushInterface;
+import com.Doric.CarBook.MainActivity;
+import com.Doric.CarBook.R;
+
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -14,11 +30,12 @@ import com.Doric.CarBook.R;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
-
 /**
- * Created by Sunyao_Will on 2014/5/27.
+ * Created by Sunyao_Will on 2014/6/4.
  */
-public class Setting extends Fragment {
+public class PushSetting extends InstrumentedActivity {
+    // PushSetting的Context
+    private static Context PushSettingContext ;
     // 推送服务的开关switch
     Switch acceptPushSwitch = null;
     // 设置接收推送时间的按钮
@@ -30,10 +47,14 @@ public class Setting extends Fragment {
     // 设置结束时间的calendar
     Calendar endPushTime = null;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.push_settings, container, false);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.push_settings);
+
+        PushSettingContext = this;
+
         // 为switch初始化
-        acceptPushSwitch = (Switch) (rootView != null ? rootView.findViewById(R.id.acceptPushSwitch) : null);
+        acceptPushSwitch = (Switch) this.findViewById(R.id.acceptPushSwitch);
         if (acceptPushSwitch!=null) {
             acceptPushSwitch.setOnCheckedChangeListener(
                     new CompoundButton.OnCheckedChangeListener() {
@@ -41,14 +62,10 @@ public class Setting extends Fragment {
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                             // 开启推送服务
                             if (isChecked) {
-                                if (getActivity() != null) {
-                                    ((MainActivity)getActivity()).pushOnResume();
-                                }
+                                JPushInterface.resumePush(getApplicationContext());
                             }else{
-                            // 关闭推送服务
-                                if (getActivity() != null) {
-                                    ((MainActivity)getActivity()).pushOnPause();
-                                }
+                                // 关闭推送服务
+                                JPushInterface.stopPush(getApplicationContext());
                             }
                         }
                     }
@@ -72,14 +89,14 @@ public class Setting extends Fragment {
         final String startPushText = "开始接收推送时间:"+"       ";
         final String endPushText = "停止接收推送时间:"+"       ";
         // 为Button初始化
-        startPushTimeBtn = (Button) (rootView != null ? rootView.findViewById(R.id.startPushTimeBtn) : null);
+        startPushTimeBtn = (Button) this.findViewById(R.id.startPushTimeBtn);
         startPushTimeBtn.setText(startPushText+startPushTime.get(Calendar.HOUR_OF_DAY)
                 +":"+startPushTime.get(Calendar.MINUTE));
         // 监听点击事件，并在点击后弹出TimePickerDialog
         startPushTimeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new TimePickerDialog(getActivity(),new TimePickerDialog.OnTimeSetListener() {
+                new TimePickerDialog(PushSettingContext,new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         int endTimeHour = endPushTime.get(Calendar.HOUR_OF_DAY);
@@ -95,27 +112,27 @@ public class Setting extends Fragment {
                             int startTimeHour = startPushTime.get(Calendar.HOUR_OF_DAY);
 
                             //调用JPush api设置Push时间
-                            JPushInterface.setPushTime(getActivity().getApplication().getApplicationContext(),
-                                   days, startTimeHour, endTimeHour);
+                            JPushInterface.setPushTime(getApplication().getApplicationContext(),
+                                    days, startTimeHour, endTimeHour);
                             startPushTimeBtn.setText(startPushText + startPushTime.get(Calendar.HOUR_OF_DAY)
                                     + ":" + startPushTime.get(Calendar.MINUTE));
-                            Toast.makeText(getActivity(), "设置成功", Toast.LENGTH_LONG).show();
+                            Toast.makeText(PushSettingContext, "设置成功", Toast.LENGTH_LONG).show();
 
                         }else{
-                            Toast.makeText(getActivity(), "请确保开始时间早于结束时间", Toast.LENGTH_LONG).show();
+                            Toast.makeText(PushSettingContext, "请确保开始时间早于结束时间", Toast.LENGTH_LONG).show();
                         }
                     }
                 },startPushTime.get(Calendar.HOUR_OF_DAY),startPushTime.get(Calendar.MINUTE),true).show();
             }
         });
 
-        endPushTimeBtn = (Button) rootView.findViewById(R.id.endPushTimeBtn);
+        endPushTimeBtn = (Button) this.findViewById(R.id.endPushTimeBtn);
         endPushTimeBtn.setText(endPushText+endPushTime.get(Calendar.HOUR_OF_DAY)
                 +":"+endPushTime.get(Calendar.MINUTE));
         endPushTimeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new TimePickerDialog(getActivity(),new TimePickerDialog.OnTimeSetListener() {
+                new TimePickerDialog(PushSettingContext,new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         int startTimeHour = startPushTime.get(Calendar.HOUR_OF_DAY);
@@ -131,22 +148,19 @@ public class Setting extends Fragment {
                             int endTimeHour = endPushTime.get(Calendar.HOUR_OF_DAY);
 
                             //调用JPush api设置Push时间
-                            JPushInterface.setPushTime(getActivity().getApplication().getApplicationContext(),
+                            JPushInterface.setPushTime(getApplication().getApplicationContext(),
                                     days, startTimeHour, endTimeHour);
                             endPushTimeBtn.setText(endPushText + endPushTime.get(Calendar.HOUR_OF_DAY)
                                     + ":" + endPushTime.get(Calendar.MINUTE));
-                            Toast.makeText(getActivity(), "设置成功", Toast.LENGTH_LONG).show();
+                            Toast.makeText(PushSettingContext, "设置成功", Toast.LENGTH_LONG).show();
 
                         }else{
-                            Toast.makeText(getActivity(), "请确保开始时间早于结束时间", Toast.LENGTH_LONG).show();
+                            Toast.makeText(PushSettingContext, "请确保开始时间早于结束时间", Toast.LENGTH_LONG).show();
                         }
                     }
                 },endPushTime.get(Calendar.HOUR_OF_DAY),endPushTime.get(Calendar.MINUTE),true).show();
             }
         });
-
-
-        return rootView;
     }
 
     boolean check (int aHour, int aMin,int bHour, int bMin){
@@ -162,11 +176,4 @@ public class Setting extends Fragment {
         }
         return true;
     }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-
 }
