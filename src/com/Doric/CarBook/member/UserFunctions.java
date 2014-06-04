@@ -145,7 +145,6 @@ public class UserFunctions {
         return Integer.parseInt(db.getUserDetails().get(DatabaseHelper.KEY_USER_ID));
     }
 
-    //TODO 收藏
     public boolean addToCollection(int carId) {
         if (isUserLoggedIn()) {
             int userId = getUserId();
@@ -201,7 +200,6 @@ public class UserFunctions {
             params.add(new BasicNameValuePair("user_id", userId + ""));
             params.add(new BasicNameValuePair("collect_data", collectJsonString));
             JSONObject jsonObject = jsonParser.getJSONFromUrl(collectionURL, params);
-            //TODO 将服务器上的收藏保存在本地
             try  {
                 if (jsonObject.getString("success").equals(1)) {
                     JSONArray JSONCar = jsonObject.getJSONArray("cars");
