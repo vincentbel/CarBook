@@ -1,8 +1,6 @@
 package com.Doric.CarBook.member;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
+import android.app.*;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -13,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.Doric.CarBook.Constant;
+import com.Doric.CarBook.MainActivity;
 import com.Doric.CarBook.R;
+import com.Doric.CarBook.car.HotCarShow;
 import com.Doric.CarBook.utility.JSONParser;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -31,7 +31,7 @@ public class MyInformation extends Activity implements View.OnClickListener {
     private List<NameValuePair> sexParams;    //登录时发送给服务器的数据
     private JSONObject sexInfo;       //向服务器请求得到的json对象
 
-    private String headURL = Constant.BASE_URL + "/sex.php";  //登录请求的url,务必加上http://或https://
+    private String headURL = Constant.BASE_URL + "/user_setting.php";  //登录请求的url,务必加上http://或https://
     private List<NameValuePair> headParams;    //登录时发送给服务器的数据
     private JSONObject headInfo;       //向服务器请求得到的json对象
 
@@ -39,6 +39,7 @@ public class MyInformation extends Activity implements View.OnClickListener {
     private List<NameValuePair> informationParams;    //登录时发送给服务器的数据
     private JSONObject informationInfo;       //向服务器请求得到的json对象
 
+    private UserFunctions userFunctions;
 
     //定义控件
     private ProgressDialog progressDialog;   //异步任务时显示的进度条
@@ -57,6 +58,8 @@ public class MyInformation extends Activity implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_information);
+
+        userFunctions = new UserFunctions(getApplicationContext());
 
         //设置控件
         loHead = (RelativeLayout) findViewById(R.id.head_layout);
@@ -144,9 +147,9 @@ public class MyInformation extends Activity implements View.OnClickListener {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             //发送用户信息到服务器
                             headParams = new ArrayList<NameValuePair>();
-                            headParams.add(new BasicNameValuePair("tag", "head"));
-                            headParams.add(new BasicNameValuePair("username", name));
-                            headParams.add(new BasicNameValuePair("head", whichHead));
+                            headParams.add(new BasicNameValuePair("tag", "update_avatar"));
+                            headParams.add(new BasicNameValuePair("user_id", name));
+                            headParams.add(new BasicNameValuePair("status", whichHead));
 
                             //异步任务
                             new changeHead().execute();
@@ -167,6 +170,7 @@ public class MyInformation extends Activity implements View.OnClickListener {
             //默认给第一个头像添加边框
             imageHead1.setImageResource(R.drawable.head_border);
             currentHead = imageHead1;
+            whichHead = "1";
 
             //添加监听器
             imageHead1.setOnClickListener(new View.OnClickListener(){
@@ -206,6 +210,7 @@ public class MyInformation extends Activity implements View.OnClickListener {
                         public void onClick(DialogInterface dialog, int which) {
                             //判断是否修改了性别
                             if (!sexes[which].equals(sex)) {
+                                /*
                                 //发送用户信息到服务器
                                 sexParams = new ArrayList<NameValuePair>();
                                 sexParams.add(new BasicNameValuePair("tag", "sex"));
@@ -214,6 +219,15 @@ public class MyInformation extends Activity implements View.OnClickListener {
 
                                 //异步任务
                                 new changeSex().execute();
+                                */
+                                if (sex.equals("男")) {
+                                    sex = "女";
+                                } else {
+                                    sex = "男";
+                                }
+                                TextView tvSex = (TextView) findViewById(R.id.sex_text2);
+                                tvSex.setText(sex);
+                                Toast.makeText(MyInformation.this, "性别修改成功", Toast.LENGTH_LONG).show();
                             }
                         }
                     })
@@ -243,8 +257,9 @@ public class MyInformation extends Activity implements View.OnClickListener {
         });
         builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
+                userFunctions.logoutUser();
                 dialog.dismiss();
-                MyInformation.this.finish();
+                startActivity(new Intent(MyInformation.this, MainActivity.class));
             }
         });
         builder.create().show();
@@ -286,7 +301,7 @@ public class MyInformation extends Activity implements View.OnClickListener {
             //判断收到的json是否为空
             if (informationInfo != null) {
                 try {
-                    if (informationInfo.getString("error").equals("0")) {
+                    if (informationInfo.getString("success").equals("1")) {
 
                         //获取性别
                         TextView tvSex = (TextView) findViewById(R.id.sex_text2);
@@ -336,7 +351,7 @@ public class MyInformation extends Activity implements View.OnClickListener {
             //判断收到的json是否为空
             if (headInfo != null) {
                 try {
-                    if (headInfo.getString("error").equals("0")) {
+                    if (headInfo.getString("success").equals("1")) {
                         Toast.makeText(MyInformation.this, "头像修改成功", Toast.LENGTH_LONG).show();
                         setHead(whichHead);
                     }
@@ -380,7 +395,7 @@ public class MyInformation extends Activity implements View.OnClickListener {
             //判断收到的json是否为空
             if (sexInfo != null) {
                 try {
-                    if (sexInfo.getString("error").equals("0")) {
+                    if (sexInfo.getString("success").equals("1")) {
                         if (sex.equals("男")) {
                             sex = "女";
                         } else {

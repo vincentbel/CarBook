@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.*;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -28,6 +29,8 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
     static JSONObject carInfo;
     // 获取的bundle
     static Bundle bundle;
+    // 获取的car_id
+    static String car_id = null;
     // 初始化carId
     int carId = 0;
     // 获取车辆信息的Url
@@ -38,13 +41,13 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
     ProgressDialog progressDialog;
     // 实例化车辆信息
     CarInfor car = new CarInfor();
-    /*
-    实现一个可以左右滑动的，包括“综述”“图片”“参数”“报价”“评论”的车辆信息展示页面
-     */
+    //实现一个可以左右滑动的，包括“综述”“图片”“参数”“报价”“评论”的车辆信息展示页面
     private ViewPager mViewPager;
-
-    UserFunctions userFunctions;   //用户功能函数 用于添加和取消到收藏
-
+    //用户功能函数 用于添加和取消到收藏
+    UserFunctions userFunctions;
+    /*
+    *   获取bundle，并开启异步线程获取JSON包
+    */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.car_show);
@@ -53,40 +56,30 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
 
         //发送请求并获取Json包
         bundle = getIntent().getExtras();
-        JSONObject jo = null;
-        /*try {
-            jo = new JSONObject(bundle.getString("cn.jpush.android.EXTRA"));
+
+        // 判断是否从推送服务中获取信息
+        if (bundle.get("cn.jpush.android.EXTRA")!=null) {
+            Log.d("CarShow","bundle.get(\"cn.jpush.android.EXTRA\")!=null");
+            JSONObject jo = null;
+            try {
+                jo = new JSONObject(bundle.getString("cn.jpush.android.EXTRA"));
+                Log.d("CarShow",jo.getString("car_id"));
+
+                // 添加向服务器发送的数据
+                carParamsRequest.add(new BasicNameValuePair("tag", ("showcar")));
+                carParamsRequest.add(new BasicNameValuePair("car_id", (jo.getString("car_id"))));
+                car_id = jo.getString("car_id");
+            } catch (JSONException e) {
+                e.printStackTrace();
 
 
-            // 为向服务器发送请求做准备
-            carParamsRequest.add(new BasicNameValuePair("tag", "showcar"));
-            carParamsRequest.add(new BasicNameValuePair("brand", jo.getString("brand")));
-            carParamsRequest.add(new BasicNameValuePair("series", jo.getString("series")));
-            carParamsRequest.add(new BasicNameValuePair("model_number", jo.getString("model_number")));
-        } catch (JSONException e) {
-            e.printStackTrace();
-
-        }*/
-
-
-        carParamsRequest.add(new BasicNameValuePair("tag", HotCarShow.Transform("showcar")));
-        carParamsRequest.add(new BasicNameValuePair("car_id", HotCarShow.Transform(bundle.getString("car_id"))));
-        /*carParamsRequest.add(new BasicNameValuePair("series", HotCarShow.Transform(bundle.getString("series"))));
-        carParamsRequest.add(new BasicNameValuePair("model_number", HotCarShow.Transform(bundle.getString("model_number"))));
-*/
-        /*carParamsRequest.add(new BasicNameValuePair("tag", HotCarShow.Transform("showcar")));
-        carParamsRequest.add(new BasicNameValuePair("brand", HotCarShow.Transform("奥迪")));
-        carParamsRequest.add(new BasicNameValuePair("series", HotCarShow.Transform("奥迪A6L")));
-        carParamsRequest.add(new BasicNameValuePair("model_number", HotCarShow.Transform("2014款 TFSI 手动基本型")));*/
-
-
-
-        String carName = bundle.getString("series")+" "+bundle.getString("model_number");
-        System.out.println("sd" + carName);
-        car.setCarName(carName);
-
-        if (getActionBar() != null) {
-            getActionBar().setTitle(car.getCarName());
+            }
+        }else{
+            // 添加向服务器发送的数据
+            Log.d("CarShow","bundle.get(\"cn.jpush.android.EXTRA\")==null");
+            carParamsRequest.add(new BasicNameValuePair("tag", HotCarShow.Transform("showcar")));
+            carParamsRequest.add(new BasicNameValuePair("car_id", HotCarShow.Transform(bundle.getString("car_id"))));
+            car_id = bundle.getString("car_id");
         }
 
 
@@ -94,10 +87,15 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
         new GetCarInfo().execute();
     }
 
+    /*
+    * 初始化ViewPager
+    */
     private void findViewById() {
         mViewPager = (ViewPager) this.findViewById(R.id.pager);
     }
-
+    /*
+    * 初始化mune，收藏按钮
+    */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the main; this adds items to the action bar if it is present.
@@ -110,7 +108,9 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
         }
         return true;
     }
-
+    /*
+    * 点击收藏按钮后，切换图标，并开启异步线程，将实现添加收藏
+    */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -125,8 +125,11 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
 
         return super.onOptionsItemSelected(item);
     }
-
+    /*
+    * 初始化View
+    */
     private void initView() {
+        // 显示actionBar中菜单
         final android.app.ActionBar mActionBar = getActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -134,6 +137,8 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
             mActionBar.setNavigationMode(android.app.ActionBar.NAVIGATION_MODE_TABS);
         }
 
+
+        // 添加fragment的适配器
         TabFragmentPagerAdapter mAdapter = new TabFragmentPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -177,7 +182,9 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
     public void onTabReselected(android.app.ActionBar.Tab tab, android.app.FragmentTransaction ft) {
 
     }
-
+    /*
+    *   获取车辆信息的异步线程工具类
+    */
     private class GetCarInfo extends AsyncTask<Void, Void, Void> {
 
         protected void onPreExecute() {
@@ -203,9 +210,18 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
             }
             if (carInfo != null) {
                 try {
+                    // 判断服务器上是否存在这辆车的信息
                     if (carInfo.getInt("success")==0){
-                        Toast.makeText(CarShow.this.getApplicationContext(), "没有这破车", Toast.LENGTH_LONG).show();
+                        Toast.makeText(CarShow.this.getApplicationContext(), "数据库异常", Toast.LENGTH_LONG).show();
                     }else{
+                        // 通过series，model_number,构造车辆名
+                        String carName = carInfo.getString("series")+" "+carInfo.getString("model_number");
+                        System.out.println("sd" + carName);
+                        car.setCarName(carName);
+                        // 以车辆名作为actionBar的title
+                        if (getActionBar() != null) {
+                            getActionBar().setTitle(car.getCarName());
+                        }
                         carId = Integer.parseInt(carInfo.getString("car_id"));
                         invalidateOptionsMenu();
                     }
@@ -243,14 +259,17 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
             //userFunctions.getMyCollection();   //测试用
             if (!userFunctions.isCollected(carId)) {
                 if (userFunctions.addToCollection(carId)) {
-                    return 1;  //收藏成功，返回1
+                    //收藏成功，返回1
+                    return 1;
                 }
             } else {
                 if (userFunctions.cancelCollect(carId)) {
-                    return 2;  //取消收藏成功，返回2
+                    //取消收藏成功，返回2
+                    return 2;
                 }
             }
-            return 0;  //失败，返回0
+            //失败，返回0
+            return 0;
         }
 
         protected void onPostExecute(Integer result) {
@@ -263,30 +282,40 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
             }
         }
     }
-
+    /*
+    * fragment的适配器
+    */
     public class TabFragmentPagerAdapter extends FragmentPagerAdapter {
 
         public TabFragmentPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
+        /*
+        * 确定需要构造的fragment
+        */
         @Override
         public Fragment getItem(int arg0) {
             Fragment ft = null;
             switch (arg0) {
                 case 0:
+                    // 车辆展示综述界面
                     ft = new SummaryFragment();
                     break;
                 case 1:
+                    // 车辆展示图片界面
                     ft = new PictureFragment();
                     break;
                 case 2:
+                    // 车辆展示参数界面
                     ft = new ParameterFragment();
                     break;
                 case 3:
+                    // 车辆展示报价界面
                     ft = new PriceFragment();
                     break;
                 case 4:
+                    // 车辆展示评论界面
                     ft = new CommentFragment();
                     break;
                 default:
@@ -300,7 +329,9 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
 
             return MAX_TAB_SIZE;
         }
-
+        /*
+        * 为fragment 设置title
+        */
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {

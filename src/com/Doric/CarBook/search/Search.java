@@ -46,7 +46,7 @@ public class Search extends Fragment {
     private LinearLayout mLinearLayout;
     public static ArrayList<CarInfor> mCarInfoList= new ArrayList<CarInfor>();
     private LinearLayout linearLayout;
-    private ListView listView;
+    private ListView listView=null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -121,7 +121,7 @@ public class Search extends Fragment {
             mLinearLayout.setOrientation(LinearLayout.VERTICAL);
             mLinearLayout.setBackgroundColor(Color.rgb(255, 255, 255));
 
-            listView = new MyListView(SearchMain.searchmain);
+            listView = new ListView(SearchMain.searchmain);
 
             SimpleAdapter adapter = new SimpleAdapter(SearchMain.searchmain, getUniformData(mCarInfoList), R.layout.sea_list_layout,
                         new String[]{"title", "img"},
@@ -209,6 +209,8 @@ public class Search extends Fragment {
                 BufferedOutputStream bos = null;
                 BufferedInputStream bis = null;
                 File imageFile = null;
+                if(listView==null)
+                    return ;
                 SimpleAdapter simpleAdapter = (SimpleAdapter) listView.getAdapter();
                 for (int i = 0; i < simpleAdapter.getCount(); i++) {
                     Map<String, Object> map = (Map<String, Object>) simpleAdapter.getItem(i);

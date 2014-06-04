@@ -16,6 +16,7 @@ import android.os.Environment;
 
 import android.support.v4.widget.DrawerLayout;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -142,7 +143,7 @@ public class SearchMain extends Activity  {
 
     @Override
     public void finish() {
-        moveTaskToBack(false);
+        moveTaskToBack(true);
     }
 
 
@@ -432,7 +433,7 @@ public class SearchMain extends Activity  {
                 Bitmap bitmap = null;
 
                 String imageUrl = cs.getPicPath();
-
+                Log.d("DragList",imageUrl);
                 imageFile = new File(getImagePath(imageUrl));
                 try {
 

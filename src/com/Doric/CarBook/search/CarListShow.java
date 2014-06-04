@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -135,6 +136,7 @@ public class CarListShow extends Fragment {
                         bundle.putString("car_id", cs.getCarId());
                         bundle.putString("series", cs.getCarSerie());
                         bundle.putString("model_number", cs.getCarName());
+
                         it.putExtras(bundle);
                         it.setClass(SearchMain.searchmain, CarShow.class);
                         SearchMain.searchmain.startActivity(it);

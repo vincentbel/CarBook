@@ -166,11 +166,8 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
             loadOnce = true;
 
             carPicParams.add(new BasicNameValuePair("tag", "show_pictures"));
-            carPicParams.add(new BasicNameValuePair("car_id", HotCarShow.Transform(CarShow.bundle.getString("car_id"))));
-            /*carPicParams.add(new BasicNameValuePair("brand",  HotCarShow.Transform("奥迪")));
-            carPicParams.add(new BasicNameValuePair("series", HotCarShow.Transform("奥迪A6L")));
-            carPicParams.add(new BasicNameValuePair("model_number", HotCarShow.Transform("2014款 TFSI 手动基本型")));
-            */
+            carPicParams.add(new BasicNameValuePair("car_id", HotCarShow.Transform(CarShow.car_id)));
+
             new GetCarInfo().execute();
         }
     }
@@ -521,13 +518,16 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
         private String getImagePath(String imageUrl) {
             int lastSlashIndex = imageUrl.lastIndexOf("/");
             String imageTPath = imageUrl.substring(0, lastSlashIndex);
+            // 图片序号及格式后缀
             String extra ="_"+ imageUrl.substring(imageUrl.lastIndexOf("/")+1);
+
             lastSlashIndex = imageTPath.lastIndexOf("/");
             String imageSeries = imageTPath.substring(lastSlashIndex + 1);  //  Series
             imageTPath = imageTPath.substring(0, lastSlashIndex);
             String imageName = imageTPath.substring(imageTPath.lastIndexOf("/") + 1);
             imageName = imageName + imageSeries + extra;
             System.out.println(imageName);
+            // 图片的储存路径
             String imageDir = getSDPath()
                     + "/CarBook/Cache/";
             File file = new File(imageDir);

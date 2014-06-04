@@ -26,7 +26,7 @@ public  class DataCache {
     static {
         dir = getSDPath()
                 + "/CarBook/Cache/";
-        path = dir+"Cache.dat";
+        path = dir+"Cache.txt";
     }
     public static void OutputToCacheFile(List<NameValuePair> params,JSONObject jsonObject){
         File file = new File(dir);
