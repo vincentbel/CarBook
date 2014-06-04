@@ -34,11 +34,10 @@ import com.Doric.CarBook.car.CarShow;
 public class CarListShow extends Fragment {
 
     private LinearLayout mLinearLayout;
-    private ScrollView mScrollView;
     public static String CarBrand;
     public static String CarSeries;
     private static ArrayList<CarInfor> carlist;
-    private ArrayList<Pair<String,MyListView>> listarray;
+    private static ListView listView;
 
     public static void setCarList(ArrayList<CarInfor> cl){
         carlist =new ArrayList<CarInfor>();
@@ -52,10 +51,9 @@ public class CarListShow extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        listarray = new ArrayList<Pair<String, MyListView>>();
         initPage();
         new GetPicData().start();
-        return mScrollView;
+        return mLinearLayout;
 
     }
 
@@ -94,7 +92,7 @@ public class CarListShow extends Fragment {
      */
     public void initPage() {
 
-        ArrayList<Pair<String, ArrayList<CarInfor>>> al = PinYinIndex.getIndex_CarInfo(carlist);
+
 
         //ΩÁ√Êœ‘ æ
         mLinearLayout = new LinearLayout(SearchMain.searchmain);
@@ -104,31 +102,26 @@ public class CarListShow extends Fragment {
         mLinearLayout.setOrientation(LinearLayout.VERTICAL);
         mLinearLayout.setBackgroundColor(Color.rgb(255, 255, 255));
 
-        mScrollView = new ScrollView(SearchMain.searchmain);
-        mScrollView.setEnabled(true);
-        mScrollView.setBackgroundColor(Color.rgb(255, 255, 255));
-        ScrollView.LayoutParams param2 = new ScrollView.LayoutParams(ScrollView.
-                LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT);
-        mScrollView.setLayoutParams(param2);
-        for (Pair<String, ArrayList<CarInfor>> pair : al) {
-            TextView text = new TextView(SearchMain.searchmain);
-            text.setText("  " +pair.first);
-            text.setTextColor(Color.rgb(100, 100, 100));
-            text.setBackgroundColor(Color.rgb(240, 240, 240));
-            text.setTextSize(20);
+//        mScrollView = new ScrollView(SearchMain.searchmain);
+//        mScrollView.setEnabled(true);
+//        mScrollView.setBackgroundColor(Color.rgb(255, 255, 255));
+//        ScrollView.LayoutParams param2 = new ScrollView.LayoutParams(ScrollView.
+//                LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT);
+//        mScrollView.setLayoutParams(param2);
 
-            mLinearLayout.addView(text);
-            MyListView listview = new MyListView(SearchMain.searchmain);
 
-            SimpleAdapter adapter = new SimpleAdapter(SearchMain.searchmain, getUniformData(pair.second), R.layout.sea_list_layout,
+
+             listView = new ListView(SearchMain.searchmain);
+
+            SimpleAdapter adapter = new SimpleAdapter(SearchMain.searchmain, getUniformData(carlist), R.layout.sea_list_layout,
                     new String[]{"title", "img"},
                     new int[]{R.id.title, R.id.img});
 
-            listview.setAdapter(adapter);
+            listView.setAdapter(adapter);
             adapter.setViewBinder(new ListViewBinder());
-            listview.setDivider(getResources().getDrawable(R.drawable.list_divider));
-            listview.setDividerHeight(1);
-            listview.setOnItemClickListener(new OnItemClickListener() {
+            listView.setDivider(getResources().getDrawable(R.drawable.list_divider));
+            listView.setDividerHeight(1);
+            listView.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
@@ -138,9 +131,11 @@ public class CarListShow extends Fragment {
                     if(SearchMain.searchmain.getUsage()) {
                         Intent it = new Intent();
                         CarInfor cs = CarSeableData.find(CarBrand).findCarSeries(CarSeries).findCarInfo((String)Info.get("title"));
-                        it.putExtra("id", cs.getCarId());
-                        it.putExtra("series", cs.getCarSerie());
-                        it.putExtra("model_number", cs.getCarName());
+                        Bundle bundle =new Bundle();
+                        bundle.putString("car_id", cs.getCarId());
+                        bundle.putString("series", cs.getCarSerie());
+                        bundle.putString("model_number", cs.getCarName());
+                        it.putExtras(bundle);
                         it.setClass(SearchMain.searchmain, CarShow.class);
                         SearchMain.searchmain.startActivity(it);
                     }
@@ -158,12 +153,12 @@ public class CarListShow extends Fragment {
                 }
 
             });
-            listarray.add(new Pair<String, MyListView>(pair.first, listview));
-            mLinearLayout.addView(listview);
-        }
-        mScrollView.addView(mLinearLayout);
-        mScrollView.setX(0);
-        mScrollView.setY(0);
+
+            mLinearLayout.addView(listView);
+
+//        mScrollView.addView(mLinearLayout);
+//        mScrollView.setX(0);
+//        mScrollView.setY(0);
 
     }
 
@@ -218,14 +213,14 @@ public class CarListShow extends Fragment {
          * run
          */
         public void run() {
-            for (Pair<String, MyListView> pair : listarray) {
+
                 //LoadImage i =  new LoadImage(cs.getCarSeableName(),cs.getPicPath());
                 HttpURLConnection con = null;
                 FileOutputStream fos = null;
                 BufferedOutputStream bos = null;
                 BufferedInputStream bis = null;
                 File imageFile = null;
-                SimpleAdapter simpleAdapter = (SimpleAdapter) pair.second.getAdapter();
+                SimpleAdapter simpleAdapter = (SimpleAdapter) listView.getAdapter();
                 for (int i = 0; i < simpleAdapter.getCount(); i++) {
                     Map<String, Object> map = (Map<String, Object>) simpleAdapter.getItem(i);
                     Bitmap bitmap =null;
@@ -261,7 +256,7 @@ public class CarListShow extends Fragment {
 
                 }
 
-            }
+
         }
 
 

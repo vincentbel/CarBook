@@ -662,11 +662,11 @@ class PinyinSearch {
         ArrayList<CarInfor> al = new ArrayList<CarInfor>();
         //品牌筛选
 
-            for (CarSeable cs : CarSeableData.mCarSeable) {
-                for (CarSeries css : cs.getCarSeriesList()) {
-                    al.addAll(css.getCarList());
-                }
+        for (CarSeable cs : CarSeableData.mCarSeable) {
+            for (CarSeries css : cs.getCarSeriesList()) {
+                al.addAll(css.getCarList());
             }
+        }
 
         //车型筛选
         ArrayList<CarInfor> delete = new ArrayList<CarInfor>();
@@ -696,12 +696,12 @@ class PinyinSearch {
         //如果直接输入车辆名称
 
 
-            returnlist = searchCarSeries(carSerieses, sysmbol);
+        returnlist = searchCarSeries(carSerieses, sysmbol);
 
 
 
         return returnlist;
-        }
+    }
 
 
 
@@ -734,7 +734,7 @@ class PinyinSearch {
         ArrayList<CarSeries> returnlist = new ArrayList<CarSeries>();
         ArrayList<SpCarSeries> tmplist = new ArrayList<SpCarSeries>();
         for (CarSeries cs : clist) {
-           SpCarSeries sb = new SpCarSeries(cs);
+            SpCarSeries sb = new SpCarSeries(cs);
             tmplist.add(sb);
         }
 
@@ -780,7 +780,7 @@ class GBK2UTF {
         char[] c = new char[b.length];
         for (int i=0;i<b.length;i++){
             if(b[i]!=' ')
-            c[i] = (char)(b[i]&0x00FF);
+                c[i] = (char)(b[i]&0x00FF);
 
         }
         return new String(c);
@@ -820,12 +820,12 @@ class PinYinIndex {
                 pairs.add(new Pair<String, ArrayList<CarSeable>>(st,returnarr.get(st)));
             alpha++;
         }
-         alpha = 'A';
+        alpha = 'A';
 
         for(int i =0;i<26;i++){
             String st= String.valueOf(alpha);
             if(returnarr.containsKey(st))
-            pairs.add(new Pair<String, ArrayList<CarSeable>>(st,returnarr.get(st)));
+                pairs.add(new Pair<String, ArrayList<CarSeable>>(st,returnarr.get(st)));
             alpha++;
         }
         return pairs;

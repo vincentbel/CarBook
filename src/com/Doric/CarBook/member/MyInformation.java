@@ -7,12 +7,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.ViewGroup;
+import android.widget.*;
 import com.Doric.CarBook.Constant;
 import com.Doric.CarBook.R;
 import com.Doric.CarBook.utility.JSONParser;
@@ -21,15 +20,25 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MyInformation extends Activity implements View.OnClickListener {
 
     //服务器请求相关变量
-    private String url = Constant.BASE_URL + "/sex.php";  //登录请求的url,务必加上http://或https://
+    private String sexURL = Constant.BASE_URL + "/sex.php";  //登录请求的url,务必加上http://或https://
     private List<NameValuePair> sexParams;    //登录时发送给服务器的数据
     private JSONObject sexInfo;       //向服务器请求得到的json对象
+
+    private String headURL = Constant.BASE_URL + "/sex.php";  //登录请求的url,务必加上http://或https://
+    private List<NameValuePair> headParams;    //登录时发送给服务器的数据
+    private JSONObject headInfo;       //向服务器请求得到的json对象
+
+    private String informationURL = Constant.BASE_URL + "/information.php";  //登录请求的url,务必加上http://或https://
+    private List<NameValuePair> informationParams;    //登录时发送给服务器的数据
+    private JSONObject informationInfo;       //向服务器请求得到的json对象
+
 
     //定义控件
     private ProgressDialog progressDialog;   //异步任务时显示的进度条
@@ -40,6 +49,10 @@ public class MyInformation extends Activity implements View.OnClickListener {
     //定义变量
     private String name = "暂无", sex = "男";
     private String[] sexes = new String[]{"男", "女"};
+
+    //设置头像所用变量
+    private String whichHead = "0";
+    private ImageView currentHead = null;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +84,48 @@ public class MyInformation extends Activity implements View.OnClickListener {
             name = intent.getStringExtra("name");
             tvUsername.setText(name);
         }
+
+        //获取用户信息
+        informationParams = new ArrayList<NameValuePair>();
+        informationParams.add(new BasicNameValuePair("tag", "information"));
+        informationParams.add(new BasicNameValuePair("username", name));
+
+        //异步任务
+        new getInformation().execute();
+    }
+
+    //为图像添加边框
+    public void handleImageView(ImageView imageView){
+        currentHead.setImageDrawable(null);
+        imageView.setImageResource(R.drawable.head_border);
+        currentHead = imageView;
+    }
+
+    //设置头像
+    public void setHead(String which) {
+        ImageView imageHead = (ImageView) findViewById(R.id.head_image);
+        switch ( Integer.parseInt(which) ){
+            case 1:
+                imageHead.setBackgroundResource(R.drawable.head1); break;
+            case 2:
+                imageHead.setBackgroundResource(R.drawable.head2); break;
+            case 3:
+                imageHead.setBackgroundResource(R.drawable.head3); break;
+            case 4:
+                imageHead.setBackgroundResource(R.drawable.head4); break;
+            case 5:
+                imageHead.setBackgroundResource(R.drawable.head5); break;
+            case 6:
+                imageHead.setBackgroundResource(R.drawable.head6); break;
+            case 7:
+                imageHead.setBackgroundResource(R.drawable.head7); break;
+            case 8:
+                imageHead.setBackgroundResource(R.drawable.head8); break;
+            case 9:
+                imageHead.setBackgroundResource(R.drawable.head9); break;
+            default:
+                imageHead.setBackgroundResource(R.drawable.pc_default_head); break;
+        }
     }
 
     public void onClick(View v) {
@@ -78,7 +133,69 @@ public class MyInformation extends Activity implements View.OnClickListener {
 
         //"头像"按钮
         if (id == R.id.head_layout) {
+            LayoutInflater inflater = getLayoutInflater();
+            View layout = inflater.inflate(R.layout.choose_head, (ViewGroup) findViewById(R.id.chooseHead));
+            AlertDialog headBuilder =  new AlertDialog.Builder(this)
+                    .setTitle("自定义头像")
+                    .setView(layout)
+                    .setNegativeButton("取消", null)
+                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //发送用户信息到服务器
+                            headParams = new ArrayList<NameValuePair>();
+                            headParams.add(new BasicNameValuePair("tag", "head"));
+                            headParams.add(new BasicNameValuePair("username", name));
+                            headParams.add(new BasicNameValuePair("head", whichHead));
 
+                            //异步任务
+                            new changeHead().execute();
+                        }
+                    })
+                    .show();
+
+            final ImageView imageHead1 = (ImageView) layout.findViewById(R.id.head1);
+            final ImageView imageHead2 = (ImageView) layout.findViewById(R.id.head2);
+            final ImageView imageHead3 = (ImageView) layout.findViewById(R.id.head3);
+            final ImageView imageHead4 = (ImageView) layout.findViewById(R.id.head4);
+            final ImageView imageHead5 = (ImageView) layout.findViewById(R.id.head5);
+            final ImageView imageHead6 = (ImageView) layout.findViewById(R.id.head6);
+            final ImageView imageHead7 = (ImageView) layout.findViewById(R.id.head7);
+            final ImageView imageHead8 = (ImageView) layout.findViewById(R.id.head8);
+            final ImageView imageHead9 = (ImageView) layout.findViewById(R.id.head9);
+
+            //默认给第一个头像添加边框
+            imageHead1.setImageResource(R.drawable.head_border);
+            currentHead = imageHead1;
+
+            //添加监听器
+            imageHead1.setOnClickListener(new View.OnClickListener(){
+                public void onClick(View v) { whichHead = "1"; handleImageView(imageHead1);}
+            });
+            imageHead2.setOnClickListener(new View.OnClickListener(){
+                public void onClick(View v) { whichHead = "2"; handleImageView(imageHead2);}
+            });
+            imageHead3.setOnClickListener(new View.OnClickListener(){
+                public void onClick(View v) { whichHead = "3"; handleImageView(imageHead3);}
+            });
+            imageHead4.setOnClickListener(new View.OnClickListener(){
+                public void onClick(View v) { whichHead = "4"; handleImageView(imageHead4);}
+            });
+            imageHead5.setOnClickListener(new View.OnClickListener(){
+                public void onClick(View v) { whichHead = "5"; handleImageView(imageHead5);}
+            });
+            imageHead6.setOnClickListener(new View.OnClickListener(){
+                public void onClick(View v) { whichHead = "6"; handleImageView(imageHead6);}
+            });
+            imageHead7.setOnClickListener(new View.OnClickListener(){
+                public void onClick(View v) { whichHead = "7"; handleImageView(imageHead7);}
+            });
+            imageHead8.setOnClickListener(new View.OnClickListener(){
+                public void onClick(View v) { whichHead = "8"; handleImageView(imageHead8);}
+            });
+            imageHead9.setOnClickListener(new View.OnClickListener(){
+                public void onClick(View v) { whichHead = "9"; handleImageView(imageHead9);}
+            });
         }
 
         //"性别"按钮
@@ -96,7 +213,7 @@ public class MyInformation extends Activity implements View.OnClickListener {
                                 sexParams.add(new BasicNameValuePair("sex", sex));
 
                                 //异步任务
-                                new registerUser().execute();
+                                new changeSex().execute();
                             }
                         }
                     })
@@ -141,7 +258,59 @@ public class MyInformation extends Activity implements View.OnClickListener {
         return super.onOptionsItemSelected(item);
     }
 
-    private class registerUser extends AsyncTask<Void, Void, Void> {
+
+    //获取用户信息的异步任务
+    private class getInformation extends AsyncTask<Void, Void, Void> {
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //弹出"正在修改"框
+            progressDialog = new ProgressDialog(MyInformation.this);
+            progressDialog.setMessage("正在获取信息..");
+            progressDialog.setCancelable(true);
+            progressDialog.show();
+        }
+
+        protected Void doInBackground(Void... params) {
+            //向服务器发送请求
+            JSONParser jsonParser = new JSONParser();
+            informationInfo = jsonParser.getJSONFromUrl(informationURL, informationParams);
+            return null;
+        }
+
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+            //判断收到的json是否为空
+            if (informationInfo != null) {
+                try {
+                    if (informationInfo.getString("error").equals("0")) {
+
+                        //获取性别
+                        TextView tvSex = (TextView) findViewById(R.id.sex_text2);
+                        tvSex.setText(informationInfo.getString("sex"));
+
+                        //获取头像
+                        whichHead = informationInfo.getString("head");
+                        setHead(whichHead);
+                    }
+                    //发生错误
+                    else {
+                        Toast.makeText(MyInformation.this, "获取失败", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Toast.makeText(MyInformation.this, "获取失败，请检查您的网络是否正常", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    //修改头像
+    private class changeHead extends AsyncTask<Void, Void, Void> {
 
         protected void onPreExecute() {
             super.onPreExecute();
@@ -155,7 +324,51 @@ public class MyInformation extends Activity implements View.OnClickListener {
         protected Void doInBackground(Void... params) {
             //向服务器发送请求
             JSONParser jsonParser = new JSONParser();
-            sexInfo = jsonParser.getJSONFromUrl(url, sexParams);
+            headInfo = jsonParser.getJSONFromUrl(headURL, headParams);
+            return null;
+        }
+
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+            //判断收到的json是否为空
+            if (headInfo != null) {
+                try {
+                    if (headInfo.getString("error").equals("0")) {
+                        Toast.makeText(MyInformation.this, "头像修改成功", Toast.LENGTH_LONG).show();
+                        setHead(whichHead);
+                    }
+                    //发生错误
+                    else {
+                        Toast.makeText(MyInformation.this, "修改失败", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Toast.makeText(MyInformation.this, "修改失败，请检查您的网络是否正常", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    //修改性别
+    private class changeSex extends AsyncTask<Void, Void, Void> {
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //弹出"正在修改"框
+            progressDialog = new ProgressDialog(MyInformation.this);
+            progressDialog.setMessage("正在修改..");
+            progressDialog.setCancelable(true);
+            progressDialog.show();
+        }
+
+        protected Void doInBackground(Void... params) {
+            //向服务器发送请求
+            JSONParser jsonParser = new JSONParser();
+            sexInfo = jsonParser.getJSONFromUrl(sexURL, sexParams);
             return null;
         }
 

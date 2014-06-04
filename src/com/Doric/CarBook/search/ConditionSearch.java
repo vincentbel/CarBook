@@ -9,7 +9,6 @@ import android.widget.*;
 import com.Doric.CarBook.R;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -146,6 +145,7 @@ public class ConditionSearch extends Fragment {
         priceGrades.add(p);
 
         p = new PriceGrade();
+
         p.text = "200Íòµ½300Íò";
         p.higPrice = 3000000.0;
         p.lowPrice = 2000000.0;

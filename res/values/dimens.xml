@@ -11,7 +11,13 @@
     <dimen name="comment_padding">10dp</dimen>
     <dimen name="comment_name_size">15dp</dimen>
     <dimen name="comment_text_size">15dp</dimen>
+
     <dimen name="btn_width">120dp</dimen>
+
     <dimen name="my_information_margin">8dp</dimen>
+
+    <!--设置-->
+    <dimen name="setting_font_size">16sp</dimen>
+    <dimen name="setting_text_padding">8dp</dimen>
     
 </resources>

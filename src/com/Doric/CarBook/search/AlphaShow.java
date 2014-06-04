@@ -31,10 +31,6 @@ import java.net.URL;
 import java.util.*;
 
 
-/**
- * 所有AlphaShow 的数据和视图都保存在了AlphaData之中，得以提前创建，提高用户体验
- * 故AlphaShow里面没有什么东西了
- */
 public class AlphaShow extends Fragment {
 
 
@@ -69,7 +65,7 @@ public class AlphaShow extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-       // new AlphaShow.GetPicData().start();
+        // new AlphaShow.GetPicData().start();
     }
 
     @Override

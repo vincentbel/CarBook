@@ -12,8 +12,8 @@
         <item>热门汽车排行</item>
         <item>找车</item>
         <item>我的收藏</item>
-        <item>汽车展示</item>
         <item>设置</item>
+        <item>汽车展示</item>
     </string-array>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
@@ -65,4 +65,20 @@
     <string name="image_url">图片链接</string>
 
     <string name="hot_car_show">热门车辆</string>
+
+    <string name="push_setting_btn">推送设置</string>
+    <string name="accept_pushing">接收推送</string>
+    <string name="start_push_time">开始接收时间</string>
+    <string name="end_push_time">结束接收时间</string>
+
+
+
+    <!--设置-->
+    <string name="clear_cache">清除缓存</string>
+    <string name="push_settings">推送设置</string>
+    <string name="about">关于</string>
+    <string name="new_version">检测新版本</string>
+    <string name="feed_back">意见反馈</string>
+    <string name="exit">退出</string>
+    <string name="about_text">版权所有   Doric项目小组\nCopyright  2014  Doric.\nAll Rights Reserved</string>
 </resources>

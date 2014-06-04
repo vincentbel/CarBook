@@ -44,16 +44,15 @@ public class Search extends Fragment {
     private EditText mEditText;
     private ImageButton mButton;
     private LinearLayout mLinearLayout;
-    private ScrollView mScrollView;
     public static ArrayList<CarInfor> mCarInfoList= new ArrayList<CarInfor>();
     private LinearLayout linearLayout;
-    private ArrayList<Pair<String,MyListView>> listarray;
+    private ListView listView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        listarray= new ArrayList<Pair<String, MyListView>>();
+
         linearLayout = (LinearLayout) inflater.inflate(R.layout.sea_search, container, false);
 
         initPage();
@@ -107,7 +106,7 @@ public class Search extends Fragment {
                     Toast.makeText(SearchMain.searchmain, "关键字不可为空", Toast.LENGTH_LONG).show();
                     return;
                 }
-                   // mCarSeriesList = PinyinSearch.search(key);
+                // mCarSeriesList = PinyinSearch.search(key);
                 SearchMain.searchmain.SearchToSearch(key);
             }
         });
@@ -122,45 +121,26 @@ public class Search extends Fragment {
             mLinearLayout.setOrientation(LinearLayout.VERTICAL);
             mLinearLayout.setBackgroundColor(Color.rgb(255, 255, 255));
 
+            listView = new MyListView(SearchMain.searchmain);
 
-
-            ArrayList<Pair<String, ArrayList<CarInfor>>> al = PinYinIndex.getIndex_CarInfo(mCarInfoList);
-
-
-            mScrollView = new ScrollView(SearchMain.searchmain);
-            mScrollView.setEnabled(true);
-            mScrollView.setBackgroundColor(Color.rgb(255, 255, 255));
-            ScrollView.LayoutParams param2 = new ScrollView.LayoutParams(ScrollView.
-                    LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT);
-            mScrollView.setLayoutParams(param2);
-
-
-            for (Pair<String, ArrayList<CarInfor>> pair : al) {
-                TextView text = new TextView(SearchMain.searchmain);
-                text.setText("  "+ pair.first);
-                text.setTextColor(Color.rgb(100, 100, 100));
-                text.setBackgroundColor(Color.rgb(240, 240, 240));
-                text.setTextSize(20);
-
-                mLinearLayout.addView(text);
-                MyListView listview = new MyListView(SearchMain.searchmain);
-
-                SimpleAdapter adapter = new SimpleAdapter(SearchMain.searchmain, getUniformData(pair.second), R.layout.sea_list_layout,
+            SimpleAdapter adapter = new SimpleAdapter(SearchMain.searchmain, getUniformData(mCarInfoList), R.layout.sea_list_layout,
                         new String[]{"title", "img"},
                         new int[]{R.id.title, R.id.img});
-                listview.setDivider(getResources().getDrawable(R.drawable.list_divider));
-                listview.setDividerHeight(1);
-                listview.setAdapter(adapter);
-                adapter.setViewBinder(new ListViewBinder());
-                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            listView.setDivider(getResources().getDrawable(R.drawable.list_divider));
+            listView.setDividerHeight(1);
+            listView.setAdapter(adapter);
+            adapter.setViewBinder(new ListViewBinder());
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view,
                                             int position, long id) {
                         Intent it= new Intent();
                         CarInfor ci  =mCarInfoList.get(position);
-                        it.putExtra("brand_serie",ci.getCarSerie());
-                        it.putExtra("model_number",ci.getCarName());
-                        it.putExtra("id",ci.getCarId());
+                        Bundle bundle = new Bundle();
+                        bundle.putString("car_id",ci.getCarId());
+                        bundle.putString("series",ci.getCarSerie());
+                        bundle.putString("car_id",ci.getCarId());
+
                         it.setClass(SearchMain.searchmain,CarShow.class);
                         SearchMain.searchmain.startActivity(it);
                         //Toast.makeText(getApplicationContext(),(String)Info.get("title"),Toast.LENGTH_LONG).show();
@@ -168,11 +148,10 @@ public class Search extends Fragment {
                     }
 
                 });
-                listarray.add(new Pair<String, MyListView>(pair.first,listview));
-                mLinearLayout.addView(listview);
-            }
-            mScrollView.addView(mLinearLayout);
-            l.addView(mScrollView);
+
+            mLinearLayout.addView(listView);
+
+            l.addView(mLinearLayout);
 
         }
     }
@@ -223,14 +202,14 @@ public class Search extends Fragment {
         }
 
         public void run() {
-            for (Pair<String, MyListView> pair : listarray) {
+
                 //LoadImage i =  new LoadImage(cs.getCarSeableName(),cs.getPicPath());
                 HttpURLConnection con = null;
                 FileOutputStream fos = null;
                 BufferedOutputStream bos = null;
                 BufferedInputStream bis = null;
                 File imageFile = null;
-                SimpleAdapter simpleAdapter = (SimpleAdapter) pair.second.getAdapter();
+                SimpleAdapter simpleAdapter = (SimpleAdapter) listView.getAdapter();
                 for (int i = 0; i < simpleAdapter.getCount(); i++) {
                     Map<String, Object> map = (Map<String, Object>) simpleAdapter.getItem(i);
                     CarInfor cs= mCarInfoList.get(i);
@@ -337,7 +316,7 @@ public class Search extends Fragment {
 
 
 
-}
+
 
 class SearchGetData {
     public static FragmentTransaction fragmentTransaction;
@@ -347,11 +326,11 @@ class SearchGetData {
     private static String key;
 
     public static void getSearchData(FragmentTransaction ft,String sysmbol){
-            fragmentTransaction =ft;
-            key = sysmbol;
-            searchParams.add(new BasicNameValuePair("tag", "keywords_search"));
-            searchParams.add(new BasicNameValuePair("keywords",GBK2UTF.Transform(sysmbol.replace(" ","%20"))));
-            new GetSearchData().execute();
+        fragmentTransaction =ft;
+        key = sysmbol;
+        searchParams.add(new BasicNameValuePair("tag", "keywords_search"));
+        searchParams.add(new BasicNameValuePair("keywords",GBK2UTF.Transform(sysmbol.replace(" ","%20"))));
+        new GetSearchData().execute();
 
 
 

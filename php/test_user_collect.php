@@ -10,7 +10,7 @@
 		$response['collect_time']=$collect['collect_time'];
 		echo json_encode($response);
 	}else{
-		$response['error']=0;
+		$response['error']=1;
 		echo json_encode($response);
 	}
 ?>

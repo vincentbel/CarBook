@@ -166,9 +166,11 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
             loadOnce = true;
 
             carPicParams.add(new BasicNameValuePair("tag", "show_pictures"));
-            carPicParams.add(new BasicNameValuePair("brand", "BMW"));
-            carPicParams.add(new BasicNameValuePair("series", "7series"));
-            carPicParams.add(new BasicNameValuePair("model_number", "2013 740Li grand"));
+            carPicParams.add(new BasicNameValuePair("car_id", HotCarShow.Transform(CarShow.bundle.getString("car_id"))));
+            /*carPicParams.add(new BasicNameValuePair("brand",  HotCarShow.Transform("奥迪")));
+            carPicParams.add(new BasicNameValuePair("series", HotCarShow.Transform("奥迪A6L")));
+            carPicParams.add(new BasicNameValuePair("model_number", HotCarShow.Transform("2014款 TFSI 手动基本型")));
+            */
             new GetCarInfo().execute();
         }
     }
@@ -258,6 +260,7 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
         protected Void doInBackground(Void... params) {
             //向服务器发送请求
             JSONParser jsonParser = new JSONParser();
+            System.out.println("获取carPicJson");
             carPic = jsonParser.getJSONFromUrl(picUrl, carPicParams);
             return null;
         }
@@ -314,11 +317,15 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
 
         @Override
         protected Bitmap doInBackground(Integer... params) {
+            System.out.println("后台加载图片");
             mItemPosition = params[0];
             mImageUrl = CarImages.imageUrls[mItemPosition];
             Bitmap imageBitmap = imageLoader.getBitmapFromMemoryCache(mImageUrl);
             if (imageBitmap == null) {
+                System.out.println("缓存中不存在位图，需要加载图片");
                 imageBitmap = loadImage(mImageUrl);
+            }else {
+                System.out.println("缓存中存在位图，不需要加载图片");
             }
             return imageBitmap;
         }
@@ -342,9 +349,13 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
         private Bitmap loadImage(String imageUrl) {
             File imageFile = new File(getImagePath(imageUrl));
             if (!imageFile.exists()) {
+                System.out.println("sd卡中不存在准备从服务器下载");
                 downloadImage(imageUrl);
+            } else {
+                System.out.println("sd卡中存在");
             }
             if (imageUrl != null) {
+                System.out.println("从缓存读取");
                 Bitmap bitmap = ImageLoader.decodeSampledBitmapFromResource(imageFile.getPath(),
                         columnWidth);
                 if (bitmap != null) {
@@ -368,6 +379,7 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
             if (mImageView != null) {
                 mImageView.setImageBitmap(bitmap);
             } else {
+                System.out.println("添加图片");
                 ImageView imageView = new ImageView(getContext());
                 imageView.setLayoutParams(params);
                 imageView.setImageBitmap(bitmap);
@@ -383,6 +395,7 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
                     }
                 });
                 findColumnToAdd(imageView, imageHeight).addView(imageView);
+                System.out.println("向imageViewList中添加imageView");
                 imageViewList.add(imageView);
             }
         }
@@ -437,7 +450,7 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
             BufferedInputStream bis = null;
             File imageFile = null;
             try {
-                URL url = new URL(imageUrl);
+                URL url = new URL(HotCarShow.Transform(imageUrl.replace(" ", "%20")));
                 con = (HttpURLConnection) url.openConnection();
                 con.setConnectTimeout(5 * 1000);
                 con.setReadTimeout(15 * 1000);
@@ -471,12 +484,32 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
                 }
             }
             if (imageFile != null) {
+                System.out.println("网络图片获取成功");
                 Bitmap bitmap = ImageLoader.decodeSampledBitmapFromResource(imageFile.getPath(),
                         columnWidth);
                 if (bitmap != null) {
                     imageLoader.addBitmapToMemoryCache(imageUrl, bitmap);
                 }
+            }else {
+                System.out.println("网络图片获取不成功");
             }
+        }
+
+        /**
+         * 获取图片的本地存储路径。
+         *
+         * @return 图片的本地存储路径。
+         */
+        private String getSDPath(){
+            File sdDir = null;
+            boolean sdCardExist = Environment.getExternalStorageState()
+                    .equals(Environment.MEDIA_MOUNTED);   //判断sd卡是否存在
+            if   (sdCardExist)
+            {
+                sdDir = Environment.getExternalStorageDirectory();//获取跟目录
+            }
+            return sdDir.toString();
+
         }
 
         /**
@@ -487,14 +520,22 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
          */
         private String getImagePath(String imageUrl) {
             int lastSlashIndex = imageUrl.lastIndexOf("/");
-            String imageName = imageUrl.substring(lastSlashIndex + 1);
-            String imageDir = Environment.getExternalStorageDirectory().getPath()
+            String imageTPath = imageUrl.substring(0, lastSlashIndex);
+            String extra ="_"+ imageUrl.substring(imageUrl.lastIndexOf("/")+1);
+            lastSlashIndex = imageTPath.lastIndexOf("/");
+            String imageSeries = imageTPath.substring(lastSlashIndex + 1);  //  Series
+            imageTPath = imageTPath.substring(0, lastSlashIndex);
+            String imageName = imageTPath.substring(imageTPath.lastIndexOf("/") + 1);
+            imageName = imageName + imageSeries + extra;
+            System.out.println(imageName);
+            String imageDir = getSDPath()
                     + "/CarBook/Cache/";
             File file = new File(imageDir);
             if (!file.exists()) {
                 file.mkdirs();
             }
             String imagePath = imageDir + imageName;
+
             return imagePath;
         }
     }

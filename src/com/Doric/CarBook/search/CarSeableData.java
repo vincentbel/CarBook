@@ -118,9 +118,9 @@ public class CarSeableData {
                     int success = brandObj.getInt("success");
                     if (success == 1) {
 
-                     DataCache.OutputToCacheFile(brandParams,brandObj);
-                     DecodeJSON(brandObj);
-                     fragmentTransaction.commit();
+                        DataCache.OutputToCacheFile(brandParams,brandObj);
+                        DecodeJSON(brandObj);
+                        fragmentTransaction.commit();
 
                         //context.initPage();
                     }
@@ -163,21 +163,21 @@ public class CarSeableData {
      */
     public  static void ReadCache(Context context,Resources resources) {
 
-            brandParams = new ArrayList<NameValuePair>();
-            brandParams.add(new BasicNameValuePair("tag", "brand"));
+        brandParams = new ArrayList<NameValuePair>();
+        brandParams.add(new BasicNameValuePair("tag", "brand"));
 
 
-            brandObj = DataCache.InputToMemory(brandParams);
-            if (brandObj != null) {
-                try {
-                    DecodeJSON(brandObj);
-                    System.out.println("done");
-                    AlphaShowData.initPage(context, resources);
+        brandObj = DataCache.InputToMemory(brandParams);
+        if (brandObj != null) {
+            try {
+                DecodeJSON(brandObj);
+                System.out.println("done");
+                AlphaShowData.initPage(context, resources);
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+        }
 
 
 

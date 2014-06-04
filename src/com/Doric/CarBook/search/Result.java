@@ -46,8 +46,8 @@ import org.json.JSONObject;
 public class Result extends Fragment {
     public static ArrayList<CarInfor> mCarList;
     private LinearLayout mLinearLayout;
-    private ScrollView mScrollView;
-    private ArrayList<Pair<String,MyListView>> listarray;
+
+    private ListView listView;
 
 
     @Override
@@ -55,10 +55,10 @@ public class Result extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         //获取信息
-        listarray= new ArrayList<Pair<String, MyListView>>();
+
         initPage();
         new GetPicData().start();
-        return mScrollView;
+        return mLinearLayout;
 
     }
 
@@ -88,30 +88,21 @@ public class Result extends Fragment {
         mLinearLayout.setLayoutParams(param1);
         mLinearLayout.setOrientation(LinearLayout.VERTICAL);
         mLinearLayout.setBackgroundColor(Color.rgb(255, 255, 255));
-        ArrayList<Pair<String, ArrayList<CarInfor>>> al = PinYinIndex.getIndex_CarInfo(mCarList);
 
-        mScrollView = new ScrollView(SearchMain.searchmain);
-        mScrollView.setEnabled(true);
-        mScrollView.setBackgroundColor(Color.rgb(255, 255, 255));
-        ScrollView.LayoutParams param2 = new ScrollView.LayoutParams(ScrollView.
-                LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT);
-        mScrollView.setLayoutParams(param2);
+//
+//        mScrollView = new ScrollView(SearchMain.searchmain);
+//        mScrollView.setEnabled(true);
+//        mScrollView.setBackgroundColor(Color.rgb(255, 255, 255));
+//        ScrollView.LayoutParams param2 = new ScrollView.LayoutParams(ScrollView.
+//                LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT);
+//        mScrollView.setLayoutParams(param2);
 
 
-        for (Pair<String, ArrayList<CarInfor>> pair : al) {
-            TextView text = new TextView(SearchMain.searchmain);
-            text.setText(" "+pair.first);
 
-            text.setTextColor(Color.rgb(100, 100, 100));
-
-            text.setBackgroundColor(Color.rgb(240, 240, 240));
-            text.setTextSize(20);
-
-            mLinearLayout.addView(text);
-            MyListView listview = new MyListView(SearchMain.searchmain);
+            ListView listview = new MyListView(SearchMain.searchmain);
             listview.setDivider(getResources().getDrawable(R.drawable.list_divider));
             listview.setDividerHeight(1);
-            SimpleAdapter adapter = new SimpleAdapter(SearchMain.searchmain, getUniformData(pair.second), R.layout.sea_list_layout,
+            SimpleAdapter adapter = new SimpleAdapter(SearchMain.searchmain, getUniformData(mCarList), R.layout.sea_list_layout,
                     new String[]{"title", "img"},
                     new int[]{R.id.title, R.id.img});
 
@@ -123,9 +114,11 @@ public class Result extends Fragment {
                                         int position, long id) {
                     Intent it= new Intent();
                     CarInfor ci  =mCarList.get(position);
-                    it.putExtra("brand_serie",ci.getCarSerie());
-                    it.putExtra("model_number",ci.getCarName());
-                    it.putExtra("id",ci.getCarId());
+                    Bundle bundle =new Bundle();
+                    bundle.putString("car_id",ci.getCarId());
+                    bundle.putString("series",ci.getCarSerie());
+                    bundle.putString("model_number",ci.getCarName());
+                    it.putExtras(bundle);
                     it.setClass(SearchMain.searchmain,CarShow.class);
                     SearchMain.searchmain.startActivity(it);
 
@@ -133,10 +126,9 @@ public class Result extends Fragment {
                 }
 
             });
-            listarray.add(new Pair<String, MyListView>(pair.first,listview));
-            mLinearLayout.addView(listview);
-        }
-        mScrollView.addView(mLinearLayout);
+
+        mLinearLayout.addView(listview);
+
 
     }
 
@@ -187,14 +179,14 @@ public class Result extends Fragment {
         }
 
         public void run() {
-            for (Pair<String, MyListView> pair : listarray) {
+
 
                 HttpURLConnection con = null;
                 FileOutputStream fos = null;
                 BufferedOutputStream bos = null;
                 BufferedInputStream bis = null;
                 File imageFile = null;
-                SimpleAdapter simpleAdapter = (SimpleAdapter) pair.second.getAdapter();
+                SimpleAdapter simpleAdapter = (SimpleAdapter)listView.getAdapter();
                 for (int i = 0; i < simpleAdapter.getCount(); i++) {
                     Map<String, Object> map = (Map<String, Object>) simpleAdapter.getItem(i);
                     CarInfor ci = mCarList.get(i);
@@ -296,7 +288,7 @@ public class Result extends Fragment {
     }
 
 
-}
+
 
 /**
  * 获取搜索结果的异步类
@@ -327,72 +319,72 @@ class CSearchGetData{
 
     static  class GetCarInfo extends AsyncTask<Void, Void, Void> {
 
-    public GetCarInfo(){
-        super();
-        //SearchMain.searchmain.InInitialize();
+        public GetCarInfo(){
+            super();
+            //SearchMain.searchmain.InInitialize();
 
-    }
-
-    protected void onPreExecute() {
-        super.onPreExecute();
-        //加载时弹出
-        SearchMain.searchmain.loading();
-    }
-
-    protected Void doInBackground(Void... params) {
-        //向服务器发送请求
-        JSONParser jsonParser = new JSONParser();
-        carInfoObj = jsonParser.getJSONFromUrl(url, carInfoParams);
-        return null;
-    }
-
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
-
-        if (carInfoObj != null) {
-            ArrayList<CarInfor> carlist =new ArrayList<CarInfor>();
-            try {
-                int success = carInfoObj.getInt("success");
-                if(success==0){
-                    SearchMain.searchmain.stopLoading();
-                    Toast.makeText(SearchMain.searchmain, "未找到符合的车辆", Toast.LENGTH_LONG).show();
-                }
-                else if (success == 1) {
-                    int num = carInfoObj.getInt("search_number");
-                    for (int i = 1; i <= num; i++) {
-                        CarInfor cs = new CarInfor();
-                        JSONObject ja= carInfoObj.getJSONObject("car_" + i);
-                        cs.setCarSeable(ja.getString("brand"));
-                        cs.setCarSerie(ja.getString("brand_series"));
-                        cs.setCarName(ja.getString("model_number"));
-                        cs.setCarPicPath(Constant.BASE_URL + "/" + ja.getString("pictures_url"));
-                        cs.setCarId(ja.getString("car_id"));
-                        cs.setCarGrade(ja.getString("grade"));
-                        carlist.add(cs);
-
-                    }
-
-
-                    if (carlist.size() > 0) {
-                        Collections.sort(carlist, new ComparatorCarInfo());
-
-                    }
-                    Result.setCarList(carlist);
-                    SearchMain.searchmain.stopLoading();
-                    fragmentTransaction.commit();
-                    //context.initPage();
-                }
-            } catch (JSONException e) {
-                SearchMain.searchmain.stopLoading();
-                Toast.makeText(SearchMain.searchmain, e.toString(), Toast.LENGTH_LONG).show();
-            }
-
-
-
-        } else {
-            SearchMain.searchmain.stopLoading();
-            Toast.makeText(SearchMain.searchmain, "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
         }
-    }
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //加载时弹出
+            SearchMain.searchmain.loading();
+        }
+
+        protected Void doInBackground(Void... params) {
+            //向服务器发送请求
+            JSONParser jsonParser = new JSONParser();
+            carInfoObj = jsonParser.getJSONFromUrl(url, carInfoParams);
+            return null;
+        }
+
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            if (carInfoObj != null) {
+                ArrayList<CarInfor> carlist =new ArrayList<CarInfor>();
+                try {
+                    int success = carInfoObj.getInt("success");
+                    if(success==0){
+                        SearchMain.searchmain.stopLoading();
+                        Toast.makeText(SearchMain.searchmain, "未找到符合的车辆", Toast.LENGTH_LONG).show();
+                    }
+                    else if (success == 1) {
+                        int num = carInfoObj.getInt("search_number");
+                        for (int i = 1; i <= num; i++) {
+                            CarInfor cs = new CarInfor();
+                            JSONObject ja= carInfoObj.getJSONObject("car_" + i);
+                            cs.setCarSeable(ja.getString("brand"));
+                            cs.setCarSerie(ja.getString("brand_series"));
+                            cs.setCarName(ja.getString("model_number"));
+                            cs.setCarPicPath(Constant.BASE_URL + "/" + ja.getString("pictures_url"));
+                            cs.setCarId(ja.getString("car_id"));
+                            cs.setCarGrade(ja.getString("grade"));
+                            carlist.add(cs);
+
+                        }
+
+
+                        if (carlist.size() > 0) {
+                            Collections.sort(carlist, new ComparatorCarInfo());
+
+                        }
+                        Result.setCarList(carlist);
+                        SearchMain.searchmain.stopLoading();
+                        fragmentTransaction.commit();
+                        //context.initPage();
+                    }
+                } catch (JSONException e) {
+                    SearchMain.searchmain.stopLoading();
+                    Toast.makeText(SearchMain.searchmain, e.toString(), Toast.LENGTH_LONG).show();
+                }
+
+
+
+            } else {
+                SearchMain.searchmain.stopLoading();
+                Toast.makeText(SearchMain.searchmain, "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }

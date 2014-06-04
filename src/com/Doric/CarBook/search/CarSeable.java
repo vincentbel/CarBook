@@ -29,7 +29,7 @@ class CarSeable {
     private String picPath;
 
     public Bitmap getBitmap() {
-            return bitmap;
+        return bitmap;
     }
 
     public void setBitmap(Bitmap bitmap) {
@@ -79,7 +79,7 @@ class CarSeable {
                 }
             }
             else
-            new GetSeries().execute();
+                new GetSeries().execute();
         }
         else if(!CarBrand.equals(carSeableName)){
             CarBrand = carSeableName;

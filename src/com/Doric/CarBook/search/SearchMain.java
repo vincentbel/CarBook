@@ -91,7 +91,8 @@ public class SearchMain extends Activity  {
                 return true;
             case R.id.action_cmp:
                 CarSeable.CarBrand="";
-                SearchMain.this.startActivity(new Intent(SearchMain.this,CarComparison.class));
+                SearchMain.this.startActivity(new Intent(SearchMain.searchmain,CarComparison.class));
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

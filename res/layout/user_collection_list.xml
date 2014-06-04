@@ -3,10 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"> 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+              android:layout_height="match_parent">
     <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -50,7 +47,27 @@
                     android:layout_toRightOf="@+id/userCollectionThumPic"
                     android:layout_below="@+id/carGradeText"
                     />
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/collectionBrand"
+                    android:visibility="invisible"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/collectionBrandSeries"
+                    android:visibility="invisible"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/collectionModelNumber"
+                    android:visibility="invisible"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/car_id"
+                    android:visibility="invisible"/>
+
         </RelativeLayout>
     </LinearLayout>
-    </ScrollView>
 </LinearLayout>

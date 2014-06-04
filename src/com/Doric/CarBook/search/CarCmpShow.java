@@ -47,8 +47,11 @@ public class CarCmpShow extends ActionBarActivity {
         }
     }
 
-
-
+    @Override
+    public void onBackPressed() {
+        SearchMain.searchmain.setUseage(true);
+        super.onBackPressed();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

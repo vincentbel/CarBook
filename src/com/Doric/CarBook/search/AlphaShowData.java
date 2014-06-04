@@ -11,10 +11,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Pair;
-import android.view.Gravity;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.*;
 import com.Doric.CarBook.R;
 import org.w3c.dom.Text;
@@ -151,16 +148,20 @@ public class AlphaShowData{
             text.setTextSize(18);
             otherlinearlayout.addView(text);
             text.setOnTouchListener(new View.OnTouchListener() {
+
+
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    if(alpha_index==null){
+
+                    if (alpha_index == null) {
                         CreateIndex(mLinearLayout);
                     }
-                    mScrollView.scrollTo(alpha_index.get(((TextView)v).getText()),alpha_index.get(((TextView)v).getText()));
-                    mScrollView.smoothScrollTo(alpha_index.get(((TextView)v).getText()),alpha_index.get(((TextView)v).getText()));
-                    showToast(((TextView)v).getText().toString());
+                    mScrollView.scrollTo(alpha_index.get(((TextView) v).getText()), alpha_index.get(((TextView) v).getText()));
+                    mScrollView.smoothScrollTo(alpha_index.get(((TextView) v).getText()), alpha_index.get(((TextView) v).getText()));
+                    showToast(((TextView) v).getText().toString());
                     Message delayMsg = m_Handler.obtainMessage(AIRPLAY_MESSAGE_HIDE_TOAST);
                     m_Handler.sendMessageDelayed(delayMsg, 1000);
+
                     return true;
                 }
             });
@@ -171,7 +172,7 @@ public class AlphaShowData{
 
     }
 
-    final static int AIRPLAY_MESSAGE_HIDE_TOAST = 0x1000;
+    final static int AIRPLAY_MESSAGE_HIDE_TOAST = 0x1234;
 
 
 
@@ -369,10 +370,10 @@ public class AlphaShowData{
         private String getSDPath(){
             File sdDir = null;
             boolean sdCardExist = Environment.getExternalStorageState()
-                    .equals(Environment.MEDIA_MOUNTED);   //????sd?¡§??¡¤?????
+                    .equals(Environment.MEDIA_MOUNTED);
             if   (sdCardExist)
             {
-                sdDir = Environment.getExternalStorageDirectory();//?????¨²????
+                sdDir = Environment.getExternalStorageDirectory();
             }
             return sdDir.toString();
 

@@ -16,8 +16,24 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:id="@+id/carNameTextView"
+            android:id="@+id/car_id"
+            android:visibility="invisible"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/carBrandTextView"
+            android:layout_marginTop="35dp"
             android:layout_toRightOf="@+id/carPicImageView"
-            android:paddingLeft="5dp"/>
+            android:paddingLeft="5dp"
+            android:textStyle="bold"
+            android:textSize="18dp"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/carModelNumberTextView"
+            android:layout_toRightOf="@+id/carPicImageView"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:layout_below="@+id/carBrandTextView"
+            />
 </RelativeLayout>

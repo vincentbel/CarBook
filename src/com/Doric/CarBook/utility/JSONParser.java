@@ -34,7 +34,10 @@ public class JSONParser {
             return null;
         }
         try {
-            Log.i(TAG, json);
+
+            Log.i(TAG + " data send", params.toString());
+            Log.i(TAG + "data received", json);
+
             jsonObject = new JSONObject(json);
         } catch (JSONException e) {
             e.printStackTrace();

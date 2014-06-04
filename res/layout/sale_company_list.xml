@@ -34,13 +34,15 @@
                 android:layout_below="@id/storeName"
                 android:layout_toRightOf="@+id/icon1"
                 />
-        <Button android:layout_height="30dp"
-                android:layout_width="wrap_content"
-                android:background="@drawable/call_store"
-                android:layout_alignParentBottom="true"
+        <Button
+                android:id="@+id/callStoreBtn"
+                android:layout_height="30dp"
+                android:layout_width="120dp"
+                android:background="@xml/call_store_background_blue"
                 android:layout_alignParentLeft="true"
                 android:text="@string/call_4s_store"
+                android:textSize="15dp"
                 android:textColor="@android:color/white"
-                />
+                android:layout_alignParentBottom="true"/>
     </RelativeLayout>
 </LinearLayout>

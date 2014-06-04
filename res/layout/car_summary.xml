@@ -13,6 +13,7 @@
                 android:orientation="vertical"
                 android:id="@+id/listLinearLayout">
             <RelativeLayout
+                    android:id="@+id/summaryRelativeLayout"
                     android:layout_width="fill_parent"
                     android:layout_height="120dp"
                     android:padding="10dp"
@@ -21,23 +22,22 @@
                 <ImageView
                         android:layout_height="120dp"
                         android:layout_width="150dp"
-                        android:src="@drawable/ic_defaultpic"
                         android:background="@android:color/white"
                         android:scaleType="centerCrop"
-                        android:id="@+id/userCollectionThumPic"
+                        android:id="@+id/thumPic"
                         />
                 <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/bodyStruText"
-                        android:layout_toRightOf="@+id/userCollectionThumPic"
+                        android:layout_toRightOf="@+id/thumPic"
                         android:paddingLeft="10dp"
                         />
                 <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/SCBText"
-                        android:layout_toRightOf="@+id/userCollectionThumPic"
+                        android:layout_toRightOf="@+id/thumPic"
                         android:layout_below="@+id/bodyStruText"
                         android:paddingLeft="10dp"
                         />
@@ -45,7 +45,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/driveModeText"
-                        android:layout_toRightOf="@+id/userCollectionThumPic"
+                        android:layout_toRightOf="@+id/thumPic"
                         android:layout_below="@+id/SCBText"
                         android:paddingLeft="10dp"
                         />
@@ -53,7 +53,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/lowCostText"
-                        android:layout_toRightOf="@+id/userCollectionThumPic"
+                        android:layout_toRightOf="@+id/thumPic"
                         android:layout_below="@+id/driveModeText"
                         android:paddingLeft="10dp"
                         />
