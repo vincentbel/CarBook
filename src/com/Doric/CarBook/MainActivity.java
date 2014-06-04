@@ -18,11 +18,8 @@ import cn.jpush.android.api.JPushInterface;
 import com.Doric.CarBook.Settings.SettingsFragment;
 import com.Doric.CarBook.car.CarShow;
 import com.Doric.CarBook.car.HotCarShow;
-import com.Doric.CarBook.member.Login;
-import com.Doric.CarBook.member.PersonalCenter;
-import com.Doric.CarBook.member.UserCollection;
+import com.Doric.CarBook.member.*;
 import com.Doric.CarBook.push.CarShowUtil;
-import com.Doric.CarBook.member.UserFunctions;
 import com.Doric.CarBook.search.SearchMain;
 import com.Doric.CarBook.utility.DatabaseHelper;
 import android.view.View;
@@ -277,9 +274,11 @@ public class MainActivity extends InstrumentedActivity {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 rowView = inflater.inflate(R.layout.drawer_list_item, parent, false);
                 ViewHolder viewHolder = new ViewHolder();
+
                 viewHolder.textView = (TextView) rowView.findViewById(R.id.left_drawer_text);
                 viewHolder.imageView = (ImageView) rowView.findViewById(R.id.left_drawer_image);
                 rowView.setTag(viewHolder);  //保存views到viewHolder中
+
             }
 
             ViewHolder viewHolder = (ViewHolder) rowView.getTag();  //取得viewHolder中的views
@@ -301,5 +300,30 @@ public class MainActivity extends InstrumentedActivity {
             }
             return rowView;
         }
+    }
+
+
+    @Override
+    protected void onResume() {
+        isForeground = true;
+        JPushInterface.onResume(this);
+        super.onResume();
+    }
+    @Override
+    protected void onPause() {
+        JPushInterface.onPause(this);
+        isForeground = false;
+        super.onPause();
+    }
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
+    }
+    public void pushOnResume (){
+        JPushInterface.resumePush(getApplicationContext());
+    }
+    public void pushOnPause(){
+        JPushInterface.stopPush(getApplicationContext());
     }
 }

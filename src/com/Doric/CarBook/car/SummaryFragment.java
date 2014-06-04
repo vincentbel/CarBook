@@ -31,11 +31,13 @@ import java.util.Map;
  */
 public class SummaryFragment extends Fragment {
 
-    private int picWidth = 100; // 图片宽度。
+    private final int picWidth = 150; // 图片宽度。
 
     private ImageLoader imageLoader; // 对图片管理的工具类
 
-    ArrayList<Map<String, Object>> list = null;
+    ArrayList<Map<String, Object>> list = null;    // 向车辆报价列表中添加信息的键值对
+
+    private final int storeNum = 5;
 
     private ImageView thumPic = null;
 
@@ -103,7 +105,7 @@ public class SummaryFragment extends Fragment {
         ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-            for (Integer i = 1; i <= CarShow.carInfo.getInt("sale_company_num"); i++) {
+            for (Integer i = 1; i <= storeNum; i++) {
                 map = new HashMap<String, Object>();
                 JSONObject carSaleCompany = CarShow.carInfo.getJSONObject("sale_company_" + i.toString());
                 map.put("storeName", carSaleCompany.getString("name"));
@@ -250,7 +252,7 @@ public class SummaryFragment extends Fragment {
                 thumPic = new ImageView(getActivity());
                 thumPic.setLayoutParams(params);
                 thumPic.setImageBitmap(bitmap);
-                thumPic.setScaleType(ImageView.ScaleType.FIT_XY);
+                thumPic.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 thumPic.setTag(R.string.image_url, mImageUrl);
             }
         }
@@ -272,14 +274,15 @@ public class SummaryFragment extends Fragment {
             BufferedInputStream bis = null;
             File imageFile = null;
             try {
-                URL url = new URL(imageUrl);
+                URL url = new URL(HotCarShow.Transform(imageUrl.replace(" ", "%20")));
                 con = (HttpURLConnection) url.openConnection();
                 con.setConnectTimeout(5 * 1000);
                 con.setReadTimeout(15 * 1000);
                 con.setDoInput(true);
                 con.setDoOutput(true);
                 bis = new BufferedInputStream(con.getInputStream());
-                imageFile = new File(getImagePath(imageUrl));
+                String path = getImagePath(imageUrl);
+                imageFile = new File(path);
                 fos = new FileOutputStream(imageFile);
                 bos = new BufferedOutputStream(fos);
                 byte[] b = new byte[1024];
@@ -313,6 +316,17 @@ public class SummaryFragment extends Fragment {
                 }
             }
         }
+        private String getSDPath(){
+            File sdDir = null;
+            boolean sdCardExist = Environment.getExternalStorageState()
+                    .equals(Environment.MEDIA_MOUNTED);   //判断sd卡是否存在
+            if   (sdCardExist)
+            {
+                sdDir = Environment.getExternalStorageDirectory();//获取跟目录
+            }
+            return sdDir.toString();
+
+        }
 
         /**
          * 获取图片的本地存储路径。
@@ -322,15 +336,22 @@ public class SummaryFragment extends Fragment {
          */
         private String getImagePath(String imageUrl) {
             int lastSlashIndex = imageUrl.lastIndexOf("/");
-            String imageName = imageUrl.substring(lastSlashIndex + 1);
-            String imageDir = null;
-            imageDir = Environment.getExternalStorageDirectory().getPath()
+            String imageTPath = imageUrl.substring(0, lastSlashIndex);
+            String extra ="_"+ imageUrl.substring(imageUrl.lastIndexOf("/")+1);
+            lastSlashIndex = imageTPath.lastIndexOf("/");
+            String imageSeries = imageTPath.substring(lastSlashIndex + 1);  //  Series
+            imageTPath = imageTPath.substring(0, lastSlashIndex);
+            String imageName = imageTPath.substring(imageTPath.lastIndexOf("/") + 1);
+            imageName = imageName + imageSeries + extra;
+            System.out.println(imageName);
+            String imageDir = getSDPath()
                     + "/CarBook/Cache/";
             File file = new File(imageDir);
             if (!file.exists()) {
                 file.mkdirs();
             }
             String imagePath = imageDir + imageName;
+
             return imagePath;
         }
     }
@@ -370,7 +391,7 @@ public class SummaryFragment extends Fragment {
             if (convertView == null) {
 
                 holder=new ViewHolder();
-
+                //  关联R中控件
                 convertView = mInflater.inflate(R.layout.sale_company_list, null);
                 holder.storeAddrText = (TextView)convertView.findViewById(R.id.storeAddr);
                 holder.storeNameText = (TextView)convertView.findViewById(R.id.storeName);
