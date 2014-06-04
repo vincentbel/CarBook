@@ -79,7 +79,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Settings.PushSetting"
+        <activity android:name=".settings.PushSetting"
                   android:screenOrientation="portrait">
         </activity>
 
