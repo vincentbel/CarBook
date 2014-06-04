@@ -14,6 +14,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 import com.Doric.CarBook.R;
 
+import java.util.ArrayList;
+
 public class SettingsFragment extends Fragment {
 
     View rootView;
@@ -26,6 +28,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         rootView = getView();
+        ArrayList<String> a = new ArrayList<String>();
         super.onActivityCreated(savedInstanceState);
 
         String[] systemSettingsTitles = new String[] {
