@@ -76,6 +76,8 @@ public class HotCarShow extends Fragment {
     // An ExecutorService that can schedule commands to run after a given delay,
     // or to execute periodically.
     private ScheduledExecutorService scheduledExecutorService;
+    // 判断滚动是否开启
+    private static boolean tag = false;
 
 
     @Override
@@ -173,13 +175,13 @@ public class HotCarShow extends Fragment {
                 ListView tempList = (ListView) parent;
                 HashMap<String, String> map = (HashMap<String, String>) tempList.getItemAtPosition(position);
                 String car_id = map.get("car_id");
-                String brand_series = map.get("carBrandTextView");
-                String model_number = map.get("carModelNumberTextView");
+/*                String brand_series = map.get("carBrandTextView");
+                String model_number = map.get("carModelNumberTextView");*/
 
                 Bundle bundle = new Bundle();
                 bundle.putString("car_id",car_id);
-                bundle.putString("series",brand_series);
-                bundle.putString("model_number",model_number);
+/*                bundle.putString("series",brand_series);
+                bundle.putString("model_number",model_number);*/
 
                 Intent intent = new Intent(getActivity(),CarShow.class);
                 intent.putExtras(bundle);
@@ -269,8 +271,8 @@ public class HotCarShow extends Fragment {
                         car = hotCarShow.getJSONObject("car_"+v.getTag());
                         Bundle bundle = new Bundle();
                         bundle.putString("car_id",car.getString("car_id"));
-                        bundle.putString("series",car.getString("brand_series"));
-                        bundle.putString("model_number",car.getString("model_number"));
+/*                        bundle.putString("series",car.getString("brand_series"));
+                        bundle.putString("model_number",car.getString("model_number"));*/
 
                         Intent intent = new Intent(getActivity(),CarShow.class);
                         intent.putExtras(bundle);
@@ -313,9 +315,9 @@ public class HotCarShow extends Fragment {
      */
     @Override
     public void onStart() {
-        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        /*scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         // 当Activity显示出来后，每两秒钟切换一次图片显示
-        scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 1, 2, TimeUnit.SECONDS);
+        scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 1, 2, TimeUnit.SECONDS)*/;
         super.onStart();
     }
 
@@ -324,8 +326,8 @@ public class HotCarShow extends Fragment {
      */
     @Override
     public void onStop() {
-        // 当Activity不可见的时候停止切换
-        scheduledExecutorService.shutdown();
+        /*// 当Activity不可见的时候停止切换
+        scheduledExecutorService.shutdown();*/
         super.onStop();
     }
     /*
@@ -444,78 +446,7 @@ public class HotCarShow extends Fragment {
             progressDialog.show();*/
         }
 
-        /*protected Void doInBackground(Void... params) {
-            Log.d("GetPicData", "获取图片");
-            //LoadImage i =  new LoadImage(cs.getCarSeableName(),cs.getPicPath());
-            HttpURLConnection con = null;
-            FileOutputStream fos = null;
-            BufferedOutputStream bos = null;
-            BufferedInputStream bis = null;
-            File imageFile = null;
-            JSONObject car = null;
 
-            SimpleAdapter simpleAdapter = (SimpleAdapter) hotCarShowList.getAdapter();
-            for (Integer i = 1; i <= simpleAdapter.getCount(); i++) {
-                Log.d("GetPicData", "download" + i.toString());
-                Map<String, Object> map = (Map<String, Object>) simpleAdapter.getItem(i - 1);
-                Bitmap bitmap = null;
-                String imageUrl = null;
-                try {
-                    car = hotCarShow.getJSONObject("car_" + i.toString());
-                    imageUrl = Constant.BASE_URL + "/" + car.getString("pictures_url");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                imageFile = new File(getImagePath(imageUrl));
-                try {
-                    if (!imageFile.exists()) {
-                        URL url = new URL(Transform(imageUrl.replace(" ", "%20")));
-                        System.out.println(url);
-                        con = (HttpURLConnection) url.openConnection();
-                        con.setConnectTimeout(5 * 1000);
-                        con.setReadTimeout(15 * 1000);
-                        con.setDoInput(true);
-                        con.setDoOutput(true);
-                        bis = new BufferedInputStream(con.getInputStream());
-                        imageFile = new File(getImagePath(imageUrl));
-                        fos = new FileOutputStream(imageFile);
-                        bos = new BufferedOutputStream(fos);
-                        byte[] b = new byte[1024];
-                        int length;
-                        while ((length = bis.read(b)) != -1) {
-                            bos.write(b, 0, length);
-                            bos.flush();
-                        }
-                        if (bis != null) {
-                            bis.close();
-                        }
-                        if (bos != null) {
-                            bos.close();
-                        }
-                        bitmap = BitmapFactory.decodeFile(getImagePath(imageUrl));
-
-                    } else {
-                        bitmap = BitmapFactory.decodeFile(getImagePath(imageUrl));
-                    }
-                    if (bitmap != null) {
-
-                        map.put("carPicImageView", bitmap);
-                        cwjHandler.post(new UpdateRunnable(simpleAdapter));
-                        if (i <= 5) {
-                            imageViews.get(i - 1).setImageBitmap(bitmap);
-                            imageViews.get(i - 1).setScaleType(ImageView.ScaleType.CENTER_CROP);
-                        }
-                    }
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-            return null;
-        }
-*/
         @Override
         protected Void doInBackground(Void... params) {
             JSONObject car = null;
@@ -591,7 +522,7 @@ public class HotCarShow extends Fragment {
             BufferedInputStream bis = null;
             File imageFile = null;
             try {
-                URL url = new URL(Transform(imageUrl));
+                URL url = new URL(Transform(imageUrl.replace(" ","%20")));
                 con = (HttpURLConnection) url.openConnection();
                 con.setConnectTimeout(5 * 1000);
                 con.setReadTimeout(15 * 1000);
@@ -638,9 +569,13 @@ public class HotCarShow extends Fragment {
 
         protected void onPostExecute(Void aVoid) {
             initViewPager();
+            /*if (tag){
+                return;
+            }*/
             scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
             // 当Activity显示出来后，每两秒钟切换一次图片显示
             scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 1, 2, TimeUnit.SECONDS);
+            //tag = true;
         }
     }
 
@@ -663,18 +598,7 @@ public class HotCarShow extends Fragment {
      * @param imageUrl 图片的URL地址。
      * @return 图片的本地存储路径。
      */
-    /*private String getImagePath(String imageUrl) {
-        int lastSlashIndex = imageUrl.lastIndexOf("/");
-        String imageName = imageUrl.substring(lastSlashIndex + 1);
-        String imageDir = Environment.getExternalStorageDirectory().getPath()
-                + "/CarBook/Cache/";
-        File file = new File(imageDir);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        String imagePath = imageDir + imageName;
-        return imagePath;
-    }*/
+
     private String getImagePath(String imageUrl) {
         int lastSlashIndex = imageUrl.lastIndexOf("/");
         String imageTPath = imageUrl.substring(0, lastSlashIndex);

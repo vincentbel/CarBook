@@ -78,11 +78,10 @@
                 <category android:name="jpush.testCategory" />
             </intent-filter>
         </activity>
-        <!--<activity android:name="com.Doric.CarBook.member.UserCollection"
-                  android:label="userCollection"
-                  android:theme="@style/Theme.CarShow"
+
+        <activity android:name=".Settings.PushSetting"
                   android:screenOrientation="portrait">
-        </activity>-->
+        </activity>
 
         <activity
                 android:name="com.Doric.CarBook.search.SearchMain"
@@ -93,9 +92,10 @@
         <activity android:name=".car.ImageDetailsActivity">
         </activity>
 
-        <activity android:name=".settings.About"/>
-
         <activity android:name=".settings.Feedback"/>
+
+        <activity android:name=".settings.About"
+                  android:screenOrientation="portrait"/>
 
         <!-- Required SDK核心功能-->
         <activity

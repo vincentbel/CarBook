@@ -299,12 +299,10 @@ public class MainActivity extends InstrumentedActivity {
     protected void onResume() {
         drawerList.invalidateViews();
         isForeground = true;
-        JPushInterface.onResume(this);
         super.onResume();
     }
     @Override
     protected void onPause() {
-        JPushInterface.onPause(this);
         isForeground = false;
         super.onPause();
     }
@@ -313,7 +311,7 @@ public class MainActivity extends InstrumentedActivity {
         unregisterReceiver(mMessageReceiver);
         super.onDestroy();
     }
-    public void pushOnResume (){
+    public   void pushOnResume (){
         JPushInterface.resumePush(getApplicationContext());
     }
     public void pushOnPause(){

@@ -9,8 +9,12 @@ import org.json.JSONObject;
  */
 public class CarImages {
 
-    public static String[] imageUrls;
 
+    // 用于储存图片URL的字符串数组
+    public static String[] imageUrls;
+    /*
+    * 初始化字符串数组
+    */
     public static void initImages(int n, JSONObject carPic) {
         imageUrls = new String[n];
         for (Integer i = 1; i <= n; i++) {
@@ -20,7 +24,6 @@ public class CarImages {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            System.out.println(imageUrls.length);
         }
 
     }
