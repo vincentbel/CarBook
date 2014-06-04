@@ -1,6 +1,5 @@
 package com.Doric.CarBook;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
@@ -16,6 +15,7 @@ import android.view.*;
 import android.widget.*;
 import cn.jpush.android.api.InstrumentedActivity;
 import cn.jpush.android.api.JPushInterface;
+import com.Doric.CarBook.Settings.SettingsFragment;
 import com.Doric.CarBook.car.CarShow;
 import com.Doric.CarBook.car.HotCarShow;
 import com.Doric.CarBook.member.*;
@@ -172,7 +172,7 @@ public class MainActivity extends InstrumentedActivity {
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
             case 4: // 「设置」模块
-                fragment = new Fragment();
+                fragment = new SettingsFragment();
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
             case 5: //「汽车展示」测试模块

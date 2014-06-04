@@ -93,6 +93,8 @@
         <activity android:name=".car.ImageDetailsActivity">
         </activity>
 
+        <activity android:name=".Settings.About"/>
+
         <!-- Required SDK核心功能-->
         <activity
                 android:name="cn.jpush.android.ui.PushActivity"

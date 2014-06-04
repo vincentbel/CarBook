@@ -280,6 +280,7 @@ public class HotCarShow extends Fragment {
                     }
                 }
             });
+
         }
 
 
