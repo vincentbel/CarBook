@@ -11,6 +11,7 @@
                  android:icon="@drawable/ic_launcher">
         <activity android:name="MainActivity"
                   android:label="@string/app_name"
+
                   >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -48,11 +49,20 @@
 
         <activity
                 android:name="com.Doric.CarBook.search.SearchMain"
+                android:launchMode="singleInstance"
                 android:screenOrientation="portrait">
         </activity>
 
         <activity android:name=".car.ImageDetailsActivity">
         </activity>
+        <activity android:name=".search.CarComparison"
+                  android:launchMode="singleInstance"
+                  android:screenOrientation="portrait"
+                  />
+        <activity android:name=".search.CarCmpShow"
+                  android:screenOrientation="portrait"
+                   android:theme="@style/AppTheme"
+                  />
 
     </application>
 </manifest>

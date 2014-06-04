@@ -9,16 +9,18 @@ import android.widget.*;
 import com.Doric.CarBook.R;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import android.app.Fragment;
-import org.apache.http.NameValuePair;
 
 
+/**
+ * Ìõ¼þËÑË÷
+ */
 public class ConditionSearch extends Fragment {
 
     Spinner spinner;
@@ -81,8 +83,6 @@ public class ConditionSearch extends Fragment {
 
                 createGrade(grade);
                 String text = (String) spinner.getSelectedItem();
-                Double l = new Double(0.0);
-                Double h = new Double(0.0);
                 Price p =findPrice(text);
                 SearchMain.searchmain.SearchToResult(p.low,p.high,grade);
 

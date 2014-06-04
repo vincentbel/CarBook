@@ -44,9 +44,8 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
         //发送请求并获取Json包
 
         carParamsRequest.add(new BasicNameValuePair("tag", "showcar"));
-        carParamsRequest.add(new BasicNameValuePair("brand", "BMW"));
-        carParamsRequest.add(new BasicNameValuePair("series", "7series"));
-        carParamsRequest.add(new BasicNameValuePair("model_number", "2013 740Li grand"));
+        carParamsRequest.add(new BasicNameValuePair("car_id", "24"));
+
 
         //通过新线程构造car实例并初始化Activity
         new GetCarInfo().execute();

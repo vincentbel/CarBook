@@ -11,27 +11,21 @@ package com.Doric.CarBook.search;
 
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.os.AsyncTask;
-import android.os.Environment;
-import android.util.Log;
-import android.util.LruCache;
 import android.util.Pair;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import com.Doric.CarBook.R;
-import com.Doric.CarBook.car.CarImages;
-import com.Doric.CarBook.car.ImageDetailsActivity;
 
+import javax.xml.transform.Transformer;
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.*;
+
+/**
+ * after change the coding way ?( i don't know it is rigth or not...)from UTF-8  to GBK
+ * see....
+ *  just mass
+ *  i will not say anything
+ *  this file include many util class
+ *  that's all =w=
+ */
 
 /**
  * 锟斤拷锟斤拷转锟斤拷为全??
@@ -780,115 +774,139 @@ class PinyinSearch {
         return counter;
     }
 }
+class GBK2UTF {
+    public static String Transform(String str){
+        byte[] b = str.getBytes();
+        char[] c = new char[b.length];
+        for (int i=0;i<b.length;i++){
+            if(b[i]!=' ')
+            c[i] = (char)(b[i]&0x00FF);
+
+        }
+        return new String(c);
+    }
+}
+
 
 class PinYinIndex {
     //为车辆品牌排序，输出格式为：
     //首字????品牌列表????成的Pair的列??
-    public static ArrayList<Pair<String, ArrayList<CarSeable>>> getIndex_CarSeable(ArrayList<CarSeable> list, Context context) {
-        ArrayList<Pair<String, ArrayList<CarSeable>>> returnarr = new ArrayList<Pair<String, ArrayList<CarSeable>>>();
-        String alphaIndex = "A";
-        boolean is_change = false;
+    public static ArrayList<Pair<String, ArrayList<CarSeable>>> getIndex_CarSeable(ArrayList<CarSeable> list) {
+        Map<String, ArrayList<CarSeable>> returnarr = new HashMap<String,ArrayList<CarSeable>>();
 
-        ArrayList<CarSeable> al = new ArrayList<CarSeable>();
 
-        for (CarSeable cs : list) {
 
-            if (alphaIndex.equals(PinyinUtil.getFirstSpell(cs.getCarSeableName()).toUpperCase())) {
 
-                al.add(cs);
-                is_change = false;
-            } else if (alphaIndex.equals("A")) {
-                alphaIndex = PinyinUtil.getFirstSpell(cs.getCarSeableName()).toUpperCase();
-                al.add(cs);
-                is_change = true;
-            } else {
-                Pair<String, ArrayList<CarSeable>> pair = new Pair<String, ArrayList<CarSeable>>(alphaIndex, al);
-                returnarr.add(pair);
-                alphaIndex = PinyinUtil.getFirstSpell(cs.getCarSeableName()).toUpperCase();
-                al = new ArrayList<CarSeable>();
-                al.add(cs);
-                is_change = true;
+        for(CarSeable cs : list){
+
+            if(returnarr.containsKey(PinyinUtil.getFirstSpell(cs.getCarSeableName()).toUpperCase())){
+                returnarr.get(PinyinUtil.getFirstSpell(cs.getCarSeableName()).toUpperCase()).add(cs);
             }
+            else {
+                ArrayList<CarSeable> clist= new ArrayList<CarSeable>();
+                clist.add(cs);
+
+                returnarr.put(PinyinUtil.getFirstSpell(cs.getCarSeableName()).toUpperCase(), clist);
+
+            }
+
         }
-        if (!al.isEmpty()) {
-            Pair<String, ArrayList<CarSeable>> pair = new Pair<String, ArrayList<CarSeable>>(alphaIndex, al);
-            returnarr.add(pair);
+        ArrayList<Pair<String, ArrayList<CarSeable>>> pairs = new ArrayList<Pair<String, ArrayList<CarSeable>>>();
+        char alpha = '0';
+
+        for(int i =0;i<10;i++){
+            String st= String.valueOf(alpha);
+            if(returnarr.containsKey(st))
+                pairs.add(new Pair<String, ArrayList<CarSeable>>(st,returnarr.get(st)));
+            alpha++;
         }
-        return returnarr;
+         alpha = 'A';
+
+        for(int i =0;i<26;i++){
+            String st= String.valueOf(alpha);
+            if(returnarr.containsKey(st))
+            pairs.add(new Pair<String, ArrayList<CarSeable>>(st,returnarr.get(st)));
+            alpha++;
+        }
+        return pairs;
     }
 
     //为车辆排??
-    public static ArrayList<Pair<String, ArrayList<CarInfor>>> getIndex_CarInfo(ArrayList<CarInfor> list, Context context) {
-        ArrayList<Pair<String, ArrayList<CarInfor>>> returnarr = new ArrayList<Pair<String, ArrayList<CarInfor>>>();
-        String alphaIndex = "A";
-        boolean is_change = false;
+    public static ArrayList<Pair<String, ArrayList<CarInfor>>> getIndex_CarInfo(ArrayList<CarInfor> list) {
+        Map<String, ArrayList<CarInfor>> returnarr = new HashMap<String,ArrayList<CarInfor>>();
 
-        ArrayList<CarInfor> al = new ArrayList<CarInfor>();
 
-        for (CarInfor cs : list) {
 
-            if (alphaIndex.equals(PinyinUtil.getFirstSpell(cs.getCarName()).toUpperCase())) {
 
-                al.add(cs);
-
-            } else if (alphaIndex.equals("A")) {
-                alphaIndex = PinyinUtil.getFirstSpell(cs.getCarName()).toUpperCase();
-                al.add(cs);
-
-            } else {
-                Pair<String, ArrayList<CarInfor>> pair = new Pair<String, ArrayList<CarInfor>>(alphaIndex, al);
-                returnarr.add(pair);
-                alphaIndex = PinyinUtil.getFirstSpell(cs.getCarName()).toUpperCase();
-                al = new ArrayList<CarInfor>();
-                al.add(cs);
+        for(CarInfor cs : list){
+            if(returnarr.containsKey(PinyinUtil.getFirstSpell(cs.getCarName()).toUpperCase())){
+                returnarr.get(PinyinUtil.getFirstSpell(cs.getCarName()).toUpperCase()).add(cs);
+            }
+            else {
+                ArrayList<CarInfor> clist= new ArrayList<CarInfor>();
+                clist.add(cs);
+                returnarr.put(PinyinUtil.getFirstSpell(cs.getCarName()).toUpperCase(), clist);
 
             }
-        }
-        if (!al.isEmpty()) {
-            Pair<String, ArrayList<CarInfor>> pair = new Pair<String, ArrayList<CarInfor>>(alphaIndex, al);
-            returnarr.add(pair);
-        }
 
+        }
+        ArrayList<Pair<String, ArrayList<CarInfor>>> pairs = new ArrayList<Pair<String, ArrayList<CarInfor>>>();
+        char alpha = '0';
 
-        return returnarr;
+        for(int i =0;i<10;i++){
+            String st= String.valueOf(alpha);
+            if(returnarr.containsKey(st))
+                pairs.add(new Pair<String, ArrayList<CarInfor>>(st,returnarr.get(st)));
+            alpha++;
+        }
+        alpha = 'A';
+
+        for(int i =0;i<26;i++){
+            String st= String.valueOf(alpha);
+            if(returnarr.containsKey(st))
+                pairs.add(new Pair<String, ArrayList<CarInfor>>(st,returnarr.get(st)));
+            alpha++;
+        }
+        return pairs;
     }
 
 
-    public static ArrayList<Pair<String, ArrayList<CarSeries>>> getIndex_CarSeries(ArrayList<CarSeries> list, Context context) {
-        ArrayList<Pair<String, ArrayList<CarSeries>>> returnarr = new ArrayList<Pair<String, ArrayList<CarSeries>>>();
-        String alphaIndex = "A";
-        boolean is_change = false;
+    public static  ArrayList<Pair<String, ArrayList<CarSeries>>> getIndex_CarSeries(ArrayList<CarSeries> list) {
+        Map<String, ArrayList<CarSeries>> returnarr = new HashMap<String,ArrayList<CarSeries>>();
 
-        ArrayList<CarSeries> al = new ArrayList<CarSeries>();
 
-        for (CarSeries cs : list) {
 
-            if (alphaIndex.equals(PinyinUtil.getFirstSpell(cs.getName()).toUpperCase())) {
 
-                al.add(cs);
-
-            } else if (alphaIndex.equals("A")) {
-                alphaIndex = PinyinUtil.getFirstSpell(cs.getName()).toUpperCase();
-                al.add(cs);
-
-            } else {
-                Pair<String, ArrayList<CarSeries>> pair = new Pair<String, ArrayList<CarSeries>>(alphaIndex, al);
-                returnarr.add(pair);
-                alphaIndex = PinyinUtil.getFirstSpell(cs.getName()).toUpperCase();
-                al = new ArrayList<CarSeries>();
-                al.add(cs);
+        for(CarSeries cs : list){
+            if(returnarr.containsKey(PinyinUtil.getFirstSpell(cs.getName()).toUpperCase())){
+                returnarr.get(PinyinUtil.getFirstSpell(cs.getName()).toUpperCase()).add(cs);
+            }
+            else {
+                ArrayList<CarSeries> clist= new ArrayList<CarSeries>();
+                clist.add(cs);
+                returnarr.put(PinyinUtil.getFirstSpell(cs.getName()).toUpperCase(), clist);
 
             }
-        }
-        if (!al.isEmpty()) {
-            Pair<String, ArrayList<CarSeries>> pair = new Pair<String, ArrayList<CarSeries>>(alphaIndex, al);
-            returnarr.add(pair);
 
         }
+        ArrayList<Pair<String, ArrayList<CarSeries>>> pairs = new ArrayList<Pair<String, ArrayList<CarSeries>>>();
+        char alpha = '0';
 
+        for(int i =0;i<10;i++){
+            String st= String.valueOf(alpha);
+            if(returnarr.containsKey(st))
+                pairs.add(new Pair<String, ArrayList<CarSeries>>(st,returnarr.get(st)));
+            alpha++;
+        }
+        alpha = 'A';
 
-
-        return returnarr;
+        for(int i =0;i<26;i++){
+            String st= String.valueOf(alpha);
+            if(returnarr.containsKey(st))
+                pairs.add(new Pair<String, ArrayList<CarSeries>>(st,returnarr.get(st)));
+            alpha++;
+        }
+        return pairs;
     }
 }
 

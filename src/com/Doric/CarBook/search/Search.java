@@ -1,8 +1,9 @@
 package com.Doric.CarBook.search;
 
 
-import android.app.FragmentManager;
+
 import android.app.FragmentTransaction;
+
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -25,16 +26,18 @@ import com.Doric.CarBook.R;
 
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
+
 import java.net.URL;
 import java.util.*;
 
 import android.app.Fragment;
+import com.Doric.CarBook.car.CarShow;
 import com.Doric.CarBook.utility.JSONParser;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 public class Search extends Fragment {
 
@@ -42,7 +45,7 @@ public class Search extends Fragment {
     private ImageButton mButton;
     private LinearLayout mLinearLayout;
     private ScrollView mScrollView;
-    public static ArrayList<CarSeries> mCarSeriesList= new ArrayList<CarSeries>();
+    public static ArrayList<CarInfor> mCarInfoList= new ArrayList<CarInfor>();
     private LinearLayout linearLayout;
     private ArrayList<Pair<String,MyListView>> listarray;
 
@@ -54,11 +57,14 @@ public class Search extends Fragment {
         linearLayout = (LinearLayout) inflater.inflate(R.layout.sea_search, container, false);
 
         initPage();
-        new GetPicData().run();
+        new GetPicData().start();
         return linearLayout;
 
     }
 
+    /**
+     * make sure the slidelist is locked closed
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -66,11 +72,16 @@ public class Search extends Fragment {
     }
 
 
-    public ArrayList<Map<String, Object>> getUniformData(ArrayList<CarSeries> al_cs) {
+    /**
+     * pack the data ...
+     * @param al_cs
+     * @return
+     */
+    public ArrayList<Map<String, Object>> getUniformData(ArrayList<CarInfor> al_cs) {
         ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        for (CarSeries cs : al_cs) {
+        for (CarInfor cs : al_cs) {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("title", cs.getCarSeableName()+" "+cs.getName());
+            map.put("title", cs.getCarSeable()+" "+cs.getCarSerie()+" "+cs.getCarName());
             map.put("img", R.drawable.ic_launcher);
             list.add(map);
 
@@ -80,6 +91,9 @@ public class Search extends Fragment {
 
     }
 
+    /**
+     * init
+     */
     public void initPage() {
         mButton = (ImageButton) linearLayout.findViewById(R.id.searchbutton);
 
@@ -87,24 +101,17 @@ public class Search extends Fragment {
         mButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 String key = mEditText.getText().toString();
-
 
                 if (key.trim().equals("")) {
                     Toast.makeText(SearchMain.searchmain, "关键字不可为空", Toast.LENGTH_LONG).show();
                     return;
                 }
                    // mCarSeriesList = PinyinSearch.search(key);
-
-
-
-
                 SearchMain.searchmain.SearchToSearch(key);
             }
         });
-        if(mCarSeriesList.size()>0){
+        if(mCarInfoList.size()>0){
 
             LinearLayout l = (LinearLayout) linearLayout.findViewById(R.id.searchreasult);
             l.removeAllViews();
@@ -117,7 +124,7 @@ public class Search extends Fragment {
 
 
 
-            ArrayList<Pair<String, ArrayList<CarSeries>>> al = PinYinIndex.getIndex_CarSeries(mCarSeriesList, SearchMain.searchmain);
+            ArrayList<Pair<String, ArrayList<CarInfor>>> al = PinYinIndex.getIndex_CarInfo(mCarInfoList);
 
 
             mScrollView = new ScrollView(SearchMain.searchmain);
@@ -128,11 +135,11 @@ public class Search extends Fragment {
             mScrollView.setLayoutParams(param2);
 
 
-            for (Pair<String, ArrayList<CarSeries>> pair : al) {
+            for (Pair<String, ArrayList<CarInfor>> pair : al) {
                 TextView text = new TextView(SearchMain.searchmain);
                 text.setText("  "+ pair.first);
-                text.setTextColor(Color.rgb(0, 0, 0));
-                text.setBackgroundColor(Color.rgb(255, 255, 255));
+                text.setTextColor(Color.rgb(100, 100, 100));
+                text.setBackgroundColor(Color.rgb(240, 240, 240));
                 text.setTextSize(20);
 
                 mLinearLayout.addView(text);
@@ -149,16 +156,13 @@ public class Search extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view,
                                             int position, long id) {
-                        ListView lv = (ListView) parent;
-                        HashMap<String, Object> Info = (HashMap<String, Object>) lv.getItemAtPosition(position);//SimpleAdapter返回Map
-                        String key = (String) Info.get("title");
-                        String[] strarr = key.split(" ");
-                        if (strarr.length != 2)
-                            return;
-
-                        SearchMain.searchmain.ToCarListShow(strarr[0], strarr[1]);
-
-
+                        Intent it= new Intent();
+                        CarInfor ci  =mCarInfoList.get(position);
+                        it.putExtra("brand_serie",ci.getCarSerie());
+                        it.putExtra("model_number",ci.getCarName());
+                        it.putExtra("id",ci.getCarId());
+                        it.setClass(SearchMain.searchmain,CarShow.class);
+                        SearchMain.searchmain.startActivity(it);
                         //Toast.makeText(getApplicationContext(),(String)Info.get("title"),Toast.LENGTH_LONG).show();
 
                     }
@@ -172,9 +176,11 @@ public class Search extends Fragment {
 
         }
     }
-    public static void  setData(ArrayList<CarSeries> al){
-        mCarSeriesList= new ArrayList<CarSeries>();
-        mCarSeriesList.addAll(al);
+
+
+    public static void  setData(ArrayList<CarInfor> al){
+        mCarInfoList= new ArrayList<CarInfor>();
+        mCarInfoList.addAll(al);
 
     }
 
@@ -211,11 +217,9 @@ public class Search extends Fragment {
 
 
     public class GetPicData extends Thread {
-        // private Set<LoadImage> taskSet;
 
         public GetPicData() {
 
-            //taskSet = new HashSet<LoadImage>();
         }
 
         public void run() {
@@ -229,36 +233,29 @@ public class Search extends Fragment {
                 SimpleAdapter simpleAdapter = (SimpleAdapter) pair.second.getAdapter();
                 for (int i = 0; i < simpleAdapter.getCount(); i++) {
                     Map<String, Object> map = (Map<String, Object>) simpleAdapter.getItem(i);
-                    CarSeries cs= mCarSeriesList.get(i);
+                    CarInfor cs= mCarInfoList.get(i);
                     Bitmap bitmap =null;
-                    String imageUrl = cs.getPicPath();
+                    String imageUrl = cs.getCarPicPath();
                     imageFile = new File(getImagePath(imageUrl));
                     try {
                         if (!imageFile.exists()) {
-                            URL url = new URL(imageUrl);
+                            URL url = new URL(GBK2UTF.Transform(imageUrl.replace(" ","%20")));
                             con = (HttpURLConnection) url.openConnection();
                             con.setConnectTimeout(5 * 1000);
                             con.setReadTimeout(15 * 1000);
                             con.setDoInput(true);
                             con.setDoOutput(true);
-                            bis = new BufferedInputStream(con.getInputStream());
-                            imageFile = new File(getImagePath(imageUrl));
-                            fos = new FileOutputStream(imageFile);
-                            bos = new BufferedOutputStream(fos);
-                            byte[] b = new byte[1024];
-                            int length;
-                            while ((length = bis.read(b)) != -1) {
-                                bos.write(b, 0, length);
-                                bos.flush();
-                            }
-                            if (bis != null) {
-                                bis.close();
-                            }
-                            if (bos != null) {
-                                bos.close();
-                            }
-                            bitmap = BitmapFactory.decodeFile(getImagePath(imageUrl));
+                            bitmap = BitmapFactory.decodeStream(con.getInputStream());
+                            int height = bitmap.getHeight()/(bitmap.getWidth()/ 80);
+                            Bitmap otherbitmap = Bitmap.createScaledBitmap(bitmap,80,height,true);
+                            bitmap.recycle();
+                            System.gc();
+                            if (otherbitmap != null) {
+                                saveMyBitmap(getImagePath(imageUrl),otherbitmap);
 
+
+                            }
+                            bitmap = otherbitmap;
                         }
                         else{
                             bitmap = BitmapFactory.decodeFile(getImagePath(imageUrl));
@@ -275,6 +272,29 @@ public class Search extends Fragment {
 
                 }
 
+            }
+        }
+
+
+        public void saveMyBitmap(String path,Bitmap bitmap) throws IOException {
+            File f = new File(path);
+            f.createNewFile();
+            FileOutputStream fOut = null;
+            try {
+                fOut = new FileOutputStream(f);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            try {
+                fOut.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                fOut.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
 
@@ -300,14 +320,14 @@ public class Search extends Fragment {
             imageTPath = imageTPath.substring(0, lastSlashIndex);
             String imageName = imageTPath.substring(imageTPath.lastIndexOf("/") + 1);
             imageName = imageName + imageSeries + extra;
-            System.out.println(imageName);
+
             String imageDir = getSDPath()
                     + "/CarBook/Cache/";
             File file = new File(imageDir);
             if (!file.exists()) {
                 file.mkdirs();
             }
-            String imagePath = imageDir + imageName;
+            String imagePath = imageDir + "small"+imageName;
 
             return imagePath;
         }
@@ -330,7 +350,7 @@ class SearchGetData {
             fragmentTransaction =ft;
             key = sysmbol;
             searchParams.add(new BasicNameValuePair("tag", "keywords_search"));
-            searchParams.add(new BasicNameValuePair("keywords",sysmbol));
+            searchParams.add(new BasicNameValuePair("keywords",GBK2UTF.Transform(sysmbol.replace(" ","%20"))));
             new GetSearchData().execute();
 
 
@@ -365,32 +385,36 @@ class SearchGetData {
                         Toast.makeText(SearchMain.searchmain, "未找到符合的车辆", Toast.LENGTH_LONG).show();
                     }
                     else if (success == 1) {
-                        ArrayList<CarSeries> carSerieses = new ArrayList<CarSeries>();
+                        ArrayList<CarInfor> carInfors = new ArrayList<CarInfor>();
+                        System.out.println(searchObj.toString());
                         int num = searchObj.getInt("search_number");
                         for (int i = 1; i <= num; i++) {
-                            CarSeries cs = new CarSeries();
+                            CarInfor cs = new CarInfor();
                             JSONObject ja = searchObj.getJSONObject("car_" + i);
-                            cs.setCarSeableName(ja.getString("brand"));
-                            cs.setName(ja.getString("brand_series"));
-
-                            cs.setPicPath(Constant.BASE_URL + "/" + ja.getString("pictures_url"));
-
-                            carSerieses.add(cs);
-
-                        }
-                        if(carSerieses.size()>0) {
-                            Collections.sort(carSerieses, new ComparatorCarSeries());
-
+                            cs.setCarSeable(ja.getString("brand"));
+                            cs.setCarSerie(ja.getString("brand_series"));
+                            cs.setCarGrade(ja.getString("grade"));
+                            cs.setCarPicPath(Constant.BASE_URL + "/" + ja.getString("pictures_url"));
+                            cs.setCarName(ja.getString("model_number"));
+                            cs.setCarId(ja.getString("car_id"));
+                            carInfors.add(cs);
 
                         }
-                        Search.setData(carSerieses);
+                        if(carInfors.size()>0) {
+                            Collections.sort(carInfors, new ComparatorCarInfo());
+
+
+                        }
+                        Search.setData(carInfors);
+                        SearchMain.searchmain.stopLoading();
                         fragmentTransaction.commit();
                     }
                 } catch (JSONException e) {
-
+                    SearchMain.searchmain.stopLoading();
                     Toast.makeText(SearchMain.searchmain, e.toString(), Toast.LENGTH_LONG).show();
                 }
             } else {
+                SearchMain.searchmain.stopLoading();
                 Toast.makeText(SearchMain.searchmain, "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
             }
         }

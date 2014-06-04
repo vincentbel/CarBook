@@ -1,7 +1,7 @@
 package com.Doric.CarBook.search;
 
 import android.app.FragmentTransaction;
-import android.content.Context;
+
 import android.os.AsyncTask;
 import android.widget.Toast;
 import com.Doric.CarBook.Constant;
@@ -17,6 +17,10 @@ import java.util.List;
 
 /**
  * Created by Administrator on 2014/5/4.
+ */
+
+/**
+ * 车系
  */
 public class CarSeries {
 
@@ -48,13 +52,34 @@ public class CarSeries {
         fragmentTransaction = ft;
         if (!isload) {
             carParams.add(new BasicNameValuePair("tag", "model_number"));
-            carParams.add(new BasicNameValuePair("brand", carSeableName));
-            carParams.add(new BasicNameValuePair("brand_series", name));
-
-            new GetCarInfor().execute();
-        } else
+            carParams.add(new BasicNameValuePair("brand", GBK2UTF.Transform(carSeableName)));
+            carParams.add(new BasicNameValuePair("brand_series", GBK2UTF.Transform(name)));
+            carObj= DataCache.InputToMemory(carParams);
+            if(carObj!=null){
+                try{
+                    DecodeJSON();
+                }
+                catch(JSONException e){
+                    e.printStackTrace();
+                }
+                SearchMain.searchmain.stopLoading();
+                fragmentTransaction.commit();
+            }
+            else {
+                new GetCarInfor().execute();
+            }
+        } else {
+            CarListShow.setCarList(carList);
             fragmentTransaction.commit();
+        }
         return true;
+    }
+    public CarInfor findCarInfo(String name) {
+        for (CarInfor cs : carList) {
+            if (cs.getCarName().equals(name))
+                return cs;
+        }
+        return null;
     }
 
     public ArrayList<CarInfor> getCarList() {
@@ -127,28 +152,38 @@ public class CarSeries {
                 try {
                     int success = carObj.getInt("success");
                     if (success == 1) {
-                        int num = carObj.getInt("model_number_amount");
-                        for (int i = 1; i <= num; i++) {
-                            CarInfor cs = new CarInfor();
-                            cs.setCarName(carObj.getString("model_number_" + i));
-                            cs.setCarSerie(name);
-                            cs.setCarSeable(carSeableName);
-                            carList.add(cs);
-                        }
-                        isload = true;
-                        if (carList.size() > 0)
-                            Collections.sort(carList, new ComparatorCarInfo());
-                        CarListShow.setCarList(carList);
+                        DataCache.OutputToCacheFile(carParams,carObj);
+                        DecodeJSON();
+                        SearchMain.searchmain.stopLoading();
                         fragmentTransaction.commit();
                     }
                 } catch (JSONException e) {
+                    SearchMain.searchmain.stopLoading();
                     Toast.makeText(SearchMain.searchmain, e.toString(), Toast.LENGTH_LONG).show();
                 }
             } else {
-
+                SearchMain.searchmain.stopLoading();
                 Toast.makeText(SearchMain.searchmain, "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
             }
         }
+
+    }
+    private void DecodeJSON()throws JSONException{
+        int num = carObj.getInt("model_number_amount");
+        for (int i = 1; i <= num; i++) {
+            CarInfor cs = new CarInfor();
+            cs.setCarName(carObj.getString("model_number_" + i));
+            cs.setCarSerie(name);
+            cs.setCarSeable(carSeableName);
+            cs.setCarId(carObj.getString("model_number_" + i+"_car_id"));
+            System.out.println(cs.getCarId());
+            //用车系的第一张图片作为车辆的图片
+            carList.add(cs);
+        }
+        isload = true;
+        if (carList.size() > 0)
+            Collections.sort(carList, new ComparatorCarInfo());
+        CarListShow.setCarList(carList);
     }
 }
 
