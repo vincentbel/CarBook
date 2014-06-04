@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,6 +20,7 @@ import com.Doric.CarBook.car.CarShow;
 import com.Doric.CarBook.car.ImageLoader;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -46,6 +46,8 @@ public class UserCollection extends Fragment {
     private ImageLoader imageLoader;
     // 图片宽度
     private final int picWidth = 150;
+    // 无用户收藏的提示
+    TextView noCollectionTextView = null;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.user_collection, container, false);
@@ -53,6 +55,8 @@ public class UserCollection extends Fragment {
         userFunctions = new UserFunctions(getActivity());
         // 初始化用户收藏列表
         userCollectionList = (ListView) rootView.findViewById(R.id.userCollectionList);
+        // 初始化TextView
+        noCollectionTextView = (TextView) rootView.findViewById(R.id.noCollectionTextView);
         Log.d("UserCollection","GetUserCollection.execute");
         // 开启异步线程获取Json包，并构建fragment
         new GetUserCollection().execute();
@@ -119,14 +123,20 @@ public class UserCollection extends Fragment {
     }
     private void initFragment(){
         Log.d("GetUserCollection","initFragment");
+        try {
+            if(userCollection.getInt("number")==0){
+                noCollectionTextView.setVisibility(View.VISIBLE);
+                return;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         ArrayList<Map<String, Object>> list = getData();
         SimpleAdapter adapter = new SimpleAdapter(getActivity(),list,R.layout.user_collection_list,
                 new String[]{"userCollectionThumPic","carNameText","carGradeText",
-                        "carPriceText","collectionBrand","collectionBrandSeries","collectionModelNumber",
-                        "car_id"},
+                        "carPriceText","car_id"},
                 new int[]{R.id.userCollectionThumPic,R.id.carNameText,R.id.carGradeText,
-                        R.id.carPriceText,R.id.collectionBrand,R.id.collectionBrandSeries,R.id.collectionModelNumber,
-                        R.id.car_id});
+                        R.id.carPriceText,R.id.car_id});
         adapter.setViewBinder(new myViewBinder());
         if (userCollectionList != null) {
             userCollectionList.setAdapter(adapter);
@@ -142,13 +152,13 @@ public class UserCollection extends Fragment {
                 HashMap<String, String> map = (HashMap<String, String>) tempList.getItemAtPosition(position);
 
                 String brand = map.get("collectionBrand");
-                String brand_series = map.get("collectionBrandSeries");
-                String model_number = map.get("collectionModelNumber");
+/*                String brand_series = map.get("collectionBrandSeries");
+                String model_number = map.get("collectionModelNumber");*/
                 String car_id = map.get("car_id");
                 Bundle bundle = new Bundle();
                 bundle.putString("brand",brand);
-                bundle.putString("series",brand_series);
-                bundle.putString("model_number",model_number);
+/*                bundle.putString("series",brand_series);
+                bundle.putString("model_number",model_number);*/
                 bundle.putString("car_id",car_id);
 
                 Intent intent = new Intent(getActivity(),CarShow.class);
@@ -163,14 +173,15 @@ public class UserCollection extends Fragment {
         Map<String, Object> map = new HashMap<String, Object>();
         JSONObject carInCollection = null;
         try {
+
             for (Integer i=1;i<= userCollection.getInt("number");i++){
                 map =  new HashMap<String, Object>();
                 carInCollection = userCollection.getJSONObject("car_"+i.toString());
                 map.put("carNameText",carInCollection.getString("brand_name")+" "+carInCollection.getString("brand_series")
                         +" "+carInCollection.getString("model_number"));
-                map.put("collectionBrand",carInCollection.getString("brand_name"));
+/*                map.put("collectionBrand",carInCollection.getString("brand_name"));
                 map.put("collectionBrandSeries",carInCollection.getString("brand_series"));
-                map.put("collectionModelNumber",carInCollection.getString("model_number"));
+                map.put("collectionModelNumber",carInCollection.getString("model_number"));*/
                 map.put("carGradeText",carInCollection.getString("grade"));
                 map.put("carPriceText",carInCollection.getString("price"));
                 map.put("car_id",carInCollection.getString("car_id"));
@@ -359,18 +370,6 @@ public class UserCollection extends Fragment {
         }
         return new String(c);
     }
-//            private String getImagePath(String imageUrl) {
-//                int lastSlashIndex = imageUrl.lastIndexOf("/");
-//                String imageName = imageUrl.substring(lastSlashIndex + 1);
-//                String imageDir = Environment.getExternalStorageDirectory().getPath()
-//                        + "/CarBook/Cache/";
-//                File file = new File(imageDir);
-//                if (!file.exists()) {
-//                    file.mkdirs();
-//                }
-//                String imagePath = imageDir + imageName;
-//                return imagePath;
-//            }
 }
 
 
