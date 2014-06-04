@@ -57,21 +57,42 @@ public class ImageDetailsActivity extends Activity implements
     /**
      * 获取图片的本地存储路径。
      *
-     * @param imageUrl 图片的URL地址。
      * @return 图片的本地存储路径。
      */
+    private String getSDPath(){
+        File sdDir = null;
+        boolean sdCardExist = Environment.getExternalStorageState()
+                .equals(Environment.MEDIA_MOUNTED);   //判断sd卡是否存在
+        if   (sdCardExist)
+        {
+            sdDir = Environment.getExternalStorageDirectory();//获取跟目录
+        }
+        return sdDir.toString();
+
+    }
+
+
     private String getImagePath(String imageUrl) {
         int lastSlashIndex = imageUrl.lastIndexOf("/");
-        String imageName = imageUrl.substring(lastSlashIndex + 1);
-        String imageDir = Environment.getExternalStorageDirectory().getPath()
+        String imageTPath = imageUrl.substring(0, lastSlashIndex);
+        String extra ="_"+ imageUrl.substring(imageUrl.lastIndexOf("/")+1);
+        lastSlashIndex = imageTPath.lastIndexOf("/");
+        String imageSeries = imageTPath.substring(lastSlashIndex + 1);  //  Series
+        imageTPath = imageTPath.substring(0, lastSlashIndex);
+        String imageName = imageTPath.substring(imageTPath.lastIndexOf("/") + 1);
+        imageName = imageName + imageSeries + extra;
+        System.out.println(imageName);
+        String imageDir = getSDPath()
                 + "/CarBook/Cache/";
         File file = new File(imageDir);
         if (!file.exists()) {
             file.mkdirs();
         }
         String imagePath = imageDir + imageName;
+
         return imagePath;
     }
+
 
     @Override
     public void onPageScrollStateChanged(int arg0) {

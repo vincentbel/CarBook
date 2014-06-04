@@ -175,7 +175,7 @@ public class CarListShow extends Fragment {
         public void run() {
             simpleAdapter.notifyDataSetChanged();
         }
-    };
+    }
 
 
     public class GetPicData extends Thread {

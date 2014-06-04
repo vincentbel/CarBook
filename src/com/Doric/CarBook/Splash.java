@@ -3,6 +3,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import cn.jpush.android.api.JPushInterface;
 
 public class Splash extends Activity {
 
@@ -26,5 +27,17 @@ public class Splash extends Activity {
             }
 
         }, SPLASH_DISPLAY_LENGTH);
+    }
+
+    @Override
+    protected void onPause() {
+        JPushInterface.onPause(this);
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        JPushInterface.onResume(this);
+        super.onResume();
     }
 }
