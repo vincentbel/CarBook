@@ -55,13 +55,10 @@ public class PriceFragment extends Fragment {
     private void initFragment (){
         //构建车行信息
         list = getData();
-        /*
-        SimpleAdapter adapter = new SimpleAdapter(getActivity().getApplicationContext(), list, R.layout.sale_company_list,
-                new String[]{"storeName", "storeAddr","phoneNumber"},
-                new int[]{R.id.storeName, R.id.storeAddr});
-        */
+       // 自定义的适配器
         mAdapter adapter = new mAdapter (getActivity());
         if (carPriceList != null) {
+            // 添加适配器
             carPriceList.setAdapter(adapter);
         }
     }
@@ -71,7 +68,9 @@ public class PriceFragment extends Fragment {
         try {
             for (Integer i = 1; i <= CarShow.carInfo.getInt("sale_company_num"); i++) {
                 map = new HashMap<String, Object>();
+                // 获取对应商店信息
                 JSONObject carSaleCompany = CarShow.carInfo.getJSONObject("sale_company_" + i.toString());
+                // 将信息添加到map中
                 map.put("storeName", carSaleCompany.getString("name"));
                 map.put("storeAddr", carSaleCompany.getString("address"));
                 map.put("phoneNumber",carSaleCompany.get("telephone"));
@@ -130,7 +129,7 @@ public class PriceFragment extends Fragment {
             }
 
 
-            //holder.img.setBackgroundResource((Integer)mData.get(position).get("img"));
+            // 通过位置信息存储对应数据
             holder.storeNameText.setText((String)list.get(position).get("storeName"));
             holder.storeAddrText.setText((String)list.get(position).get("storeAddr"));
 

@@ -152,37 +152,35 @@ public class HotCarShow extends Fragment {
      */
     private void initListView() {
         Log.d("initListView","初始化listView");
-        // 设置滚动图片的图片宽度
-        /*columnWidth = 150;*/
-//        for (Integer i = 1; i <= 10; i++) {
-//            GetPicTask task = new GetPicTask();
-//            task.execute(i - 1);
-//        }
-        // 创建热门车辆列表
+        // 初始化ListView
         hotCarShowList = (ListView) mView.findViewById(R.id.hot_car_show_List);
+        // 获取数据
         ArrayList<Map<String, Object>> list = getData();
+        // 设置适配器，包括car_id,brand,model_number和图片信息
         SimpleAdapter adapter = new SimpleAdapter(getActivity(), list, R.layout.hot_car_show_list,
                 new String[]{"car_id","carBrandTextView","carModelNumberTextView", "carPicImageView"},
                 new int[]{R.id.car_id,R.id.carBrandTextView, R.id.carModelNumberTextView,R.id.carPicImageView});
+        // 自定义绑定bitmap
         adapter.setViewBinder(new myViewBinder());
         if (hotCarShowList != null) {
+            // 添加适配器
             hotCarShowList.setAdapter(adapter);
+            // 设置listView高度，实现在scrollView中的滚动条
             setListViewHeightBasedOnChildren(hotCarShowList);
         }
+        // 添加每一项的点击监听，跳转到对应的车辆展示界面
         hotCarShowList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // 获取父listView
                 ListView tempList = (ListView) parent;
                 HashMap<String, String> map = (HashMap<String, String>) tempList.getItemAtPosition(position);
+                // 从map中获取car_id
                 String car_id = map.get("car_id");
-/*                String brand_series = map.get("carBrandTextView");
-                String model_number = map.get("carModelNumberTextView");*/
 
                 Bundle bundle = new Bundle();
                 bundle.putString("car_id",car_id);
-/*                bundle.putString("series",brand_series);
-                bundle.putString("model_number",model_number);*/
-
+                // 跳转到对应Activity
                 Intent intent = new Intent(getActivity(),CarShow.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -190,9 +188,13 @@ public class HotCarShow extends Fragment {
         });
 
     }
+    /*
+    * 自定义绑定
+    */
     class myViewBinder implements SimpleAdapter.ViewBinder {
         @Override
         public boolean setViewValue(View view, Object data, String textRepresentation) {
+            // 如果对象是ImageView，数据时bitmap，则将bitmap添加到ImageView中
             if ((view instanceof ImageView) & (data instanceof Bitmap)) {
                 ImageView iv = (ImageView) view;
                 Bitmap bmp = (Bitmap) data;
@@ -211,8 +213,10 @@ public class HotCarShow extends Fragment {
 
         try {
             for (Integer i = 1; i <= 10; i++) {
+                // 获取对应车辆
                 JSONObject car = hotCarShow.getJSONObject("car_"+i.toString());
                 map = new HashMap<String, Object>();
+                // 将信息添加到map中
                 map.put("car_id",car.getString("car_id"));
                 map.put("carBrandTextView", car.getString("brand_series"));
                 map.put("carModelNumberTextView",car.getString("model_number"));
@@ -271,8 +275,6 @@ public class HotCarShow extends Fragment {
                         car = hotCarShow.getJSONObject("car_"+v.getTag());
                         Bundle bundle = new Bundle();
                         bundle.putString("car_id",car.getString("car_id"));
-/*                        bundle.putString("series",car.getString("brand_series"));
-                        bundle.putString("model_number",car.getString("model_number"));*/
 
                         Intent intent = new Intent(getActivity(),CarShow.class);
                         intent.putExtras(bundle);
@@ -285,14 +287,6 @@ public class HotCarShow extends Fragment {
 
         }
 
-
-        // 设置滚动图片的图片宽度
-        /*columnWidth = (mView.findViewById(R.id.vp_frame_layout)).getWidth();*/
-        // 异步获取图片信息，并构建完成ImageView的集合
-//        for (Integer i = 1; i <= 5; i++) {
-//            GetPicTask task = new GetPicTask();
-//            task.execute(i - 1);
-//        }
         // 初始化切换用的点
         dots = new ArrayList<View>();
         dots.add(mView.findViewById(R.id.v_dot0));
@@ -424,7 +418,9 @@ public class HotCarShow extends Fragment {
 
         }
     }
-
+    /*
+    * ListView更新消息处理
+    */
     final Handler cwjHandler = new Handler();
     class UpdateRunnable implements  Runnable{
         SimpleAdapter simpleAdapter = null;
@@ -438,15 +434,6 @@ public class HotCarShow extends Fragment {
 
     private class GetPicData extends AsyncTask<Void, Void, Void> {
 
-        protected void onPreExecute() {
-            //加载时弹出
-            /*progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage("加载中..");
-            progressDialog.setCancelable(true);
-            progressDialog.show();*/
-        }
-
-
         @Override
         protected Void doInBackground(Void... params) {
             JSONObject car = null;
@@ -456,21 +443,28 @@ public class HotCarShow extends Fragment {
                 Log.d("GetPicData", "download" + i.toString());
                 Map<String, Object> map = (Map<String, Object>) simpleAdapter.getItem(i - 1);
                 String mImageUrl = null;
+                // 获取对应车辆的图片URL
                 try {
                     car = hotCarShow.getJSONObject("car_" + i.toString());
                     mImageUrl = Constant.BASE_URL + "/" + car.getString("pictures_url");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                // 从缓存中加载
                 Bitmap imageBitmap = imageLoader.getBitmapFromMemoryCache(mImageUrl);
+
                 if (imageBitmap == null) {
-                    System.out.println("缓存中不存在位图，需要加载图片");
+                    System.out.println("缓存中不存在位图，需要下载或从sd卡加载图片");
+                    // 缓存中不存在位图，需要下载或从sd卡加载图片
                     imageBitmap = loadImage(mImageUrl);
                 }else {
                     System.out.println("缓存中存在位图，不需要加载图片");
                 }
+                // 将imageBitmap 添加到 map对应位置中
                 map.put("carPicImageView", imageBitmap);
+                // 发送更新消息
                 cwjHandler.post(new UpdateRunnable(simpleAdapter));
+                // 为ViewPager添加图片
                 if (i<=5){
                     imageViews.get(i - 1).setImageBitmap(imageBitmap);
                     imageViews.get(i - 1).setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -489,15 +483,19 @@ public class HotCarShow extends Fragment {
             File imageFile = new File(getImagePath(imageUrl));
             if (!imageFile.exists()) {
                 System.out.println("sd卡中不存在准备从服务器下载");
+                // sd卡中不存在准备从服务器下载
                 downloadImage(imageUrl);
             } else {
                 System.out.println("sd卡中存在");
             }
             if (imageUrl != null) {
-                System.out.println("从服务器下载");
+                System.out.println("从sd卡对应路径加载图片");
+                // 从sd卡对应路径加载图片，并根据columnWidth解码
                 Bitmap bitmap = ImageLoader.decodeSampledBitmapFromResource(imageFile.getPath(),
                         columnWidth);
                 if (bitmap != null) {
+                    // 成功获取图片，将图片加入缓存
+                    System.out.println("成功获取图片，将图片加入缓存");
                     imageLoader.addBitmapToMemoryCache(imageUrl, bitmap);
                     return bitmap;
                 }
@@ -602,13 +600,16 @@ public class HotCarShow extends Fragment {
     private String getImagePath(String imageUrl) {
         int lastSlashIndex = imageUrl.lastIndexOf("/");
         String imageTPath = imageUrl.substring(0, lastSlashIndex);
+        // 图片序号及格式后缀
         String extra ="_"+ imageUrl.substring(imageUrl.lastIndexOf("/")+1);
+
         lastSlashIndex = imageTPath.lastIndexOf("/");
         String imageSeries = imageTPath.substring(lastSlashIndex + 1);  //  Series
         imageTPath = imageTPath.substring(0, lastSlashIndex);
         String imageName = imageTPath.substring(imageTPath.lastIndexOf("/") + 1);
         imageName = imageName + imageSeries + extra;
         System.out.println(imageName);
+        // 图片的储存路径
         String imageDir = getSDPath()
                 + "/CarBook/Cache/";
         File file = new File(imageDir);

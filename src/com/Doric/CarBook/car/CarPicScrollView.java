@@ -248,10 +248,10 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
         protected void onPreExecute() {
             super.onPreExecute();
             //弹出"正在登录"框
-            progressDialog = new ProgressDialog(getContext());
+            /*progressDialog = new ProgressDialog(getContext());
             progressDialog.setMessage("加载中..");
             progressDialog.setCancelable(true);
-            progressDialog.show();
+            progressDialog.show();*/
         }
 
         protected Void doInBackground(Void... params) {
@@ -264,9 +264,9 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
 
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            if (progressDialog.isShowing()) {
+            /*if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
-            }
+            }*/
             if (carPic != null) {
                 try {
                     CarImages.initImages(carPic.getInt("pictures_num"), carPic);
