@@ -193,7 +193,6 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
             int startIndex = page * PAGE_SIZE;
             int endIndex = page * PAGE_SIZE + PAGE_SIZE;
             if (startIndex < CarImages.imageUrls.length) {
-                Toast.makeText(getContext(), "正在加载...", Toast.LENGTH_SHORT).show();
                 if (endIndex > CarImages.imageUrls.length) {
                     endIndex = CarImages.imageUrls.length;
                 }
@@ -264,9 +263,9 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
 
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            /*if (progressDialog.isShowing()) {
+            if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
-            }*/
+            }
             if (carPic != null) {
                 try {
                     CarImages.initImages(carPic.getInt("pictures_num"), carPic);
@@ -276,7 +275,7 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
             } else {
                 Toast.makeText(getContext(), "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
             }
-            //loadMoreImages();
+            loadMoreImages();
         }
     }
 
