@@ -276,7 +276,7 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
             } else {
                 Toast.makeText(getContext(), "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
             }
-            //loadMoreImages();
+            loadMoreImages();
         }
     }
 

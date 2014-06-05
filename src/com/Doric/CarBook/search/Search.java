@@ -150,8 +150,8 @@ public class Search extends Activity {
                         Bundle bundle = new Bundle();
                         bundle.putString("car_id",ci.getCarId());
                         bundle.putString("series",ci.getCarSerie());
-                        bundle.putString("car_id",ci.getCarId());
-
+                        bundle.putString("model_number",ci.getCarName());
+                        it.putExtras(bundle);
                         it.setClass(Search.this,CarShow.class);
                         Search.this.startActivity(it);
                         //Toast.makeText(getApplicationContext(),(String)Info.get("title"),Toast.LENGTH_LONG).show();

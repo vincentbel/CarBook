@@ -178,7 +178,7 @@ public class UserCollection extends Fragment {
             for (Integer i=1;i<= userCollection.getInt("number");i++){
                 map =  new HashMap<String, Object>();
                 carInCollection = userCollection.getJSONObject("car_"+i.toString());
-                map.put("carNameText",carInCollection.getString("brand_name")+" "+carInCollection.getString("brand_series")
+                map.put("carNameText",carInCollection.getString("brand")+" "+carInCollection.getString("brand_series")
                         +" "+carInCollection.getString("model_number"));
 /*                map.put("collectionBrand",carInCollection.getString("brand_name"));
                 map.put("collectionBrandSeries",carInCollection.getString("brand_series"));

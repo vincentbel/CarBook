@@ -29,14 +29,11 @@ class Comment {
     private String name;
     private String time;
     private String text;
-    private boolean isZan=false;
-    private boolean isCai = false;
+    private String commentId;
 
-    public boolean getZan(){return isZan;}
-    public boolean getCai(){return isCai;}
 
-    public void setZan(boolean zan){isZan =zan;}
-    public void setCai(boolean cai){isCai=cai;}
+    public String getCommentId(){return commentId;}
+    public void setCommentId(String id){commentId =id;}
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -89,7 +86,7 @@ class Comment {
 public class CommentFragment extends Fragment  {
 
     private ListView listView;
-    private static ArrayList<Comment> comments = new ArrayList<Comment>();
+    private ArrayList<Comment> comments = new ArrayList<Comment>();
     private LinearLayout layout;
     private EditText editText;
     private ImageButton btn;
@@ -149,10 +146,9 @@ public class CommentFragment extends Fragment  {
                     int hour = t.hour; // 0-23
                     int minute = t.minute;
                     int second = t.second;
-                    comment.setTime(year+"."+month+"."+date+" "+hour+":"+minute+":"+second);
-                    commentListAdapter.add(comment);
+                    comment.setTime(year+"-"+(month>=10?month:"0"+month)+"-"+(date>=10?date:"0"+date)+" "+hour+":"+minute+":"+second);
                     editText.setText("");
-                    handler.post(new UpdateRunnable(commentListAdapter));
+
                     new AddComment(comment);
 
                 }
@@ -160,6 +156,7 @@ public class CommentFragment extends Fragment  {
         });
 
         listView = (ListView)layout.findViewById(R.id.comment_list);
+
         CommentListAdapter adapter = new CommentListAdapter(getActivity().getApplicationContext(),R.layout.car_comment,comments);
         listView.setAdapter(adapter);
         listView.setDivider(getResources().getDrawable(R.drawable.list_divider));
@@ -173,36 +170,6 @@ public class CommentFragment extends Fragment  {
 
 
 
-    class ZanListener implements  View.OnClickListener{
-
-        @Override
-        public void onClick(View v) {
-            TextView t = (TextView)v;
-            t.getText();
-            if(t.getText().toString().equals("点赞")){
-                t.setText("已点赞");
-                /**
-                 * 服务器端
-                 */
-            }
-        }
-    }
-
-    class CaiListener implements  View.OnClickListener{
-
-        @Override
-        public void onClick(View v) {
-            TextView t = (TextView)v;
-            t.getText();
-            if(t.getText().toString().equals("差评")){
-                t.setText("已差评");
-                /**
-                 * 服务器端
-                 */
-            }
-        }
-    }
-
     class DeleteListener implements View.OnClickListener {
 
         @Override
@@ -214,12 +181,11 @@ public class CommentFragment extends Fragment  {
             comment.setText(((TextView)relativeLayout.findViewById(R.id.comment_text)).getText().toString());
             comment.setName(((TextView) relativeLayout.findViewById(R.id.comment_name)).getText().toString());
             comment.setTime(((TextView) relativeLayout.findViewById(R.id.comment_time)).getText().toString());
-            //如果是本人的评论
-            //删除
-            CommentListAdapter commentListAdapter = (CommentListAdapter)listView.getAdapter();
-            commentListAdapter.remove(comment);
-            handler.post(new UpdateRunnable(commentListAdapter));
-            new DeleteComment(comment);
+
+            if(userFunctions.getUsername().equals(comment.getName())) {
+                new DeleteComment(comment);
+
+            }
             //如果不是
             //啥事都不做
 
@@ -235,7 +201,7 @@ public class CommentFragment extends Fragment  {
         public void run() {
 
             commentListAdapter.notifyDataSetChanged();
-            System.out.println(comments.size());
+
         }
     };
 
@@ -251,7 +217,7 @@ public class CommentFragment extends Fragment  {
         public List<NameValuePair> commentParams;
         public String url = Constant.BASE_URL + "/user_comments.php";
 
-        public  void CommentData() {
+        public  CommentData() {
             commentParams = new ArrayList<NameValuePair>();
             commentParams.add(new BasicNameValuePair("tag", "get_car_comments"));
             commentParams.add(new BasicNameValuePair("car_id", ((CarShow)getActivity()).getCarId() + ""));
@@ -285,7 +251,7 @@ public class CommentFragment extends Fragment  {
                 super.onPostExecute(aVoid);
 
                 if (commentObj != null) {
-                    ArrayList<com.Doric.CarBook.search.CarInfor> carlist =new ArrayList<com.Doric.CarBook.search.CarInfor>();
+
                     try {
                         int success = commentObj.getInt("success");
                         if(success==0){
@@ -296,15 +262,28 @@ public class CommentFragment extends Fragment  {
                         }
                         else if (success == 1) {
                             //获取评论数据
+                            JSONObject cObj = commentObj.getJSONObject("comments");
+                            int j =cObj.length();
+                            CommentListAdapter cla =(CommentListAdapter)listView.getAdapter();
+                            for(int i=0;i<j;i++){
+                                JSONObject tmp = cObj.getJSONObject(String.valueOf(i));
+                                Comment c= new Comment();
+                                //c.setCommentId(tmp.getString("comment_id"));/
+                                c.setName(tmp.getString("username"));
+                                c.setTime(tmp.getString("comment_time"));
+                                c.setText(tmp.getString("short_comments"));
+                                if(!comments.contains(c)) {
 
+                                    cla.add(c);
 
-
-
+                                }
+                            }
+                            handler.post(new UpdateRunnable(cla));
 
                         }
                     } catch (JSONException e) {
 
-                        Toast.makeText(getActivity().getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                       e.printStackTrace();
                     }
 
 
@@ -329,9 +308,9 @@ public class CommentFragment extends Fragment  {
         public AddComment(Comment comment) {
             this.comment = comment;
             addParams.add(new BasicNameValuePair("tag", "add_comments"));
-            addParams.add(new BasicNameValuePair("username", comment.getName()));
-            addParams.add(new BasicNameValuePair("car_id", ((CarShow)getActivity()).getCarId() + ""));
-            addParams.add(new BasicNameValuePair("comment", comment.getText()));
+            addParams.add(new BasicNameValuePair("username", GBK2UTF.Transform(comment.getName())));
+            addParams.add(new BasicNameValuePair("car_id", GBK2UTF.Transform(((CarShow)getActivity()).getCarId() + "")));
+            addParams.add(new BasicNameValuePair("comment",  GBK2UTF.Transform(comment.getText())));
             addParams.add(new BasicNameValuePair("rate", "5"));
             new Add().execute();
         }
@@ -363,7 +342,7 @@ public class CommentFragment extends Fragment  {
                         }
                     } catch (JSONException e) {
 
-                        Toast.makeText(getActivity().getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                       e.printStackTrace();
                     }
 
 
@@ -385,12 +364,12 @@ public class CommentFragment extends Fragment  {
         public DeleteComment(Comment comment){
             this.comment = comment;
             deleteParams.add(new BasicNameValuePair("tag", "delete_comments"));
-            deleteParams.add(new BasicNameValuePair("username", comment.getName()));
-            deleteParams.add(new BasicNameValuePair("car_id", ((CarShow)getActivity()).getCarId() + ""));
-            deleteParams.add(new BasicNameValuePair("comment", comment.getText()));
-            new Add().execute();
+            deleteParams.add(new BasicNameValuePair("username", GBK2UTF.Transform(comment.getName())));
+            deleteParams.add(new BasicNameValuePair("car_id", GBK2UTF.Transform(((CarShow)getActivity()).getCarId() + "")));
+            deleteParams.add(new BasicNameValuePair("comment", GBK2UTF.Transform(comment.getText())));
+            new Delete().execute();
         }
-        private class Add extends AsyncTask<Void, Void, Void> {
+        private class Delete extends AsyncTask<Void, Void, Void> {
 
 
 
@@ -420,7 +399,7 @@ public class CommentFragment extends Fragment  {
                         }
                     } catch (JSONException e) {
 
-                        Toast.makeText(getActivity().getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                       e.printStackTrace();
                     }
 
 
@@ -439,38 +418,42 @@ public class CommentFragment extends Fragment  {
             resource = resourceId;
         }
 
+
+
+
         public View getView(int position, View convertView, ViewGroup parent) {
             RelativeLayout relativeLayout;
             Comment comment = getItem(position);
             String name = comment.getName();
             String text = comment.getText();
             String time = comment.getTime();
-            boolean iszan = comment.getZan();
-            boolean iscai = comment.getCai();
+
 
             if(convertView == null) {
                 relativeLayout = new RelativeLayout(getContext());
                 String inflater = Context.LAYOUT_INFLATER_SERVICE;
                 LayoutInflater vi = (LayoutInflater)getContext().getSystemService(inflater);
                 vi.inflate(resource, relativeLayout, true);
-                Log.d("Adapter", "convertView is null now");
+
             } else {
                 relativeLayout = (RelativeLayout)convertView;
-                Log.d("Adapter", "convertView is not null now");
+
             }
             //绑定数据
             TextView nameView = (TextView) relativeLayout.findViewById(R.id.comment_name);
             TextView textView = (TextView) relativeLayout.findViewById(R.id.comment_text);
             TextView timeView = (TextView) relativeLayout.findViewById(R.id.comment_time);
-            TextView Zan = (TextView)relativeLayout.findViewById(R.id.zan);
-            TextView Cai = (TextView)relativeLayout.findViewById(R.id.cai);
+
             nameView.setText(name);
             textView.setText(text);
             timeView.setText(time);
 
             TextView deleteView = (TextView)relativeLayout.findViewById(R.id.delete);
-            Zan.setOnClickListener(new ZanListener());
-            Cai.setOnClickListener(new CaiListener());
+            deleteView.setVisibility(View.VISIBLE);
+            if(!userFunctions.getUsername().equals(name)){
+
+                deleteView.setVisibility(View.INVISIBLE);
+            }
             deleteView.setOnClickListener(new DeleteListener());
 
 
