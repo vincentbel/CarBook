@@ -77,6 +77,7 @@ public class ParameterFragment extends Fragment implements OnItemClickListener,
      * fragment (e.g. upon screen orientation changes).
      */
     public ParameterFragment() {
+
     }
 
     @Override

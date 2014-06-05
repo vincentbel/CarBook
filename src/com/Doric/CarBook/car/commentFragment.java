@@ -29,7 +29,14 @@ class Comment {
     private String name;
     private String time;
     private String text;
+    private boolean isZan=false;
+    private boolean isCai = false;
 
+    public boolean getZan(){return isZan;}
+    public boolean getCai(){return isCai;}
+
+    public void setZan(boolean zan){isZan =zan;}
+    public void setCai(boolean cai){isCai=cai;}
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -163,6 +170,35 @@ public class CommentFragment extends Fragment  {
 
 
 
+    class ZanListener implements  View.OnClickListener{
+
+        @Override
+        public void onClick(View v) {
+            TextView t = (TextView)v;
+            t.getText();
+            if(t.getText().toString().equals("点赞")){
+                t.setText("已点赞");
+                /**
+                 * 服务器端
+                 */
+            }
+        }
+    }
+
+    class CaiListener implements  View.OnClickListener{
+
+        @Override
+        public void onClick(View v) {
+            TextView t = (TextView)v;
+            t.getText();
+            if(t.getText().toString().equals("差评")){
+                t.setText("已差评");
+                /**
+                 * 服务器端
+                 */
+            }
+        }
+    }
 
     class DeleteListener implements View.OnClickListener {
 
@@ -186,12 +222,6 @@ public class CommentFragment extends Fragment  {
 
         }
     }
-
-
-
-
-
-
 
     final android.os.Handler handler = new android.os.Handler();
     class UpdateRunnable implements  Runnable{
@@ -262,7 +292,6 @@ public class CommentFragment extends Fragment  {
                         }
                         else if (success == 1) {
                             //获取评论数据
-
 
 
 
@@ -405,6 +434,8 @@ public class CommentFragment extends Fragment  {
             String name = comment.getName();
             String text = comment.getText();
             String time = comment.getTime();
+            boolean iszan = comment.getZan();
+            boolean iscai = comment.getCai();
 
             if(convertView == null) {
                 relativeLayout = new RelativeLayout(getContext());
@@ -420,10 +451,15 @@ public class CommentFragment extends Fragment  {
             TextView nameView = (TextView) relativeLayout.findViewById(R.id.comment_name);
             TextView textView = (TextView) relativeLayout.findViewById(R.id.comment_text);
             TextView timeView = (TextView) relativeLayout.findViewById(R.id.comment_time);
+            TextView Zan = (TextView)relativeLayout.findViewById(R.id.zan);
+            TextView Cai = (TextView)relativeLayout.findViewById(R.id.cai);
             nameView.setText(name);
             textView.setText(text);
             timeView.setText(time);
+
             TextView deleteView = (TextView)relativeLayout.findViewById(R.id.delete);
+            Zan.setOnClickListener(new ZanListener());
+            Cai.setOnClickListener(new CaiListener());
             deleteView.setOnClickListener(new DeleteListener());
 
 

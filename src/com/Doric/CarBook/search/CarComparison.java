@@ -77,7 +77,11 @@ public class CarComparison extends Activity {
 
     }
 
-
+    @Override
+    public void onBackPressed() {
+        SearchMain.searchmain.setUseage(true);
+        super.onBackPressed();
+    }
 
     /**
      * ≥ı ºªØ“≥√Ê

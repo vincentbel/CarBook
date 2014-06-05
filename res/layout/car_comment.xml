@@ -36,4 +36,25 @@
             android:layout_below="@+id/comment_text" android:layout_alignRight="@+id/comment_time"
             android:layout_marginRight="16dp"/>
 
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="点赞"
+            android:textColor="#5555ff"
+            android:id="@+id/zan"
+            android:clickable="true"
+            android:layout_alignTop="@+id/cai" android:layout_toRightOf="@+id/comment_text"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="差评"
+            android:textColor="#5555ff"
+            android:id="@+id/cai"
+            android:clickable="true"
+            android:layout_alignTop="@+id/delete" android:layout_toLeftOf="@+id/comment_time"/>
+
+
 </RelativeLayout>

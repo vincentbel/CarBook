@@ -34,7 +34,12 @@
 
     <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
                   android:orientation="vertical"
-            android:id="@+id/searchreasult" android:layout_margin="10dp">
+            android:layout_margin="10dp"
+            android:background="#ffffff"
+            android:id="@+id/searchreasultlayout"
+            >
+        <ListView  android:id="@+id/searchreasult" android:layout_width="match_parent" android:layout_height="match_parent">
+        </ListView>
     </LinearLayout>
 
 

@@ -99,9 +99,21 @@
                   />
         <activity android:name=".search.CarCmpShow"
                   android:screenOrientation="portrait"
+                  android:launchMode="singleInstance"
                    android:theme="@style/AppTheme"
                   />
-
+        <activity android:name=".search.Search"
+                  android:launchMode="singleInstance"
+                  android:screenOrientation="portrait"
+                />
+        <activity android:name=".search.ConditionSearch"
+                  android:launchMode="singleInstance"
+                  android:screenOrientation="portrait"
+                />
+        <activity android:name=".search.Result"
+                  android:launchMode="singleInstance"
+                  android:screenOrientation="portrait"
+                />
         <activity android:name=".settings.Feedback"/>
 
         <activity android:name=".settings.About"
