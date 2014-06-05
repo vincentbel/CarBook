@@ -1,5 +1,3 @@
-
-
 package com.Doric.CarBook.car;
 
 
@@ -17,13 +15,69 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.Doric.CarBook.Constant;
 import com.Doric.CarBook.R;
+import com.Doric.CarBook.member.UserFunctions;
 import com.Doric.CarBook.utility.JSONParser;
 import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
 import java.util.*;
+
+class Comment {
+    private String name;
+    private String time;
+    private String text;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Comment comment = (Comment) o;
+
+        if (name != null ? !name.equals(comment.name) : comment.name != null) return false;
+        if (text != null ? !text.equals(comment.text) : comment.text != null) return false;
+        if (time != null ? !time.equals(comment.time) : comment.time != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (time != null ? time.hashCode() : 0);
+        result = 31 * result + (text != null ? text.hashCode() : 0);
+        return result;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+}
+
 
 public class CommentFragment extends Fragment  {
 
@@ -33,10 +87,12 @@ public class CommentFragment extends Fragment  {
     private EditText editText;
     private ImageButton btn;
 
+    private UserFunctions userFunctions;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        userFunctions = new UserFunctions(getActivity().getApplicationContext());
 
     }
 
@@ -47,7 +103,7 @@ public class CommentFragment extends Fragment  {
         //获取车辆品牌信息
 
         Initialize();
-        //new CommentData();
+        new CommentData();
         return layout;
 
     }
@@ -67,14 +123,15 @@ public class CommentFragment extends Fragment  {
             @Override
             public void onClick(View v) {
                 Editable ed = editText.getText();
-                if(ed.toString().trim().equals("")){
+                if (!userFunctions.isUserLoggedIn()) {
+                    Toast.makeText(getActivity().getApplicationContext(),"请先登录亲",Toast.LENGTH_LONG).show();
+                }else if(ed.toString().trim().equals("")){
                     Toast.makeText(getActivity().getApplicationContext(),"别什么都不说啊亲",Toast.LENGTH_LONG).show();
                 }
                 else{
-
                     CommentListAdapter commentListAdapter = (CommentListAdapter)listView.getAdapter();
                     Comment comment = new Comment();
-                    comment.setName("id"); //用户名
+                    comment.setName(userFunctions.getUsername()); //用户名
                     comment.setText(ed.toString());//内容
                     Time t=new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
 
@@ -89,7 +146,7 @@ public class CommentFragment extends Fragment  {
                     commentListAdapter.add(comment);
                     editText.setText("");
                     handler.post(new UpdateRunnable(commentListAdapter));
-                    //new AddComment(comment);
+                    new AddComment(comment);
 
                 }
             }
@@ -126,7 +183,7 @@ public class CommentFragment extends Fragment  {
             CommentListAdapter commentListAdapter = (CommentListAdapter)listView.getAdapter();
             commentListAdapter.remove(comment);
             handler.post(new UpdateRunnable(commentListAdapter));
-            //new DeleteComment(comment);
+            new DeleteComment(comment);
             //如果不是
             //啥事都不做
 
@@ -160,13 +217,14 @@ public class CommentFragment extends Fragment  {
     //否则提示获取失败
 
     private class CommentData{
-        public   JSONObject commentObj;
-        public   List<NameValuePair> commentParams = new ArrayList<NameValuePair>();
+        public JSONObject commentObj;
+        public List<NameValuePair> commentParams;
+        public String url = Constant.BASE_URL + "/user_comments.php";
 
-        public    String url = Constant.BASE_URL + "showcar/.php";
-
-        public  void CommentData(){
-
+        public  void CommentData() {
+            commentParams = new ArrayList<NameValuePair>();
+            commentParams.add(new BasicNameValuePair("tag", "get_car_comments"));
+            commentParams.add(new BasicNameValuePair("car_id", ((CarShow)getActivity()).getCarId() + ""));
             new GetCommentData().execute();
         }
         //进入界面后获取评论数据
@@ -238,14 +296,17 @@ public class CommentFragment extends Fragment  {
         private Comment comment;
         List<NameValuePair> addParams = new ArrayList<NameValuePair>();
         JSONObject addObject;
-        public    String url = Constant.BASE_URL + "showcar/.php";
-        public AddComment(Comment comment){
+        public String url = Constant.BASE_URL + "/user_comments.php";
+        public AddComment(Comment comment) {
             this.comment = comment;
+            addParams.add(new BasicNameValuePair("tag", "add_comments"));
+            addParams.add(new BasicNameValuePair("username", comment.getName()));
+            addParams.add(new BasicNameValuePair("car_id", ((CarShow)getActivity()).getCarId() + ""));
+            addParams.add(new BasicNameValuePair("comment", comment.getText()));
+            addParams.add(new BasicNameValuePair("rate", "5"));
             new Add().execute();
         }
         private class Add extends AsyncTask<Void, Void, Void> {
-
-
 
             protected Void doInBackground(Void... params) {
                 //向服务器发送请求
@@ -291,9 +352,13 @@ public class CommentFragment extends Fragment  {
         private Comment comment;
         List<NameValuePair> deleteParams = new ArrayList<NameValuePair>();
         JSONObject deleteObject;
-        public    String url = Constant.BASE_URL + "showcar/.php";
+        public String url = Constant.BASE_URL + "/user_comments.php";
         public DeleteComment(Comment comment){
             this.comment = comment;
+            deleteParams.add(new BasicNameValuePair("tag", "delete_comments"));
+            deleteParams.add(new BasicNameValuePair("username", comment.getName()));
+            deleteParams.add(new BasicNameValuePair("car_id", ((CarShow)getActivity()).getCarId() + ""));
+            deleteParams.add(new BasicNameValuePair("comment", comment.getText()));
             new Add().execute();
         }
         private class Add extends AsyncTask<Void, Void, Void> {

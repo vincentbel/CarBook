@@ -1,4 +1,4 @@
-package com.Doric.CarBook.Settings;
+package com.Doric.CarBook.settings;
 
 import android.app.Activity;
 import android.app.TimePickerDialog;

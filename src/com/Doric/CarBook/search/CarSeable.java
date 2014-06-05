@@ -1,13 +1,12 @@
 package com.Doric.CarBook.search;
 
 
-import android.app.FragmentTransaction;
-
-import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.widget.Toast;
 import com.Doric.CarBook.Constant;
-import com.Doric.CarBook.Constant;
+
 
 import com.Doric.CarBook.utility.JSONParser;
 import org.apache.http.NameValuePair;
@@ -19,6 +18,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * 车辆品牌
+ */
 class CarSeable {
 
     private ArrayList<CarSeries> carSeriesList;    //车系list
@@ -26,7 +28,16 @@ class CarSeable {
     private String carSeableName;
     private String picPath;
 
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
 
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
+
+    private Bitmap bitmap=null;
+    public static String CarBrand ;
     private JSONObject seriesObj;
 
     private List<NameValuePair> seriesParams = new ArrayList<NameValuePair>();
@@ -55,13 +66,27 @@ class CarSeable {
 
         //brandParams
         if (!isload) {
+            CarBrand = carSeableName;
             seriesParams.add(new BasicNameValuePair("tag", "brand_series"));
-            seriesParams.add(new BasicNameValuePair("brand", carSeableName));
-
-            new GetSeries().execute();
+            seriesParams.add(new BasicNameValuePair("brand", GBK2UTF.Transform(carSeableName)));
+            seriesObj =  DataCache.InputToMemory(seriesParams);
+            if(seriesObj!=null) {
+                try {
+                    DecodeJSON();
+                    new SearchMain.GetPicData(carSeriesList).execute();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            else
+                new GetSeries().execute();
         }
-        else{
-            SearchMain.searchmain.setListData(carSeriesList);
+        else if(!CarBrand.equals(carSeableName)){
+            CarBrand = carSeableName;
+            new SearchMain.GetPicData(carSeriesList).execute();
+
+        }
+        else {
             SearchMain.searchmain.OpenSliding();
         }
 
@@ -113,24 +138,14 @@ class CarSeable {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            SearchMain.searchmain.stopLoading();
+
 
             if (seriesObj != null) {
                 try {
                     int success = seriesObj.getInt("success");
                     if (success == 1) {
-                        int num = seriesObj.getInt("brand_series_number");
-                        for (int i = 1; i <= num; i++) {
-                            CarSeries cs = new CarSeries();
-                            cs.setName(seriesObj.getString("brand_series_" + i));
-                            cs.setPicPath(Constant.BASE_URL + "/" +seriesObj.getString("brand_series_"+ i+"_url"));
-                            cs.setCarSeableName(carSeableName);
-
-                            carSeriesList.add(cs);
-                        }
-                        isload = true;
-                        if (carSeriesList.size() > 0)
-                            Collections.sort(carSeriesList, new ComparatorCarSeries());
+                        DataCache.OutputToCacheFile(seriesParams,seriesObj);
+                        DecodeJSON();
                         new SearchMain.GetPicData(carSeriesList).execute();
 
                     }
@@ -143,7 +158,22 @@ class CarSeable {
                 Toast.makeText(SearchMain.searchmain, "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
 
             }
+
         }
+    }
+    private void DecodeJSON()throws  JSONException{
+        int num = seriesObj.getInt("brand_series_number");
+        for (int i = 1; i <= num; i++) {
+            CarSeries cs = new CarSeries();
+            cs.setName(seriesObj.getString("brand_series_" + i));
+            cs.setPicPath(Constant.BASE_URL + "/" +seriesObj.getString("brand_series_"+ i+"_url"));
+            cs.setCarSeableName(carSeableName);
+
+            carSeriesList.add(cs);
+        }
+        isload = true;
+        if (carSeriesList.size() > 0)
+            Collections.sort(carSeriesList, new ComparatorCarSeries());
     }
 }
 
