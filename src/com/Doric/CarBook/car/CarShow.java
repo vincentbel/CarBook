@@ -48,6 +48,11 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
     /*
     *   获取bundle，并开启异步线程获取JSON包
     */
+
+    public int getCarId() {
+        return carId;
+    }
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.car_show);
