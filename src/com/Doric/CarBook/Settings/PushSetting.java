@@ -6,9 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.*;
 import cn.jpush.android.api.InstrumentedActivity;
 import cn.jpush.android.api.JPushInterface;
@@ -51,6 +49,19 @@ public class PushSetting extends InstrumentedActivity {
     // 用户设置
     String PREFS_NAME = "com.Doric.CarBook";
     SharedPreferences settings = null;
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //NavUtils.navigateUpFromSameTask(this);
+                this.finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +70,8 @@ public class PushSetting extends InstrumentedActivity {
         settings= PreferenceManager.getDefaultSharedPreferences(this);
         // Activity的上下文
         PushSettingContext= this;
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setTitle("推送设置");
 
         // 为switch初始化
         acceptPushSwitch = (Switch) this.findViewById(R.id.acceptPushSwitch);
