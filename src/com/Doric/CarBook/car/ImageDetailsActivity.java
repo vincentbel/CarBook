@@ -75,13 +75,16 @@ public class ImageDetailsActivity extends Activity implements
     private String getImagePath(String imageUrl) {
         int lastSlashIndex = imageUrl.lastIndexOf("/");
         String imageTPath = imageUrl.substring(0, lastSlashIndex);
+        // Í¼Æ¬ÐòºÅ¼°¸ñÊ½ºó×º
         String extra ="_"+ imageUrl.substring(imageUrl.lastIndexOf("/")+1);
+
         lastSlashIndex = imageTPath.lastIndexOf("/");
         String imageSeries = imageTPath.substring(lastSlashIndex + 1);  //  Series
         imageTPath = imageTPath.substring(0, lastSlashIndex);
         String imageName = imageTPath.substring(imageTPath.lastIndexOf("/") + 1);
         imageName = imageName + imageSeries + extra;
         System.out.println(imageName);
+        // Í¼Æ¬µÄ´¢´æÂ·¾¶
         String imageDir = getSDPath()
                 + "/CarBook/Cache/";
         File file = new File(imageDir);
@@ -92,7 +95,6 @@ public class ImageDetailsActivity extends Activity implements
 
         return imagePath;
     }
-
 
     @Override
     public void onPageScrollStateChanged(int arg0) {

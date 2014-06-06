@@ -15,7 +15,6 @@ import android.view.View;
 /**
  * 自定义的ImageView控制，可对图片进行多点触控缩放和拖动
  *
- * @author guolin
  */
 public class ZoomImageView extends View {
 

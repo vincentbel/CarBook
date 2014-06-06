@@ -17,7 +17,7 @@ public class PictureFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        // 关联对应布局
         rootView = inflater.inflate(R.layout.car_picture, container, false);
         return rootView;
     }
