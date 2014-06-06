@@ -86,7 +86,7 @@
 
         <activity
                 android:name="com.Doric.CarBook.search.SearchMain"
-                android:launchMode="singleInstance"
+                android:launchMode="singleTask"
                 android:screenOrientation="portrait">
         </activity>
 
@@ -94,24 +94,24 @@
         <activity android:name=".car.ImageDetailsActivity">
         </activity>
         <activity android:name=".search.CarComparison"
-                  android:launchMode="singleInstance"
+                  android:launchMode="singleTask"
                   android:screenOrientation="portrait"
                   />
         <activity android:name=".search.CarCmpShow"
                   android:screenOrientation="portrait"
-                  android:launchMode="singleInstance"
+                  android:launchMode="singleTask"
                    android:theme="@style/AppTheme"
                   />
         <activity android:name=".search.Search"
-                  android:launchMode="singleInstance"
+                  android:launchMode="singleTask"
                   android:screenOrientation="portrait"
                 />
         <activity android:name=".search.ConditionSearch"
-                  android:launchMode="singleInstance"
+                  android:launchMode="singleTask"
                   android:screenOrientation="portrait"
                 />
         <activity android:name=".search.Result"
-                  android:launchMode="singleInstance"
+                  android:launchMode="singleTask"
                   android:screenOrientation="portrait"
                 />
         <activity android:name=".settings.Feedback"/>

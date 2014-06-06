@@ -182,7 +182,7 @@ public class CommentFragment extends Fragment  {
             comment.setName(((TextView) relativeLayout.findViewById(R.id.comment_name)).getText().toString());
             comment.setTime(((TextView) relativeLayout.findViewById(R.id.comment_time)).getText().toString());
 
-            if(userFunctions.getUsername().equals(comment.getName())) {
+            if(userFunctions.isUserLoggedIn()&&userFunctions.getUsername().equals(comment.getName())) {
                 new DeleteComment(comment);
 
             }
@@ -450,7 +450,7 @@ public class CommentFragment extends Fragment  {
 
             TextView deleteView = (TextView)relativeLayout.findViewById(R.id.delete);
             deleteView.setVisibility(View.VISIBLE);
-            if(!userFunctions.getUsername().equals(name)){
+            if(!userFunctions.isUserLoggedIn()||!userFunctions.getUsername().equals(name)){
 
                 deleteView.setVisibility(View.INVISIBLE);
             }

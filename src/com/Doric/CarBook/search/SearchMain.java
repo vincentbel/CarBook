@@ -265,7 +265,7 @@ public class SearchMain extends Activity  {
      * I say nothing ah.
      */
     public void OpenSliding() {
-
+        mDrawerLayout.closeDrawer(mDrawerList);
         mDrawerLayout.openDrawer(mDrawerList);
 
     }
