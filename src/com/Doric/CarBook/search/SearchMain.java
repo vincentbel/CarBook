@@ -129,10 +129,7 @@ public class SearchMain extends Activity  {
 
     }
 
-    @Override
-    public void finish() {
-        moveTaskToBack(true);
-    }
+
 
 
     @Override

@@ -45,13 +45,11 @@ public class SummaryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.car_summary, container, false);
-
+        // 初始化对应控件
         TextView bodyStruText = (TextView) (rootView != null ? rootView.findViewById(R.id.bodyStruText) : null);
         TextView SCBText = (TextView) (rootView != null ? rootView.findViewById(R.id.SCBText) : null);
         TextView driveModeText = (TextView) (rootView != null ? rootView.findViewById(R.id.driveModeText) : null);
         TextView lowCostText = (TextView) (rootView != null ? rootView.findViewById(R.id.lowCostText) : null);
-
-
         thumPic = (ImageView) (rootView != null ? rootView.findViewById(R.id.thumPic) : null);
 
         imageLoader = new ImageLoader();
@@ -87,14 +85,12 @@ public class SummaryFragment extends Fragment {
         //构建车行信息
         ListView storeList = (ListView) (rootView != null ? rootView.findViewById(R.id.storeList) : null);
         list = getData();
-        /*
-        SimpleAdapter adapter = new SimpleAdapter(getActivity().getApplicationContext(), list, R.layout.sale_company_list,
-                new String[]{"storeName", "storeAddr","phoneNumber"},
-                new int[]{R.id.storeName, R.id.storeAddr});
-        */
+        //自定义适配器
         mAdapter adapter = new mAdapter (getActivity());
         if (storeList != null) {
+            // 添加适配器
             storeList.setAdapter(adapter);
+            // 设置listView高度，实现在scrollView中的滚动条
             setListViewHeightBasedOnChildren(storeList);
         }
 
@@ -107,7 +103,9 @@ public class SummaryFragment extends Fragment {
         try {
             for (Integer i = 1; i <= storeNum; i++) {
                 map = new HashMap<String, Object>();
+                // 获取对应车行信息
                 JSONObject carSaleCompany = CarShow.carInfo.getJSONObject("sale_company_" + i.toString());
+                // 将数据添加到map中
                 map.put("storeName", carSaleCompany.getString("name"));
                 map.put("storeAddr", carSaleCompany.getString("address"));
                 map.put("phoneNumber",carSaleCompany.get("telephone"));
@@ -195,7 +193,6 @@ public class SummaryFragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            System.out.println("picture url: "+mImageUrl);
 
             Bitmap imageBitmap = imageLoader.getBitmapFromMemoryCache(mImageUrl);
 
@@ -249,6 +246,7 @@ public class SummaryFragment extends Fragment {
             if (thumPic != null) {
                 thumPic.setImageBitmap(bitmap);
             } else {
+                // 设置thumPic基本属性
                 thumPic = new ImageView(getActivity());
                 thumPic.setLayoutParams(params);
                 thumPic.setImageBitmap(bitmap);
@@ -337,13 +335,16 @@ public class SummaryFragment extends Fragment {
         private String getImagePath(String imageUrl) {
             int lastSlashIndex = imageUrl.lastIndexOf("/");
             String imageTPath = imageUrl.substring(0, lastSlashIndex);
+            // 图片序号及格式后缀
             String extra ="_"+ imageUrl.substring(imageUrl.lastIndexOf("/")+1);
+
             lastSlashIndex = imageTPath.lastIndexOf("/");
             String imageSeries = imageTPath.substring(lastSlashIndex + 1);  //  Series
             imageTPath = imageTPath.substring(0, lastSlashIndex);
             String imageName = imageTPath.substring(imageTPath.lastIndexOf("/") + 1);
             imageName = imageName + imageSeries + extra;
             System.out.println(imageName);
+            // 图片的储存路径
             String imageDir = getSDPath()
                     + "/CarBook/Cache/";
             File file = new File(imageDir);

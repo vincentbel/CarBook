@@ -2,6 +2,7 @@ package com.Doric.CarBook.member;
 
 import android.app.Fragment;
 import android.app.TimePickerDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,7 @@ public class Setting extends Fragment {
     Calendar startPushTime = null;
     // 设置结束时间的calendar
     Calendar endPushTime = null;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.push_settings, container, false);

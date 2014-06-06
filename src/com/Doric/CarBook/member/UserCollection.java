@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class UserCollection extends Fragment {
 
@@ -43,11 +45,13 @@ public class UserCollection extends Fragment {
     // 图片列表
     List<ImageView> imageViewList = new ArrayList<ImageView>();
     // 对图片管理的工具类
-    private ImageLoader imageLoader;
+    private ImageLoader imageLoader=ImageLoader.getInstance();;
     // 图片宽度
     private final int picWidth = 150;
     // 无用户收藏的提示
     TextView noCollectionTextView = null;
+    //  记录所加载的图片宽度，避免内存溢出
+    private final int columnWidth = 480 ;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.user_collection, container, false);
@@ -67,22 +71,6 @@ public class UserCollection extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        /*
-
-            动态添加收藏条目
-        int userCollectionCount =2;
-        */
-        /*
-        ListView userCollectionList = (ListView) findViewById(R.id.userCollectionList);
-        ArrayList<Map<String, Object>> list = getData();
-        SimpleAdapter adapter = new SimpleAdapter(this,list,R.layout.sale_company_list,
-                new String[]{"storeName","storeAddr"},
-                new int[]{R.id.storeName,R.id.storeAddr});
-        if (userCollectionList != null) {
-            userCollectionList.setAdapter(adapter);
-            setListViewHeightBasedOnChildren();
-        }
-        */
     }
     /*
      *  异步获取用户收藏工具类
@@ -122,7 +110,7 @@ public class UserCollection extends Fragment {
                     e.printStackTrace();
                 }
                 initFragment();
-                new GetPicData().start();
+                new GetPicData().execute();
             }else{
                 Toast.makeText(getActivity(), "无法连接网络，请检查您的手机网络设置", Toast.LENGTH_LONG).show();
             }
@@ -131,37 +119,33 @@ public class UserCollection extends Fragment {
     }
     private void initFragment(){
         Log.d("GetUserCollection","initFragment");
-
+        // 获取数据
         ArrayList<Map<String, Object>> list = getData();
+        // 设置适配器，包括car_id,carName,carGrade,carPrice和图片信息
         SimpleAdapter adapter = new SimpleAdapter(getActivity(),list,R.layout.user_collection_list,
                 new String[]{"userCollectionThumPic","carNameText","carGradeText",
                         "carPriceText","car_id"},
                 new int[]{R.id.userCollectionThumPic,R.id.carNameText,R.id.carGradeText,
                         R.id.carPriceText,R.id.car_id});
+        // 自定义绑定bitmap
         adapter.setViewBinder(new myViewBinder());
         if (userCollectionList != null) {
+            // 添加适配器
             userCollectionList.setAdapter(adapter);
-            //setListViewHeightBasedOnChildren(userCollectionList);
         }
         userCollectionList.setOnItemClickListener( new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                System.out.println("douBI!!!!!!!!!!!!!!!!!!!!!!!!!");
-
+                // 获取父listView
                 ListView tempList = (ListView) parent;
                 HashMap<String, String> map = (HashMap<String, String>) tempList.getItemAtPosition(position);
 
-                String brand = map.get("collectionBrand");
-/*                String brand_series = map.get("collectionBrandSeries");
-                String model_number = map.get("collectionModelNumber");*/
+                // 从map中获取car_id
                 String car_id = map.get("car_id");
-                Bundle bundle = new Bundle();
-                bundle.putString("brand",brand);
-/*                bundle.putString("series",brand_series);
-                bundle.putString("model_number",model_number);*/
-                bundle.putString("car_id",car_id);
 
+                Bundle bundle = new Bundle();
+                bundle.putString("car_id",car_id);
+                // 跳转到对应Activity
                 Intent intent = new Intent(getActivity(),CarShow.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -177,12 +161,13 @@ public class UserCollection extends Fragment {
 
             for (Integer i=1;i<= userCollection.getInt("number");i++){
                 map =  new HashMap<String, Object>();
+                // 获取对应车辆
                 carInCollection = userCollection.getJSONObject("car_"+i.toString());
+
+                // 将信息添加到map中
+
                 map.put("carNameText",carInCollection.getString("brand")+" "+carInCollection.getString("brand_series")
                         +" "+carInCollection.getString("model_number"));
-/*                map.put("collectionBrand",carInCollection.getString("brand_name"));
-                map.put("collectionBrandSeries",carInCollection.getString("brand_series"));
-                map.put("collectionModelNumber",carInCollection.getString("model_number"));*/
                 map.put("carGradeText",carInCollection.getString("grade"));
                 map.put("carPriceText",carInCollection.getString("price"));
                 map.put("car_id",carInCollection.getString("car_id"));
@@ -195,35 +180,9 @@ public class UserCollection extends Fragment {
         return list;
     }
 
-    public void setListViewHeightBasedOnChildren(ListView listView) {
-        // 获取ListView对应的Adapter
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null) {
-            return;
-        }
-
-        int totalHeight = 0;
-        for (int i = 0, len = listAdapter.getCount(); i < len; i++) {
-            // listAdapter.getCount()返回数据项的数目
-            View listItem = listAdapter.getView(i, null, listView);
-            // 计算子项View 的宽高
-            if (listItem != null) {
-                listItem.measure(0, 0);
-            }
-            // 统计所有子项的总高度
-            if (listItem != null) {
-                totalHeight += listItem.getMeasuredHeight();
-            }
-        }
-
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        if (params != null) {
-            params.height = totalHeight+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        }
-        // listView.getDividerHeight()获取子项间分隔符占用的高度
-        // params.height最后得到整个ListView完整显示需要的高度
-        listView.setLayoutParams(params);
-    }
+    /*
+    * 自定义绑定
+    */
     class myViewBinder implements SimpleAdapter.ViewBinder {
         @Override
         public boolean setViewValue(View view, Object data, String textRepresentation) {
@@ -236,6 +195,9 @@ public class UserCollection extends Fragment {
             return false;
         }
     }
+    /*
+    * ListView更新消息处理
+    */
     final Handler cwjHandler = new Handler();
     class UpdateRunnable implements  Runnable{
         SimpleAdapter simpleAdapter = null;
@@ -249,118 +211,189 @@ public class UserCollection extends Fragment {
     /**
      * 异步下载图片的任务。
      */
-    public class GetPicData extends Thread {
-        // private Set<LoadImage> taskSet;
 
-        public GetPicData() {
+    private class GetPicData extends AsyncTask<Void, Void, Void> {
 
-            //taskSet = new HashSet<LoadImage>();
+        protected void onPreExecute() {
+
         }
 
-        public void run() {
-            Log.d("GetPicData","run");
-                //LoadImage i =  new LoadImage(cs.getCarSeableName(),cs.getPicPath());
-                HttpURLConnection con = null;
-                FileOutputStream fos = null;
-                BufferedOutputStream bos = null;
-                BufferedInputStream bis = null;
-                File imageFile = null;
-                SimpleAdapter simpleAdapter = (SimpleAdapter) userCollectionList.getAdapter();
-                for (Integer i = 1; i <= simpleAdapter.getCount(); i++) {
-                    Log.d("GetPicData","download"+i.toString());
-                    Map<String, Object> map = (Map<String, Object>) simpleAdapter.getItem(i-1);
-                    Bitmap bitmap =null;
-                    JSONObject car = null;
-                    String imageUrl = null;
-                    try {
-                        System.out.println(userCollection.toString());
-                        car = userCollection.getJSONObject("car_"+i.toString());
-                        imageUrl=Constant.BASE_URL + "/"+ car.getString("pictures_url") ;
 
-                        System.out.println(imageUrl);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    imageFile = new File(getImagePath(imageUrl));
-                    try {
-                        if (!imageFile.exists()) {
-                            URL url = new URL(Transform(imageUrl.replace(" ","%20")));
-                            System.out.println(url);
-                            con = (HttpURLConnection) url.openConnection();
-                            con.setConnectTimeout(5 * 1000);
-                            con.setReadTimeout(15 * 1000);
-                            con.setDoInput(true);
-                            con.setDoOutput(true);
-                            bis = new BufferedInputStream(con.getInputStream());
-                            imageFile = new File(getImagePath(imageUrl));
-                            fos = new FileOutputStream(imageFile);
-                            bos = new BufferedOutputStream(fos);
-                            byte[] b = new byte[1024];
-                            int length;
-                            while ((length = bis.read(b)) != -1) {
-                                bos.write(b, 0, length);
-                                bos.flush();
-                            }
-                            if (bis != null) {
-                                bis.close();
-                            }
-                            if (bos != null) {
-                                bos.close();
-                            }
-                            bitmap = BitmapFactory.decodeFile(getImagePath(imageUrl));
+        @Override
+        protected Void doInBackground(Void... params) {
+            JSONObject car = null;
+            SimpleAdapter simpleAdapter = (SimpleAdapter) userCollectionList.getAdapter();
 
-                        }
-                        else{
-                            bitmap = BitmapFactory.decodeFile(getImagePath(imageUrl));
-                        }
-                        if (bitmap!= null) {
-                            map.put("userCollectionThumPic", bitmap);
-                            cwjHandler.post(new UpdateRunnable(simpleAdapter));
-                        }
+            for (Integer i = 1; i <= simpleAdapter.getCount(); i++) {
+                Log.d("GetPicData", "download" + i.toString());
+                Map<String, Object> map = (Map<String, Object>) simpleAdapter.getItem(i - 1);
+                String mImageUrl = null;
+                try {
+                    // 获取对应车辆的图片URL
+                    car = userCollection.getJSONObject("car_" + i.toString());
+                    mImageUrl = Constant.BASE_URL + "/" + car.getString("pictures_url");
 
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+                // 从缓存中加载
+                Bitmap imageBitmap = imageLoader.getBitmapFromMemoryCache(mImageUrl);
+                if (imageBitmap == null) {
+                    System.out.println("缓存中不存在位图，需要下载或从sd卡加载图片");
+                    // 缓存中不存在位图，需要下载或从sd卡加载图片
+                    imageBitmap = loadImage(mImageUrl);
+                }else {
+                    System.out.println("缓存中存在位图，不需要加载图片");
+                }
+                // 将imageBitmap 添加到 map对应位置中
+                map.put("userCollectionThumPic", imageBitmap);
+                // 发送更新消息
+                cwjHandler.post(new UpdateRunnable(simpleAdapter));
 
+            }
+            return null;
+        }
+
+        /*
+         * 根据传入的URL，对图片进行加载。如果这张图片已经存在于SD卡中，则直接从SD卡里读取，否则就从网络上下载。
+         *
+         * @param imageUrl 图片的URL地址
+         * @return 加载到内存的图片。
+         */
+        private Bitmap loadImage(String imageUrl) {
+            File imageFile = new File(getImagePath(imageUrl));
+            if (!imageFile.exists()) {
+                System.out.println("sd卡中不存在准备从服务器下载");
+                // sd卡中不存在准备从服务器下载
+                downloadImage(imageUrl);
+            } else {
+                System.out.println("sd卡中存在");
+            }
+            if (imageUrl != null) {
+                System.out.println("从sd卡对应路径加载图片");
+                // 从sd卡对应路径加载图片，并根据columnWidth解码
+                Bitmap bitmap = ImageLoader.decodeSampledBitmapFromResource(imageFile.getPath(),
+                        columnWidth);
+                if (bitmap != null) {
+                    // 成功获取图片，将图片加入缓存
+                    System.out.println("成功获取图片，将图片加入缓存");
+                    imageLoader.addBitmapToMemoryCache(imageUrl, bitmap);
+                    return bitmap;
+                }
+            }
+            return null;
+        }
+
+        /*
+         * 将图片下载到SD卡缓存起来。
+         *
+         * @param  。
+         */
+        private void downloadImage(String imageUrl) {
+            if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                Log.d("TAG", "monted sdcard");
+            } else {
+                Log.d("TAG", "has no sdcard");
+            }
+            HttpURLConnection con = null;
+            FileOutputStream fos = null;
+            BufferedOutputStream bos = null;
+            BufferedInputStream bis = null;
+            File imageFile = null;
+            try {
+                URL url = new URL(Transform(imageUrl.replace(" ","%20")));
+                con = (HttpURLConnection) url.openConnection();
+                con.setConnectTimeout(5 * 1000);
+                con.setReadTimeout(15 * 1000);
+                con.setDoInput(true);
+                con.setDoOutput(true);
+                bis = new BufferedInputStream(con.getInputStream());
+                imageFile = new File(getImagePath(imageUrl));
+                fos = new FileOutputStream(imageFile);
+                bos = new BufferedOutputStream(fos);
+                byte[] b = new byte[1024];
+                int length;
+                while ((length = bis.read(b)) != -1) {
+                    bos.write(b, 0, length);
+                    bos.flush();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (bis != null) {
+                        bis.close();
+                    }
+                    if (bos != null) {
+                        bos.close();
+                    }
+                    if (con != null) {
+                        con.disconnect();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (imageFile != null) {
+                System.out.println("网络图片获取成功");
+                Bitmap bitmap = ImageLoader.decodeSampledBitmapFromResource(imageFile.getPath(),
+                        columnWidth);
+                if (bitmap != null) {
+                    imageLoader.addBitmapToMemoryCache(imageUrl, bitmap);
+                }
+            }else {
+                System.out.println("网络图片获取不成功");
             }
         }
 
-        private String getSDPath(){
-            File sdDir = null;
-            boolean sdCardExist = Environment.getExternalStorageState()
-                    .equals(Environment.MEDIA_MOUNTED);   //判断sd卡是否存在
-            if   (sdCardExist)
-            {
-                sdDir = Environment.getExternalStorageDirectory();//获取跟目录
-            }
-            return sdDir.toString();
+        protected void onPostExecute(Void aVoid) {
 
         }
+    }
 
 
-        private String getImagePath(String imageUrl) {
-            int lastSlashIndex = imageUrl.lastIndexOf("/");
-            String imageTPath = imageUrl.substring(0, lastSlashIndex);
-            String extra = imageUrl.substring(imageUrl.lastIndexOf("."));
-            lastSlashIndex = imageTPath.lastIndexOf("/");
-            String imageSeries = imageTPath.substring(lastSlashIndex + 1);  //  Series
-            imageTPath = imageTPath.substring(0, lastSlashIndex);
-            String imageName = imageTPath.substring(imageTPath.lastIndexOf("/") + 1);
-            imageName = imageName + imageSeries + extra;
-            System.out.println(imageName);
-            String imageDir = getSDPath()
-                    + "/CarBook/Cache/";
-            File file = new File(imageDir);
-            if (!file.exists()) {
-                file.mkdirs();
-            }
-            String imagePath = imageDir + imageName;
-
-            return imagePath;
+    private String getSDPath(){
+        File sdDir = null;
+        boolean sdCardExist = Environment.getExternalStorageState()
+                .equals(Environment.MEDIA_MOUNTED);   //判断sd卡是否存在
+        if   (sdCardExist)
+        {
+            sdDir = Environment.getExternalStorageDirectory();//获取跟目录
         }
+        return sdDir.toString();
+
+    }
+
+    /**
+     * 获取图片的本地存储路径。
+     *
+     * @param imageUrl 图片的URL地址。
+     * @return 图片的本地存储路径。
+     */
+
+    private String getImagePath(String imageUrl) {
+        int lastSlashIndex = imageUrl.lastIndexOf("/");
+        String imageTPath = imageUrl.substring(0, lastSlashIndex);
+        // 图片序号及格式后缀
+        String extra ="_"+ imageUrl.substring(imageUrl.lastIndexOf("/")+1);
+
+        lastSlashIndex = imageTPath.lastIndexOf("/");
+        String imageSeries = imageTPath.substring(lastSlashIndex + 1);  //  Series
+        imageTPath = imageTPath.substring(0, lastSlashIndex);
+        String imageName = imageTPath.substring(imageTPath.lastIndexOf("/") + 1);
+        imageName = imageName + imageSeries + extra;
+        System.out.println(imageName);
+        // 图片的储存路径
+        String imageDir = getSDPath()
+                + "/CarBook/Cache/";
+        File file = new File(imageDir);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        String imagePath = imageDir + imageName;
+
+        return imagePath;
+    }
     public static String Transform(String str){
         byte[] b = str.getBytes();
         char[] c = new char[b.length];

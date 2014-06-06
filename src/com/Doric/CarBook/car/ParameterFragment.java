@@ -13,15 +13,11 @@ import android.view.ViewGroup;
 
 
 import android.content.Context;
-import android.content.Intent;
 
 import android.os.AsyncTask;
 
 import android.widget.*;
 import com.Doric.CarBook.Constant;
-import com.Doric.CarBook.search.CarComparison;
-
-import com.Doric.CarBook.search.SearchMain;
 import com.Doric.CarBook.utility.JSONParser;
 import com.tonicartos.widget.stickygridheaders.*;
 import com.tonicartos.widget.stickygridheaders.StickyGridHeadersGridView.OnHeaderClickListener;

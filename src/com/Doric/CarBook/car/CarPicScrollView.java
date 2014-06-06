@@ -193,7 +193,6 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
             int startIndex = page * PAGE_SIZE;
             int endIndex = page * PAGE_SIZE + PAGE_SIZE;
             if (startIndex < CarImages.imageUrls.length) {
-                Toast.makeText(getContext(), "正在加载...", Toast.LENGTH_SHORT).show();
                 if (endIndex > CarImages.imageUrls.length) {
                     endIndex = CarImages.imageUrls.length;
                 }
@@ -248,10 +247,10 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
         protected void onPreExecute() {
             super.onPreExecute();
             //弹出"正在登录"框
-            progressDialog = new ProgressDialog(getContext());
+            /*progressDialog = new ProgressDialog(getContext());
             progressDialog.setMessage("加载中..");
             progressDialog.setCancelable(true);
-            progressDialog.show();
+            progressDialog.show();*/
         }
 
         protected Void doInBackground(Void... params) {
@@ -264,9 +263,9 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
 
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            if (progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
+//            if (progressDialog.isShowing()) {
+//                progressDialog.dismiss();
+//            }
             if (carPic != null) {
                 try {
                     CarImages.initImages(carPic.getInt("pictures_num"), carPic);
