@@ -233,17 +233,6 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                 /*
-                try {
-                    car.setCarName("BMW 7series 2013 740Li grand");
-                    car.setCarGrade(carInfo.getString("car_grade"));
-                    car.setCarBodyStructure(carInfo.getString("car_body_structure"));
-                    car.setPrice(carInfo.getString("price"));
-                    car.setTransmission(carInfo.getString("transmission"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                */
 
                 findViewById();
                 // ≥ı ºªØfragment

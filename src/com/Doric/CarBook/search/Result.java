@@ -1,6 +1,7 @@
 package com.Doric.CarBook.search;
 
 
+import android.app.Activity;
 import android.app.FragmentTransaction;
 
 
@@ -15,8 +16,10 @@ import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
@@ -43,22 +46,32 @@ import org.json.JSONObject;
 /**
  * 条件搜索结果界面
  */
-public class Result extends Fragment {
+public class Result extends Activity {
     public static ArrayList<CarInfor> mCarList;
-    private LinearLayout mLinearLayout;
+
 
     private ListView listView;
 
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        //获取信息
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
 
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle saveInstance){
+        super.onCreate(saveInstance);
+        //获取信息
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         initPage();
         new GetPicData().start();
-        return mLinearLayout;
+
 
     }
 
@@ -73,6 +86,7 @@ public class Result extends Fragment {
         for (CarInfor cs : al_cs) {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put("title", cs.getCarName());
+            if(!cs.getCarId().equals("0"))
             map.put("img", R.drawable.ic_launcher);
             list.add(map);
 
@@ -82,12 +96,7 @@ public class Result extends Fragment {
     }
 
     public void initPage() {
-        mLinearLayout = new LinearLayout(SearchMain.searchmain);
-        LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(LinearLayout.
-                LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        mLinearLayout.setLayoutParams(param1);
-        mLinearLayout.setOrientation(LinearLayout.VERTICAL);
-        mLinearLayout.setBackgroundColor(Color.rgb(255, 255, 255));
+
 
 //
 //        mScrollView = new ScrollView(SearchMain.searchmain);
@@ -97,37 +106,47 @@ public class Result extends Fragment {
 //                LayoutParams.MATCH_PARENT, ScrollView.LayoutParams.MATCH_PARENT);
 //        mScrollView.setLayoutParams(param2);
 
+        if(mCarList.size()==0){
+            CarInfor cs =new CarInfor() ;
+            cs.setCarName("很抱歉，没有找到您想要的车");
+            cs.setCarId("0");
+            cs.setCarPicPath("");
+            mCarList.add(cs);
+        }
 
+          setContentView(R.layout.sea_result);
 
-            ListView listview = new MyListView(SearchMain.searchmain);
-            listview.setDivider(getResources().getDrawable(R.drawable.list_divider));
-            listview.setDividerHeight(1);
-            SimpleAdapter adapter = new SimpleAdapter(SearchMain.searchmain, getUniformData(mCarList), R.layout.sea_list_layout,
+          listView = (ListView)findViewById(R.id.resultlist);
+          SimpleAdapter adapter = new SimpleAdapter(SearchMain.searchmain, getUniformData(mCarList), R.layout.sea_list_layout,
                     new String[]{"title", "img"},
                     new int[]{R.id.title, R.id.img});
-
-            listview.setAdapter(adapter);
-            adapter.setViewBinder(new ListViewBinder());
-            listview.setOnItemClickListener(new OnItemClickListener() {
+          listView.setDivider(getResources().getDrawable(R.drawable.list_divider));
+          listView.setDividerHeight(1);
+          listView.setAdapter(adapter);
+          adapter.setViewBinder(new ListViewBinder());
+          listView.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
-                    Intent it= new Intent();
-                    CarInfor ci  =mCarList.get(position);
-                    Bundle bundle =new Bundle();
-                    bundle.putString("car_id",ci.getCarId());
-                    bundle.putString("series",ci.getCarSerie());
-                    bundle.putString("model_number",ci.getCarName());
+                    Intent it = new Intent();
+                    CarInfor ci = mCarList.get(position);
+                    Log.d("CarInfo", ci.getCarId());
+                    if(ci.getCarId().equals("0"))
+                        return ;
+                    Bundle bundle = new Bundle();
+                    bundle.putString("car_id", ci.getCarId());
+                    bundle.putString("series", ci.getCarSerie());
+                    bundle.putString("model_number", ci.getCarName());
                     it.putExtras(bundle);
-                    it.setClass(SearchMain.searchmain,CarShow.class);
-                    SearchMain.searchmain.startActivity(it);
+                    it.setClass(Result.this, CarShow.class);
+                    Result.this.startActivity(it);
 
 
-                }
+              }
 
             });
 
-        mLinearLayout.addView(listview);
+
 
 
     }
@@ -190,6 +209,8 @@ public class Result extends Fragment {
                 for (int i = 0; i < simpleAdapter.getCount(); i++) {
                     Map<String, Object> map = (Map<String, Object>) simpleAdapter.getItem(i);
                     CarInfor ci = mCarList.get(i);
+                    if(ci.getCarId().equals("0"))
+                        break;
                     Bitmap bitmap = null;
                     String imageUrl = ci.getCarPicPath();
                     imageFile = new File(getImagePath(imageUrl));
@@ -296,11 +317,11 @@ public class Result extends Fragment {
 class CSearchGetData{
     public  static  JSONObject carInfoObj;
     public  static List<NameValuePair> carInfoParams = new ArrayList<NameValuePair>();
-    static FragmentTransaction fragmentTransaction;
+
 
     public   static String url = Constant.BASE_URL + "/search.php";
     private static Grade grade;
-    public static void getCSearchData(FragmentTransaction ft,Double hig,Double low,Grade gra){
+    public static void getCSearchData(Double hig,Double low,Grade gra){
 
         grade= gra;
         ArrayList<String> stringArrayList = grade.getSelected();
@@ -311,7 +332,7 @@ class CSearchGetData{
         for(int i=1;i<=stringArrayList.size();i++){
             carInfoParams.add(new BasicNameValuePair("grade_"+i,GBK2UTF.Transform(stringArrayList.get(i-1).replace(" ","%20"))));
         }
-        fragmentTransaction=ft;
+
         //Undone..
         new GetCarInfo().execute();
 
@@ -371,7 +392,7 @@ class CSearchGetData{
                         }
                         Result.setCarList(carlist);
                         SearchMain.searchmain.stopLoading();
-                        fragmentTransaction.commit();
+                        SearchMain.searchmain.startActivity(new Intent(SearchMain.searchmain,Result.class));
                         //context.initPage();
                     }
                 } catch (JSONException e) {

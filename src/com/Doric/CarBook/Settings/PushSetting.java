@@ -3,10 +3,10 @@ package com.Doric.CarBook.settings;
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.preference.PreferenceManager;
+import android.view.*;
 import android.widget.*;
 import cn.jpush.android.api.InstrumentedActivity;
 import cn.jpush.android.api.JPushInterface;
@@ -46,12 +46,32 @@ public class PushSetting extends InstrumentedActivity {
     Calendar startPushTime = null;
     // 设置结束时间的calendar
     Calendar endPushTime = null;
+    // 用户设置
+    String PREFS_NAME = "com.Doric.CarBook";
+    SharedPreferences settings = null;
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //NavUtils.navigateUpFromSameTask(this);
+                this.finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.push_settings);
-
-        PushSettingContext = this;
+        // 设置管理
+        settings= PreferenceManager.getDefaultSharedPreferences(this);
+        // Activity的上下文
+        PushSettingContext= this;
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setTitle("推送设置");
 
         // 为switch初始化
         acceptPushSwitch = (Switch) this.findViewById(R.id.acceptPushSwitch);
@@ -75,11 +95,12 @@ public class PushSetting extends InstrumentedActivity {
         startPushTime = Calendar.getInstance();
         endPushTime = Calendar.getInstance();
 
-        startPushTime.set(Calendar.HOUR_OF_DAY,6);
-        endPushTime.set(Calendar.HOUR_OF_DAY,23);
-
-        startPushTime.set(Calendar.MINUTE,00);
-        endPushTime.set(Calendar.MINUTE,00);
+        startPushTime.set(Calendar.HOUR_OF_DAY,settings.getInt("startTimeHour",6));
+        System.out.println(settings.getInt("startTimeHour",6));
+        endPushTime.set(Calendar.HOUR_OF_DAY,settings.getInt("endTimeHour",23));
+        System.out.println(settings.getInt("endTimeHour",23));
+        startPushTime.set(Calendar.MINUTE,settings.getInt("startTimeMin",0));
+        endPushTime.set(Calendar.MINUTE,settings.getInt("endTimeMin",0));
 
         // 周一到周日接收推送
         final Set<Integer> days = new HashSet<Integer>();
@@ -102,6 +123,8 @@ public class PushSetting extends InstrumentedActivity {
                         int endTimeHour = endPushTime.get(Calendar.HOUR_OF_DAY);
                         int endTimeMin = endPushTime.get(Calendar.MINUTE);
 
+                        System.out.println(startPushTime.get(Calendar.HOUR_OF_DAY));
+
                         // 对开始时间和结束时间进行判断，满足条件才能设置
                         if (check(hourOfDay,minute,endTimeHour,endTimeMin)) {
                             startPushTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
@@ -117,6 +140,11 @@ public class PushSetting extends InstrumentedActivity {
                             startPushTimeBtn.setText(startPushText + startPushTime.get(Calendar.HOUR_OF_DAY)
                                     + ":" + startPushTime.get(Calendar.MINUTE));
                             Toast.makeText(PushSettingContext, "设置成功", Toast.LENGTH_LONG).show();
+                            // 保存开始接收时间
+                            SharedPreferences.Editor editor = settings.edit();
+                            editor.putInt("startTimeHour", startPushTime.get(Calendar.HOUR_OF_DAY));
+                            editor.putInt("startTimeMin",startPushTime.get(Calendar.MINUTE));
+                            editor.commit();
 
                         }else{
                             Toast.makeText(PushSettingContext, "请确保开始时间早于结束时间", Toast.LENGTH_LONG).show();
@@ -153,6 +181,11 @@ public class PushSetting extends InstrumentedActivity {
                             endPushTimeBtn.setText(endPushText + endPushTime.get(Calendar.HOUR_OF_DAY)
                                     + ":" + endPushTime.get(Calendar.MINUTE));
                             Toast.makeText(PushSettingContext, "设置成功", Toast.LENGTH_LONG).show();
+                            // 保存停止接收时间
+                            SharedPreferences.Editor editor = settings.edit();
+                            editor.putInt("endTimeHour",endPushTime.get(Calendar.HOUR_OF_DAY));
+                            editor.putInt("endTimeMin",endPushTime.get(Calendar.MINUTE));
+                            editor.commit();
 
                         }else{
                             Toast.makeText(PushSettingContext, "请确保开始时间早于结束时间", Toast.LENGTH_LONG).show();
@@ -161,6 +194,7 @@ public class PushSetting extends InstrumentedActivity {
                 },endPushTime.get(Calendar.HOUR_OF_DAY),endPushTime.get(Calendar.MINUTE),true).show();
             }
         });
+
     }
 
     boolean check (int aHour, int aMin,int bHour, int bMin){
