@@ -69,7 +69,7 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
             if (scrollY == lastScrollY) {
                 // 当滚动的最底部，并且当前没有正在下载的任务时，开始加载下一页的图片
                 if (scrollViewHeight + scrollY >= scrollLayout.getHeight()
-                        && taskCollection.isEmpty()) {
+                        || taskCollection.isEmpty()) {
                     carPicScrollView.loadMoreImages();
                 }
                 carPicScrollView.checkVisibility();

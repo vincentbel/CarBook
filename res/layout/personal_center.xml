@@ -21,8 +21,8 @@
                 android:layout_width = "wrap_content"
                 android:id = "@+id/bar_username"
                 android:layout_marginLeft="15dp"
-                android:layout_alignBottom="@+id/imageView"
-                android:layout_toRightOf="@+id/imageView"/>
+                android:layout_alignBottom="@+id/pc_head"
+                android:layout_toRightOf="@+id/pc_head"/>
         <!--<Button
                 android:layout_width="20dp"
                 android:layout_height="20dp"
@@ -34,11 +34,11 @@
                 android:layout_marginTop="15dp"/>-->
 
         <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:background="@drawable/pc_default_head"
-                android:id="@+id/imageView"
-                android:layout_marginTop="120dp"
+                android:id="@+id/pc_head"
+                android:layout_marginTop="100dp"
                 android:layout_marginLeft="15dp"
                 android:layout_alignParentLeft="true"/>
     </RelativeLayout>

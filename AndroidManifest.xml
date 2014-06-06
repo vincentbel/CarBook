@@ -85,6 +85,10 @@
                   android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name=".member.MyComments"
+                  android:screenOrientation="portrait">
+        </activity>
+
         <activity
                 android:name="com.Doric.CarBook.search.SearchMain"
                 android:launchMode="singleTask"

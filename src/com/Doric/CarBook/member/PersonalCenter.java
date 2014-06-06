@@ -3,26 +3,43 @@ package com.Doric.CarBook.member;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.FragmentManager;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
-import com.Doric.CarBook.MainActivity;
+import android.widget.Toast;
+import com.Doric.CarBook.Constant;
 import com.Doric.CarBook.R;
-import com.Doric.CarBook.car.HotCarShow;
+import com.Doric.CarBook.utility.JSONParser;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PersonalCenter extends Fragment implements View.OnClickListener {
 
     UserFunctions userFunctions;
     private String name;
+    private String whichHead = "0";
+
     //定义控件
     private Button btnInformation, btnComment, btnLogOut;
     private TextView textView;
+
+    //服务器请求相关变量
+    private String headURL = Constant.BASE_URL + "/user_setting.php";  //登录请求的url,务必加上http://或https://
+    private List<NameValuePair> headParams;    //登录时发送给服务器的数据
+    private JSONObject headInfo;       //向服务器请求得到的json对象
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,6 +69,14 @@ public class PersonalCenter extends Fragment implements View.OnClickListener {
 
         //隐藏Actionbar
         //getActivity().getActionBar().hide();
+
+        //发送用户信息到服务器
+        headParams = new ArrayList<NameValuePair>();
+        headParams.add(new BasicNameValuePair("tag", "get_avatar"));
+        headParams.add(new BasicNameValuePair("username", name));
+
+        //异步任务
+        new getHead().execute();
     }
 
     public void onClick(View v) {
@@ -66,9 +91,8 @@ public class PersonalCenter extends Fragment implements View.OnClickListener {
 
         //"我的评论"按钮
         if (id == R.id.button_my_comments) {
-            /*Intent intent = new Intent(PersonalCenter.this, comment.class);
-            intent.putExtra("name",name);
-             startActivity(intent);*/
+            Intent intent = new Intent(getActivity(), MyComments.class);
+            startActivity(intent);
         }
 
         //"退出登录"按钮
@@ -100,4 +124,52 @@ public class PersonalCenter extends Fragment implements View.OnClickListener {
         });
         builder.create().show();
     }
+
+    //获取头像
+    private class getHead extends AsyncTask<Void, Void, Void> {
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        protected Void doInBackground(Void... params) {
+            //向服务器发送请求
+            JSONParser jsonParser = new JSONParser();
+            headInfo = jsonParser.getJSONFromUrl(headURL, headParams);
+            return null;
+        }
+
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            //判断收到的json是否为空
+            if (headInfo != null) {
+                try {
+                    if (headInfo.getString("success").equals("1")) {
+                        whichHead = headInfo.getString("status");
+                        setHead(whichHead);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    //设置头像
+    public void setHead(String which) {
+        ImageView imageHead = (ImageView)getView().findViewById(R.id.pc_head);
+        switch ( Integer.parseInt(which) ){
+            case 1: imageHead.setBackgroundResource(R.drawable.head1); break;
+            case 2: imageHead.setBackgroundResource(R.drawable.head2); break;
+            case 3: imageHead.setBackgroundResource(R.drawable.head3); break;
+            case 4: imageHead.setBackgroundResource(R.drawable.head4); break;
+            case 5: imageHead.setBackgroundResource(R.drawable.head5); break;
+            case 6: imageHead.setBackgroundResource(R.drawable.head6); break;
+            case 7: imageHead.setBackgroundResource(R.drawable.head7); break;
+            case 8: imageHead.setBackgroundResource(R.drawable.head8); break;
+            case 9: imageHead.setBackgroundResource(R.drawable.head9); break;
+            default:imageHead.setBackgroundResource(R.drawable.pc_default_head); break;
+        }
+    }
+
 }

@@ -35,7 +35,7 @@ public class MyInformation extends Activity implements View.OnClickListener {
     private List<NameValuePair> headParams;    //登录时发送给服务器的数据
     private JSONObject headInfo;       //向服务器请求得到的json对象
 
-    private String informationURL = Constant.BASE_URL + "/information.php";  //登录请求的url,务必加上http://或https://
+    private String informationURL = Constant.BASE_URL + "/user_setting.php";  //登录请求的url,务必加上http://或https://
     private List<NameValuePair> informationParams;    //登录时发送给服务器的数据
     private JSONObject informationInfo;       //向服务器请求得到的json对象
 
@@ -90,7 +90,7 @@ public class MyInformation extends Activity implements View.OnClickListener {
 
         //获取用户信息
         informationParams = new ArrayList<NameValuePair>();
-        informationParams.add(new BasicNameValuePair("tag", "information"));
+        informationParams.add(new BasicNameValuePair("tag", "get_avatar"));
         informationParams.add(new BasicNameValuePair("username", name));
 
         //异步任务
@@ -279,11 +279,6 @@ public class MyInformation extends Activity implements View.OnClickListener {
 
         protected void onPreExecute() {
             super.onPreExecute();
-            //弹出"正在修改"框
-            progressDialog = new ProgressDialog(MyInformation.this);
-            progressDialog.setMessage("正在获取信息..");
-            progressDialog.setCancelable(true);
-            progressDialog.show();
         }
 
         protected Void doInBackground(Void... params) {
@@ -295,31 +290,17 @@ public class MyInformation extends Activity implements View.OnClickListener {
 
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            if (progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
             //判断收到的json是否为空
             if (informationInfo != null) {
                 try {
                     if (informationInfo.getString("success").equals("1")) {
-
-                        //获取性别
-                        TextView tvSex = (TextView) findViewById(R.id.sex_text2);
-                        tvSex.setText(informationInfo.getString("sex"));
-
                         //获取头像
-                        whichHead = informationInfo.getString("head");
+                        whichHead = informationInfo.getString("status");
                         setHead(whichHead);
-                    }
-                    //发生错误
-                    else {
-                        Toast.makeText(MyInformation.this, "获取失败", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            } else {
-                Toast.makeText(MyInformation.this, "获取失败，请检查您的网络是否正常", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -373,11 +354,6 @@ public class MyInformation extends Activity implements View.OnClickListener {
 
         protected void onPreExecute() {
             super.onPreExecute();
-            //弹出"正在修改"框
-            progressDialog = new ProgressDialog(MyInformation.this);
-            progressDialog.setMessage("正在修改..");
-            progressDialog.setCancelable(true);
-            progressDialog.show();
         }
 
         protected Void doInBackground(Void... params) {

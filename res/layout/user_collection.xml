@@ -11,12 +11,17 @@
                 android:layout_height="wrap_content"
                 android:text = "@string/no_collection"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="25dp"
+                android:textSize="25sp"
                 android:visibility="gone"
                 android:layout_centerInParent="true"/>
         <ListView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="#f2f2f2"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="10.0dp"
+                android:headerDividersEnabled="true"
+                android:footerDividersEnabled="true"
                 android:id="@+id/userCollectionList">
         </ListView>
 </RelativeLayout>
