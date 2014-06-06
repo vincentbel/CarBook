@@ -31,7 +31,7 @@
 		}
 
 		public function get_all_comments($car_id) {
-			$query = "SELECT * FROM `user_comments` WHERE `car_id` = $car_id";
+			$query = "SELECT `username`, `short_comments`, `comment_time`, `rate` FROM `user_comments` INNER JOIN `user` USING(`user_id`) WHERE `car_id` = $car_id";
 			$result = mysqli_query($this->dbc,$query);
 			$this->check_sql_error($query, $result);
 			$rows = array();

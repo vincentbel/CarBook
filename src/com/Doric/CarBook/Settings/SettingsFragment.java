@@ -65,7 +65,7 @@ public class SettingsFragment extends Fragment {
                                 files[j].delete();
                             }
                             file.delete();
-                            Toast.makeText(getActivity().getApplicationContext(),"清除完成",Toast.LENGTH_LONG);
+                            Toast.makeText(getActivity().getApplicationContext(),"清除完成",Toast.LENGTH_LONG).show();
                         }
                         else{
                             Log.d("Wrong","Delete Wrong");
