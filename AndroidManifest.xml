@@ -99,12 +99,12 @@
         <activity android:name=".car.ImageDetailsActivity">
         </activity>
         <activity android:name=".search.CarComparison"
-                  android:launchMode="singleTask"
+                  android:launchMode="singleInstance"
                   android:screenOrientation="portrait"
                   />
         <activity android:name=".search.CarCmpShow"
                   android:screenOrientation="portrait"
-                  android:launchMode="singleTask"
+                  android:launchMode="singleInstance"
                    android:theme="@style/AppTheme"
                   />
         <activity android:name=".search.Search"
