@@ -75,7 +75,7 @@ class CarSeable {
                 try {
                     DecodeJSON();
                     new SearchMain.GetPicData(carSeriesList).execute();
-                    Log.d("CarSeable", "First");
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -86,13 +86,13 @@ class CarSeable {
         else if(!CarBrand.equals(carSeableName)){
             CarBrand = carSeableName;
             new SearchMain.GetPicData(carSeriesList).execute();
-            Log.d("CarSeable", "Second");
+
 
 
         }
         else {
             SearchMain.searchmain.OpenSliding();
-            Log.d("CarSeable", "Thrid");
+
         }
 
     }

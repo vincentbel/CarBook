@@ -38,11 +38,12 @@ public class CarComparison extends Activity {
     public static CarComparison carComparison;
     private ProgressDialog progressDialog;
     private  ArrayList<CarInfor> cmplist ;
-    private ListView listView;
+    private  ListView listView;
     public static ArrayList<CarInfor> carInfors ;
 
     public  void AddCmp(CarInfor ci){
         if(!cmplist.contains(ci)){
+
             ((CmpListAdapter)listView.getAdapter()).add(ci);
 
         }
@@ -80,7 +81,7 @@ public class CarComparison extends Activity {
     @Override
     public void onBackPressed() {
         SearchMain.searchmain.setUseage(true);
-        super.onBackPressed();
+        finish();
     }
 
     /**
