@@ -68,25 +68,13 @@ public class SearchMain extends Activity  {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search:
-                Fragment mfFragment = new Search();
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.drawerFrame, mfFragment, "Search");
-                transaction.addToBackStack("Search");
-
-                transaction.commit();
+                CarSeable.CarBrand="";
+                SearchMain.this.startActivity(new Intent(SearchMain.searchmain,Search.class));
                 return true;
             case R.id.action_conditionSearch:
-                Fragment mfFragment1 = new ConditionSearch();
-                FragmentManager fragmentManager1 = getFragmentManager();
-                FragmentTransaction transaction1 = fragmentManager1.beginTransaction();
-                transaction1.replace(R.id.drawerFrame, mfFragment1, "ConditionSearch:");
-                transaction1.addToBackStack("ConditionSearch");
-                transaction1.commit();
-
-
+                CarSeable.CarBrand="";
+                SearchMain.this.startActivity(new Intent(SearchMain.searchmain,ConditionSearch.class));
                 return true;
-
             case android.R.id.home:
                 this.onBackPressed();
                 return true;
@@ -141,10 +129,7 @@ public class SearchMain extends Activity  {
 
     }
 
-    @Override
-    public void finish() {
-        moveTaskToBack(true);
-    }
+
 
 
     @Override
@@ -277,7 +262,7 @@ public class SearchMain extends Activity  {
      * I say nothing ah.
      */
     public void OpenSliding() {
-
+        mDrawerLayout.closeDrawer(mDrawerList);
         mDrawerLayout.openDrawer(mDrawerList);
 
     }
@@ -291,13 +276,8 @@ public class SearchMain extends Activity  {
      * @param grade
      */
     public void SearchToResult(Double lowprice, Double higprice, Grade grade) {
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        Fragment fragment = new Result();
-        transaction.replace(R.id.drawerFrame, fragment, "Result");
-        transaction.addToBackStack("Result");
 
-        CSearchGetData.getCSearchData(transaction, higprice, lowprice, grade);
+        CSearchGetData.getCSearchData( higprice, lowprice, grade);
 
 
     }
@@ -311,13 +291,8 @@ public class SearchMain extends Activity  {
      */
 
     public void SearchToSearch(String sysmbol) {
-        FragmentManager fragmentManager = getFragmentManager();
-        Fragment fragment = new Search();
 
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.drawerFrame, fragment, "Search");
-        transaction.addToBackStack("Search");
-        SearchGetData.getSearchData(transaction, sysmbol);
+        SearchGetData.getSearchData(sysmbol);
 
 
     }

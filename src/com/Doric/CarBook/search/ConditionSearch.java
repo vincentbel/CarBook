@@ -1,8 +1,10 @@
 package com.Doric.CarBook.search;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
@@ -20,7 +22,7 @@ import android.app.Fragment;
 /**
  * 条件搜索
  */
-public class ConditionSearch extends Fragment {
+public class ConditionSearch extends Activity {
 
     Spinner spinner;
     CheckBox carSize;
@@ -28,19 +30,25 @@ public class ConditionSearch extends Fragment {
     Grade grade;
     ArrayAdapter<String> adapter;
     ArrayList<PriceGrade> priceGrades;
-    RelativeLayout relativeLayout;
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         //获取车辆品牌信息
-        relativeLayout = (RelativeLayout) inflater.inflate(R.layout.sea_condition_search, container, false);
-        if (relativeLayout == null)
-            return null;
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         initPage();
-        return relativeLayout;
 
     }
 
@@ -52,12 +60,12 @@ public class ConditionSearch extends Fragment {
 
 
     public void initPage() {
-
+        setContentView(R.layout.sea_condition_search);
         priceGrades = new ArrayList<PriceGrade>();
         grade = new Grade();
 
-        spinner = (Spinner) relativeLayout.findViewById(R.id.carPrice);
-        search = (Button) relativeLayout.findViewById(R.id.csearchbutton);
+        spinner = (Spinner)findViewById(R.id.carPrice);
+        search = (Button) findViewById(R.id.csearchbutton);
         createCarPriceGrades();
         String[] text = new String[priceGrades.size()];
         for (int i = 0; i < text.length; i++) {
@@ -160,87 +168,87 @@ public class ConditionSearch extends Fragment {
 
     private void createGrade(Grade g) {
 
-        carSize = (CheckBox) relativeLayout.findViewById(R.id.checkbox00);
+        carSize = (CheckBox) findViewById(R.id.checkbox00);
         CharSequence cs = carSize.getText();
         Boolean b = carSize.isChecked();
         g.setGradeMap(cs.toString(), b);
 
-        carSize = (CheckBox) relativeLayout.findViewById(R.id.checkbox01);
+        carSize = (CheckBox) findViewById(R.id.checkbox01);
         cs = carSize.getText();
         b = carSize.isChecked();
         g.setGradeMap(cs.toString(), b);
 
-        carSize = (CheckBox) relativeLayout.findViewById(R.id.checkbox02);
+        carSize = (CheckBox) findViewById(R.id.checkbox02);
         cs = carSize.getText();
         b = carSize.isChecked();
         g.setGradeMap(cs.toString(), b);
 
-        carSize = (CheckBox) relativeLayout.findViewById(R.id.checkbox10);
+        carSize = (CheckBox) findViewById(R.id.checkbox10);
         cs = carSize.getText();
         b = carSize.isChecked();
         g.setGradeMap(cs.toString(), b);
 
-        carSize = (CheckBox) relativeLayout.findViewById(R.id.checkbox11);
+        carSize = (CheckBox) findViewById(R.id.checkbox11);
         cs = carSize.getText();
         b = carSize.isChecked();
         g.setGradeMap(cs.toString(), b);
 
-        carSize = (CheckBox) relativeLayout.findViewById(R.id.checkbox12);
+        carSize = (CheckBox) findViewById(R.id.checkbox12);
         cs = carSize.getText();
         b = carSize.isChecked();
         g.setGradeMap(cs.toString(), b);
 
-        carSize = (CheckBox) relativeLayout.findViewById(R.id.checkbox20);
+        carSize = (CheckBox) findViewById(R.id.checkbox20);
         cs = carSize.getText();
         b = carSize.isChecked();
         g.setGradeMap(cs.toString(), b);
 
-        carSize = (CheckBox) relativeLayout.findViewById(R.id.checkbox21);
+        carSize = (CheckBox) findViewById(R.id.checkbox21);
         cs = carSize.getText();
         b = carSize.isChecked();
         g.setGradeMap(cs.toString(), b);
 
-        carSize = (CheckBox) relativeLayout.findViewById(R.id.checkbox22);
+        carSize = (CheckBox) findViewById(R.id.checkbox22);
         cs = carSize.getText();
         b = carSize.isChecked();
         g.setGradeMap(cs.toString(), b);
 
-        carSize = (CheckBox) relativeLayout.findViewById(R.id.checkbox30);
+        carSize = (CheckBox) findViewById(R.id.checkbox30);
         cs = carSize.getText();
         b = carSize.isChecked();
         g.setGradeMap(cs.toString(), b);
 
-        carSize = (CheckBox) relativeLayout.findViewById(R.id.checkbox31);
+        carSize = (CheckBox) findViewById(R.id.checkbox31);
         cs = carSize.getText();
         b = carSize.isChecked();
         g.setGradeMap(cs.toString(), b);
 
-        carSize = (CheckBox) relativeLayout.findViewById(R.id.checkbox32);
+        carSize = (CheckBox) findViewById(R.id.checkbox32);
         cs = carSize.getText();
         b = carSize.isChecked();
         g.setGradeMap(cs.toString(), b);
 
-        carSize = (CheckBox) relativeLayout.findViewById(R.id.checkbox40);
+        carSize = (CheckBox) findViewById(R.id.checkbox40);
         cs = carSize.getText();
         b = carSize.isChecked();
         g.setGradeMap(cs.toString(), b);
 
-        carSize = (CheckBox) relativeLayout.findViewById(R.id.checkbox41);
+        carSize = (CheckBox) findViewById(R.id.checkbox41);
         cs = carSize.getText();
         b = carSize.isChecked();
         g.setGradeMap(cs.toString(), b);
 
-        carSize = (CheckBox) relativeLayout.findViewById(R.id.checkbox42);
+        carSize = (CheckBox) findViewById(R.id.checkbox42);
         cs = carSize.getText();
         b = carSize.isChecked();
         g.setGradeMap(cs.toString(), b);
 
-        carSize = (CheckBox) relativeLayout.findViewById(R.id.checkbox50);
+        carSize = (CheckBox) findViewById(R.id.checkbox50);
         cs = carSize.getText();
         b = carSize.isChecked();
         g.setGradeMap(cs.toString(), b);
 
-        carSize = (CheckBox) relativeLayout.findViewById(R.id.checkbox51);
+        carSize = (CheckBox) findViewById(R.id.checkbox51);
         cs = carSize.getText();
         b = carSize.isChecked();
         g.setGradeMap(cs.toString(), b);

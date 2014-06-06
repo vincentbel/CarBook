@@ -263,9 +263,9 @@ public class CarPicScrollView extends ScrollView implements OnTouchListener {
 
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            if (progressDialog.isShowing()) {
-                progressDialog.dismiss();
-            }
+//            if (progressDialog.isShowing()) {
+//                progressDialog.dismiss();
+//            }
             if (carPic != null) {
                 try {
                     CarImages.initImages(carPic.getInt("pictures_num"), carPic);

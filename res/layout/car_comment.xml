@@ -36,4 +36,5 @@
             android:layout_below="@+id/comment_text" android:layout_alignRight="@+id/comment_time"
             android:layout_marginRight="16dp"/>
 
+
 </RelativeLayout>

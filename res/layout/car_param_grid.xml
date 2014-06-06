@@ -9,5 +9,5 @@
         android:minHeight="100dp"
         android:numColumns="2"
         android:padding="16dp"
-
+        android:background="#FFFFFF"
         />

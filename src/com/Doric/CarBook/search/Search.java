@@ -2,6 +2,7 @@ package com.Doric.CarBook.search;
 
 
 
+import android.app.Activity;
 import android.app.FragmentTransaction;
 
 
@@ -16,6 +17,7 @@ import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -39,25 +41,35 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class Search extends Fragment {
+public class Search extends Activity {
 
     private EditText mEditText;
     private ImageButton mButton;
-    private LinearLayout mLinearLayout;
+    public static Search  search=null;
+
     public static ArrayList<CarInfor> mCarInfoList= new ArrayList<CarInfor>();
-    private LinearLayout linearLayout;
+
     private ListView listView=null;
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-
-        linearLayout = (LinearLayout) inflater.inflate(R.layout.sea_search, container, false);
-
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        search= this;
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         initPage();
         new GetPicData().start();
-        return linearLayout;
 
     }
 
@@ -94,9 +106,10 @@ public class Search extends Fragment {
      * init
      */
     public void initPage() {
-        mButton = (ImageButton) linearLayout.findViewById(R.id.searchbutton);
+        setContentView(R.layout.sea_search);
+        mButton = (ImageButton) findViewById(R.id.searchbutton);
 
-        mEditText = (EditText) linearLayout.findViewById(R.id.searchkeyword);
+        mEditText = (EditText)findViewById(R.id.searchkeyword);
         mButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,21 +120,19 @@ public class Search extends Fragment {
                     return;
                 }
                 // mCarSeriesList = PinyinSearch.search(key);
-                SearchMain.searchmain.SearchToSearch(key);
+               SearchMain.searchmain.SearchToSearch(key);
+
+
+
             }
         });
-        if(mCarInfoList.size()>0){
 
-            LinearLayout l = (LinearLayout) linearLayout.findViewById(R.id.searchreasult);
-            l.removeAllViews();
-            mLinearLayout = new LinearLayout(SearchMain.searchmain);
-            LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(LinearLayout.
-                    LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-            mLinearLayout.setLayoutParams(param1);
-            mLinearLayout.setOrientation(LinearLayout.VERTICAL);
-            mLinearLayout.setBackgroundColor(Color.rgb(255, 255, 255));
 
-            listView = new ListView(SearchMain.searchmain);
+            LinearLayout l = (LinearLayout) findViewById(R.id.searchreasultlayout);
+
+
+
+            listView =(ListView)findViewById(R.id.searchreasult);
 
             SimpleAdapter adapter = new SimpleAdapter(SearchMain.searchmain, getUniformData(mCarInfoList), R.layout.sea_list_layout,
                         new String[]{"title", "img"},
@@ -139,21 +150,18 @@ public class Search extends Fragment {
                         Bundle bundle = new Bundle();
                         bundle.putString("car_id",ci.getCarId());
                         bundle.putString("series",ci.getCarSerie());
-                        bundle.putString("car_id",ci.getCarId());
-
-                        it.setClass(SearchMain.searchmain,CarShow.class);
-                        SearchMain.searchmain.startActivity(it);
+                        bundle.putString("model_number",ci.getCarName());
+                        it.putExtras(bundle);
+                        it.setClass(Search.this,CarShow.class);
+                        Search.this.startActivity(it);
                         //Toast.makeText(getApplicationContext(),(String)Info.get("title"),Toast.LENGTH_LONG).show();
 
                     }
 
                 });
 
-            mLinearLayout.addView(listView);
 
-            l.addView(mLinearLayout);
 
-        }
     }
 
 
@@ -321,14 +329,14 @@ public class Search extends Fragment {
 
 
 class SearchGetData {
-    public static FragmentTransaction fragmentTransaction;
+
     public static JSONObject searchObj;
     public static List<NameValuePair> searchParams = new ArrayList<NameValuePair>();
     public static String url = Constant.BASE_URL + "/search.php";
     private static String key;
 
-    public static void getSearchData(FragmentTransaction ft,String sysmbol){
-        fragmentTransaction =ft;
+    public static void getSearchData(String sysmbol){
+
         key = sysmbol;
         searchParams.add(new BasicNameValuePair("tag", "keywords_search"));
         searchParams.add(new BasicNameValuePair("keywords",GBK2UTF.Transform(sysmbol.replace(" ","%20"))));
@@ -364,8 +372,10 @@ class SearchGetData {
                     if(success==0){
                         SearchMain.searchmain.stopLoading();
                         Toast.makeText(SearchMain.searchmain, "未找到符合的车辆", Toast.LENGTH_LONG).show();
+
                     }
                     else if (success == 1) {
+
                         ArrayList<CarInfor> carInfors = new ArrayList<CarInfor>();
                         System.out.println(searchObj.toString());
                         int num = searchObj.getInt("search_number");
@@ -388,7 +398,8 @@ class SearchGetData {
                         }
                         Search.setData(carInfors);
                         SearchMain.searchmain.stopLoading();
-                        fragmentTransaction.commit();
+                        Search.search.finish();
+                        SearchMain.searchmain.startActivity(new Intent(SearchMain.searchmain,Search.class));
                     }
                 } catch (JSONException e) {
                     SearchMain.searchmain.stopLoading();

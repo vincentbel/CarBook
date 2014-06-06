@@ -163,7 +163,9 @@ public class UserCollection extends Fragment {
                 map =  new HashMap<String, Object>();
                 // 获取对应车辆
                 carInCollection = userCollection.getJSONObject("car_"+i.toString());
+
                 // 将信息添加到map中
+
                 map.put("carNameText",carInCollection.getString("brand")+" "+carInCollection.getString("brand_series")
                         +" "+carInCollection.getString("model_number"));
                 map.put("carGradeText",carInCollection.getString("grade"));
