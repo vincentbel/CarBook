@@ -48,7 +48,7 @@ public class MyComments extends Activity {
 
         setContentView(R.layout.my_comments);
         commentList = (ListView) findViewById(R.id.my_comments_list);
-        new GetMyComments().execute();
+        //new GetMyComments().execute();
     }
 
     private class GetMyComments extends AsyncTask<Void, Void, Void> {

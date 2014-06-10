@@ -1,36 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:id="@+id/container"
-              android:padding="8dp"
         >
+
+    <ImageView
+            android:id="@+id/about_doric"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/doric"
+            android:visibility="invisible"
+            android:layout_marginTop="160dp"
+            android:layout_centerHorizontal="true"/>
 
 
     <TextView android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:layout_marginBottom="16dp"
               android:gravity="center_horizontal"
-              android:layout_marginBottom="8dp"
+              android:visibility="gone"
               android:lines="3"
               android:text="@string/about_text"
               android:id="@+id/about_copyright_text"
-              android:layout_gravity="center_horizontal|bottom"/>
+              android:layout_alignParentBottom="true"
+              android:layout_alignParentLeft="true"/>
 
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
+                  android:id="@+id/about_app"
                   android:orientation="vertical"
-                  android:paddingTop="32dp"
-                  android:layout_gravity="center_horizontal|top">
+                  android:paddingTop="32dp" >
         <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/about_app_icon"
                 android:src="@drawable/ic_launcher_large"
                 android:layout_gravity="center_horizontal"/>
 
         <TextView android:layout_width="match_parent"
                   android:layout_height="wrap_content"
+                  android:id="@+id/about_app_name"
+                  android:visibility="invisible"
                   android:text="@string/app_name"
                   android:gravity="center_horizontal"
                   android:textSize="24sp"
@@ -39,12 +52,11 @@
                 />
     </LinearLayout>
 
-    <ImageView
-            android:id="@+id/about_doric"
-            android:layout_width="320dp"
-            android:layout_height="240dp"
-            android:layout_marginTop="50dp"
-            android:src="@drawable/doric"
-            android:visibility="visible"
-            android:layout_gravity="center"/>
-</FrameLayout>
+    <ImageView android:layout_width="48dp"
+               android:layout_height="wrap_content"
+               android:id="@+id/about_up"
+               android:src="@drawable/ic_about_up"
+               android:layout_alignParentBottom="true"
+               android:layout_marginBottom="24dp"
+               android:layout_centerHorizontal="true"/>
+</RelativeLayout>
