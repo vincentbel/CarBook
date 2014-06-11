@@ -1,64 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/default_list_view_height"
+              android:background="@color/lighter_grey" >
 
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:padding="8dp"
-        android:background="@drawable/article_page_bottom_layout_bg"
-        >
-    <ImageView
-            android:layout_height="130dp"
-            android:layout_width="150dp"
-            android:src="@drawable/ic_defaultpic"
-            android:background="@android:color/white"
-            android:scaleType="centerCrop"
-            android:id="@+id/userCollectionThumPic"
-            />
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/carNameText"
-            android:paddingLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_toRightOf="@+id/userCollectionThumPic"/>
-    <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="30dp"
-            android:id="@+id/carGradeText"
-            android:paddingLeft="10dp"
-            android:layout_toRightOf="@+id/userCollectionThumPic"
-            android:layout_below="@+id/carNameText"
-            />
-    <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="30dp"
-            android:id="@+id/carPriceText"
-            android:paddingLeft="10dp"
-            android:paddingBottom="10dp"
-            android:layout_toRightOf="@+id/userCollectionThumPic"
-            android:layout_below="@+id/carGradeText"
-            />
-    <!--<TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/collectionBrand"
-            android:visibility="invisible"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/collectionBrandSeries"
-            android:visibility="invisible"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/collectionModelNumber"
-            android:visibility="invisible"/>-->
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/car_id"
-            android:visibility="invisible"/>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:padding="@dimen/default_padding">
 
+    <ImageView android:layout_width="@dimen/list_view_image_width"
+               android:layout_height="@dimen/list_view_image_height"
+               android:scaleType="centerCrop"
+               android:id="@+id/my_collection_car_image"
+               android:src="@drawable/ic_launcher"
+               android:layout_alignParentTop="true"
+               android:layout_alignParentLeft="true"/>
+
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="@dimen/default_padding"
+                    android:layout_toRightOf="@id/my_collection_car_image"
+                    android:orientation="vertical">
+
+        <TextView android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/my_collection_car_name"
+                  android:lines="2"
+                  android:scrollHorizontally="true"
+                  android:ellipsize="end"
+                  android:textSize="@dimen/little_medium_text_size"
+                  android:textColor="@color/black"
+                  android:layout_alignParentLeft="true"/>
+
+        <TextView android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/my_collection_car_grade"
+                  android:lines="1"
+                  android:scrollHorizontally="true"
+                  android:ellipsize="end"
+                  android:layout_marginTop="@dimen/text_margin"
+                  android:layout_below="@id/my_collection_car_name"
+                  android:textColor="@color/darker_grey"
+                  android:layout_alignParentLeft="true"/>
+
+        <TextView android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/my_collection_car_price"
+                  android:lines="1"
+                  android:scrollHorizontally="true"
+                  android:ellipsize="end"
+                  android:layout_marginTop="@dimen/text_margin"
+                  android:layout_below="@id/my_collection_car_grade"
+                  android:textColor="@color/darker_grey"
+                  android:layout_alignParentLeft="true"/>
+    </RelativeLayout>
 </RelativeLayout>
+</LinearLayout>
+

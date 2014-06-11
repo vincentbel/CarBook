@@ -1,5 +1,25 @@
 <resources>
 
+    <!--Paddings-->
+    <dimen name="default_padding">8dp</dimen>
+
+    <!--margin-->
+    <dimen name="default_margin">8dp</dimen>
+    <dimen name="text_margin">4dp</dimen>
+
+    <!--text size-->
+    <dimen name="small_text_size">12sp</dimen>
+    <dimen name="little_medium_text_size">16dp</dimen>
+    <dimen name="medium_text_size">24sp</dimen>
+    <dimen name="large_text_size">48sp</dimen>
+
+
+    <!--list view height-->
+    <dimen name="default_list_view_height">106dp</dimen>
+    <dimen name="list_view_image_height">90dp</dimen>
+    <dimen name="list_view_image_width">120dp</dimen>
+
+
     <dimen name="slidingmenu_offset">60dp</dimen>
     <dimen name="list_padding">10dp</dimen>
     <dimen name="shadow_width">15dp</dimen>

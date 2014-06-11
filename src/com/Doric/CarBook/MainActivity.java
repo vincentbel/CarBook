@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -175,7 +174,7 @@ public class MainActivity extends InstrumentedActivity {
                 startActivity(it);
                 break;
             case 3: // [我的收藏]模块
-                fragment = new UserCollection();
+                fragment = new MyCollection();
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
             case 4: // 「设置」模块
