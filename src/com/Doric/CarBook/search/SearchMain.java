@@ -202,7 +202,7 @@ public class SearchMain extends Activity  {
         mDrawerList.setDividerHeight(1);
         mDrawerList.setAdapter(adapter);
         adapter.setViewBinder(new ListViewBinder());
-        //µã»÷³µÏµ
+        //ç‚¹å‡»è½¦ç³»
         /**
          * used when user select a carserie
          * jump to carlistshow fragment
@@ -212,7 +212,7 @@ public class SearchMain extends Activity  {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 ListView lv = (ListView) parent;
-                HashMap<String, Object> Info = (HashMap<String, Object>) lv.getItemAtPosition(position);//SimpleAdapter·µ»ØMap
+                HashMap<String, Object> Info = (HashMap<String, Object>) lv.getItemAtPosition(position);//SimpleAdapterè¿”å›Map
                 mDrawerLayout.closeDrawer(mDrawerList);
 
                 ToCarListShow(AlphaShowData.carseable.getCarSeableName(), (String) Info.get("title"));
@@ -303,7 +303,7 @@ public class SearchMain extends Activity  {
     public void loading() {
         if (!progressDialog.isShowing()) {
 
-            progressDialog.setMessage("¼ÓÔØÖĞ..");
+            progressDialog.setMessage("åŠ è½½ä¸­..");
             progressDialog.setCancelable(true);
             progressDialog.show();
         }
@@ -363,9 +363,9 @@ public class SearchMain extends Activity  {
         private String getSDPath() {
             File sdDir = null;
             boolean sdCardExist = Environment.getExternalStorageState()
-                    .equals(Environment.MEDIA_MOUNTED);   //ÅĞ¶Ïsd¿¨ÊÇ·ñ´æÔÚ
+                    .equals(Environment.MEDIA_MOUNTED);   //åˆ¤æ–­sdå¡æ˜¯å¦å­˜åœ¨
             if (sdCardExist) {
-                sdDir = Environment.getExternalStorageDirectory();//»ñÈ¡¸úÄ¿Â¼
+                sdDir = Environment.getExternalStorageDirectory();//è·å–è·Ÿç›®å½•
             }
             return sdDir.toString();
 

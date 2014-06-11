@@ -22,39 +22,39 @@ import java.util.List;
 
 public class FindPsd2 extends Activity implements View.OnClickListener {
 
-    //·şÎñÆ÷ÇëÇóÏà¹Ø±äÁ¿
-    private String url = Constant.BASE_URL + "/changePsd.php";  //µÇÂ¼ÇëÇóµÄurl,Îñ±Ø¼ÓÉÏhttp://»òhttps://
-    private List<NameValuePair> changePsdParams;    //µÇÂ¼Ê±·¢ËÍ¸ø·şÎñÆ÷µÄÊı¾İ
-    private JSONObject changePsdInfo;       //Ïò·şÎñÆ÷ÇëÇóµÃµ½µÄjson¶ÔÏó
+    //æœåŠ¡å™¨è¯·æ±‚ç›¸å…³å˜é‡
+    private String url = Constant.BASE_URL + "/changePsd.php";  //ç™»å½•è¯·æ±‚çš„url,åŠ¡å¿…åŠ ä¸Šhttp://æˆ–https://
+    private List<NameValuePair> changePsdParams;    //ç™»å½•æ—¶å‘é€ç»™æœåŠ¡å™¨çš„æ•°æ®
+    private JSONObject changePsdInfo;       //å‘æœåŠ¡å™¨è¯·æ±‚å¾—åˆ°çš„jsonå¯¹è±¡
 
     private String name;
 
-    //¶¨Òå¿Ø¼ş
+    //å®šä¹‰æ§ä»¶
     private Button btnSubmit, btnBack;
-    private ProgressDialog progressDialog;   //Òì²½ÈÎÎñÊ±ÏÔÊ¾µÄ½ø¶ÈÌõ
+    private ProgressDialog progressDialog;   //å¼‚æ­¥ä»»åŠ¡æ—¶æ˜¾ç¤ºçš„è¿›åº¦æ¡
     private EditText edtPsd,edtPsd2;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.find_psd);
 
-        //ÉèÖÃ¿Ø¼ş
+        //è®¾ç½®æ§ä»¶
         btnSubmit = (Button) findViewById(R.id.submit);
         btnBack = (Button) findViewById(R.id.back);
         edtPsd = (EditText)findViewById(R.id.username);
         edtPsd2 = (EditText)findViewById(R.id.email);
 
-        //Ìí¼Ó¼àÌıÆ÷
+        //æ·»åŠ ç›‘å¬å™¨
         btnSubmit.setOnClickListener(this);
         btnBack.setOnClickListener(this);
 
-        //Òş²ØActionbar
+        //éšè—Actionbar
         getActionBar().hide();
 
-        //È¡µÃÆô¶¯¸ÃActivityµÄIntent¶ÔÏó
+        //å–å¾—å¯åŠ¨è¯¥Activityçš„Intentå¯¹è±¡
         Intent intent =getIntent();
 
-        //È¡³öIntentÖĞ¸½¼ÓµÄÊı¾İ
+        //å–å‡ºIntentä¸­é™„åŠ çš„æ•°æ®
         if ( intent.getStringExtra("name") !=  null ) {
             name = intent.getStringExtra("name");
         }
@@ -63,38 +63,38 @@ public class FindPsd2 extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         int id = v.getId();
 
-        //"·µ»Ø"°´Å¥
+        //"è¿”å›"æŒ‰é’®
         if (id == R.id.back) {
             FindPsd2.this.finish();
         }
 
-        //"Ìá½»"°´Å¥
+        //"æäº¤"æŒ‰é’®
         if( id == R.id.submit) {
 
-            //»ñÈ¡ÓÃ»§ÃûÓÊÏä
+            //è·å–ç”¨æˆ·åé‚®ç®±
             String psd = edtPsd.getText().toString();
             String psd2 = edtPsd2.getText().toString();
 
-            //ÅĞ¶ÏÓÃ»§ÃûÊÇ·ñÎª¿Õ
+            //åˆ¤æ–­ç”¨æˆ·åæ˜¯å¦ä¸ºç©º
             if (psd.equals("")) {
-                Toast.makeText(FindPsd2.this, "ÇëÊäÈëĞÂÃÜÂë", Toast.LENGTH_LONG).show();
+                Toast.makeText(FindPsd2.this, "è¯·è¾“å…¥æ–°å¯†ç ", Toast.LENGTH_LONG).show();
             }
-            //ÅĞ¶ÏÃÜÂëÊÇ·ñÎª¿Õ
+            //åˆ¤æ–­å¯†ç æ˜¯å¦ä¸ºç©º
             else if (psd2.equals("")) {
-                Toast.makeText(FindPsd2.this, "ÇëÔÙÒ»´ÎÊäÈëĞÂÃÜÂë", Toast.LENGTH_LONG).show();
+                Toast.makeText(FindPsd2.this, "è¯·å†ä¸€æ¬¡è¾“å…¥æ–°å¯†ç ", Toast.LENGTH_LONG).show();
             }
-            //ÅĞ¶ÏÁ½´ÎÊäÈëµÄÃÜÂëÊÇ·ñÒ»ÖÂ
+            //åˆ¤æ–­ä¸¤æ¬¡è¾“å…¥çš„å¯†ç æ˜¯å¦ä¸€è‡´
             else if ( !psd.equals(psd2)) {
-                Toast.makeText(FindPsd2.this, "Á½´ÎÊäÈëµÄÃÜÂë²»Í¬£¬ÇëÖØĞÂÊäÈë", Toast.LENGTH_LONG).show();
+                Toast.makeText(FindPsd2.this, "ä¸¤æ¬¡è¾“å…¥çš„å¯†ç ä¸åŒï¼Œè¯·é‡æ–°è¾“å…¥", Toast.LENGTH_LONG).show();
             }
             else{
-                //·¢ËÍÓÃ»§ĞÅÏ¢µ½·şÎñÆ÷
+                //å‘é€ç”¨æˆ·ä¿¡æ¯åˆ°æœåŠ¡å™¨
                 changePsdParams = new ArrayList<NameValuePair>();
                 changePsdParams.add(new BasicNameValuePair("tag", "changePsd"));
                 changePsdParams.add(new BasicNameValuePair("username", name));
                 changePsdParams.add(new BasicNameValuePair("password", psd));
 
-                //Òì²½ÈÎÎñÅĞ¶ÏÓÃ»§ÊÇ·ñµÇÂ¼³É¹¦
+                //å¼‚æ­¥ä»»åŠ¡åˆ¤æ–­ç”¨æˆ·æ˜¯å¦ç™»å½•æˆåŠŸ
                 new changePsd().execute();
             }
         }
@@ -105,15 +105,15 @@ public class FindPsd2 extends Activity implements View.OnClickListener {
 
         protected void onPreExecute() {
             super.onPreExecute();
-            //µ¯³ö"ÕıÔÚÑéÖ¤"¿ò
+            //å¼¹å‡º"æ­£åœ¨éªŒè¯"æ¡†
             progressDialog = new ProgressDialog(FindPsd2.this);
-            progressDialog.setMessage("ÕıÔÚĞŞ¸Ä..");
+            progressDialog.setMessage("æ­£åœ¨ä¿®æ”¹..");
             progressDialog.setCancelable(true);
             progressDialog.show();
         }
 
         protected Void doInBackground(Void... params) {
-            //Ïò·şÎñÆ÷·¢ËÍÇëÇó
+            //å‘æœåŠ¡å™¨å‘é€è¯·æ±‚
             JSONParser jsonParser = new JSONParser();
             changePsdInfo = jsonParser.getJSONFromUrl(url, changePsdParams);
             return null;
@@ -124,16 +124,16 @@ public class FindPsd2 extends Activity implements View.OnClickListener {
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-            //ÅĞ¶ÏÊÕµ½µÄjsonÊÇ·ñÎª¿Õ
+            //åˆ¤æ–­æ”¶åˆ°çš„jsonæ˜¯å¦ä¸ºç©º
             if (changePsdInfo != null) {
                 try {
-                    //ÑéÖ¤Ê§°Ü
+                    //éªŒè¯å¤±è´¥
                     if (changePsdInfo.getString("success").equals("0")) {
-                        Toast.makeText(FindPsd2.this, "ĞŞ¸ÄÊ§°Ü£¬ÇëÖØĞÂÊäÈë", Toast.LENGTH_LONG).show();
+                        Toast.makeText(FindPsd2.this, "ä¿®æ”¹å¤±è´¥ï¼Œè¯·é‡æ–°è¾“å…¥", Toast.LENGTH_LONG).show();
                     }
-                    //ÕË»§ĞÅÏ¢ÑéÖ¤³É¹¦
+                    //è´¦æˆ·ä¿¡æ¯éªŒè¯æˆåŠŸ
                     else {
-                        Toast.makeText(FindPsd2.this, "ĞŞ¸Ä³É¹¦£¡", Toast.LENGTH_LONG).show();
+                        Toast.makeText(FindPsd2.this, "ä¿®æ”¹æˆåŠŸï¼", Toast.LENGTH_LONG).show();
                         FindPsd2.this.finish();
                         Intent intent = new Intent(FindPsd2.this, Login.class);
                         startActivity(intent);
@@ -143,7 +143,7 @@ public class FindPsd2 extends Activity implements View.OnClickListener {
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(FindPsd2.this, "ĞŞ¸ÄÊ§°Ü£¬Çë¼ì²éÄúµÄÍøÂçÊÇ·ñÕı³£", Toast.LENGTH_LONG).show();
+                Toast.makeText(FindPsd2.this, "ä¿®æ”¹å¤±è´¥ï¼Œè¯·æ£€æŸ¥æ‚¨çš„ç½‘ç»œæ˜¯å¦æ­£å¸¸", Toast.LENGTH_LONG).show();
             }
         }
     }

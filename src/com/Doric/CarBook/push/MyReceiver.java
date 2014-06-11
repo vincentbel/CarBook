@@ -16,11 +16,11 @@ import android.util.Log;
 import cn.jpush.android.api.JPushInterface;
 
 /**
- * ×Ô¶¨Òå½ÓÊÕÆ÷
+ * è‡ªå®šä¹‰æ¥æ”¶å™¨
  *
- * Èç¹û²»¶¨ÒåÕâ¸ö Receiver£¬Ôò£º
- * 1) Ä¬ÈÏÓÃ»§»á´ò¿ªÖ÷½çÃæ
- * 2) ½ÓÊÕ²»µ½×Ô¶¨ÒåÏûÏ¢
+ * å¦‚æœä¸å®šä¹‰è¿™ä¸ª Receiverï¼Œåˆ™ï¼š
+ * 1) é»˜è®¤ç”¨æˆ·ä¼šæ‰“å¼€ä¸»ç•Œé¢
+ * 2) æ¥æ”¶ä¸åˆ°è‡ªå®šä¹‰æ¶ˆæ¯
  */
 public class MyReceiver extends BroadcastReceiver {
     private static final String TAG = "JPush";
@@ -33,39 +33,39 @@ public class MyReceiver extends BroadcastReceiver {
 
         if (JPushInterface.ACTION_REGISTRATION_ID.equals(intent.getAction())) {
             String regId = bundle.getString(JPushInterface.EXTRA_REGISTRATION_ID);
-            Log.d(TAG, "[MyReceiver] ½ÓÊÕRegistration Id : " + regId);
+            Log.d(TAG, "[MyReceiver] æ¥æ”¶Registration Id : " + regId);
             //send the Registration Id to your server...
 
         } else if (JPushInterface.ACTION_MESSAGE_RECEIVED.equals(intent.getAction())) {
-            Log.d(TAG, "[MyReceiver] ½ÓÊÕµ½ÍÆËÍÏÂÀ´µÄ×Ô¶¨ÒåÏûÏ¢: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
+            Log.d(TAG, "[MyReceiver] æ¥æ”¶åˆ°æ¨é€ä¸‹æ¥çš„è‡ªå®šä¹‰æ¶ˆæ¯: " + bundle.getString(JPushInterface.EXTRA_MESSAGE));
             processCustomMessage(context, bundle);
 
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
-            Log.d(TAG, "[MyReceiver] ½ÓÊÕµ½ÍÆËÍÏÂÀ´µÄÍ¨Öª");
+            Log.d(TAG, "[MyReceiver] æ¥æ”¶åˆ°æ¨é€ä¸‹æ¥çš„é€šçŸ¥");
             int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
-            Log.d(TAG, "[MyReceiver] ½ÓÊÕµ½ÍÆËÍÏÂÀ´µÄÍ¨ÖªµÄID: " + notifactionId);
+            Log.d(TAG, "[MyReceiver] æ¥æ”¶åˆ°æ¨é€ä¸‹æ¥çš„é€šçŸ¥çš„ID: " + notifactionId);
 
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
-            Log.d(TAG, "[MyReceiver] ÓÃ»§µã»÷´ò¿ªÁËÍ¨Öª");
+            Log.d(TAG, "[MyReceiver] ç”¨æˆ·ç‚¹å‡»æ‰“å¼€äº†é€šçŸ¥");
 
             JPushInterface.reportNotificationOpened(context, bundle.getString(JPushInterface.EXTRA_MSG_ID));
 
-            //´ò¿ª×Ô¶¨ÒåµÄActivity
+            //æ‰“å¼€è‡ªå®šä¹‰çš„Activity
             Intent i = new Intent(context, CarShow.class);
             i.putExtras(bundle);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
 
         } else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction())) {
-            Log.d(TAG, "[MyReceiver] ÓÃ»§ÊÕµ½µ½RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));
-            //ÔÚÕâÀï¸ù¾İ JPushInterface.EXTRA_EXTRA µÄÄÚÈİ´¦Àí´úÂë£¬±ÈÈç´ò¿ªĞÂµÄActivity£¬ ´ò¿ªÒ»¸öÍøÒ³µÈ..
+            Log.d(TAG, "[MyReceiver] ç”¨æˆ·æ”¶åˆ°åˆ°RICH PUSH CALLBACK: " + bundle.getString(JPushInterface.EXTRA_EXTRA));
+            //åœ¨è¿™é‡Œæ ¹æ® JPushInterface.EXTRA_EXTRA çš„å†…å®¹å¤„ç†ä»£ç ï¼Œæ¯”å¦‚æ‰“å¼€æ–°çš„Activityï¼Œ æ‰“å¼€ä¸€ä¸ªç½‘é¡µç­‰..
 
         } else {
             Log.d(TAG, "[MyReceiver] Unhandled intent - " + intent.getAction());
         }
     }
 
-    // ´òÓ¡ËùÓĞµÄ intent extra Êı¾İ
+    // æ‰“å°æ‰€æœ‰çš„ intent extra æ•°æ®
     private static String printBundle(Bundle bundle) {
         StringBuilder sb = new StringBuilder();
         for (String key : bundle.keySet()) {

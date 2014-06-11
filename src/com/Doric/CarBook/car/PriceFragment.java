@@ -28,21 +28,21 @@ import java.util.Map;
  */
 public class PriceFragment extends Fragment {
 
-    // ³µÁ¾±¨¼ÛJson°ü
+    // è½¦è¾†æŠ¥ä»·JsonåŒ…
     private JSONObject carPrices = null;
-    // ½ø¶ÈÌõ
+    // è¿›åº¦æ¡
     ProgressDialog progressDialog;
-    // ¶¯Ì¬Ìí¼Ó³µÁ¾±¨¼ÛµÄÁĞ±í
+    // åŠ¨æ€æ·»åŠ è½¦è¾†æŠ¥ä»·çš„åˆ—è¡¨
     ListView carPriceList = null;
-    // Ïò³µÁ¾±¨¼ÛÁĞ±íÖĞÌí¼ÓĞÅÏ¢µÄ¼üÖµ¶Ô
+    // å‘è½¦è¾†æŠ¥ä»·åˆ—è¡¨ä¸­æ·»åŠ ä¿¡æ¯çš„é”®å€¼å¯¹
     ArrayList<Map<String, Object>> list = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.car_prices, container, false);
-        // ³õÊ¼»¯ÓÃ»§ÊÕ²ØÁĞ±í
+        // åˆå§‹åŒ–ç”¨æˆ·æ”¶è—åˆ—è¡¨
         carPriceList = (ListView) rootView.findViewById(R.id.carPricesList);
-        // ³õÊ¼»¯fragment
+        // åˆå§‹åŒ–fragment
         initFragment();
         return rootView;
     }
@@ -53,12 +53,12 @@ public class PriceFragment extends Fragment {
     }
 
     private void initFragment (){
-        //¹¹½¨³µĞĞĞÅÏ¢
+        //æ„å»ºè½¦è¡Œä¿¡æ¯
         list = getData();
-       // ×Ô¶¨ÒåµÄÊÊÅäÆ÷
+       // è‡ªå®šä¹‰çš„é€‚é…å™¨
         mAdapter adapter = new mAdapter (getActivity());
         if (carPriceList != null) {
-            // Ìí¼ÓÊÊÅäÆ÷
+            // æ·»åŠ é€‚é…å™¨
             carPriceList.setAdapter(adapter);
         }
     }
@@ -68,9 +68,9 @@ public class PriceFragment extends Fragment {
         try {
             for (Integer i = 1; i <= CarShow.carInfo.getInt("sale_company_num"); i++) {
                 map = new HashMap<String, Object>();
-                // »ñÈ¡¶ÔÓ¦ÉÌµêĞÅÏ¢
+                // è·å–å¯¹åº”å•†åº—ä¿¡æ¯
                 JSONObject carSaleCompany = CarShow.carInfo.getJSONObject("sale_company_" + i.toString());
-                // ½«ĞÅÏ¢Ìí¼Óµ½mapÖĞ
+                // å°†ä¿¡æ¯æ·»åŠ åˆ°mapä¸­
                 map.put("storeName", carSaleCompany.getString("name"));
                 map.put("storeAddr", carSaleCompany.getString("address"));
                 map.put("phoneNumber",carSaleCompany.get("telephone"));
@@ -82,7 +82,7 @@ public class PriceFragment extends Fragment {
         return list;
     }
     /*
-     * ÊµÏÖÎªListViewÖĞ°´Å¥Ìí¼ÓonClickµÄadapterÀà
+     * å®ç°ä¸ºListViewä¸­æŒ‰é’®æ·»åŠ onClickçš„adapterç±»
      */
     private class mAdapter extends BaseAdapter {
         private LayoutInflater mInflater;
@@ -116,7 +116,7 @@ public class PriceFragment extends Fragment {
             if (convertView == null) {
 
                 holder=new ViewHolder();
-                //  ¹ØÁªRÖĞ¿Ø¼ş
+                //  å…³è”Rä¸­æ§ä»¶
                 convertView = mInflater.inflate(R.layout.sale_company_list, null);
                 holder.storeAddrText = (TextView)convertView.findViewById(R.id.storeAddr);
                 holder.storeNameText = (TextView)convertView.findViewById(R.id.storeName);
@@ -129,7 +129,7 @@ public class PriceFragment extends Fragment {
             }
 
 
-            // Í¨¹ıÎ»ÖÃĞÅÏ¢´æ´¢¶ÔÓ¦Êı¾İ
+            // é€šè¿‡ä½ç½®ä¿¡æ¯å­˜å‚¨å¯¹åº”æ•°æ®
             holder.storeNameText.setText((String)list.get(position).get("storeName"));
             holder.storeAddrText.setText((String)list.get(position).get("storeAddr"));
 
@@ -137,13 +137,13 @@ public class PriceFragment extends Fragment {
 
                 @Override
                 public void onClick(View v) {
-                    //È¡µÃÊäÈëµÄµç»°ºÅÂë´®
+                    //å–å¾—è¾“å…¥çš„ç”µè¯å·ç ä¸²
                     String inputStr = (String) list.get(position).get("phoneNumber");
-                    //Èç¹ûÊäÈë²»Îª¿Õ´´½¨´òµç»°µÄIntent
+                    //å¦‚æœè¾“å…¥ä¸ä¸ºç©ºåˆ›å»ºæ‰“ç”µè¯çš„Intent
                     if (inputStr.trim().length() != 0) {
                         Intent phoneIntent = new Intent("android.intent.action.CALL",
                                 Uri.parse("tel:" + inputStr));
-                        //Æô¶¯
+                        //å¯åŠ¨
                         startActivity(phoneIntent);
                     }
                 }

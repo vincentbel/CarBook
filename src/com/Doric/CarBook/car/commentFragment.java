@@ -104,7 +104,7 @@ public class CommentFragment extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        //»ñÈ¡³µÁ¾Æ·ÅÆĞÅÏ¢
+        //è·å–è½¦è¾†å“ç‰Œä¿¡æ¯
 
         Initialize();
         new CommentData();
@@ -114,7 +114,7 @@ public class CommentFragment extends Fragment  {
 
 
 
-    //¸ù¾İÒÑÓĞÊı¾İ¹¹ÔìFragment
+    //æ ¹æ®å·²æœ‰æ•°æ®æ„é€ Fragment
     private void Initialize() {
 
 
@@ -128,18 +128,18 @@ public class CommentFragment extends Fragment  {
             public void onClick(View v) {
                 Editable ed = editText.getText();
                 if (!userFunctions.isUserLoggedIn()) {
-                    Toast.makeText(getActivity().getApplicationContext(),"ÇëÏÈµÇÂ¼Ç×",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity().getApplicationContext(),"è¯·å…ˆç™»å½•äº²",Toast.LENGTH_LONG).show();
                 }else if(ed.toString().trim().equals("")){
-                    Toast.makeText(getActivity().getApplicationContext(),"±ğÊ²Ã´¶¼²»Ëµ°¡Ç×",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity().getApplicationContext(),"åˆ«ä»€ä¹ˆéƒ½ä¸è¯´å•Šäº²",Toast.LENGTH_LONG).show();
                 }
                 else{
                     CommentListAdapter commentListAdapter = (CommentListAdapter)listView.getAdapter();
                     Comment comment = new Comment();
-                    comment.setName(userFunctions.getUsername()); //ÓÃ»§Ãû
-                    comment.setText(ed.toString());//ÄÚÈİ
-                    Time t=new Time(); // or Time t=new Time("GMT+8"); ¼ÓÉÏTime Zone×ÊÁÏ¡£
+                    comment.setName(userFunctions.getUsername()); //ç”¨æˆ·å
+                    comment.setText(ed.toString());//å†…å®¹
+                    Time t=new Time(); // or Time t=new Time("GMT+8"); åŠ ä¸ŠTime Zoneèµ„æ–™ã€‚
 
-                    t.setToNow(); // È¡µÃÏµÍ³Ê±¼ä¡£
+                    t.setToNow(); // å–å¾—ç³»ç»Ÿæ—¶é—´ã€‚
                     int year = t.year;
                     int month = t.month;
                     int date = t.monthDay;
@@ -186,8 +186,8 @@ public class CommentFragment extends Fragment  {
                 new DeleteComment(comment);
 
             }
-            //Èç¹û²»ÊÇ
-            //É¶ÊÂ¶¼²»×ö
+            //å¦‚æœä¸æ˜¯
+            //å•¥äº‹éƒ½ä¸åš
 
         }
     }
@@ -208,9 +208,9 @@ public class CommentFragment extends Fragment  {
 
 
 
-    //»ñÈ¡ÆÀÂÛµÄÒì²½´¦Àí
-    //¸ø·şÎñÆ÷·¢ËÍTag£¬Èô³É¹¦»ñÈ¡£¬Ôò¸üĞÂlistView
-    //·ñÔòÌáÊ¾»ñÈ¡Ê§°Ü
+    //è·å–è¯„è®ºçš„å¼‚æ­¥å¤„ç†
+    //ç»™æœåŠ¡å™¨å‘é€Tagï¼Œè‹¥æˆåŠŸè·å–ï¼Œåˆ™æ›´æ–°listView
+    //å¦åˆ™æç¤ºè·å–å¤±è´¥
 
     private class CommentData{
         public JSONObject commentObj;
@@ -223,9 +223,9 @@ public class CommentFragment extends Fragment  {
             commentParams.add(new BasicNameValuePair("car_id", ((CarShow)getActivity()).getCarId() + ""));
             new GetCommentData().execute();
         }
-        //½øÈë½çÃæºó»ñÈ¡ÆÀÂÛÊı¾İ
+        //è¿›å…¥ç•Œé¢åè·å–è¯„è®ºæ•°æ®
 
-        //Ìí¼ÓÆÀÂÛÊı¾İ£¬°ÑÆÀÂÛÊı¾İ·¢ËÍ¸øÊı¾İ¿â
+        //æ·»åŠ è¯„è®ºæ•°æ®ï¼ŒæŠŠè¯„è®ºæ•°æ®å‘é€ç»™æ•°æ®åº“
 
         private class GetCommentData extends AsyncTask<Void, Void, Void> {
 
@@ -236,12 +236,12 @@ public class CommentFragment extends Fragment  {
 
             protected void onPreExecute() {
                 super.onPreExecute();
-                //¼ÓÔØÊ±µ¯³ö
+                //åŠ è½½æ—¶å¼¹å‡º
 
             }
 
             protected Void doInBackground(Void... params) {
-                //Ïò·şÎñÆ÷·¢ËÍÇëÇó
+                //å‘æœåŠ¡å™¨å‘é€è¯·æ±‚
                 JSONParser jsonParser = new JSONParser();
                 commentObj = jsonParser.getJSONFromUrl(url, commentParams);
                 return null;
@@ -256,12 +256,12 @@ public class CommentFragment extends Fragment  {
                         int success = commentObj.getInt("success");
                         if(success==0){
 
-                            Toast.makeText(getActivity().getApplicationContext(), "Ã»ÓĞÆÀÂÛ", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity().getApplicationContext(), "æ²¡æœ‰è¯„è®º", Toast.LENGTH_LONG).show();
 
 
                         }
                         else if (success == 1) {
-                            //»ñÈ¡ÆÀÂÛÊı¾İ
+                            //è·å–è¯„è®ºæ•°æ®
                             JSONObject cObj = commentObj.getJSONObject("comments");
                             int j =cObj.length();
                             CommentListAdapter cla =(CommentListAdapter)listView.getAdapter();
@@ -289,7 +289,7 @@ public class CommentFragment extends Fragment  {
 
 
                 } else {
-                    Toast.makeText(getActivity().getApplicationContext(), "ÎŞ·¨Á¬½ÓÍøÂç£¬Çë¼ì²éÄúµÄÊÖ»úÍøÂçÉèÖÃ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity().getApplicationContext(), "æ— æ³•è¿æ¥ç½‘ç»œï¼Œè¯·æ£€æŸ¥æ‚¨çš„æ‰‹æœºç½‘ç»œè®¾ç½®", Toast.LENGTH_LONG).show();
                 }
             }
         }
@@ -297,9 +297,9 @@ public class CommentFragment extends Fragment  {
 
     }
 
-    //Ìí¼ÓÆÀÂÛµÄÒì²½´¦Àí
-    //¸ø·şÎñÆ÷·¢ËÍÒªÌí¼ÓµÄÆÀÂÛ£¬Èô³É¹¦Ìí¼Ó£¬Ôò¸üĞÂlistView
-    //·ñÔòÌáÊ¾Ìí¼ÓÊ§°Ü
+    //æ·»åŠ è¯„è®ºçš„å¼‚æ­¥å¤„ç†
+    //ç»™æœåŠ¡å™¨å‘é€è¦æ·»åŠ çš„è¯„è®ºï¼Œè‹¥æˆåŠŸæ·»åŠ ï¼Œåˆ™æ›´æ–°listView
+    //å¦åˆ™æç¤ºæ·»åŠ å¤±è´¥
     class AddComment {
         private Comment comment;
         List<NameValuePair> addParams = new ArrayList<NameValuePair>();
@@ -317,7 +317,7 @@ public class CommentFragment extends Fragment  {
         private class Add extends AsyncTask<Void, Void, Void> {
 
             protected Void doInBackground(Void... params) {
-                //Ïò·şÎñÆ÷·¢ËÍÇëÇó
+                //å‘æœåŠ¡å™¨å‘é€è¯·æ±‚
                 JSONParser jsonParser = new JSONParser();
                 addObject = jsonParser.getJSONFromUrl(url, addParams);
                 return null;
@@ -332,7 +332,7 @@ public class CommentFragment extends Fragment  {
                         int success = addObject.getInt("success");
                         if (success == 0) {
 
-                            Toast.makeText(getActivity().getApplicationContext(), "Ìí¼ÓÆÀÂÛÊ§°Ü", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity().getApplicationContext(), "æ·»åŠ è¯„è®ºå¤±è´¥", Toast.LENGTH_LONG).show();
 
 
                         } else if (success == 1) {
@@ -347,15 +347,15 @@ public class CommentFragment extends Fragment  {
 
 
                 } else {
-                    Toast.makeText(getActivity().getApplicationContext(), "ÎŞ·¨Á¬½ÓÍøÂç£¬Çë¼ì²éÄúµÄÊÖ»úÍøÂçÉèÖÃ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity().getApplicationContext(), "æ— æ³•è¿æ¥ç½‘ç»œï¼Œè¯·æ£€æŸ¥æ‚¨çš„æ‰‹æœºç½‘ç»œè®¾ç½®", Toast.LENGTH_LONG).show();
                 }
             }
         }
     }
 
-    //É¾³ıÆÀÂÛµÄÒì²½´¦Àí
-    //¸ø·şÎñÆ÷·¢ËÍÒªÉ¾³ıµÄÆÀÂÛ£¬Èô³É¹¦É¾³ı£¬Ôò¸üĞÂlistView
-    //·ñÔòÌáÊ¾É¾³ıÊ§°Ü
+    //åˆ é™¤è¯„è®ºçš„å¼‚æ­¥å¤„ç†
+    //ç»™æœåŠ¡å™¨å‘é€è¦åˆ é™¤çš„è¯„è®ºï¼Œè‹¥æˆåŠŸåˆ é™¤ï¼Œåˆ™æ›´æ–°listView
+    //å¦åˆ™æç¤ºåˆ é™¤å¤±è´¥
     class DeleteComment {
         private Comment comment;
         List<NameValuePair> deleteParams = new ArrayList<NameValuePair>();
@@ -374,7 +374,7 @@ public class CommentFragment extends Fragment  {
 
 
             protected Void doInBackground(Void... params) {
-                //Ïò·şÎñÆ÷·¢ËÍÇëÇó
+                //å‘æœåŠ¡å™¨å‘é€è¯·æ±‚
                 JSONParser jsonParser = new JSONParser();
                 deleteObject = jsonParser.getJSONFromUrl(url, deleteParams);
                 return null;
@@ -389,7 +389,7 @@ public class CommentFragment extends Fragment  {
                         int success = deleteObject.getInt("success");
                         if (success == 0) {
 
-                            Toast.makeText(getActivity().getApplicationContext(), "É¾³ıÆÀÂÛÊ§°Ü", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity().getApplicationContext(), "åˆ é™¤è¯„è®ºå¤±è´¥", Toast.LENGTH_LONG).show();
 
 
                         } else if (success == 1) {
@@ -404,7 +404,7 @@ public class CommentFragment extends Fragment  {
 
 
                 } else {
-                    Toast.makeText(getActivity().getApplicationContext(), "ÎŞ·¨Á¬½ÓÍøÂç£¬Çë¼ì²éÄúµÄÊÖ»úÍøÂçÉèÖÃ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity().getApplicationContext(), "æ— æ³•è¿æ¥ç½‘ç»œï¼Œè¯·æ£€æŸ¥æ‚¨çš„æ‰‹æœºç½‘ç»œè®¾ç½®", Toast.LENGTH_LONG).show();
                 }
             }
         }
@@ -439,7 +439,7 @@ public class CommentFragment extends Fragment  {
                 relativeLayout = (RelativeLayout)convertView;
 
             }
-            //°ó¶¨Êı¾İ
+            //ç»‘å®šæ•°æ®
             TextView nameView = (TextView) relativeLayout.findViewById(R.id.comment_name);
             TextView textView = (TextView) relativeLayout.findViewById(R.id.comment_text);
             TextView timeView = (TextView) relativeLayout.findViewById(R.id.comment_time);

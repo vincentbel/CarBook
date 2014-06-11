@@ -22,71 +22,71 @@ import java.util.List;
 
 public class FindPsd  extends Activity implements View.OnClickListener {
 
-    //·şÎñÆ÷ÇëÇóÏà¹Ø±äÁ¿
-    private String url = Constant.BASE_URL + "/findPsd.php";  //µÇÂ¼ÇëÇóµÄurl,Îñ±Ø¼ÓÉÏhttp://»òhttps://
-    private List<NameValuePair> findPsdParams;    //µÇÂ¼Ê±·¢ËÍ¸ø·şÎñÆ÷µÄÊı¾İ
-    private JSONObject findPsdInfo;       //Ïò·şÎñÆ÷ÇëÇóµÃµ½µÄjson¶ÔÏó
+    //æœåŠ¡å™¨è¯·æ±‚ç›¸å…³å˜é‡
+    private String url = Constant.BASE_URL + "/findPsd.php";  //ç™»å½•è¯·æ±‚çš„url,åŠ¡å¿…åŠ ä¸Šhttp://æˆ–https://
+    private List<NameValuePair> findPsdParams;    //ç™»å½•æ—¶å‘é€ç»™æœåŠ¡å™¨çš„æ•°æ®
+    private JSONObject findPsdInfo;       //å‘æœåŠ¡å™¨è¯·æ±‚å¾—åˆ°çš„jsonå¯¹è±¡
 
     private String name;
 
-    //¶¨Òå¿Ø¼ş
+    //å®šä¹‰æ§ä»¶
     private Button btnSubmit, btnBack;
-    private ProgressDialog progressDialog;   //Òì²½ÈÎÎñÊ±ÏÔÊ¾µÄ½ø¶ÈÌõ
+    private ProgressDialog progressDialog;   //å¼‚æ­¥ä»»åŠ¡æ—¶æ˜¾ç¤ºçš„è¿›åº¦æ¡
     private EditText edtUsername,edtEmailAddress;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.find_psd);
 
-        //ÉèÖÃ¿Ø¼ş
+        //è®¾ç½®æ§ä»¶
         btnSubmit = (Button) findViewById(R.id.submit);
         btnBack = (Button) findViewById(R.id.back);
         edtUsername = (EditText)findViewById(R.id.username);
         edtEmailAddress = (EditText)findViewById(R.id.email);
 
-        //Ìí¼Ó¼àÌıÆ÷
+        //æ·»åŠ ç›‘å¬å™¨
         btnSubmit.setOnClickListener(this);
         btnBack.setOnClickListener(this);
 
-        //Òş²ØActionbar
+        //éšè—Actionbar
         getActionBar().hide();
     }
 
     public void onClick(View v) {
         int id = v.getId();
 
-        //"·µ»Ø"°´Å¥
+        //"è¿”å›"æŒ‰é’®
         if (id == R.id.back) {
             FindPsd.this.finish();
         }
 
-        //"Ìá½»"°´Å¥
+        //"æäº¤"æŒ‰é’®
         if( id == R.id.submit) {
 
-            //»ñÈ¡ÓÃ»§ÃûÓÊÏä
+            //è·å–ç”¨æˆ·åé‚®ç®±
             String name = edtUsername.getText().toString();
             String email = edtEmailAddress.getText().toString();
 
-            //ÅĞ¶ÏÓÃ»§ÃûÊÇ·ñÎª¿Õ
+            //åˆ¤æ–­ç”¨æˆ·åæ˜¯å¦ä¸ºç©º
             if (name.equals("")) {
-                Toast.makeText(FindPsd.this, "ÇëÊäÈëÓÃ»§Ãû", Toast.LENGTH_LONG).show();
+                Toast.makeText(FindPsd.this, "è¯·è¾“å…¥ç”¨æˆ·å", Toast.LENGTH_LONG).show();
             }
-            //ÅĞ¶ÏÃÜÂëÊÇ·ñÎª¿Õ
+            //åˆ¤æ–­å¯†ç æ˜¯å¦ä¸ºç©º
             else if (email.equals("")) {
-                Toast.makeText(FindPsd.this, "ÇëÊäÈëÓÊÏä", Toast.LENGTH_LONG).show();
+                Toast.makeText(FindPsd.this, "è¯·è¾“å…¥é‚®ç®±", Toast.LENGTH_LONG).show();
             }
             else if ( check_email(email) )  {
-                //·¢ËÍÓÃ»§ĞÅÏ¢µ½·şÎñÆ÷
+                //å‘é€ç”¨æˆ·ä¿¡æ¯åˆ°æœåŠ¡å™¨
                 findPsdParams = new ArrayList<NameValuePair>();
                 findPsdParams.add(new BasicNameValuePair("tag", "findPsd"));
                 findPsdParams.add(new BasicNameValuePair("username", name));
                 findPsdParams.add(new BasicNameValuePair("email", email));
 
-                //Òì²½ÈÎÎñÅĞ¶ÏÓÃ»§ÊÇ·ñµÇÂ¼³É¹¦
+                //å¼‚æ­¥ä»»åŠ¡åˆ¤æ–­ç”¨æˆ·æ˜¯å¦ç™»å½•æˆåŠŸ
                 new findPsd().execute();
             }
             else {
-                Toast.makeText(FindPsd.this, "ÄúµÄÓÊÏäµØÖ·²»ÕıÈ·£¬ÇëÖØĞÂÊäÈë", Toast.LENGTH_LONG).show();
+                Toast.makeText(FindPsd.this, "æ‚¨çš„é‚®ç®±åœ°å€ä¸æ­£ç¡®ï¼Œè¯·é‡æ–°è¾“å…¥", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -96,15 +96,15 @@ public class FindPsd  extends Activity implements View.OnClickListener {
 
         protected void onPreExecute() {
             super.onPreExecute();
-            //µ¯³ö"ÕıÔÚÑéÖ¤"¿ò
+            //å¼¹å‡º"æ­£åœ¨éªŒè¯"æ¡†
             progressDialog = new ProgressDialog(FindPsd.this);
-            progressDialog.setMessage("ÕıÔÚÑéÖ¤..");
+            progressDialog.setMessage("æ­£åœ¨éªŒè¯..");
             progressDialog.setCancelable(true);
             progressDialog.show();
         }
 
         protected Void doInBackground(Void... params) {
-            //Ïò·şÎñÆ÷·¢ËÍÇëÇó
+            //å‘æœåŠ¡å™¨å‘é€è¯·æ±‚
             JSONParser jsonParser = new JSONParser();
             findPsdInfo = jsonParser.getJSONFromUrl(url, findPsdParams);
             return null;
@@ -115,16 +115,16 @@ public class FindPsd  extends Activity implements View.OnClickListener {
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-            //ÅĞ¶ÏÊÕµ½µÄjsonÊÇ·ñÎª¿Õ
+            //åˆ¤æ–­æ”¶åˆ°çš„jsonæ˜¯å¦ä¸ºç©º
             if (findPsdInfo != null) {
                 try {
-                    //ÑéÖ¤Ê§°Ü
+                    //éªŒè¯å¤±è´¥
                     if (findPsdInfo.getString("success").equals("0")) {
-                        Toast.makeText(FindPsd.this, "ÑéÖ¤Ê§°Ü£¬ÇëÖØĞÂÊäÈë", Toast.LENGTH_LONG).show();
+                        Toast.makeText(FindPsd.this, "éªŒè¯å¤±è´¥ï¼Œè¯·é‡æ–°è¾“å…¥", Toast.LENGTH_LONG).show();
                     }
-                    //ÕË»§ĞÅÏ¢ÑéÖ¤³É¹¦
+                    //è´¦æˆ·ä¿¡æ¯éªŒè¯æˆåŠŸ
                     else {
-                        Toast.makeText(FindPsd.this, "ÑéÖ¤³É¹¦£¡", Toast.LENGTH_LONG).show();
+                        Toast.makeText(FindPsd.this, "éªŒè¯æˆåŠŸï¼", Toast.LENGTH_LONG).show();
                         FindPsd.this.finish();
                         Intent intent = new Intent(FindPsd.this,FindPsd2.class);
                         intent.putExtra("name",name);
@@ -135,12 +135,12 @@ public class FindPsd  extends Activity implements View.OnClickListener {
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(FindPsd.this, "ÑéÖ¤Ê§°Ü£¬Çë¼ì²éÄúµÄÍøÂçÊÇ·ñÕı³£", Toast.LENGTH_LONG).show();
+                Toast.makeText(FindPsd.this, "éªŒè¯å¤±è´¥ï¼Œè¯·æ£€æŸ¥æ‚¨çš„ç½‘ç»œæ˜¯å¦æ­£å¸¸", Toast.LENGTH_LONG).show();
             }
         }
     }
 
-    //ÑéÖ¤ÓÊÏä¸ñÊ½
+    //éªŒè¯é‚®ç®±æ ¼å¼
     public boolean check_email(String ead) {
         int len = ead.length();
         int i;

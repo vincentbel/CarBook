@@ -38,8 +38,8 @@ import org.json.JSONObject;
 import java.util.*;
 
 /**
- * ³µÁ¾¶Ô±ÈFragment
- * Ê¹ÓÃ²¢ĞŞ¸ÄÁË¿ªÔ´ÏîÄ¿StickGridHeaders
+ * è½¦è¾†å¯¹æ¯”Fragment
+ * ä½¿ç”¨å¹¶ä¿®æ”¹äº†å¼€æºé¡¹ç›®StickGridHeaders
  */
 public class CarArgumentFragment extends Fragment implements OnItemClickListener,
         OnHeaderClickListener, OnHeaderLongClickListener {
@@ -146,7 +146,7 @@ public class CarArgumentFragment extends Fragment implements OnItemClickListener
 
 
 
-        //°ó¶¨Êı¾İÎª¿Õ£¬Fragment¿ªÆôºóÒì²½È¥»ñÈ¡Êı¾İ£¬È¾ºì¶¯Ì¬Ìî³ä
+        //ç»‘å®šæ•°æ®ä¸ºç©ºï¼ŒFragmentå¼€å¯åå¼‚æ­¥å»è·å–æ•°æ®ï¼ŒæŸ“çº¢åŠ¨æ€å¡«å……
         mGridView.setAdapter(new StickyGridHeadersSimpleArrayAdapter(getActivity().getApplicationContext(),
                 list,R.layout.sea_cmp_header,R.layout.sea_cmp_item));
         System.out.println(list.size());
@@ -200,7 +200,7 @@ public class CarArgumentFragment extends Fragment implements OnItemClickListener
 
 
     /**
-     * »ñÈ¡³µÁ¾Êı¾İµÄÒì²½Àà
+     * è·å–è½¦è¾†æ•°æ®çš„å¼‚æ­¥ç±»
      */
     public  class GetCarInfor extends AsyncTask<Void, Void, Void> {
         private JSONObject carinfoObj;
@@ -228,7 +228,7 @@ public class CarArgumentFragment extends Fragment implements OnItemClickListener
         }
 
         protected Void doInBackground(Void... params) {
-            //Ïò·şÎñÆ÷·¢ËÍÇëÇó
+            //å‘æœåŠ¡å™¨å‘é€è¯·æ±‚
 
             JSONParser jsonParser = new JSONParser();
             carinfoParams.add(new BasicNameValuePair("tag", "compare"));
@@ -262,7 +262,7 @@ public class CarArgumentFragment extends Fragment implements OnItemClickListener
                 }
             } else {
 
-                Toast.makeText(SearchMain.searchmain, "ÎŞ·¨Á¬½ÓÍøÂç£¬Çë¼ì²éÄúµÄÊÖ»úÍøÂçÉèÖÃ", Toast.LENGTH_LONG).show();
+                Toast.makeText(SearchMain.searchmain, "æ— æ³•è¿æ¥ç½‘ç»œï¼Œè¯·æ£€æŸ¥æ‚¨çš„æ‰‹æœºç½‘ç»œè®¾ç½®", Toast.LENGTH_LONG).show();
 
             }
 
@@ -296,7 +296,7 @@ public class CarArgumentFragment extends Fragment implements OnItemClickListener
         }
 
         /**
-         * °ÑÄ³Ğ©Ó¢ÎÄ·­Òë³ÉÖĞÎÄ
+         * æŠŠæŸäº›è‹±æ–‡ç¿»è¯‘æˆä¸­æ–‡
          * @param s
          * @return
          */
@@ -335,53 +335,53 @@ public class CarArgumentFragment extends Fragment implements OnItemClickListener
 
         }
         private void fillMap(){
-            E2C.put("car_engine","·¢¶¯»ú");
-            E2C.put("engine_model_number","·¢¶¯»úĞÍºÅ");
-            E2C.put("emission_amount","ÅÅÁ¿(ml)");
-            E2C.put("intake_form","½øÆø·½Ê½");
-            E2C.put("cylinder_number","Æû¸×Êı(¸ö)");
-            E2C.put("cylinder_arrangement","Æø¸×ÅÅÁĞĞÎÊ½");
-            E2C.put("value_per_cylinder_number","Ã¿¸×ÆøÃÅÊı(¸ö)");
-            E2C.put("compression_ration","Ñ¹Ëõ±È");
-            E2C.put("maximum_horsepower","×î´óÂíÁ¦(Ps)");
-            E2C.put("maximum_power","×î´ó¹¦ÂÊ(Kw)");
-            E2C.put("maximum_power_speed","×î´ó¹¦ÂÊ×ªËÙ(rpm)");
-            E2C.put("fuel_type","È¼ÁÏĞÎÊ½");
-            E2C.put("fuel_grade","È¼ÓÍ±êºÅ");
-            E2C.put("environmental_level","»·±£±ê×¼");
+            E2C.put("car_engine","å‘åŠ¨æœº");
+            E2C.put("engine_model_number","å‘åŠ¨æœºå‹å·");
+            E2C.put("emission_amount","æ’é‡(ml)");
+            E2C.put("intake_form","è¿›æ°”æ–¹å¼");
+            E2C.put("cylinder_number","æ±½ç¼¸æ•°(ä¸ª)");
+            E2C.put("cylinder_arrangement","æ°”ç¼¸æ’åˆ—å½¢å¼");
+            E2C.put("value_per_cylinder_number","æ¯ç¼¸æ°”é—¨æ•°(ä¸ª)");
+            E2C.put("compression_ration","å‹ç¼©æ¯”");
+            E2C.put("maximum_horsepower","æœ€å¤§é©¬åŠ›(Ps)");
+            E2C.put("maximum_power","æœ€å¤§åŠŸç‡(Kw)");
+            E2C.put("maximum_power_speed","æœ€å¤§åŠŸç‡è½¬é€Ÿ(rpm)");
+            E2C.put("fuel_type","ç‡ƒæ–™å½¢å¼");
+            E2C.put("fuel_grade","ç‡ƒæ²¹æ ‡å·");
+            E2C.put("environmental_level","ç¯ä¿æ ‡å‡†");
 
-            E2C.put("car_body_structure","³µÌå½á¹¹");
-            E2C.put("length","³¤¶È(mm)");
-            E2C.put("width","¿í¶È(mm)");
-            E2C.put("height","¸ß¶È(mm)");
-            E2C.put("weight","Õû±¸ÖÊÁ¿(kg)");
-            E2C.put("wheelbase","Öá¾à(mm)");
-            E2C.put("minimum_ground_clearance","×îĞ¡ÀëµØ¼äÏ¶(mm)");
-            E2C.put("door_number","³µÃÅÊı(¸ö)");
-            E2C.put("seat_number","×ùÎ»Êı(¸ö)");
-            E2C.put("fuel_tank_capacity","ÓÍÏäÈİ»ı(L)");
-            E2C.put("luggage_compartment_volume","ĞĞÀîÏäÈİ»ı(L)");
+            E2C.put("car_body_structure","è½¦ä½“ç»“æ„");
+            E2C.put("length","é•¿åº¦(mm)");
+            E2C.put("width","å®½åº¦(mm)");
+            E2C.put("height","é«˜åº¦(mm)");
+            E2C.put("weight","æ•´å¤‡è´¨é‡(kg)");
+            E2C.put("wheelbase","è½´è·(mm)");
+            E2C.put("minimum_ground_clearance","æœ€å°ç¦»åœ°é—´éš™(mm)");
+            E2C.put("door_number","è½¦é—¨æ•°(ä¸ª)");
+            E2C.put("seat_number","åº§ä½æ•°(ä¸ª)");
+            E2C.put("fuel_tank_capacity","æ²¹ç®±å®¹ç§¯(L)");
+            E2C.put("luggage_compartment_volume","è¡Œæç®±å®¹ç§¯(L)");
 
-            E2C.put("car_multimedia","¶àÃ½ÌåÉè±¸");
-            E2C.put("car_multimedia_configuration","¶àÃ½ÌåÉè±¸");
-            E2C.put("GPS","GPSµ¼º½ÏµÍ³");
-            E2C.put("bluetooth","À¶ÑÀ");
-            E2C.put("car_phone","³µÔØµç»°");
-            E2C.put("car_TV","³µÔØµçÊÓ");
-            E2C.put("rear_LCD_screen","ºóÅÅÒº¾§ÆÁ(¸ö)");
-            E2C.put("external_audio_interface","Íâ½ÓÒôÔ´½Ó¿Ú(¸ö)");
-            E2C.put("USB","Íâ½ÓÒôÔ´½Ó¿Ú");
-            E2C.put("AUX","Íâ½ÓÒôÔ´½Ó¿Ú");
-            E2C.put("iPod","Íâ½ÓÒôÔ´½Ó¿Ú");
-            E2C.put("Speaker_number","ÑïÉùÆ÷ÊıÁ¿");
+            E2C.put("car_multimedia","å¤šåª’ä½“è®¾å¤‡");
+            E2C.put("car_multimedia_configuration","å¤šåª’ä½“è®¾å¤‡");
+            E2C.put("GPS","GPSå¯¼èˆªç³»ç»Ÿ");
+            E2C.put("bluetooth","è“ç‰™");
+            E2C.put("car_phone","è½¦è½½ç”µè¯");
+            E2C.put("car_TV","è½¦è½½ç”µè§†");
+            E2C.put("rear_LCD_screen","åæ’æ¶²æ™¶å±(ä¸ª)");
+            E2C.put("external_audio_interface","å¤–æ¥éŸ³æºæ¥å£(ä¸ª)");
+            E2C.put("USB","å¤–æ¥éŸ³æºæ¥å£");
+            E2C.put("AUX","å¤–æ¥éŸ³æºæ¥å£");
+            E2C.put("iPod","å¤–æ¥éŸ³æºæ¥å£");
+            E2C.put("Speaker_number","æ‰¬å£°å™¨æ•°é‡");
 
-            E2C.put("car_tech_configuration","¸ß¿Æ¼¼Éè±¸");
-            E2C.put("car_hightech","¸ß¿Æ¼¼Éè±¸");
-            E2C.put("automatic_parking","×Ô¶¯²´³µÈëÎ»");
-            E2C.put("night_version_system","Ò¹ÊÓÏµÍ³");
-            E2C.put("panoramic_camera","È«¾°ÉãÏñÍ·");
+            E2C.put("car_tech_configuration","é«˜ç§‘æŠ€è®¾å¤‡");
+            E2C.put("car_hightech","é«˜ç§‘æŠ€è®¾å¤‡");
+            E2C.put("automatic_parking","è‡ªåŠ¨æ³Šè½¦å…¥ä½");
+            E2C.put("night_version_system","å¤œè§†ç³»ç»Ÿ");
+            E2C.put("panoramic_camera","å…¨æ™¯æ‘„åƒå¤´");
 
-            E2C.put("price","¼Û¸ñ");
+            E2C.put("price","ä»·æ ¼");
         }
     }
 

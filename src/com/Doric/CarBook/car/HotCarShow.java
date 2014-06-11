@@ -33,50 +33,50 @@ import java.util.concurrent.TimeUnit;
 
 
 public class HotCarShow extends Fragment {
-    //  ÈÈÃÅ³µÁĞ±í
+    //  çƒ­é—¨è½¦åˆ—è¡¨
     ListView hotCarShowList = null;
-    //  ¹ö¶¯ViewPagerÖĞÏÔÊ¾µÄÍ¼Æ¬ÊıÁ¿
+    //  æ»šåŠ¨ViewPagerä¸­æ˜¾ç¤ºçš„å›¾ç‰‡æ•°é‡
     private final Integer PicNum = 5;
-    //  ·şÎñÆ÷ÉÏ¶ÔÓ¦µÄurl
+    //  æœåŠ¡å™¨ä¸Šå¯¹åº”çš„url
     String url = Constant.BASE_URL + "/favour.php";
-    // Í¼Æ¬¹ÜÀí¹¤¾ßÀà
+    // å›¾ç‰‡ç®¡ç†å·¥å…·ç±»
     private ImageLoader imageLoader = ImageLoader.getInstance();
-    //  Ïò·şÎñÆ÷·¢ËÍµÄÇëÇó
+    //  å‘æœåŠ¡å™¨å‘é€çš„è¯·æ±‚
     List<NameValuePair> hotCarRequest = new ArrayList<NameValuePair>();
-    // ÅĞ¶ÏÏß³ÌÊÇ·ñ½áÊø
+    // åˆ¤æ–­çº¿ç¨‹æ˜¯å¦ç»“æŸ
     boolean threadTag = false;
-    //  ½ø¶ÈÌõ
+    //  è¿›åº¦æ¡
     ProgressDialog progressDialog;
-    // FragmentµÄview;
+    // Fragmentçš„view;
     View mView;
-    //  ÓÃÀ´½ÓÊÕÊı¾İµÄJson¶ÔÏó
+    //  ç”¨æ¥æ¥æ”¶æ•°æ®çš„Jsonå¯¹è±¡
     private JSONObject hotCarShow;
-    //  ´¢´æËùÓĞÍ¼Æ¬
+    //  å‚¨å­˜æ‰€æœ‰å›¾ç‰‡
     private List<ImageView> imageViews = new ArrayList<ImageView>();
-    //  ÓÃÓÚÌí¼ÓimageViewsµÄ¿É¸´ÓÃµÄimageView
+    //  ç”¨äºæ·»åŠ imageViewsçš„å¯å¤ç”¨çš„imageView
     private ImageView imageView = null;
-    //  ¼ÇÂ¼Ëù¼ÓÔØµÄÍ¼Æ¬¿í¶È£¬±ÜÃâÄÚ´æÒç³ö
+    //  è®°å½•æ‰€åŠ è½½çš„å›¾ç‰‡å®½åº¦ï¼Œé¿å…å†…å­˜æº¢å‡º
     private final int columnWidth = 480 ;
-    //  »¬¶¯×é¼ş
+    //  æ»‘åŠ¨ç»„ä»¶
     private ViewPager viewPager;
-    //  Í¼Æ¬±êÌâ
+    //  å›¾ç‰‡æ ‡é¢˜
     private String[] titles = new String[PicNum];
-    //  Í¼Æ¬±êÌâµÄ°×µã
+    //  å›¾ç‰‡æ ‡é¢˜çš„ç™½ç‚¹
     private List<View> dots;
-    //  ÏÔÊ¾±êÌâµÄTextView
+    //  æ˜¾ç¤ºæ ‡é¢˜çš„TextView
     private TextView tv_title;
-    //  µ±Ç°µÄË÷ÒıºÅ,³õÊ¼»¯Îª0
+    //  å½“å‰çš„ç´¢å¼•å·,åˆå§‹åŒ–ä¸º0
     private int currentItem = 0;
-    //  ÇĞ»»µ±Ç°ÏÔÊ¾µÄÍ¼Æ¬
+    //  åˆ‡æ¢å½“å‰æ˜¾ç¤ºçš„å›¾ç‰‡
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
-            viewPager.setCurrentItem(currentItem);// ÇĞ»»µ±Ç°ÏÔÊ¾µÄÍ¼Æ¬
+            viewPager.setCurrentItem(currentItem);// åˆ‡æ¢å½“å‰æ˜¾ç¤ºçš„å›¾ç‰‡
         }
     };
     // An ExecutorService that can schedule commands to run after a given delay,
     // or to execute periodically.
     private ScheduledExecutorService scheduledExecutorService;
-    // ÅĞ¶Ï¹ö¶¯ÊÇ·ñ¿ªÆô
+    // åˆ¤æ–­æ»šåŠ¨æ˜¯å¦å¼€å¯
     private static boolean tag = false;
 
 
@@ -90,34 +90,34 @@ public class HotCarShow extends Fragment {
         super.onCreate(savedInstanceState);
         mView = getView();
         /*columnWidth = ((FrameLayout) mView.findViewById(R.id.vp_frame_layout)).getWidth();*/
-        // ¹¹½¨ÇëÇó
+        // æ„å»ºè¯·æ±‚
         hotCarRequest.add(new BasicNameValuePair("tag", "favour"));
-        // ³õÊ¼»¯imags
+        // åˆå§‹åŒ–imags
         for (int i=0;i<5;i++){
             imageView = new ImageView(getActivity());
             imageView.setImageResource(R.drawable.ic_launcher);
             imageViews.add(imageView);
         }
-        Log.d("onActivityCreated","³õÊ¼»¯imageViews");
-        // Í¨¹ıĞÂÏß³Ì»ñÈ¡JSONObject,²¢³õÊ¼»¯Activity
+        Log.d("onActivityCreated","åˆå§‹åŒ–imageViews");
+        // é€šè¿‡æ–°çº¿ç¨‹è·å–JSONObject,å¹¶åˆå§‹åŒ–Activity
         new GetHotCar().execute();
     }
     /*
-     *  Òì²½½øĞĞĞÅÏ¢µÄ»ñÈ¡
+     *  å¼‚æ­¥è¿›è¡Œä¿¡æ¯çš„è·å–
      */
     private class GetHotCar extends AsyncTask<Void, Void, Void> {
 
         protected void onPreExecute() {
-            //¼ÓÔØÊ±µ¯³ö
+            //åŠ è½½æ—¶å¼¹å‡º
             progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage("¼ÓÔØÖĞ..");
+            progressDialog.setMessage("åŠ è½½ä¸­..");
             progressDialog.setCancelable(true);
             progressDialog.show();
         }
 
         protected Void doInBackground(Void... params) {
-            //Ïò·şÎñÆ÷·¢ËÍÇëÇó
-            Log.d("doInBackground","»ñÈ¡Json°ü");
+            //å‘æœåŠ¡å™¨å‘é€è¯·æ±‚
+            Log.d("doInBackground","è·å–JsonåŒ…");
             JSONParser jsonParser = new JSONParser();
             hotCarShow = jsonParser.getJSONFromUrl(url, hotCarRequest);
             return null;
@@ -127,10 +127,10 @@ public class HotCarShow extends Fragment {
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-            // Èç¹û¼ì²âµ½»ñÈ¡ÁËJson°ü£¬¾Í¹¹½¨ÉÏ·½ViewPagerºÍÏÂ·½µÄListView
+            // å¦‚æœæ£€æµ‹åˆ°è·å–äº†JsonåŒ…ï¼Œå°±æ„å»ºä¸Šæ–¹ViewPagerå’Œä¸‹æ–¹çš„ListView
             if (hotCarShow != null) {
-                Log.d("onPostExecute","¹¹½¨titles");
-                // Í¨¹ıJson°ü£¬³õÊ¼»¯ImageUrls
+                Log.d("onPostExecute","æ„å»ºtitles");
+                // é€šè¿‡JsonåŒ…ï¼Œåˆå§‹åŒ–ImageUrls
                 for (Integer i = 1; i <= 5; i++) {
                     try {
                             JSONObject car = hotCarShow.getJSONObject("car_"+i.toString());
@@ -143,44 +143,44 @@ public class HotCarShow extends Fragment {
                 initListView();
                 new GetPicData().execute();
             } else {
-                Toast.makeText(getActivity().getApplicationContext(), "ÎŞ·¨Á¬½ÓÍøÂç£¬Çë¼ì²éÄúµÄÊÖ»úÍøÂçÉèÖÃ", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity().getApplicationContext(), "æ— æ³•è¿æ¥ç½‘ç»œï¼Œè¯·æ£€æŸ¥æ‚¨çš„æ‰‹æœºç½‘ç»œè®¾ç½®", Toast.LENGTH_LONG).show();
             }
         }
     }
     /*
-     *  ³õÊ¼»¯ListView
+     *  åˆå§‹åŒ–ListView
      */
     private void initListView() {
-        Log.d("initListView","³õÊ¼»¯listView");
-        // ³õÊ¼»¯ListView
+        Log.d("initListView","åˆå§‹åŒ–listView");
+        // åˆå§‹åŒ–ListView
         hotCarShowList = (ListView) mView.findViewById(R.id.hot_car_show_List);
-        // »ñÈ¡Êı¾İ
+        // è·å–æ•°æ®
         ArrayList<Map<String, Object>> list = getData();
-        // ÉèÖÃÊÊÅäÆ÷£¬°üÀ¨car_id,brand,model_numberºÍÍ¼Æ¬ĞÅÏ¢
+        // è®¾ç½®é€‚é…å™¨ï¼ŒåŒ…æ‹¬car_id,brand,model_numberå’Œå›¾ç‰‡ä¿¡æ¯
         SimpleAdapter adapter = new SimpleAdapter(getActivity(), list, R.layout.hot_car_show_list,
                 new String[]{"car_id","carBrandTextView","carModelNumberTextView", "carPicImageView"},
                 new int[]{R.id.car_id,R.id.carBrandTextView, R.id.carModelNumberTextView,R.id.carPicImageView});
-        // ×Ô¶¨Òå°ó¶¨bitmap
+        // è‡ªå®šä¹‰ç»‘å®šbitmap
         adapter.setViewBinder(new myViewBinder());
         if (hotCarShowList != null) {
-            // Ìí¼ÓÊÊÅäÆ÷
+            // æ·»åŠ é€‚é…å™¨
             hotCarShowList.setAdapter(adapter);
-            // ÉèÖÃlistView¸ß¶È£¬ÊµÏÖÔÚscrollViewÖĞµÄ¹ö¶¯Ìõ
+            // è®¾ç½®listViewé«˜åº¦ï¼Œå®ç°åœ¨scrollViewä¸­çš„æ»šåŠ¨æ¡
             setListViewHeightBasedOnChildren(hotCarShowList);
         }
-        // Ìí¼ÓÃ¿Ò»ÏîµÄµã»÷¼àÌı£¬Ìø×ªµ½¶ÔÓ¦µÄ³µÁ¾Õ¹Ê¾½çÃæ
+        // æ·»åŠ æ¯ä¸€é¡¹çš„ç‚¹å‡»ç›‘å¬ï¼Œè·³è½¬åˆ°å¯¹åº”çš„è½¦è¾†å±•ç¤ºç•Œé¢
         hotCarShowList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // »ñÈ¡¸¸listView
+                // è·å–çˆ¶listView
                 ListView tempList = (ListView) parent;
                 HashMap<String, String> map = (HashMap<String, String>) tempList.getItemAtPosition(position);
-                // ´ÓmapÖĞ»ñÈ¡car_id
+                // ä»mapä¸­è·å–car_id
                 String car_id = map.get("car_id");
 
                 Bundle bundle = new Bundle();
                 bundle.putString("car_id",car_id);
-                // Ìø×ªµ½¶ÔÓ¦Activity
+                // è·³è½¬åˆ°å¯¹åº”Activity
                 Intent intent = new Intent(getActivity(),CarShow.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -189,12 +189,12 @@ public class HotCarShow extends Fragment {
 
     }
     /*
-    * ×Ô¶¨Òå°ó¶¨
+    * è‡ªå®šä¹‰ç»‘å®š
     */
     class myViewBinder implements SimpleAdapter.ViewBinder {
         @Override
         public boolean setViewValue(View view, Object data, String textRepresentation) {
-            // Èç¹û¶ÔÏóÊÇImageView£¬Êı¾İÊ±bitmap£¬Ôò½«bitmapÌí¼Óµ½ImageViewÖĞ
+            // å¦‚æœå¯¹è±¡æ˜¯ImageViewï¼Œæ•°æ®æ—¶bitmapï¼Œåˆ™å°†bitmapæ·»åŠ åˆ°ImageViewä¸­
             if ((view instanceof ImageView) & (data instanceof Bitmap)) {
                 ImageView iv = (ImageView) view;
                 Bitmap bmp = (Bitmap) data;
@@ -205,7 +205,7 @@ public class HotCarShow extends Fragment {
         }
     }
     /*
-     *  ´ÓJSONObjectÖĞ»ñÈ¡ĞÅÏ¢
+     *  ä»JSONObjectä¸­è·å–ä¿¡æ¯
      */
     private ArrayList<Map<String, Object>> getData() {
         ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
@@ -213,10 +213,10 @@ public class HotCarShow extends Fragment {
 
         try {
             for (Integer i = 1; i <= 10; i++) {
-                // »ñÈ¡¶ÔÓ¦³µÁ¾
+                // è·å–å¯¹åº”è½¦è¾†
                 JSONObject car = hotCarShow.getJSONObject("car_"+i.toString());
                 map = new HashMap<String, Object>();
-                // ½«ĞÅÏ¢Ìí¼Óµ½mapÖĞ
+                // å°†ä¿¡æ¯æ·»åŠ åˆ°mapä¸­
                 map.put("car_id",car.getString("car_id"));
                 map.put("carBrandTextView", car.getString("brand_series"));
                 map.put("carModelNumberTextView",car.getString("model_number"));
@@ -230,10 +230,10 @@ public class HotCarShow extends Fragment {
     }
 
     /*
-     *  ¼ÆËãListView¸ß¶È£¬ÒÔ±ãScrollView½øĞĞ¹ö¶¯
+     *  è®¡ç®—ListViewé«˜åº¦ï¼Œä»¥ä¾¿ScrollViewè¿›è¡Œæ»šåŠ¨
      */
     private void setListViewHeightBasedOnChildren(ListView listView) {
-        // »ñÈ¡ListView¶ÔÓ¦µÄAdapter
+        // è·å–ListViewå¯¹åº”çš„Adapter
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
             return;
@@ -241,13 +241,13 @@ public class HotCarShow extends Fragment {
 
         int totalHeight = 0;
         for (int i = 0, len = listAdapter.getCount(); i < len; i++) {
-            // listAdapter.getCount()·µ»ØÊı¾İÏîµÄÊıÄ¿
+            // listAdapter.getCount()è¿”å›æ•°æ®é¡¹çš„æ•°ç›®
             View listItem = listAdapter.getView(i, null, listView);
-            // ¼ÆËã×ÓÏîView µÄ¿í¸ß
+            // è®¡ç®—å­é¡¹View çš„å®½é«˜
             if (listItem != null) {
                 listItem.measure(0, 0);
             }
-            // Í³¼ÆËùÓĞ×ÓÏîµÄ×Ü¸ß¶È
+            // ç»Ÿè®¡æ‰€æœ‰å­é¡¹çš„æ€»é«˜åº¦
             if (listItem != null) {
                 totalHeight += listItem.getMeasuredHeight();
             }
@@ -257,12 +257,12 @@ public class HotCarShow extends Fragment {
         if (params != null) {
             params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         }
-        // listView.getDividerHeight()»ñÈ¡×ÓÏî¼ä·Ö¸ô·ûÕ¼ÓÃµÄ¸ß¶È
-        // params.height×îºóµÃµ½Õû¸öListViewÍêÕûÏÔÊ¾ĞèÒªµÄ¸ß¶È
+        // listView.getDividerHeight()è·å–å­é¡¹é—´åˆ†éš”ç¬¦å ç”¨çš„é«˜åº¦
+        // params.heightæœ€åå¾—åˆ°æ•´ä¸ªListViewå®Œæ•´æ˜¾ç¤ºéœ€è¦çš„é«˜åº¦
         listView.setLayoutParams(params);
     }
     /*
-     *  ³õÊ¼»¯ViewPager
+     *  åˆå§‹åŒ–ViewPager
      */
     private void initViewPager() {
         for (Integer i=1;i<=5;i++){
@@ -287,45 +287,45 @@ public class HotCarShow extends Fragment {
 
         }
 
-        // ³õÊ¼»¯ÇĞ»»ÓÃµÄµã
+        // åˆå§‹åŒ–åˆ‡æ¢ç”¨çš„ç‚¹
         dots = new ArrayList<View>();
         dots.add(mView.findViewById(R.id.v_dot0));
         dots.add(mView.findViewById(R.id.v_dot1));
         dots.add(mView.findViewById(R.id.v_dot2));
         dots.add(mView.findViewById(R.id.v_dot3));
         dots.add(mView.findViewById(R.id.v_dot4));
-        // ³õÊ¼»¯ÎÄ×Ö±êÌâ
+        // åˆå§‹åŒ–æ–‡å­—æ ‡é¢˜
         tv_title = (TextView) mView.findViewById(R.id.tv_title);
         tv_title.setText(titles[0]);
 
         viewPager = (ViewPager) mView.findViewById(R.id.vp);
-        viewPager.setAdapter(new MyAdapter());// ÉèÖÃÌî³äViewPagerÒ³ÃæµÄÊÊÅäÆ÷
-        // ÉèÖÃÒ»¸ö¼àÌıÆ÷£¬µ±ViewPagerÖĞµÄÒ³Ãæ¸Ä±äÊ±µ÷ÓÃ
+        viewPager.setAdapter(new MyAdapter());// è®¾ç½®å¡«å……ViewPageré¡µé¢çš„é€‚é…å™¨
+        // è®¾ç½®ä¸€ä¸ªç›‘å¬å™¨ï¼Œå½“ViewPagerä¸­çš„é¡µé¢æ”¹å˜æ—¶è°ƒç”¨
         viewPager.setOnPageChangeListener(new MyPageChangeListener());
     }
 
     /*
-     *  ÏÔÊ¾Ê±ViewPager½øĞĞ¹ö¶¯
+     *  æ˜¾ç¤ºæ—¶ViewPagerè¿›è¡Œæ»šåŠ¨
      */
     @Override
     public void onStart() {
         /*scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        // µ±ActivityÏÔÊ¾³öÀ´ºó£¬Ã¿Á½ÃëÖÓÇĞ»»Ò»´ÎÍ¼Æ¬ÏÔÊ¾
+        // å½“Activityæ˜¾ç¤ºå‡ºæ¥åï¼Œæ¯ä¸¤ç§’é’Ÿåˆ‡æ¢ä¸€æ¬¡å›¾ç‰‡æ˜¾ç¤º
         scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 1, 2, TimeUnit.SECONDS)*/;
         super.onStart();
     }
 
     /*
-     *  ²»ÏÔÊ¾Ê±ViewPagerÍ£Ö¹¹ö¶¯
+     *  ä¸æ˜¾ç¤ºæ—¶ViewPageråœæ­¢æ»šåŠ¨
      */
     @Override
     public void onStop() {
-        /*// µ±Activity²»¿É¼ûµÄÊ±ºòÍ£Ö¹ÇĞ»»
+        /*// å½“Activityä¸å¯è§çš„æ—¶å€™åœæ­¢åˆ‡æ¢
         scheduledExecutorService.shutdown();*/
         super.onStop();
     }
     /*
-     *  »»ĞĞÇĞ»»ÈÎÎñ
+     *  æ¢è¡Œåˆ‡æ¢ä»»åŠ¡
      *
      */
     private class ScrollTask implements Runnable {
@@ -336,14 +336,14 @@ public class HotCarShow extends Fragment {
                 currentItem = (currentItem + 1) % imageViews.size();
                 Integer i = imageViews.size();
                 //Log.d("imageViews.size()",i.toString());
-                handler.obtainMessage().sendToTarget(); // Í¨¹ıHandlerÇĞ»»Í¼Æ¬
+                handler.obtainMessage().sendToTarget(); // é€šè¿‡Handleråˆ‡æ¢å›¾ç‰‡
             }
         }
 
     }
 
     /*
-     *  µ±ViewPagerÖĞÒ³ÃæµÄ×´Ì¬·¢Éú¸Ä±äÊ±µ÷ÓÃ
+     *  å½“ViewPagerä¸­é¡µé¢çš„çŠ¶æ€å‘ç”Ÿæ”¹å˜æ—¶è°ƒç”¨
      */
     private class MyPageChangeListener implements ViewPager.OnPageChangeListener {
         private int oldPosition = 0;
@@ -370,9 +370,9 @@ public class HotCarShow extends Fragment {
     }
 
     /*
-     *  Ìî³äViewPagerÒ³ÃæµÄÊÊÅäÆ÷
+     *  å¡«å……ViewPageré¡µé¢çš„é€‚é…å™¨
      *
-     *  ²¿·Öº¯Êı±»°æ±¾Å×Æú£¬ÈÕºóĞŞ¸Ä
+     *  éƒ¨åˆ†å‡½æ•°è¢«ç‰ˆæœ¬æŠ›å¼ƒï¼Œæ—¥åä¿®æ”¹
      *
      */
     private class MyAdapter extends PagerAdapter {
@@ -419,7 +419,7 @@ public class HotCarShow extends Fragment {
         }
     }
     /*
-    * ListView¸üĞÂÏûÏ¢´¦Àí
+    * ListViewæ›´æ–°æ¶ˆæ¯å¤„ç†
     */
     final Handler cwjHandler = new Handler();
     class UpdateRunnable implements  Runnable{
@@ -443,28 +443,28 @@ public class HotCarShow extends Fragment {
                 Log.d("GetPicData", "download" + i.toString());
                 Map<String, Object> map = (Map<String, Object>) simpleAdapter.getItem(i - 1);
                 String mImageUrl = null;
-                // »ñÈ¡¶ÔÓ¦³µÁ¾µÄÍ¼Æ¬URL
+                // è·å–å¯¹åº”è½¦è¾†çš„å›¾ç‰‡URL
                 try {
                     car = hotCarShow.getJSONObject("car_" + i.toString());
                     mImageUrl = Constant.BASE_URL + "/" + car.getString("pictures_url");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                // ´Ó»º´æÖĞ¼ÓÔØ
+                // ä»ç¼“å­˜ä¸­åŠ è½½
                 Bitmap imageBitmap = imageLoader.getBitmapFromMemoryCache(mImageUrl);
 
                 if (imageBitmap == null) {
-                    System.out.println("»º´æÖĞ²»´æÔÚÎ»Í¼£¬ĞèÒªÏÂÔØ»ò´Ósd¿¨¼ÓÔØÍ¼Æ¬");
-                    // »º´æÖĞ²»´æÔÚÎ»Í¼£¬ĞèÒªÏÂÔØ»ò´Ósd¿¨¼ÓÔØÍ¼Æ¬
+                    System.out.println("ç¼“å­˜ä¸­ä¸å­˜åœ¨ä½å›¾ï¼Œéœ€è¦ä¸‹è½½æˆ–ä»sdå¡åŠ è½½å›¾ç‰‡");
+                    // ç¼“å­˜ä¸­ä¸å­˜åœ¨ä½å›¾ï¼Œéœ€è¦ä¸‹è½½æˆ–ä»sdå¡åŠ è½½å›¾ç‰‡
                     imageBitmap = loadImage(mImageUrl);
                 }else {
-                    System.out.println("»º´æÖĞ´æÔÚÎ»Í¼£¬²»ĞèÒª¼ÓÔØÍ¼Æ¬");
+                    System.out.println("ç¼“å­˜ä¸­å­˜åœ¨ä½å›¾ï¼Œä¸éœ€è¦åŠ è½½å›¾ç‰‡");
                 }
-                // ½«imageBitmap Ìí¼Óµ½ map¶ÔÓ¦Î»ÖÃÖĞ
+                // å°†imageBitmap æ·»åŠ åˆ° mapå¯¹åº”ä½ç½®ä¸­
                 map.put("carPicImageView", imageBitmap);
-                // ·¢ËÍ¸üĞÂÏûÏ¢
+                // å‘é€æ›´æ–°æ¶ˆæ¯
                 cwjHandler.post(new UpdateRunnable(simpleAdapter));
-                // ÎªViewPagerÌí¼ÓÍ¼Æ¬
+                // ä¸ºViewPageræ·»åŠ å›¾ç‰‡
                 if (i<=5){
                     imageViews.get(i - 1).setImageBitmap(imageBitmap);
                     imageViews.get(i - 1).setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -474,28 +474,28 @@ public class HotCarShow extends Fragment {
         }
 
         /*
-         * ¸ù¾İ´«ÈëµÄURL£¬¶ÔÍ¼Æ¬½øĞĞ¼ÓÔØ¡£Èç¹ûÕâÕÅÍ¼Æ¬ÒÑ¾­´æÔÚÓÚSD¿¨ÖĞ£¬ÔòÖ±½Ó´ÓSD¿¨Àï¶ÁÈ¡£¬·ñÔò¾Í´ÓÍøÂçÉÏÏÂÔØ¡£
+         * æ ¹æ®ä¼ å…¥çš„URLï¼Œå¯¹å›¾ç‰‡è¿›è¡ŒåŠ è½½ã€‚å¦‚æœè¿™å¼ å›¾ç‰‡å·²ç»å­˜åœ¨äºSDå¡ä¸­ï¼Œåˆ™ç›´æ¥ä»SDå¡é‡Œè¯»å–ï¼Œå¦åˆ™å°±ä»ç½‘ç»œä¸Šä¸‹è½½ã€‚
          *
-         * @param imageUrl Í¼Æ¬µÄURLµØÖ·
-         * @return ¼ÓÔØµ½ÄÚ´æµÄÍ¼Æ¬¡£
+         * @param imageUrl å›¾ç‰‡çš„URLåœ°å€
+         * @return åŠ è½½åˆ°å†…å­˜çš„å›¾ç‰‡ã€‚
          */
         private Bitmap loadImage(String imageUrl) {
             File imageFile = new File(getImagePath(imageUrl));
             if (!imageFile.exists()) {
-                System.out.println("sd¿¨ÖĞ²»´æÔÚ×¼±¸´Ó·şÎñÆ÷ÏÂÔØ");
-                // sd¿¨ÖĞ²»´æÔÚ×¼±¸´Ó·şÎñÆ÷ÏÂÔØ
+                System.out.println("sdå¡ä¸­ä¸å­˜åœ¨å‡†å¤‡ä»æœåŠ¡å™¨ä¸‹è½½");
+                // sdå¡ä¸­ä¸å­˜åœ¨å‡†å¤‡ä»æœåŠ¡å™¨ä¸‹è½½
                 downloadImage(imageUrl);
             } else {
-                System.out.println("sd¿¨ÖĞ´æÔÚ");
+                System.out.println("sdå¡ä¸­å­˜åœ¨");
             }
             if (imageUrl != null) {
-                System.out.println("´Ósd¿¨¶ÔÓ¦Â·¾¶¼ÓÔØÍ¼Æ¬");
-                // ´Ósd¿¨¶ÔÓ¦Â·¾¶¼ÓÔØÍ¼Æ¬£¬²¢¸ù¾İcolumnWidth½âÂë
+                System.out.println("ä»sdå¡å¯¹åº”è·¯å¾„åŠ è½½å›¾ç‰‡");
+                // ä»sdå¡å¯¹åº”è·¯å¾„åŠ è½½å›¾ç‰‡ï¼Œå¹¶æ ¹æ®columnWidthè§£ç 
                 Bitmap bitmap = ImageLoader.decodeSampledBitmapFromResource(imageFile.getPath(),
                         columnWidth);
                 if (bitmap != null) {
-                    // ³É¹¦»ñÈ¡Í¼Æ¬£¬½«Í¼Æ¬¼ÓÈë»º´æ
-                    System.out.println("³É¹¦»ñÈ¡Í¼Æ¬£¬½«Í¼Æ¬¼ÓÈë»º´æ");
+                    // æˆåŠŸè·å–å›¾ç‰‡ï¼Œå°†å›¾ç‰‡åŠ å…¥ç¼“å­˜
+                    System.out.println("æˆåŠŸè·å–å›¾ç‰‡ï¼Œå°†å›¾ç‰‡åŠ å…¥ç¼“å­˜");
                     imageLoader.addBitmapToMemoryCache(imageUrl, bitmap);
                     return bitmap;
                 }
@@ -504,9 +504,9 @@ public class HotCarShow extends Fragment {
         }
 
         /*
-         * ½«Í¼Æ¬ÏÂÔØµ½SD¿¨»º´æÆğÀ´¡£
+         * å°†å›¾ç‰‡ä¸‹è½½åˆ°SDå¡ç¼“å­˜èµ·æ¥ã€‚
          *
-         * @param  ¡£
+         * @param  ã€‚
          */
         private void downloadImage(String imageUrl) {
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -554,14 +554,14 @@ public class HotCarShow extends Fragment {
                 }
             }
             if (imageFile != null) {
-                System.out.println("ÍøÂçÍ¼Æ¬»ñÈ¡³É¹¦");
+                System.out.println("ç½‘ç»œå›¾ç‰‡è·å–æˆåŠŸ");
                 Bitmap bitmap = ImageLoader.decodeSampledBitmapFromResource(imageFile.getPath(),
                         columnWidth);
                 if (bitmap != null) {
                     imageLoader.addBitmapToMemoryCache(imageUrl, bitmap);
                 }
             }else {
-                System.out.println("ÍøÂçÍ¼Æ¬»ñÈ¡²»³É¹¦");
+                System.out.println("ç½‘ç»œå›¾ç‰‡è·å–ä¸æˆåŠŸ");
             }
         }
 
@@ -571,7 +571,7 @@ public class HotCarShow extends Fragment {
                 return;
             }*/
             scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-            // µ±ActivityÏÔÊ¾³öÀ´ºó£¬Ã¿Á½ÃëÖÓÇĞ»»Ò»´ÎÍ¼Æ¬ÏÔÊ¾
+            // å½“Activityæ˜¾ç¤ºå‡ºæ¥åï¼Œæ¯ä¸¤ç§’é’Ÿåˆ‡æ¢ä¸€æ¬¡å›¾ç‰‡æ˜¾ç¤º
             scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 1, 2, TimeUnit.SECONDS);
             //tag = true;
         }
@@ -581,26 +581,26 @@ public class HotCarShow extends Fragment {
     private String getSDPath(){
         File sdDir = null;
         boolean sdCardExist = Environment.getExternalStorageState()
-                .equals(Environment.MEDIA_MOUNTED);   //ÅĞ¶Ïsd¿¨ÊÇ·ñ´æÔÚ
+                .equals(Environment.MEDIA_MOUNTED);   //åˆ¤æ–­sdå¡æ˜¯å¦å­˜åœ¨
         if   (sdCardExist)
         {
-            sdDir = Environment.getExternalStorageDirectory();//»ñÈ¡¸úÄ¿Â¼
+            sdDir = Environment.getExternalStorageDirectory();//è·å–è·Ÿç›®å½•
         }
         return sdDir.toString();
 
     }
 
     /**
-     * »ñÈ¡Í¼Æ¬µÄ±¾µØ´æ´¢Â·¾¶¡£
+     * è·å–å›¾ç‰‡çš„æœ¬åœ°å­˜å‚¨è·¯å¾„ã€‚
      *
-     * @param imageUrl Í¼Æ¬µÄURLµØÖ·¡£
-     * @return Í¼Æ¬µÄ±¾µØ´æ´¢Â·¾¶¡£
+     * @param imageUrl å›¾ç‰‡çš„URLåœ°å€ã€‚
+     * @return å›¾ç‰‡çš„æœ¬åœ°å­˜å‚¨è·¯å¾„ã€‚
      */
 
     private String getImagePath(String imageUrl) {
         int lastSlashIndex = imageUrl.lastIndexOf("/");
         String imageTPath = imageUrl.substring(0, lastSlashIndex);
-        // Í¼Æ¬ĞòºÅ¼°¸ñÊ½ºó×º
+        // å›¾ç‰‡åºå·åŠæ ¼å¼åç¼€
         String extra ="_"+ imageUrl.substring(imageUrl.lastIndexOf("/")+1);
 
         lastSlashIndex = imageTPath.lastIndexOf("/");
@@ -609,7 +609,7 @@ public class HotCarShow extends Fragment {
         String imageName = imageTPath.substring(imageTPath.lastIndexOf("/") + 1);
         imageName = imageName + imageSeries + extra;
         System.out.println(imageName);
-        // Í¼Æ¬µÄ´¢´æÂ·¾¶
+        // å›¾ç‰‡çš„å‚¨å­˜è·¯å¾„
         String imageDir = getSDPath()
                 + "/CarBook/Cache/";
         File file = new File(imageDir);

@@ -31,11 +31,11 @@ import java.util.Map;
  */
 public class SummaryFragment extends Fragment {
 
-    private final int picWidth = 150; // Í¼Æ¬¿í¶È¡£
+    private final int picWidth = 150; // å›¾ç‰‡å®½åº¦ã€‚
 
-    private ImageLoader imageLoader; // ¶ÔÍ¼Æ¬¹ÜÀíµÄ¹¤¾ßÀà
+    private ImageLoader imageLoader; // å¯¹å›¾ç‰‡ç®¡ç†çš„å·¥å…·ç±»
 
-    ArrayList<Map<String, Object>> list = null;    // Ïò³µÁ¾±¨¼ÛÁĞ±íÖĞÌí¼ÓĞÅÏ¢µÄ¼üÖµ¶Ô
+    ArrayList<Map<String, Object>> list = null;    // å‘è½¦è¾†æŠ¥ä»·åˆ—è¡¨ä¸­æ·»åŠ ä¿¡æ¯çš„é”®å€¼å¯¹
 
     private final int storeNum = 5;
 
@@ -45,7 +45,7 @@ public class SummaryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.car_summary, container, false);
-        // ³õÊ¼»¯¶ÔÓ¦¿Ø¼ş
+        // åˆå§‹åŒ–å¯¹åº”æ§ä»¶
         TextView bodyStruText = (TextView) (rootView != null ? rootView.findViewById(R.id.bodyStruText) : null);
         TextView SCBText = (TextView) (rootView != null ? rootView.findViewById(R.id.SCBText) : null);
         TextView driveModeText = (TextView) (rootView != null ? rootView.findViewById(R.id.driveModeText) : null);
@@ -53,10 +53,10 @@ public class SummaryFragment extends Fragment {
         thumPic = (ImageView) (rootView != null ? rootView.findViewById(R.id.thumPic) : null);
 
         imageLoader = new ImageLoader();
-        // Í¨¹ı¹¹ÔìĞÂÏß³ÌÀ´ÏÂÔØÍ¼Æ¬
+        // é€šè¿‡æ„é€ æ–°çº¿ç¨‹æ¥ä¸‹è½½å›¾ç‰‡
         LoadImageTask task = new LoadImageTask();
         task.execute();
-        // ÎªÍ¼Æ¬ÉèÖÃonClick·½·¨
+        // ä¸ºå›¾ç‰‡è®¾ç½®onClickæ–¹æ³•
         thumPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,30 +67,30 @@ public class SummaryFragment extends Fragment {
         });
         try {
             if (driveModeText != null) {
-                driveModeText.setText("¼¶±ğ:" + CarShow.carInfo.getString("car_grade"));
+                driveModeText.setText("çº§åˆ«:" + CarShow.carInfo.getString("car_grade"));
             }
             if (bodyStruText != null) {
-                bodyStruText.setText("³µÉí½á¹¹:" + CarShow.carInfo.getString("car_body_structure"));
+                bodyStruText.setText("è½¦èº«ç»“æ„:" + CarShow.carInfo.getString("car_body_structure"));
             }
             if (SCBText != null) {
-                SCBText.setText("±äËÙÏä:" + CarShow.carInfo.getString("transmission"));
+                SCBText.setText("å˜é€Ÿç®±:" + CarShow.carInfo.getString("transmission"));
             }
             if (lowCostText != null) {
-                lowCostText.setText("¼Û¸ñÇø¼ä:" + CarShow.carInfo.getString("price"));
+                lowCostText.setText("ä»·æ ¼åŒºé—´:" + CarShow.carInfo.getString("price"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        //¹¹½¨³µĞĞĞÅÏ¢
+        //æ„å»ºè½¦è¡Œä¿¡æ¯
         ListView storeList = (ListView) (rootView != null ? rootView.findViewById(R.id.storeList) : null);
         list = getData();
-        //×Ô¶¨ÒåÊÊÅäÆ÷
+        //è‡ªå®šä¹‰é€‚é…å™¨
         mAdapter adapter = new mAdapter (getActivity());
         if (storeList != null) {
-            // Ìí¼ÓÊÊÅäÆ÷
+            // æ·»åŠ é€‚é…å™¨
             storeList.setAdapter(adapter);
-            // ÉèÖÃlistView¸ß¶È£¬ÊµÏÖÔÚscrollViewÖĞµÄ¹ö¶¯Ìõ
+            // è®¾ç½®listViewé«˜åº¦ï¼Œå®ç°åœ¨scrollViewä¸­çš„æ»šåŠ¨æ¡
             setListViewHeightBasedOnChildren(storeList);
         }
 
@@ -103,9 +103,9 @@ public class SummaryFragment extends Fragment {
         try {
             for (Integer i = 1; i <= storeNum; i++) {
                 map = new HashMap<String, Object>();
-                // »ñÈ¡¶ÔÓ¦³µĞĞĞÅÏ¢
+                // è·å–å¯¹åº”è½¦è¡Œä¿¡æ¯
                 JSONObject carSaleCompany = CarShow.carInfo.getJSONObject("sale_company_" + i.toString());
-                // ½«Êı¾İÌí¼Óµ½mapÖĞ
+                // å°†æ•°æ®æ·»åŠ åˆ°mapä¸­
                 map.put("storeName", carSaleCompany.getString("name"));
                 map.put("storeAddr", carSaleCompany.getString("address"));
                 map.put("phoneNumber",carSaleCompany.get("telephone"));
@@ -118,10 +118,10 @@ public class SummaryFragment extends Fragment {
     }
 
     /*
-     * ¼ÆËãListView¸ß¶È£¬ÒÔ±ãScrollView½øĞĞ¹ö¶¯
+     * è®¡ç®—ListViewé«˜åº¦ï¼Œä»¥ä¾¿ScrollViewè¿›è¡Œæ»šåŠ¨
      */
     private void setListViewHeightBasedOnChildren(ListView listView) {
-        // »ñÈ¡ListView¶ÔÓ¦µÄAdapter
+        // è·å–ListViewå¯¹åº”çš„Adapter
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
             return;
@@ -129,13 +129,13 @@ public class SummaryFragment extends Fragment {
 
         int totalHeight = 0;
         for (int i = 0, len = listAdapter.getCount(); i < len; i++) {
-            // listAdapter.getCount()·µ»ØÊı¾İÏîµÄÊıÄ¿
+            // listAdapter.getCount()è¿”å›æ•°æ®é¡¹çš„æ•°ç›®
             View listItem = listAdapter.getView(i, null, listView);
-            // ¼ÆËã×ÓÏîView µÄ¿í¸ß
+            // è®¡ç®—å­é¡¹View çš„å®½é«˜
             if (listItem != null) {
                 listItem.measure(0, 0);
             }
-            // Í³¼ÆËùÓĞ×ÓÏîµÄ×Ü¸ß¶È
+            // ç»Ÿè®¡æ‰€æœ‰å­é¡¹çš„æ€»é«˜åº¦
             if (listItem != null) {
                 totalHeight += listItem.getMeasuredHeight();
             }
@@ -145,8 +145,8 @@ public class SummaryFragment extends Fragment {
         if (params != null) {
             params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         }
-        // listView.getDividerHeight()»ñÈ¡×ÓÏî¼ä·Ö¸ô·ûÕ¼ÓÃµÄ¸ß¶È
-        // params.height×îºóµÃµ½Õû¸öListViewÍêÕûÏÔÊ¾ĞèÒªµÄ¸ß¶È
+        // listView.getDividerHeight()è·å–å­é¡¹é—´åˆ†éš”ç¬¦å ç”¨çš„é«˜åº¦
+        // params.heightæœ€åå¾—åˆ°æ•´ä¸ªListViewå®Œæ•´æ˜¾ç¤ºéœ€è¦çš„é«˜åº¦
         listView.setLayoutParams(params);
     }
 
@@ -159,11 +159,11 @@ public class SummaryFragment extends Fragment {
     }
 
     /**
-     * Òì²½ÏÂÔØÍ¼Æ¬µÄÈÎÎñ¡£
+     * å¼‚æ­¥ä¸‹è½½å›¾ç‰‡çš„ä»»åŠ¡ã€‚
      */
     private class LoadImageTask extends AsyncTask<Void, Void, Bitmap> {
         /**
-         * Í¼Æ¬µÄURLµØÖ·
+         * å›¾ç‰‡çš„URLåœ°å€
          */
         private String mImageUrl;
 
@@ -177,7 +177,7 @@ public class SummaryFragment extends Fragment {
         }
 
         /**
-         * ½«¿ÉÖØ¸´Ê¹ÓÃµÄImageView´«Èë
+         * å°†å¯é‡å¤ä½¿ç”¨çš„ImageViewä¼ å…¥
          *
          * @param imageView
          */
@@ -212,10 +212,10 @@ public class SummaryFragment extends Fragment {
         }
 
         /**
-         * ¸ù¾İ´«ÈëµÄURL£¬¶ÔÍ¼Æ¬½øĞĞ¼ÓÔØ¡£Èç¹ûÕâÕÅÍ¼Æ¬ÒÑ¾­´æÔÚÓÚSD¿¨ÖĞ£¬ÔòÖ±½Ó´ÓSD¿¨Àï¶ÁÈ¡£¬·ñÔò¾Í´ÓÍøÂçÉÏÏÂÔØ¡£
+         * æ ¹æ®ä¼ å…¥çš„URLï¼Œå¯¹å›¾ç‰‡è¿›è¡ŒåŠ è½½ã€‚å¦‚æœè¿™å¼ å›¾ç‰‡å·²ç»å­˜åœ¨äºSDå¡ä¸­ï¼Œåˆ™ç›´æ¥ä»SDå¡é‡Œè¯»å–ï¼Œå¦åˆ™å°±ä»ç½‘ç»œä¸Šä¸‹è½½ã€‚
          *
-         * @param imageUrl Í¼Æ¬µÄURLµØÖ·
-         * @return ¼ÓÔØµ½ÄÚ´æµÄÍ¼Æ¬¡£
+         * @param imageUrl å›¾ç‰‡çš„URLåœ°å€
+         * @return åŠ è½½åˆ°å†…å­˜çš„å›¾ç‰‡ã€‚
          */
         private Bitmap loadImage(String imageUrl) {
             File imageFile = new File(getImagePath(imageUrl));
@@ -234,11 +234,11 @@ public class SummaryFragment extends Fragment {
         }
 
         /**
-         * ÏòImageViewÖĞÌí¼ÓÒ»ÕÅÍ¼Æ¬
+         * å‘ImageViewä¸­æ·»åŠ ä¸€å¼ å›¾ç‰‡
          *
-         * @param bitmap      ´ıÌí¼ÓµÄÍ¼Æ¬
-         * @param imageWidth  Í¼Æ¬µÄ¿í¶È
-         * @param imageHeight Í¼Æ¬µÄ¸ß¶È
+         * @param bitmap      å¾…æ·»åŠ çš„å›¾ç‰‡
+         * @param imageWidth  å›¾ç‰‡çš„å®½åº¦
+         * @param imageHeight å›¾ç‰‡çš„é«˜åº¦
          */
         private void addImage(Bitmap bitmap, int imageWidth, int imageHeight) {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(imageWidth,
@@ -246,7 +246,7 @@ public class SummaryFragment extends Fragment {
             if (thumPic != null) {
                 thumPic.setImageBitmap(bitmap);
             } else {
-                // ÉèÖÃthumPic»ù±¾ÊôĞÔ
+                // è®¾ç½®thumPicåŸºæœ¬å±æ€§
                 thumPic = new ImageView(getActivity());
                 thumPic.setLayoutParams(params);
                 thumPic.setImageBitmap(bitmap);
@@ -256,9 +256,9 @@ public class SummaryFragment extends Fragment {
         }
 
         /**
-         * ½«Í¼Æ¬ÏÂÔØµ½SD¿¨»º´æÆğÀ´¡£
+         * å°†å›¾ç‰‡ä¸‹è½½åˆ°SDå¡ç¼“å­˜èµ·æ¥ã€‚
          *
-         * @param imageUrl Í¼Æ¬µÄURLµØÖ·¡£
+         * @param imageUrl å›¾ç‰‡çš„URLåœ°å€ã€‚
          */
         private void downloadImage(String imageUrl) {
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -317,25 +317,25 @@ public class SummaryFragment extends Fragment {
         private String getSDPath(){
             File sdDir = null;
             boolean sdCardExist = Environment.getExternalStorageState()
-                    .equals(Environment.MEDIA_MOUNTED);   //ÅĞ¶Ïsd¿¨ÊÇ·ñ´æÔÚ
+                    .equals(Environment.MEDIA_MOUNTED);   //åˆ¤æ–­sdå¡æ˜¯å¦å­˜åœ¨
             if   (sdCardExist)
             {
-                sdDir = Environment.getExternalStorageDirectory();//»ñÈ¡¸úÄ¿Â¼
+                sdDir = Environment.getExternalStorageDirectory();//è·å–è·Ÿç›®å½•
             }
             return sdDir.toString();
 
         }
 
         /**
-         * »ñÈ¡Í¼Æ¬µÄ±¾µØ´æ´¢Â·¾¶¡£
+         * è·å–å›¾ç‰‡çš„æœ¬åœ°å­˜å‚¨è·¯å¾„ã€‚
          *
-         * @param imageUrl Í¼Æ¬µÄURLµØÖ·¡£
-         * @return Í¼Æ¬µÄ±¾µØ´æ´¢Â·¾¶¡£
+         * @param imageUrl å›¾ç‰‡çš„URLåœ°å€ã€‚
+         * @return å›¾ç‰‡çš„æœ¬åœ°å­˜å‚¨è·¯å¾„ã€‚
          */
         private String getImagePath(String imageUrl) {
             int lastSlashIndex = imageUrl.lastIndexOf("/");
             String imageTPath = imageUrl.substring(0, lastSlashIndex);
-            // Í¼Æ¬ĞòºÅ¼°¸ñÊ½ºó×º
+            // å›¾ç‰‡åºå·åŠæ ¼å¼åç¼€
             String extra ="_"+ imageUrl.substring(imageUrl.lastIndexOf("/")+1);
 
             lastSlashIndex = imageTPath.lastIndexOf("/");
@@ -344,7 +344,7 @@ public class SummaryFragment extends Fragment {
             String imageName = imageTPath.substring(imageTPath.lastIndexOf("/") + 1);
             imageName = imageName + imageSeries + extra;
             System.out.println(imageName);
-            // Í¼Æ¬µÄ´¢´æÂ·¾¶
+            // å›¾ç‰‡çš„å‚¨å­˜è·¯å¾„
             String imageDir = getSDPath()
                     + "/CarBook/Cache/";
             File file = new File(imageDir);
@@ -358,7 +358,7 @@ public class SummaryFragment extends Fragment {
     }
 
     /*
-     * ÊµÏÖÎªListViewÖĞ°´Å¥Ìí¼ÓonClickµÄadapterÀà
+     * å®ç°ä¸ºListViewä¸­æŒ‰é’®æ·»åŠ onClickçš„adapterç±»
      */
     private class mAdapter extends BaseAdapter {
         private LayoutInflater mInflater;
@@ -392,7 +392,7 @@ public class SummaryFragment extends Fragment {
             if (convertView == null) {
 
                 holder=new ViewHolder();
-                //  ¹ØÁªRÖĞ¿Ø¼ş
+                //  å…³è”Rä¸­æ§ä»¶
                 convertView = mInflater.inflate(R.layout.sale_company_list, null);
                 holder.storeAddrText = (TextView)convertView.findViewById(R.id.storeAddr);
                 holder.storeNameText = (TextView)convertView.findViewById(R.id.storeName);
@@ -413,13 +413,13 @@ public class SummaryFragment extends Fragment {
 
                 @Override
                 public void onClick(View v) {
-                    //È¡µÃÊäÈëµÄµç»°ºÅÂë´®
+                    //å–å¾—è¾“å…¥çš„ç”µè¯å·ç ä¸²
                     String inputStr = (String) list.get(position).get("phoneNumber");
-                    //Èç¹ûÊäÈë²»Îª¿Õ´´½¨´òµç»°µÄIntent
+                    //å¦‚æœè¾“å…¥ä¸ä¸ºç©ºåˆ›å»ºæ‰“ç”µè¯çš„Intent
                     if (inputStr.trim().length() != 0) {
                         Intent phoneIntent = new Intent("android.intent.action.CALL",
                                 Uri.parse("tel:" + inputStr));
-                        //Æô¶¯
+                        //å¯åŠ¨
                         startActivity(phoneIntent);
                     }
                 }

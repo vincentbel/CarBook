@@ -20,7 +20,7 @@ import android.app.Fragment;
 
 
 /**
- * Ìõ¼şËÑË÷
+ * æ¡ä»¶æœç´¢
  */
 public class ConditionSearch extends Activity {
 
@@ -46,7 +46,7 @@ public class ConditionSearch extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //»ñÈ¡³µÁ¾Æ·ÅÆĞÅÏ¢
+        //è·å–è½¦è¾†å“ç‰Œä¿¡æ¯
         getActionBar().setDisplayHomeAsUpEnabled(true);
         initPage();
 
@@ -73,14 +73,14 @@ public class ConditionSearch extends Activity {
         }
 
         adapter = new ArrayAdapter<String>(SearchMain.searchmain, android.R.layout.simple_spinner_item, text);
-        //ÉèÖÃÏÂÀ­ÁĞ±íµÄ·ç¸ñ
+        //è®¾ç½®ä¸‹æ‹‰åˆ—è¡¨çš„é£æ ¼
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //½«adapter Ìí¼Óµ½spinnerÖĞ
+        //å°†adapter æ·»åŠ åˆ°spinnerä¸­
 
         spinner.setAdapter(adapter);
 
-        //ÉèÖÃÄ¬ÈÏÖµ
+        //è®¾ç½®é»˜è®¤å€¼
 
         spinner.setVisibility(View.VISIBLE);
 
@@ -111,56 +111,56 @@ public class ConditionSearch extends Activity {
 
     private void createCarPriceGrades() {
         PriceGrade p = new PriceGrade();
-        p.text = "10ÍòÒÔÏÂ";
+        p.text = "10ä¸‡ä»¥ä¸‹";
         p.higPrice = 100000.0;
         p.lowPrice = 0.0;
         priceGrades.add(p);
 
         p = new PriceGrade();
-        p.text = "10Íòµ½20Íò";
+        p.text = "10ä¸‡åˆ°20ä¸‡";
         p.higPrice = 200000.0;
         p.lowPrice = 100000.0;
         priceGrades.add(p);
 
         p = new PriceGrade();
-        p.text = "20Íòµ½40Íò";
+        p.text = "20ä¸‡åˆ°40ä¸‡";
         p.higPrice = 400000.0;
         p.lowPrice = 200000.0;
         priceGrades.add(p);
 
         p = new PriceGrade();
-        p.text = "40Íòµ½60Íò";
+        p.text = "40ä¸‡åˆ°60ä¸‡";
         p.higPrice = 600000.0;
         p.lowPrice = 400000.0;
         priceGrades.add(p);
 
         p = new PriceGrade();
-        p.text = "60Íòµ½100Íò";
+        p.text = "60ä¸‡åˆ°100ä¸‡";
         p.higPrice = 600000.0;
         p.lowPrice = 1000000.0;
         priceGrades.add(p);
 
         p = new PriceGrade();
-        p.text = "100Íòµ½150Íò";
+        p.text = "100ä¸‡åˆ°150ä¸‡";
         p.higPrice = 1500000.0;
         p.lowPrice = 1000000.0;
         priceGrades.add(p);
 
         p = new PriceGrade();
-        p.text = "150Íòµ½200Íò";
+        p.text = "150ä¸‡åˆ°200ä¸‡";
         p.higPrice = 2000000.0;
         p.lowPrice = 1500000.0;
         priceGrades.add(p);
 
         p = new PriceGrade();
 
-        p.text = "200Íòµ½300Íò";
+        p.text = "200ä¸‡åˆ°300ä¸‡";
         p.higPrice = 3000000.0;
         p.lowPrice = 2000000.0;
         priceGrades.add(p);
 
         p = new PriceGrade();
-        p.text = "300ÍòÒÔÉÏ";
+        p.text = "300ä¸‡ä»¥ä¸Š";
         p.higPrice = 9999999999.0;
         p.lowPrice = 3000000.0;
         priceGrades.add(p);
@@ -292,23 +292,23 @@ class Grade implements Serializable {
 
     public Grade() {
         mstring = new String[17];
-        mstring[0] = "Î¢ĞÍ³µ";
-        mstring[1] = "Ğ¡ĞÍ³µ";
-        mstring[2] = "½ô´ÕĞÍ³µ";
-        mstring[3] = "ÖĞĞÍ³µ";
-        mstring[4] = "ÖĞ´óĞÍ³µ";
-        mstring[5] = "ºÀ»ª³µ";
-        mstring[6] = "Ğ¡ĞÍSUV";
-        mstring[7] = "½ô´ÕĞÍSUV";
-        mstring[8] = "ÖĞĞÍSUV";
-        mstring[9] = "ÖĞ´óĞÍSUV";
-        mstring[10] = "È«³ß´çSUV";
+        mstring[0] = "å¾®å‹è½¦";
+        mstring[1] = "å°å‹è½¦";
+        mstring[2] = "ç´§å‡‘å‹è½¦";
+        mstring[3] = "ä¸­å‹è½¦";
+        mstring[4] = "ä¸­å¤§å‹è½¦";
+        mstring[5] = "è±ªåè½¦";
+        mstring[6] = "å°å‹SUV";
+        mstring[7] = "ç´§å‡‘å‹SUV";
+        mstring[8] = "ä¸­å‹SUV";
+        mstring[9] = "ä¸­å¤§å‹SUV";
+        mstring[10] = "å…¨å°ºå¯¸SUV";
         mstring[11] = "MPV";
-        mstring[12] = "ÅÜ³µ";
-        mstring[13] = "Æ¤¿¨";
-        mstring[14] = "Î¢Ãæ";
-        mstring[15] = "Çá¿Í";
-        mstring[16] = "Î¢¿¨";
+        mstring[12] = "è·‘è½¦";
+        mstring[13] = "çš®å¡";
+        mstring[14] = "å¾®é¢";
+        mstring[15] = "è½»å®¢";
+        mstring[16] = "å¾®å¡";
 
 
     }

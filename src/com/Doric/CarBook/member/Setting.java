@@ -20,34 +20,34 @@ import java.util.Set;
  * Created by Sunyao_Will on 2014/5/27.
  */
 public class Setting extends Fragment {
-    // ÍÆËÍ·şÎñµÄ¿ª¹Øswitch
+    // æ¨é€æœåŠ¡çš„å¼€å…³switch
     Switch acceptPushSwitch = null;
-    // ÉèÖÃ½ÓÊÕÍÆËÍÊ±¼äµÄ°´Å¥
+    // è®¾ç½®æ¥æ”¶æ¨é€æ—¶é—´çš„æŒ‰é’®
     Button startPushTimeBtn = null;
-    // ÉèÖÃÍ£Ö¹ÍÆËÍÊ±¼äµÄ°´Å¥
+    // è®¾ç½®åœæ­¢æ¨é€æ—¶é—´çš„æŒ‰é’®
     Button endPushTimeBtn = null;
-    // ÉèÖÃ¿ªÊ¼Ê±¼äµÄcalendar
+    // è®¾ç½®å¼€å§‹æ—¶é—´çš„calendar
     Calendar startPushTime = null;
-    // ÉèÖÃ½áÊøÊ±¼äµÄcalendar
+    // è®¾ç½®ç»“æŸæ—¶é—´çš„calendar
     Calendar endPushTime = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.push_settings, container, false);
-        // Îªswitch³õÊ¼»¯
+        // ä¸ºswitchåˆå§‹åŒ–
         acceptPushSwitch = (Switch) (rootView != null ? rootView.findViewById(R.id.acceptPushSwitch) : null);
         if (acceptPushSwitch!=null) {
             acceptPushSwitch.setOnCheckedChangeListener(
                     new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            // ¿ªÆôÍÆËÍ·şÎñ
+                            // å¼€å¯æ¨é€æœåŠ¡
                             if (isChecked) {
                                 if (getActivity() != null) {
                                     ((MainActivity)getActivity()).pushOnResume();
                                 }
                             }else{
-                            // ¹Ø±ÕÍÆËÍ·şÎñ
+                            // å…³é—­æ¨é€æœåŠ¡
                                 if (getActivity() != null) {
                                     ((MainActivity)getActivity()).pushOnPause();
                                 }
@@ -56,7 +56,7 @@ public class Setting extends Fragment {
                     }
             );
         }
-        // ³õÊ¼»¯calendar¿Ø¼ş
+        // åˆå§‹åŒ–calendaræ§ä»¶
         startPushTime = Calendar.getInstance();
         endPushTime = Calendar.getInstance();
 
@@ -66,18 +66,18 @@ public class Setting extends Fragment {
         startPushTime.set(Calendar.MINUTE,00);
         endPushTime.set(Calendar.MINUTE,00);
 
-        // ÖÜÒ»µ½ÖÜÈÕ½ÓÊÕÍÆËÍ
+        // å‘¨ä¸€åˆ°å‘¨æ—¥æ¥æ”¶æ¨é€
         final Set<Integer> days = new HashSet<Integer>();
         for (int i=0;i<7;i++)
             days.add(i);
-        // ButtonÏÔÊ¾µÄÄÚÈİ
-        final String startPushText = "¿ªÊ¼½ÓÊÕÍÆËÍÊ±¼ä:"+"       ";
-        final String endPushText = "Í£Ö¹½ÓÊÕÍÆËÍÊ±¼ä:"+"       ";
-        // ÎªButton³õÊ¼»¯
+        // Buttonæ˜¾ç¤ºçš„å†…å®¹
+        final String startPushText = "å¼€å§‹æ¥æ”¶æ¨é€æ—¶é—´:"+"       ";
+        final String endPushText = "åœæ­¢æ¥æ”¶æ¨é€æ—¶é—´:"+"       ";
+        // ä¸ºButtonåˆå§‹åŒ–
         startPushTimeBtn = (Button) (rootView != null ? rootView.findViewById(R.id.startPushTimeBtn) : null);
         startPushTimeBtn.setText(startPushText+startPushTime.get(Calendar.HOUR_OF_DAY)
                 +":"+startPushTime.get(Calendar.MINUTE));
-        // ¼àÌıµã»÷ÊÂ¼ş£¬²¢ÔÚµã»÷ºóµ¯³öTimePickerDialog
+        // ç›‘å¬ç‚¹å‡»äº‹ä»¶ï¼Œå¹¶åœ¨ç‚¹å‡»åå¼¹å‡ºTimePickerDialog
         startPushTimeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,24 +87,24 @@ public class Setting extends Fragment {
                         int endTimeHour = endPushTime.get(Calendar.HOUR_OF_DAY);
                         int endTimeMin = endPushTime.get(Calendar.MINUTE);
 
-                        // ¶Ô¿ªÊ¼Ê±¼äºÍ½áÊøÊ±¼ä½øĞĞÅĞ¶Ï£¬Âú×ãÌõ¼ş²ÅÄÜÉèÖÃ
+                        // å¯¹å¼€å§‹æ—¶é—´å’Œç»“æŸæ—¶é—´è¿›è¡Œåˆ¤æ–­ï¼Œæ»¡è¶³æ¡ä»¶æ‰èƒ½è®¾ç½®
                         if (check(hourOfDay,minute,endTimeHour,endTimeMin)) {
                             startPushTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
                             startPushTime.set(Calendar.MINUTE, minute);
                             startPushTime.set(Calendar.SECOND, 0);
                             startPushTime.set(Calendar.MILLISECOND, 0);
-                            // »ñÈ¡ÓÃ»§ÉèÖÃµÄÊ±¼ä
+                            // è·å–ç”¨æˆ·è®¾ç½®çš„æ—¶é—´
                             int startTimeHour = startPushTime.get(Calendar.HOUR_OF_DAY);
 
-                            //µ÷ÓÃJPush apiÉèÖÃPushÊ±¼ä
+                            //è°ƒç”¨JPush apiè®¾ç½®Pushæ—¶é—´
                             JPushInterface.setPushTime(getActivity().getApplication().getApplicationContext(),
                                    days, startTimeHour, endTimeHour);
                             startPushTimeBtn.setText(startPushText + startPushTime.get(Calendar.HOUR_OF_DAY)
                                     + ":" + startPushTime.get(Calendar.MINUTE));
-                            Toast.makeText(getActivity(), "ÉèÖÃ³É¹¦", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "è®¾ç½®æˆåŠŸ", Toast.LENGTH_LONG).show();
 
                         }else{
-                            Toast.makeText(getActivity(), "ÇëÈ·±£¿ªÊ¼Ê±¼äÔçÓÚ½áÊøÊ±¼ä", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "è¯·ç¡®ä¿å¼€å§‹æ—¶é—´æ—©äºç»“æŸæ—¶é—´", Toast.LENGTH_LONG).show();
                         }
                     }
                 },startPushTime.get(Calendar.HOUR_OF_DAY),startPushTime.get(Calendar.MINUTE),true).show();
@@ -123,24 +123,24 @@ public class Setting extends Fragment {
                         int startTimeHour = startPushTime.get(Calendar.HOUR_OF_DAY);
                         int startTimeMin = startPushTime.get(Calendar.MINUTE);
 
-                        // ¶Ô¿ªÊ¼Ê±¼äºÍ½áÊøÊ±¼ä½øĞĞÅĞ¶Ï£¬Âú×ãÌõ¼ş²ÅÄÜÉèÖÃ
+                        // å¯¹å¼€å§‹æ—¶é—´å’Œç»“æŸæ—¶é—´è¿›è¡Œåˆ¤æ–­ï¼Œæ»¡è¶³æ¡ä»¶æ‰èƒ½è®¾ç½®
                         if (check(startTimeHour,startTimeMin,hourOfDay,minute)) {
                             endPushTime.set(Calendar.HOUR_OF_DAY,hourOfDay);
                             endPushTime.set(Calendar.MINUTE,minute);
                             endPushTime.set(Calendar.SECOND, 0);
                             endPushTime.set(Calendar.MILLISECOND, 0);
-                            // »ñÈ¡ÓÃ»§ÉèÖÃµÄÊ±¼ä
+                            // è·å–ç”¨æˆ·è®¾ç½®çš„æ—¶é—´
                             int endTimeHour = endPushTime.get(Calendar.HOUR_OF_DAY);
 
-                            //µ÷ÓÃJPush apiÉèÖÃPushÊ±¼ä
+                            //è°ƒç”¨JPush apiè®¾ç½®Pushæ—¶é—´
                             JPushInterface.setPushTime(getActivity().getApplication().getApplicationContext(),
                                     days, startTimeHour, endTimeHour);
                             endPushTimeBtn.setText(endPushText + endPushTime.get(Calendar.HOUR_OF_DAY)
                                     + ":" + endPushTime.get(Calendar.MINUTE));
-                            Toast.makeText(getActivity(), "ÉèÖÃ³É¹¦", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "è®¾ç½®æˆåŠŸ", Toast.LENGTH_LONG).show();
 
                         }else{
-                            Toast.makeText(getActivity(), "ÇëÈ·±£¿ªÊ¼Ê±¼äÔçÓÚ½áÊøÊ±¼ä", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "è¯·ç¡®ä¿å¼€å§‹æ—¶é—´æ—©äºç»“æŸæ—¶é—´", Toast.LENGTH_LONG).show();
                         }
                     }
                 },endPushTime.get(Calendar.HOUR_OF_DAY),endPushTime.get(Calendar.MINUTE),true).show();

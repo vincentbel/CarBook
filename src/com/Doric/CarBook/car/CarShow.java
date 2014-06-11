@@ -23,30 +23,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CarShow extends FragmentActivity implements android.app.ActionBar.TabListener {
-    // ÉèÖÃ±êÇ©¸öÊı
+    // è®¾ç½®æ ‡ç­¾ä¸ªæ•°
     public static final int MAX_TAB_SIZE = 5;
-    // ÓÃÀ´±£´æÊı¾İµÄJSONObject
+    // ç”¨æ¥ä¿å­˜æ•°æ®çš„JSONObject
     static JSONObject carInfo;
-    // »ñÈ¡µÄbundle
+    // è·å–çš„bundle
     static Bundle bundle;
-    // »ñÈ¡µÄcar_id
+    // è·å–çš„car_id
     static String car_id = null;
-    // ³õÊ¼»¯carId
+    // åˆå§‹åŒ–carId
     int carId = 0;
-    // »ñÈ¡³µÁ¾ĞÅÏ¢µÄUrl
+    // è·å–è½¦è¾†ä¿¡æ¯çš„Url
     String CarInfoUrl = Constant.BASE_URL + "/showcar.php";
-    // ÓÃÀ´Ïò·şÎñÆ÷·¢ËÍÇëÇóµÄ²ÎÊıÁĞ±í
+    // ç”¨æ¥å‘æœåŠ¡å™¨å‘é€è¯·æ±‚çš„å‚æ•°åˆ—è¡¨
     List<NameValuePair> carParamsRequest = new ArrayList<NameValuePair>();
-    // ½ø¶ÈÌõ
+    // è¿›åº¦æ¡
     ProgressDialog progressDialog;
-    // ÊµÀı»¯³µÁ¾ĞÅÏ¢
+    // å®ä¾‹åŒ–è½¦è¾†ä¿¡æ¯
     CarInfor car = new CarInfor();
-    //ÊµÏÖÒ»¸ö¿ÉÒÔ×óÓÒ»¬¶¯µÄ£¬°üÀ¨¡°×ÛÊö¡±¡°Í¼Æ¬¡±¡°²ÎÊı¡±¡°±¨¼Û¡±¡°ÆÀÂÛ¡±µÄ³µÁ¾ĞÅÏ¢Õ¹Ê¾Ò³Ãæ
+    //å®ç°ä¸€ä¸ªå¯ä»¥å·¦å³æ»‘åŠ¨çš„ï¼ŒåŒ…æ‹¬â€œç»¼è¿°â€â€œå›¾ç‰‡â€â€œå‚æ•°â€â€œæŠ¥ä»·â€â€œè¯„è®ºâ€çš„è½¦è¾†ä¿¡æ¯å±•ç¤ºé¡µé¢
     private ViewPager mViewPager;
-    //ÓÃ»§¹¦ÄÜº¯Êı ÓÃÓÚÌí¼ÓºÍÈ¡Ïûµ½ÊÕ²Ø
+    //ç”¨æˆ·åŠŸèƒ½å‡½æ•° ç”¨äºæ·»åŠ å’Œå–æ¶ˆåˆ°æ”¶è—
     UserFunctions userFunctions;
     /*
-    *   »ñÈ¡bundle£¬²¢¿ªÆôÒì²½Ïß³Ì»ñÈ¡JSON°ü
+    *   è·å–bundleï¼Œå¹¶å¼€å¯å¼‚æ­¥çº¿ç¨‹è·å–JSONåŒ…
     */
 
     public int getCarId() {
@@ -59,10 +59,10 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
 
         userFunctions = new UserFunctions(getApplicationContext());
 
-        //·¢ËÍÇëÇó²¢»ñÈ¡Json°ü
+        //å‘é€è¯·æ±‚å¹¶è·å–JsonåŒ…
         bundle = getIntent().getExtras();
 
-        // ÅĞ¶ÏÊÇ·ñ´ÓÍÆËÍ·şÎñÖĞ»ñÈ¡ĞÅÏ¢
+        // åˆ¤æ–­æ˜¯å¦ä»æ¨é€æœåŠ¡ä¸­è·å–ä¿¡æ¯
         if (bundle.get("cn.jpush.android.EXTRA")!=null) {
             Log.d("CarShow","bundle.get(\"cn.jpush.android.EXTRA\")!=null");
             JSONObject jo = null;
@@ -70,7 +70,7 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
                 jo = new JSONObject(bundle.getString("cn.jpush.android.EXTRA"));
                 Log.d("CarShow",jo.getString("car_id"));
 
-                // Ìí¼ÓÏò·şÎñÆ÷·¢ËÍµÄÊı¾İ
+                // æ·»åŠ å‘æœåŠ¡å™¨å‘é€çš„æ•°æ®
                 carParamsRequest.add(new BasicNameValuePair("tag", ("showcar")));
                 carParamsRequest.add(new BasicNameValuePair("car_id", (jo.getString("car_id"))));
                 car_id = jo.getString("car_id");
@@ -80,7 +80,7 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
 
             }
         }else{
-            // Ìí¼ÓÏò·şÎñÆ÷·¢ËÍµÄÊı¾İ
+            // æ·»åŠ å‘æœåŠ¡å™¨å‘é€çš„æ•°æ®
             Log.d("CarShow","bundle.get(\"cn.jpush.android.EXTRA\")==null");
             carParamsRequest.add(new BasicNameValuePair("tag", HotCarShow.Transform("showcar")));
             carParamsRequest.add(new BasicNameValuePair("car_id", HotCarShow.Transform(bundle.getString("car_id"))));
@@ -88,18 +88,18 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
         }
 
 
-        //Í¨¹ıĞÂÏß³Ì¹¹ÔìcarÊµÀı²¢³õÊ¼»¯Activity
+        //é€šè¿‡æ–°çº¿ç¨‹æ„é€ carå®ä¾‹å¹¶åˆå§‹åŒ–Activity
         new GetCarInfo().execute();
     }
 
     /*
-    * ³õÊ¼»¯ViewPager
+    * åˆå§‹åŒ–ViewPager
     */
     private void findViewById() {
         mViewPager = (ViewPager) this.findViewById(R.id.pager);
     }
     /*
-    * ³õÊ¼»¯mune£¬ÊÕ²Ø°´Å¥
+    * åˆå§‹åŒ–muneï¼Œæ”¶è—æŒ‰é’®
     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -114,7 +114,7 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
         return true;
     }
     /*
-    * µã»÷ÊÕ²Ø°´Å¥ºó£¬ÇĞ»»Í¼±ê£¬²¢¿ªÆôÒì²½Ïß³Ì£¬½«ÊµÏÖÌí¼ÓÊÕ²Ø
+    * ç‚¹å‡»æ”¶è—æŒ‰é’®åï¼Œåˆ‡æ¢å›¾æ ‡ï¼Œå¹¶å¼€å¯å¼‚æ­¥çº¿ç¨‹ï¼Œå°†å®ç°æ·»åŠ æ”¶è—
     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -131,10 +131,10 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
         return super.onOptionsItemSelected(item);
     }
     /*
-    * ³õÊ¼»¯View
+    * åˆå§‹åŒ–View
     */
     private void initView() {
-        // ÏÔÊ¾actionBarÖĞ²Ëµ¥
+        // æ˜¾ç¤ºactionBarä¸­èœå•
         final android.app.ActionBar mActionBar = getActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -143,7 +143,7 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
         }
 
 
-        // Ìí¼ÓfragmentµÄÊÊÅäÆ÷
+        // æ·»åŠ fragmentçš„é€‚é…å™¨
         TabFragmentPagerAdapter mAdapter = new TabFragmentPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -164,7 +164,7 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
             }
         });
 
-        //³õÊ¼»¯ ActionBar
+        //åˆå§‹åŒ– ActionBar
         for (int i = 0; i < MAX_TAB_SIZE; i++) {
             mActionBar.addTab(mActionBar.newTab().
                     setText(mAdapter.getPageTitle(i)).
@@ -188,21 +188,21 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
 
     }
     /*
-    *   »ñÈ¡³µÁ¾ĞÅÏ¢µÄÒì²½Ïß³Ì¹¤¾ßÀà
+    *   è·å–è½¦è¾†ä¿¡æ¯çš„å¼‚æ­¥çº¿ç¨‹å·¥å…·ç±»
     */
     private class GetCarInfo extends AsyncTask<Void, Void, Void> {
 
         protected void onPreExecute() {
             super.onPreExecute();
-            //¼ÓÔØÊ±µ¯³ö
+            //åŠ è½½æ—¶å¼¹å‡º
             progressDialog = new ProgressDialog(CarShow.this);
-            progressDialog.setMessage("¼ÓÔØÖĞ..");
+            progressDialog.setMessage("åŠ è½½ä¸­..");
             progressDialog.setCancelable(true);
             progressDialog.show();
         }
 
         protected Void doInBackground(Void... params) {
-            //Ïò·şÎñÆ÷·¢ËÍÇëÇó
+            //å‘æœåŠ¡å™¨å‘é€è¯·æ±‚
             JSONParser jsonParser = new JSONParser();
             carInfo = jsonParser.getJSONFromUrl(CarInfoUrl, carParamsRequest);
             return null;
@@ -215,15 +215,15 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
             }
             if (carInfo != null) {
                 try {
-                    // ÅĞ¶Ï·şÎñÆ÷ÉÏÊÇ·ñ´æÔÚÕâÁ¾³µµÄĞÅÏ¢
+                    // åˆ¤æ–­æœåŠ¡å™¨ä¸Šæ˜¯å¦å­˜åœ¨è¿™è¾†è½¦çš„ä¿¡æ¯
                     if (carInfo.getInt("success")==0){
-                        Toast.makeText(CarShow.this.getApplicationContext(), "Êı¾İ¿âÒì³£", Toast.LENGTH_LONG).show();
+                        Toast.makeText(CarShow.this.getApplicationContext(), "æ•°æ®åº“å¼‚å¸¸", Toast.LENGTH_LONG).show();
                     }else{
-                        // Í¨¹ıseries£¬model_number,¹¹Ôì³µÁ¾Ãû
+                        // é€šè¿‡seriesï¼Œmodel_number,æ„é€ è½¦è¾†å
                         String carName = carInfo.getString("series")+" "+carInfo.getString("model_number");
                         System.out.println("sd" + carName);
                         car.setCarName(carName);
-                        // ÒÔ³µÁ¾Ãû×÷ÎªactionBarµÄtitle
+                        // ä»¥è½¦è¾†åä½œä¸ºactionBarçš„title
                         if (getActionBar() != null) {
                             getActionBar().setTitle(car.getCarName());
                         }
@@ -235,10 +235,10 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
                 }
 
                 findViewById();
-                // ³õÊ¼»¯fragment
+                // åˆå§‹åŒ–fragment
                 initView();
             } else {
-                Toast.makeText(CarShow.this.getApplicationContext(), "ÎŞ·¨Á¬½ÓÍøÂç£¬Çë¼ì²éÄúµÄÊÖ»úÍøÂçÉèÖÃ", Toast.LENGTH_LONG).show();
+                Toast.makeText(CarShow.this.getApplicationContext(), "æ— æ³•è¿æ¥ç½‘ç»œï¼Œè¯·æ£€æŸ¥æ‚¨çš„æ‰‹æœºç½‘ç»œè®¾ç½®", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -250,34 +250,34 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
         }
 
         protected Integer doInBackground(Void... params) {
-            //userFunctions.getMyCollection();   //²âÊÔÓÃ
+            //userFunctions.getMyCollection();   //æµ‹è¯•ç”¨
             if (!userFunctions.isCollected(carId)) {
                 if (userFunctions.addToCollection(carId)) {
-                    //ÊÕ²Ø³É¹¦£¬·µ»Ø1
+                    //æ”¶è—æˆåŠŸï¼Œè¿”å›1
                     return 1;
                 }
             } else {
                 if (userFunctions.cancelCollect(carId)) {
-                    //È¡ÏûÊÕ²Ø³É¹¦£¬·µ»Ø2
+                    //å–æ¶ˆæ”¶è—æˆåŠŸï¼Œè¿”å›2
                     return 2;
                 }
             }
-            //Ê§°Ü£¬·µ»Ø0
+            //å¤±è´¥ï¼Œè¿”å›0
             return 0;
         }
 
         protected void onPostExecute(Integer result) {
             if (result == 1) {
                 invalidateOptionsMenu();
-                Toast.makeText(getApplicationContext(), "ÒÑÊÕ²Ø", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "å·²æ”¶è—", Toast.LENGTH_SHORT).show();
             } else if (result == 2) {
                 invalidateOptionsMenu();
-                Toast.makeText(getApplicationContext(), "ÒÑÈ¡ÏûÊÕ²Ø", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "å·²å–æ¶ˆæ”¶è—", Toast.LENGTH_SHORT).show();
             }
         }
     }
     /*
-    * fragmentµÄÊÊÅäÆ÷
+    * fragmentçš„é€‚é…å™¨
     */
     public class TabFragmentPagerAdapter extends FragmentPagerAdapter {
 
@@ -286,30 +286,30 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
         }
 
         /*
-        * È·¶¨ĞèÒª¹¹ÔìµÄfragment
+        * ç¡®å®šéœ€è¦æ„é€ çš„fragment
         */
         @Override
         public Fragment getItem(int arg0) {
             Fragment ft = null;
             switch (arg0) {
                 case 0:
-                    // ³µÁ¾Õ¹Ê¾×ÛÊö½çÃæ
+                    // è½¦è¾†å±•ç¤ºç»¼è¿°ç•Œé¢
                     ft = new SummaryFragment();
                     break;
                 case 1:
-                    // ³µÁ¾Õ¹Ê¾Í¼Æ¬½çÃæ
+                    // è½¦è¾†å±•ç¤ºå›¾ç‰‡ç•Œé¢
                     ft = new PictureFragment();
                     break;
                 case 2:
-                    // ³µÁ¾Õ¹Ê¾²ÎÊı½çÃæ
+                    // è½¦è¾†å±•ç¤ºå‚æ•°ç•Œé¢
                     ft = new ParameterFragment();
                     break;
                 case 3:
-                    // ³µÁ¾Õ¹Ê¾±¨¼Û½çÃæ
+                    // è½¦è¾†å±•ç¤ºæŠ¥ä»·ç•Œé¢
                     ft = new PriceFragment();
                     break;
                 case 4:
-                    // ³µÁ¾Õ¹Ê¾ÆÀÂÛ½çÃæ
+                    // è½¦è¾†å±•ç¤ºè¯„è®ºç•Œé¢
                     ft = new CommentFragment();
                     break;
                 default:
@@ -324,21 +324,21 @@ public class CarShow extends FragmentActivity implements android.app.ActionBar.T
             return MAX_TAB_SIZE;
         }
         /*
-        * Îªfragment ÉèÖÃtitle
+        * ä¸ºfragment è®¾ç½®title
         */
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "×ÛÊö";
+                    return "ç»¼è¿°";
                 case 1:
-                    return "Í¼Æ¬";
+                    return "å›¾ç‰‡";
                 case 2:
-                    return "²ÎÊı";
+                    return "å‚æ•°";
                 case 3:
-                    return "±¨¼Û";
+                    return "æŠ¥ä»·";
                 case 4:
-                    return "ÆÀÂÛ";
+                    return "è¯„è®º";
                 default:
                     return "";
             }

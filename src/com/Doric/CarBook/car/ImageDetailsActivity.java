@@ -22,18 +22,18 @@ import com.Doric.CarBook.R;
 import java.io.File;
 
 /**
- * ²é¿´´óÍ¼µÄActivity½çÃæ¡£
+ * æŸ¥çœ‹å¤§å›¾çš„Activityç•Œé¢ã€‚
  */
 public class ImageDetailsActivity extends Activity implements
         OnPageChangeListener {
 
     /**
-     * ÓÃÓÚ¹ÜÀíÍ¼Æ¬µÄ»¬¶¯
+     * ç”¨äºç®¡ç†å›¾ç‰‡çš„æ»‘åŠ¨
      */
     private ViewPager viewPager;
 
     /**
-     * ÏÔÊ¾µ±Ç°Í¼Æ¬µÄÒ³Êı
+     * æ˜¾ç¤ºå½“å‰å›¾ç‰‡çš„é¡µæ•°
      */
     private TextView pageText;
 
@@ -50,22 +50,22 @@ public class ImageDetailsActivity extends Activity implements
         viewPager.setCurrentItem(imagePosition);
         viewPager.setOnPageChangeListener(this);
         viewPager.setEnabled(false);
-        // Éè¶¨µ±Ç°µÄÒ³ÊıºÍ×ÜÒ³Êı
+        // è®¾å®šå½“å‰çš„é¡µæ•°å’Œæ€»é¡µæ•°
         pageText.setText((imagePosition + 1) + "/" + CarImages.imageUrls.length);
     }
 
     /**
-     * »ñÈ¡Í¼Æ¬µÄ±¾µØ´æ´¢Â·¾¶¡£
+     * è·å–å›¾ç‰‡çš„æœ¬åœ°å­˜å‚¨è·¯å¾„ã€‚
      *
-     * @return Í¼Æ¬µÄ±¾µØ´æ´¢Â·¾¶¡£
+     * @return å›¾ç‰‡çš„æœ¬åœ°å­˜å‚¨è·¯å¾„ã€‚
      */
     private String getSDPath(){
         File sdDir = null;
         boolean sdCardExist = Environment.getExternalStorageState()
-                .equals(Environment.MEDIA_MOUNTED);   //ÅĞ¶Ïsd¿¨ÊÇ·ñ´æÔÚ
+                .equals(Environment.MEDIA_MOUNTED);   //åˆ¤æ–­sdå¡æ˜¯å¦å­˜åœ¨
         if   (sdCardExist)
         {
-            sdDir = Environment.getExternalStorageDirectory();//»ñÈ¡¸úÄ¿Â¼
+            sdDir = Environment.getExternalStorageDirectory();//è·å–è·Ÿç›®å½•
         }
         return sdDir.toString();
 
@@ -75,7 +75,7 @@ public class ImageDetailsActivity extends Activity implements
     private String getImagePath(String imageUrl) {
         int lastSlashIndex = imageUrl.lastIndexOf("/");
         String imageTPath = imageUrl.substring(0, lastSlashIndex);
-        // Í¼Æ¬ĞòºÅ¼°¸ñÊ½ºó×º
+        // å›¾ç‰‡åºå·åŠæ ¼å¼åç¼€
         String extra ="_"+ imageUrl.substring(imageUrl.lastIndexOf("/")+1);
 
         lastSlashIndex = imageTPath.lastIndexOf("/");
@@ -84,7 +84,7 @@ public class ImageDetailsActivity extends Activity implements
         String imageName = imageTPath.substring(imageTPath.lastIndexOf("/") + 1);
         imageName = imageName + imageSeries + extra;
         System.out.println(imageName);
-        // Í¼Æ¬µÄ´¢´æÂ·¾¶
+        // å›¾ç‰‡çš„å‚¨å­˜è·¯å¾„
         String imageDir = getSDPath()
                 + "/CarBook/Cache/";
         File file = new File(imageDir);
@@ -108,12 +108,12 @@ public class ImageDetailsActivity extends Activity implements
 
     @Override
     public void onPageSelected(int currentPage) {
-        // Ã¿µ±Ò³Êı·¢Éú¸Ä±äÊ±ÖØĞÂÉè¶¨Ò»±éµ±Ç°µÄÒ³ÊıºÍ×ÜÒ³Êı
+        // æ¯å½“é¡µæ•°å‘ç”Ÿæ”¹å˜æ—¶é‡æ–°è®¾å®šä¸€éå½“å‰çš„é¡µæ•°å’Œæ€»é¡µæ•°
         pageText.setText((currentPage + 1) + "/" + CarImages.imageUrls.length);
     }
 
     /**
-     * ViewPagerµÄÊÊÅäÆ÷
+     * ViewPagerçš„é€‚é…å™¨
      */
     class ViewPagerAdapter extends PagerAdapter {
 

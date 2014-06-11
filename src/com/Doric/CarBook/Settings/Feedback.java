@@ -16,28 +16,28 @@ import org.json.JSONObject;
 
 public class Feedback extends Activity implements OnClickListener {
 
-    String username;    //ÓÃ»§Ãû
-    String password;    //ÃÜÂë
-    private JSONObject loginInfo;       //Ïò·şÎñÆ÷ÇëÇóµÃµ½µÄjson¶ÔÏó
-    //¶¨Òå¿Ø¼ş
+    String username;    //ç”¨æˆ·å
+    String password;    //å¯†ç 
+    private JSONObject loginInfo;       //å‘æœåŠ¡å™¨è¯·æ±‚å¾—åˆ°çš„jsonå¯¹è±¡
+    //å®šä¹‰æ§ä»¶
     private EditText edtContent;
     private Button btnSend, btnBack;
-    private ProgressDialog progressDialog;   //Òì²½ÈÎÎñÊ±ÏÔÊ¾µÄ½ø¶ÈÌõ
+    private ProgressDialog progressDialog;   //å¼‚æ­¥ä»»åŠ¡æ—¶æ˜¾ç¤ºçš„è¿›åº¦æ¡
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.feedback);
 
-        //ÉèÖÃ¿Ø¼ş
+        //è®¾ç½®æ§ä»¶
         edtContent = (EditText) findViewById(R.id.content);
         btnSend = (Button) findViewById(R.id.send);
         btnBack = (Button) findViewById(R.id.back);
 
-        //Ìí¼Ó¼àÌıÆ÷
+        //æ·»åŠ ç›‘å¬å™¨
         btnSend.setOnClickListener(this);
         btnBack.setOnClickListener(this);
 
-        //Òş²ØActionbar
+        //éšè—Actionbar
         getActionBar().hide();
     }
 
@@ -45,20 +45,20 @@ public class Feedback extends Activity implements OnClickListener {
 
         int id = v.getId();
 
-        //¡°·¢ËÍ¡±°´Å¥
+        //â€œå‘é€â€æŒ‰é’®
         if (id == R.id.send) {
 
-            //ÅĞ¶ÏÊäÈëÊÇ·ñÎª¿Õ
+            //åˆ¤æ–­è¾“å…¥æ˜¯å¦ä¸ºç©º
             if (edtContent.getText().equals("")) {
-                Toast.makeText(Feedback.this, "ÊäÈë²»ÄÜÎª¿Õ", Toast.LENGTH_LONG).show();
+                Toast.makeText(Feedback.this, "è¾“å…¥ä¸èƒ½ä¸ºç©º", Toast.LENGTH_LONG).show();
             }
             else {
-                Toast.makeText(Feedback.this, "·¢ËÍ³É¹¦£¡", Toast.LENGTH_LONG).show();
+                Toast.makeText(Feedback.this, "å‘é€æˆåŠŸï¼", Toast.LENGTH_LONG).show();
                 Feedback.this.finish();
             }
         }
 
-        //"·µ»Ø"°´Å¥
+        //"è¿”å›"æŒ‰é’®
         if (id == R.id.back) {
             Feedback.this.finish();
         }
@@ -69,16 +69,16 @@ public class Feedback extends Activity implements OnClickListener {
 
         protected void onPreExecute() {
             super.onPreExecute();
-            //µ¯³ö"ÕıÔÚ·¢ËÍ"¿ò
+            //å¼¹å‡º"æ­£åœ¨å‘é€"æ¡†
             progressDialog = new ProgressDialog(Feedback.this);
-            progressDialog.setMessage("ÕıÔÚ·¢ËÍ..");
+            progressDialog.setMessage("æ­£åœ¨å‘é€..");
             progressDialog.setCancelable(true);
             progressDialog.show();
         }
 
         protected Void doInBackground(Void... params) {
 
-            //Ïò·şÎñÆ÷·¢ËÍÇëÇó
+            //å‘æœåŠ¡å™¨å‘é€è¯·æ±‚
             return null;
         }
 
@@ -88,23 +88,23 @@ public class Feedback extends Activity implements OnClickListener {
                 progressDialog.dismiss();
             }
 
-            //ÅĞ¶ÏÊÕµ½µÄjsonÊÇ·ñÎª¿Õ
+            //åˆ¤æ–­æ”¶åˆ°çš„jsonæ˜¯å¦ä¸ºç©º
             if (loginInfo != null) {
                 try {
-                    //ÕË»§ĞÅÏ¢ÑéÖ¤Ê§°Ü
+                    //è´¦æˆ·ä¿¡æ¯éªŒè¯å¤±è´¥
                     if (loginInfo.getString("success").equals("0")) {
-                        Toast.makeText(Feedback.this, "·¢Éú´íÎó", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Feedback.this, "å‘ç”Ÿé”™è¯¯", Toast.LENGTH_LONG).show();
                     }
-                    //ÕË»§ĞÅÏ¢ÑéÖ¤³É¹¦
+                    //è´¦æˆ·ä¿¡æ¯éªŒè¯æˆåŠŸ
                     else {
-                        Toast.makeText(Feedback.this, "Òâ¼û·´À¡³É¹¦£¡", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Feedback.this, "æ„è§åé¦ˆæˆåŠŸï¼", Toast.LENGTH_LONG).show();
                         Feedback.this.finish();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(Feedback.this, "·¢ËÍÊ§°Ü£¬Çë¼ì²éÄúµÄÍøÂçÊÇ·ñÕı³£", Toast.LENGTH_LONG).show();
+                Toast.makeText(Feedback.this, "å‘é€å¤±è´¥ï¼Œè¯·æ£€æŸ¥æ‚¨çš„ç½‘ç»œæ˜¯å¦æ­£å¸¸", Toast.LENGTH_LONG).show();
             }
         }
     }

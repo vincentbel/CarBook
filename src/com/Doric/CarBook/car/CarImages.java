@@ -10,10 +10,10 @@ import org.json.JSONObject;
 public class CarImages {
 
 
-    // 用于储存图片URL的字符串数组
+    // 鐢ㄤ簬鍌ㄥ瓨鍥剧墖URL鐨勫瓧绗︿覆鏁扮粍
     public static String[] imageUrls;
     /*
-    * 初始化字符串数组
+    * 鍒濆鍖栧瓧绗︿覆鏁扮粍
     */
     public static void initImages(int n, JSONObject carPic) {
         imageUrls = new String[n];

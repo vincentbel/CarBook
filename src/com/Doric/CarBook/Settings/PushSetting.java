@@ -34,19 +34,19 @@ import java.util.Set;
  * Created by Sunyao_Will on 2014/6/4.
  */
 public class PushSetting extends InstrumentedActivity {
-    // PushSettingµÄContext
+    // PushSettingçš„Context
     private static Context PushSettingContext ;
-    // ÍÆËÍ·şÎñµÄ¿ª¹Øswitch
+    // æ¨é€æœåŠ¡çš„å¼€å…³switch
     Switch acceptPushSwitch = null;
-    // ÉèÖÃ½ÓÊÕÍÆËÍÊ±¼äµÄ°´Å¥
+    // è®¾ç½®æ¥æ”¶æ¨é€æ—¶é—´çš„æŒ‰é’®
     Button startPushTimeBtn = null;
-    // ÉèÖÃÍ£Ö¹ÍÆËÍÊ±¼äµÄ°´Å¥
+    // è®¾ç½®åœæ­¢æ¨é€æ—¶é—´çš„æŒ‰é’®
     Button endPushTimeBtn = null;
-    // ÉèÖÃ¿ªÊ¼Ê±¼äµÄcalendar
+    // è®¾ç½®å¼€å§‹æ—¶é—´çš„calendar
     Calendar startPushTime = null;
-    // ÉèÖÃ½áÊøÊ±¼äµÄcalendar
+    // è®¾ç½®ç»“æŸæ—¶é—´çš„calendar
     Calendar endPushTime = null;
-    // ÓÃ»§ÉèÖÃ
+    // ç”¨æˆ·è®¾ç½®
     String PREFS_NAME = "com.Doric.CarBook";
     SharedPreferences settings = null;
 
@@ -66,32 +66,32 @@ public class PushSetting extends InstrumentedActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.push_settings);
-        // ÉèÖÃ¹ÜÀí
+        // è®¾ç½®ç®¡ç†
         settings= PreferenceManager.getDefaultSharedPreferences(this);
-        // ActivityµÄÉÏÏÂÎÄ
+        // Activityçš„ä¸Šä¸‹æ–‡
         PushSettingContext= this;
         getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setTitle("ÍÆËÍÉèÖÃ");
+        getActionBar().setTitle("æ¨é€è®¾ç½®");
 
-        // Îªswitch³õÊ¼»¯
+        // ä¸ºswitchåˆå§‹åŒ–
         acceptPushSwitch = (Switch) this.findViewById(R.id.acceptPushSwitch);
         if (acceptPushSwitch!=null) {
             acceptPushSwitch.setOnCheckedChangeListener(
                     new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            // ¿ªÆôÍÆËÍ·şÎñ
+                            // å¼€å¯æ¨é€æœåŠ¡
                             if (isChecked) {
                                 JPushInterface.resumePush(getApplicationContext());
                             }else{
-                                // ¹Ø±ÕÍÆËÍ·şÎñ
+                                // å…³é—­æ¨é€æœåŠ¡
                                 JPushInterface.stopPush(getApplicationContext());
                             }
                         }
                     }
             );
         }
-        // ³õÊ¼»¯calendar¿Ø¼ş
+        // åˆå§‹åŒ–calendaræ§ä»¶
         startPushTime = Calendar.getInstance();
         endPushTime = Calendar.getInstance();
 
@@ -102,18 +102,18 @@ public class PushSetting extends InstrumentedActivity {
         startPushTime.set(Calendar.MINUTE,settings.getInt("startTimeMin",0));
         endPushTime.set(Calendar.MINUTE,settings.getInt("endTimeMin",0));
 
-        // ÖÜÒ»µ½ÖÜÈÕ½ÓÊÕÍÆËÍ
+        // å‘¨ä¸€åˆ°å‘¨æ—¥æ¥æ”¶æ¨é€
         final Set<Integer> days = new HashSet<Integer>();
         for (int i=0;i<7;i++)
             days.add(i);
-        // ButtonÏÔÊ¾µÄÄÚÈİ
-        final String startPushText = "¿ªÊ¼½ÓÊÕÍÆËÍÊ±¼ä:"+"       ";
-        final String endPushText = "Í£Ö¹½ÓÊÕÍÆËÍÊ±¼ä:"+"       ";
-        // ÎªButton³õÊ¼»¯
+        // Buttonæ˜¾ç¤ºçš„å†…å®¹
+        final String startPushText = "å¼€å§‹æ¥æ”¶æ¨é€æ—¶é—´:"+"       ";
+        final String endPushText = "åœæ­¢æ¥æ”¶æ¨é€æ—¶é—´:"+"       ";
+        // ä¸ºButtonåˆå§‹åŒ–
         startPushTimeBtn = (Button) this.findViewById(R.id.startPushTimeBtn);
         startPushTimeBtn.setText(startPushText+startPushTime.get(Calendar.HOUR_OF_DAY)
                 +":"+startPushTime.get(Calendar.MINUTE));
-        // ¼àÌıµã»÷ÊÂ¼ş£¬²¢ÔÚµã»÷ºóµ¯³öTimePickerDialog
+        // ç›‘å¬ç‚¹å‡»äº‹ä»¶ï¼Œå¹¶åœ¨ç‚¹å‡»åå¼¹å‡ºTimePickerDialog
         startPushTimeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,29 +125,29 @@ public class PushSetting extends InstrumentedActivity {
 
                         System.out.println(startPushTime.get(Calendar.HOUR_OF_DAY));
 
-                        // ¶Ô¿ªÊ¼Ê±¼äºÍ½áÊøÊ±¼ä½øĞĞÅĞ¶Ï£¬Âú×ãÌõ¼ş²ÅÄÜÉèÖÃ
+                        // å¯¹å¼€å§‹æ—¶é—´å’Œç»“æŸæ—¶é—´è¿›è¡Œåˆ¤æ–­ï¼Œæ»¡è¶³æ¡ä»¶æ‰èƒ½è®¾ç½®
                         if (check(hourOfDay,minute,endTimeHour,endTimeMin)) {
                             startPushTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
                             startPushTime.set(Calendar.MINUTE, minute);
                             startPushTime.set(Calendar.SECOND, 0);
                             startPushTime.set(Calendar.MILLISECOND, 0);
-                            // »ñÈ¡ÓÃ»§ÉèÖÃµÄÊ±¼ä
+                            // è·å–ç”¨æˆ·è®¾ç½®çš„æ—¶é—´
                             int startTimeHour = startPushTime.get(Calendar.HOUR_OF_DAY);
 
-                            //µ÷ÓÃJPush apiÉèÖÃPushÊ±¼ä
+                            //è°ƒç”¨JPush apiè®¾ç½®Pushæ—¶é—´
                             JPushInterface.setPushTime(getApplication().getApplicationContext(),
                                     days, startTimeHour, endTimeHour);
                             startPushTimeBtn.setText(startPushText + startPushTime.get(Calendar.HOUR_OF_DAY)
                                     + ":" + startPushTime.get(Calendar.MINUTE));
-                            Toast.makeText(PushSettingContext, "ÉèÖÃ³É¹¦", Toast.LENGTH_LONG).show();
-                            // ±£´æ¿ªÊ¼½ÓÊÕÊ±¼ä
+                            Toast.makeText(PushSettingContext, "è®¾ç½®æˆåŠŸ", Toast.LENGTH_LONG).show();
+                            // ä¿å­˜å¼€å§‹æ¥æ”¶æ—¶é—´
                             SharedPreferences.Editor editor = settings.edit();
                             editor.putInt("startTimeHour", startPushTime.get(Calendar.HOUR_OF_DAY));
                             editor.putInt("startTimeMin",startPushTime.get(Calendar.MINUTE));
                             editor.commit();
 
                         }else{
-                            Toast.makeText(PushSettingContext, "ÇëÈ·±£¿ªÊ¼Ê±¼äÔçÓÚ½áÊøÊ±¼ä", Toast.LENGTH_LONG).show();
+                            Toast.makeText(PushSettingContext, "è¯·ç¡®ä¿å¼€å§‹æ—¶é—´æ—©äºç»“æŸæ—¶é—´", Toast.LENGTH_LONG).show();
                         }
                     }
                 },startPushTime.get(Calendar.HOUR_OF_DAY),startPushTime.get(Calendar.MINUTE),true).show();
@@ -166,29 +166,29 @@ public class PushSetting extends InstrumentedActivity {
                         int startTimeHour = startPushTime.get(Calendar.HOUR_OF_DAY);
                         int startTimeMin = startPushTime.get(Calendar.MINUTE);
 
-                        // ¶Ô¿ªÊ¼Ê±¼äºÍ½áÊøÊ±¼ä½øĞĞÅĞ¶Ï£¬Âú×ãÌõ¼ş²ÅÄÜÉèÖÃ
+                        // å¯¹å¼€å§‹æ—¶é—´å’Œç»“æŸæ—¶é—´è¿›è¡Œåˆ¤æ–­ï¼Œæ»¡è¶³æ¡ä»¶æ‰èƒ½è®¾ç½®
                         if (check(startTimeHour,startTimeMin,hourOfDay,minute)) {
                             endPushTime.set(Calendar.HOUR_OF_DAY,hourOfDay);
                             endPushTime.set(Calendar.MINUTE,minute);
                             endPushTime.set(Calendar.SECOND, 0);
                             endPushTime.set(Calendar.MILLISECOND, 0);
-                            // »ñÈ¡ÓÃ»§ÉèÖÃµÄÊ±¼ä
+                            // è·å–ç”¨æˆ·è®¾ç½®çš„æ—¶é—´
                             int endTimeHour = endPushTime.get(Calendar.HOUR_OF_DAY);
 
-                            //µ÷ÓÃJPush apiÉèÖÃPushÊ±¼ä
+                            //è°ƒç”¨JPush apiè®¾ç½®Pushæ—¶é—´
                             JPushInterface.setPushTime(getApplication().getApplicationContext(),
                                     days, startTimeHour, endTimeHour);
                             endPushTimeBtn.setText(endPushText + endPushTime.get(Calendar.HOUR_OF_DAY)
                                     + ":" + endPushTime.get(Calendar.MINUTE));
-                            Toast.makeText(PushSettingContext, "ÉèÖÃ³É¹¦", Toast.LENGTH_LONG).show();
-                            // ±£´æÍ£Ö¹½ÓÊÕÊ±¼ä
+                            Toast.makeText(PushSettingContext, "è®¾ç½®æˆåŠŸ", Toast.LENGTH_LONG).show();
+                            // ä¿å­˜åœæ­¢æ¥æ”¶æ—¶é—´
                             SharedPreferences.Editor editor = settings.edit();
                             editor.putInt("endTimeHour",endPushTime.get(Calendar.HOUR_OF_DAY));
                             editor.putInt("endTimeMin",endPushTime.get(Calendar.MINUTE));
                             editor.commit();
 
                         }else{
-                            Toast.makeText(PushSettingContext, "ÇëÈ·±£¿ªÊ¼Ê±¼äÔçÓÚ½áÊøÊ±¼ä", Toast.LENGTH_LONG).show();
+                            Toast.makeText(PushSettingContext, "è¯·ç¡®ä¿å¼€å§‹æ—¶é—´æ—©äºç»“æŸæ—¶é—´", Toast.LENGTH_LONG).show();
                         }
                     }
                 },endPushTime.get(Calendar.HOUR_OF_DAY),endPushTime.get(Calendar.MINUTE),true).show();

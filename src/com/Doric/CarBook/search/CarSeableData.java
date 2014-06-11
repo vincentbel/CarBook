@@ -19,11 +19,11 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * ³µÁ¾Æ·ÅÆÊı¾İ¾²Ì¬Àà¡£ÒÔ±£Ö¤ÔÚÈÎºÎActivityÖĞ¶¼¿ÉÒÔ»ñµÃ³µÁ¾ĞÅÏ¢
+ * è½¦è¾†å“ç‰Œæ•°æ®é™æ€ç±»ã€‚ä»¥ä¿è¯åœ¨ä»»ä½•Activityä¸­éƒ½å¯ä»¥è·å¾—è½¦è¾†ä¿¡æ¯
  */
 
 public class CarSeableData {
-    //Æ·ÅÆlist
+    //å“ç‰Œlist
     public static ArrayList<CarSeable> mCarSeable;
 
     public static FragmentTransaction fragmentTransaction;
@@ -40,7 +40,7 @@ public class CarSeableData {
 
 
     /**
-     *     ´Ó·şÎñÆ÷¶Ë»ñÈ¡Êı¾İ
+     *     ä»æœåŠ¡å™¨ç«¯è·å–æ•°æ®
      */
 
     public static void getData(FragmentTransaction ft) {
@@ -70,7 +70,7 @@ public class CarSeableData {
 
 
     /**
-     *     Ö±½Ó´ÓÄÚ´æ¿½±´
+     *     ç›´æ¥ä»å†…å­˜æ‹·è´
      */
 
     public static void setData(ArrayList<CarSeable> al){
@@ -79,7 +79,7 @@ public class CarSeableData {
     }
 
     /**
-     * Í¨¹ıÆ·ÅÆÃû»ñÈ¡Æ·ÅÆ¶ÔÏó
+     * é€šè¿‡å“ç‰Œåè·å–å“ç‰Œå¯¹è±¡
      * @param cName
      * @return
      */
@@ -92,18 +92,18 @@ public class CarSeableData {
     }
 
     /**
-     * Òì²½»ñÈ¡³µÁ¾Æ·ÅÆĞÅÏ¢
+     * å¼‚æ­¥è·å–è½¦è¾†å“ç‰Œä¿¡æ¯
      */
     private static class GetBrand extends AsyncTask<Void, Void, Void> {
 
         protected void onPreExecute() {
             super.onPreExecute();
-            //µ¯³ö"ÕıÔÚµÇÂ¼"¿ò
+            //å¼¹å‡º"æ­£åœ¨ç™»å½•"æ¡†
             SearchMain.searchmain.loading();
         }
 
         protected Void doInBackground(Void... params) {
-            //Ïò·şÎñÆ÷·¢ËÍÇëÇó
+            //å‘æœåŠ¡å™¨å‘é€è¯·æ±‚
             JSONParser jsonParser = new JSONParser();
             brandObj = jsonParser.getJSONFromUrl(url, brandParams);
             return null;
@@ -130,14 +130,14 @@ public class CarSeableData {
                 }
             } else {
                 SearchMain.searchmain.stopLoading();
-                Toast.makeText(SearchMain.searchmain, "ÎŞ·¨Á¬½ÓÍøÂç£¬Çë¼ì²éÄúµÄÊÖ»úÍøÂçÉèÖÃ", Toast.LENGTH_LONG).show();
+                Toast.makeText(SearchMain.searchmain, "æ— æ³•è¿æ¥ç½‘ç»œï¼Œè¯·æ£€æŸ¥æ‚¨çš„æ‰‹æœºç½‘ç»œè®¾ç½®", Toast.LENGTH_LONG).show();
 
             }
         }
     }
 
     /**
-     * ½âÎöJSONOBJ
+     * è§£æJSONOBJ
      * @param jsonObject
      * @throws JSONException
      */
@@ -159,7 +159,7 @@ public class CarSeableData {
     }
 
     /**
-     * ´Ó»º´æÖĞ¶ÁÈ¡³µÁ¾Æ·ÅÆĞÅÏ¢
+     * ä»ç¼“å­˜ä¸­è¯»å–è½¦è¾†å“ç‰Œä¿¡æ¯
      */
     public  static void ReadCache(Context context,Resources resources) {
 

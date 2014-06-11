@@ -28,15 +28,15 @@ import android.view.View;
 
 public class MainActivity extends InstrumentedActivity {
 
-    DatabaseHelper db; // ±¾µØSQLiteÊı¾İ¿â¸¨ÖúÀà
-    UserFunctions userFunctions;  //ÓÃ»§¹¦ÄÜº¯Êı¸¨ÖúÀà
-    private DrawerLayout drawerLayout;  //ÓÃÓÚ²àÀ­²¼¾Ö
-    private ListView drawerList;      //×ó²à²àÀ­µÄlistView
+    DatabaseHelper db; // æœ¬åœ°SQLiteæ•°æ®åº“è¾…åŠ©ç±»
+    UserFunctions userFunctions;  //ç”¨æˆ·åŠŸèƒ½å‡½æ•°è¾…åŠ©ç±»
+    private DrawerLayout drawerLayout;  //ç”¨äºä¾§æ‹‰å¸ƒå±€
+    private ListView drawerList;      //å·¦ä¾§ä¾§æ‹‰çš„listView
     private ActionBarDrawerToggle drawerToggle;
-    private CharSequence mTitle;  // ActivityµÄ±êÌâ
-    private CharSequence mLeftDrawerTitle; //µ±Ç°²àÀ­Ä£¿éµÄ±êÌâ
-    private String[] leftDrawerTitles;  //²àÀ­¸÷Ä£¿éµÄ±êÌâ
-    private int[] leftDrawerIcons;   //²àÀ­¸÷Ä£¿éµÄicon
+    private CharSequence mTitle;  // Activityçš„æ ‡é¢˜
+    private CharSequence mLeftDrawerTitle; //å½“å‰ä¾§æ‹‰æ¨¡å—çš„æ ‡é¢˜
+    private String[] leftDrawerTitles;  //ä¾§æ‹‰å„æ¨¡å—çš„æ ‡é¢˜
+    private int[] leftDrawerIcons;   //ä¾§æ‹‰å„æ¨¡å—çš„icon
 
     public static boolean isForeground = false;
 
@@ -47,7 +47,7 @@ public class MainActivity extends InstrumentedActivity {
 
 
         JPushInterface.init(getApplicationContext());
-        registerMessageReceiver();  // ÓÃÀ´½ÓÊÕÍÆËÍ
+        registerMessageReceiver();  // ç”¨æ¥æ¥æ”¶æ¨é€
 
 
 
@@ -56,56 +56,56 @@ public class MainActivity extends InstrumentedActivity {
 
         mLeftDrawerTitle = mTitle = getTitle();
 
-        //×ó²à²àÀ­±êÌâ´æÓÚ strings.xml ÖĞµÄ left_drawer_array Êı×éÖĞ
+        //å·¦ä¾§ä¾§æ‹‰æ ‡é¢˜å­˜äº strings.xml ä¸­çš„ left_drawer_array æ•°ç»„ä¸­
         leftDrawerTitles = getResources().getStringArray(R.array.left_drawer_array);
         leftDrawerIcons = new int[]{
-                R.drawable.pc_default_head,  //¸öÈËÖĞĞÄ
-                R.drawable.ic_hot_car_show,  //ÈÈÃÅÆû³µÅÅĞĞ
-                R.drawable.ic_search,        //ÕÒ³µ
-                R.drawable.ic_collection,    //ÎÒµÄÊÕ²Ø
-                R.drawable.ic_settings,       //ÉèÖÃ
+                R.drawable.pc_default_head,  //ä¸ªäººä¸­å¿ƒ
+                R.drawable.ic_hot_car_show,  //çƒ­é—¨æ±½è½¦æ’è¡Œ
+                R.drawable.ic_search,        //æ‰¾è½¦
+                R.drawable.ic_collection,    //æˆ‘çš„æ”¶è—
+                R.drawable.ic_settings,       //è®¾ç½®
         };
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.left_drawer);
 
-        //¸ø×ó²à²àÀ­µÄ listView ÉèÖÃ×Ô¶¨ÒåµÄadapter
+        //ç»™å·¦ä¾§ä¾§æ‹‰çš„ listView è®¾ç½®è‡ªå®šä¹‰çš„adapter
         LeftDrawerListAdapter adapter = new LeftDrawerListAdapter(this, leftDrawerTitles, leftDrawerIcons);
         drawerList.setAdapter(adapter);
 
-        //¸ø×ó²à²àÀ­µÄ listView Ìí¼Ó¼àÌıÆ÷
+        //ç»™å·¦ä¾§ä¾§æ‹‰çš„ listView æ·»åŠ ç›‘å¬å™¨
         drawerList.setOnItemClickListener(new DrawerItemSelectedListener());
 
         //enable ActionBar app icon to behave as action to toggle nav drawer
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
-        // ActionBarDrawerToggle ±£Ö¤¡¸×ó²à²àÀ­¡¹ºÍ¡¸ActionbarÉÏµÄÓ¦ÓÃÍ¼±ê¡¹Ö®¼äµÄ½»»¥
+        // ActionBarDrawerToggle ä¿è¯ã€Œå·¦ä¾§ä¾§æ‹‰ã€å’Œã€ŒActionbarä¸Šçš„åº”ç”¨å›¾æ ‡ã€ä¹‹é—´çš„äº¤äº’
         drawerToggle = new ActionBarDrawerToggle(
-                this,                             // ËùÊôµÄActivity
-                drawerLayout,                     // DrawerLayout²¼¾Ö
+                this,                             // æ‰€å±çš„Activity
+                drawerLayout,                     // DrawerLayoutå¸ƒå±€
                 R.drawable.ic_navigation_drawer,  // nav drawer image to replace 'Up' caret
-                R.string.drawer_open,         // ´ò¿ª²àÀ­À¸µÄËµÃ÷ÎÄ×Ö
-                R.string.drawer_close         // ¹Ø±Õ²àÀ­À¸µÄËµÃ÷ÎÄ×Ö
+                R.string.drawer_open,         // æ‰“å¼€ä¾§æ‹‰æ çš„è¯´æ˜æ–‡å­—
+                R.string.drawer_close         // å…³é—­ä¾§æ‹‰æ çš„è¯´æ˜æ–‡å­—
         ) {
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 getActionBar().setTitle(mTitle);
-                invalidateOptionsMenu();  //ÌáÊ¾Actionbar¸üĞÂ£¬½«»áµ÷ÓÃ onPrepareOptionsMenu() º¯Êı
+                invalidateOptionsMenu();  //æç¤ºActionbaræ›´æ–°ï¼Œå°†ä¼šè°ƒç”¨ onPrepareOptionsMenu() å‡½æ•°
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
                 getActionBar().setTitle(mLeftDrawerTitle);
-                invalidateOptionsMenu();  //ÌáÊ¾Actionbar¸üĞÂ£¬½«»áµ÷ÓÃ onPrepareOptionsMenu() º¯Êı
+                invalidateOptionsMenu();  //æç¤ºActionbaræ›´æ–°ï¼Œå°†ä¼šè°ƒç”¨ onPrepareOptionsMenu() å‡½æ•°
             }
         };
-        //½«drawerToggleÉèÖÃÎª DrawerLayout µÄ¼àÌıÆ÷
+        //å°†drawerToggleè®¾ç½®ä¸º DrawerLayout çš„ç›‘å¬å™¨
         drawerLayout.setDrawerListener(drawerToggle);
         if (savedInstanceState == null) {
-            selectItem(1);  //ÉèÖÃÄ¬ÈÏµÄÏÔÊ¾Ò³ÃæÎª¡¸ÈÈÃÅÆû³µÅÅĞĞ¡¹
+            selectItem(1);  //è®¾ç½®é»˜è®¤çš„æ˜¾ç¤ºé¡µé¢ä¸ºã€Œçƒ­é—¨æ±½è½¦æ’è¡Œã€
         }
 
     }
@@ -117,10 +117,10 @@ public class MainActivity extends InstrumentedActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    // µ±µ÷ÓÃinvalidateOptionsMenu()º¯ÊıÊ±onPrepareOptionsMenu()½«»á±»µ÷ÓÃ
+    // å½“è°ƒç”¨invalidateOptionsMenu()å‡½æ•°æ—¶onPrepareOptionsMenu()å°†ä¼šè¢«è°ƒç”¨
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        // µ±×ó²à²àÀ­À¸´ò¿ªÊ±£¬Èç¹ûactionbarÉÏÓĞitem,Ôò½«ÆäÒş²Ø
+        // å½“å·¦ä¾§ä¾§æ‹‰æ æ‰“å¼€æ—¶ï¼Œå¦‚æœactionbarä¸Šæœ‰item,åˆ™å°†å…¶éšè—
         boolean drawerOpen = drawerLayout.isDrawerOpen(drawerList);
         //menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
@@ -149,11 +149,11 @@ public class MainActivity extends InstrumentedActivity {
     }
 
     private void selectItem(int position) {
-        Fragment fragment;  //Ã¿¸öÄ£¿éµÄFragment
+        Fragment fragment;  //æ¯ä¸ªæ¨¡å—çš„Fragment
         FragmentManager fragmentManager = getFragmentManager();
-        Bundle args;        //¸øÃ¿¸öÄ£¿é´«µİµÄ²ÎÊı
+        Bundle args;        //ç»™æ¯ä¸ªæ¨¡å—ä¼ é€’çš„å‚æ•°
         switch (position) {
-            case 0:  //ÈôÓÃ»§ÒÑµÇÂ¼£¬ÔòÎª¡¸¸öÈËÖĞĞÄ¡¹£¬·ñÔòÎª¡¸×¢²áµÇÂ¼¡¹
+            case 0:  //è‹¥ç”¨æˆ·å·²ç™»å½•ï¼Œåˆ™ä¸ºã€Œä¸ªäººä¸­å¿ƒã€ï¼Œå¦åˆ™ä¸ºã€Œæ³¨å†Œç™»å½•ã€
                 if (userFunctions.isUserLoggedIn()) {
                     fragment = new PersonalCenter();
                     fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
@@ -161,23 +161,23 @@ public class MainActivity extends InstrumentedActivity {
                     startActivity(new Intent(this, Login.class));
                 }
                 break;
-            case 1:  //¡¸ÈÈÃÅÆû³µÅÅĞĞ¡¹Ä£¿é
+            case 1:  //ã€Œçƒ­é—¨æ±½è½¦æ’è¡Œã€æ¨¡å—
                 fragment = new HotCarShow();
                 args = new Bundle();
                 args.putString("tag", "HotCarShow");
                 fragment.setArguments(args);
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
-            case 2: //¡¸ÕÒ³µ¡¹Ä£¿é
+            case 2: //ã€Œæ‰¾è½¦ã€æ¨¡å—
                 Intent it  =new Intent();
                 it.setClass(getApplicationContext(),SearchMain.class);
                 startActivity(it);
                 break;
-            case 3: // [ÎÒµÄÊÕ²Ø]Ä£¿é
+            case 3: // [æˆ‘çš„æ”¶è—]æ¨¡å—
                 fragment = new MyCollection();
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
-            case 4: // ¡¸ÉèÖÃ¡¹Ä£¿é
+            case 4: // ã€Œè®¾ç½®ã€æ¨¡å—
                 fragment = new SettingsFragment();
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
                 break;
@@ -186,14 +186,14 @@ public class MainActivity extends InstrumentedActivity {
                 break;
         }
 
-        //¸üĞÂÑ¡ÔñµÄitemºÍ±êÌâ£¬È»ºó¹Ø±Õ×ó²à²àÀ­À¸
+        //æ›´æ–°é€‰æ‹©çš„itemå’Œæ ‡é¢˜ï¼Œç„¶åå…³é—­å·¦ä¾§ä¾§æ‹‰æ 
         drawerList.setItemChecked(position, true);
         mLeftDrawerTitle = leftDrawerTitles[position];
         getActionBar().setTitle(mLeftDrawerTitle);
         drawerLayout.closeDrawer(drawerList);
     }
 
-    // ´ÓJpush·şÎñÆ÷½ÓÊÕĞÅÏ¢
+    // ä»JpushæœåŠ¡å™¨æ¥æ”¶ä¿¡æ¯
     private MessageReceiver mMessageReceiver;
     public static final String MESSAGE_RECEIVED_ACTION = "com.example.jpushdemo.MESSAGE_RECEIVED_ACTION";
     public static final String KEY_TITLE = "title";
@@ -234,7 +234,7 @@ public class MainActivity extends InstrumentedActivity {
     }
     */
 
-    //×ó²à²àÀ­À¸µÄListViewµÄ¼àÌıÆ÷
+    //å·¦ä¾§ä¾§æ‹‰æ çš„ListViewçš„ç›‘å¬å™¨
     private class DrawerItemSelectedListener implements ListView.OnItemClickListener {
 
         @Override
@@ -244,22 +244,22 @@ public class MainActivity extends InstrumentedActivity {
     }
 
     /**
-     * ÓÃÓÚÌá¸ßListViewµÄĞÔÄÜ
+     * ç”¨äºæé«˜ListViewçš„æ€§èƒ½
      *  @link http://www.vogella.com/tutorials/AndroidListView/article.html#adapterperformance_holder
-     *  ÓÉÓÚ findViewById() ·½·¨½Ï·ÑÊ±¼ä£¬ËùÒÔÊ¹ÓÃ´ËÄÚ²¿Àà±£´æListViewÖĞÏàÓ¦µÄviews
-     *  ¿ÉÒÔÍ¨¹ısetTag()·½·¨±£´æviewsµ½ViewHolderÀàÖĞ£¬ÔÙÍ¨¹ıgetTag()·½·¨È¡µÃviews£¬±ÜÃâÁËÖØ¸´Ê¹ÓÃfindViewById()
+     *  ç”±äº findViewById() æ–¹æ³•è¾ƒè´¹æ—¶é—´ï¼Œæ‰€ä»¥ä½¿ç”¨æ­¤å†…éƒ¨ç±»ä¿å­˜ListViewä¸­ç›¸åº”çš„views
+     *  å¯ä»¥é€šè¿‡setTag()æ–¹æ³•ä¿å­˜viewsåˆ°ViewHolderç±»ä¸­ï¼Œå†é€šè¿‡getTag()æ–¹æ³•å–å¾—viewsï¼Œé¿å…äº†é‡å¤ä½¿ç”¨findViewById()
      */
     static class ViewHolder {
         TextView textView;
         ImageView imageView;
     }
 
-    //×Ô¶¨ÒåµÄ×ó²à²àÀ­À¸µÄListViewµÄadapter
+    //è‡ªå®šä¹‰çš„å·¦ä¾§ä¾§æ‹‰æ çš„ListViewçš„adapter
     public class LeftDrawerListAdapter extends ArrayAdapter<String> {
 
         private Context context;
-        private String[] values;   //¸÷Ä£¿é±êÌâ
-        private int[] icons;       //¸÷Ä£¿éicon
+        private String[] values;   //å„æ¨¡å—æ ‡é¢˜
+        private int[] icons;       //å„æ¨¡å—icon
 
         public LeftDrawerListAdapter(Context context, String[] values, int[] icons) {
             super(context, R.layout.drawer_list_item, values);
@@ -278,20 +278,20 @@ public class MainActivity extends InstrumentedActivity {
 
                 viewHolder.textView = (TextView) rowView.findViewById(R.id.left_drawer_text);
                 viewHolder.imageView = (ImageView) rowView.findViewById(R.id.left_drawer_image);
-                rowView.setTag(viewHolder);  //±£´æviewsµ½viewHolderÖĞ
+                rowView.setTag(viewHolder);  //ä¿å­˜viewsåˆ°viewHolderä¸­
 
             }
 
-            ViewHolder viewHolder = (ViewHolder) rowView.getTag();  //È¡µÃviewHolderÖĞµÄviews
-            if (position == 0) {  //µ±Ä£¿éÎª¸öÈËÖĞĞÄÄ£¿éÊ±
-                rowView.setBackgroundResource(R.drawable.left_drawer_user_bg);  //ÉèÖÃ¸öĞÔ»¯±³¾°
+            ViewHolder viewHolder = (ViewHolder) rowView.getTag();  //å–å¾—viewHolderä¸­çš„views
+            if (position == 0) {  //å½“æ¨¡å—ä¸ºä¸ªäººä¸­å¿ƒæ¨¡å—æ—¶
+                rowView.setBackgroundResource(R.drawable.left_drawer_user_bg);  //è®¾ç½®ä¸ªæ€§åŒ–èƒŒæ™¯
 
-                //ÅĞ¶ÏÓÃ»§ÊÇ·ñµÇÂ¼
+                //åˆ¤æ–­ç”¨æˆ·æ˜¯å¦ç™»å½•
                 if (userFunctions.isUserLoggedIn()) {
-                    String username = userFunctions.getUsername(); //»ñÈ¡ÓÃ»§Ãû
+                    String username = userFunctions.getUsername(); //è·å–ç”¨æˆ·å
                     viewHolder.textView.setText(username);
                 } else {
-                    viewHolder.textView.setText("×¢²áµÇÂ¼");
+                    viewHolder.textView.setText("æ³¨å†Œç™»å½•");
                 }
                 viewHolder.textView.setTextColor(Color.WHITE);
                 viewHolder.imageView.setImageResource(icons[position]);

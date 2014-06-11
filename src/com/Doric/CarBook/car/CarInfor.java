@@ -2,8 +2,8 @@ package com.Doric.CarBook.car;
 
 public class CarInfor {
 
-    //³ÉÔ±±äÁ¿
-    //Í¨¹ıÊı×Ö±íÊ¾³µÁ¾´óĞ¡ÀàĞÍ,ÒıÇæÀàĞÍ
+    //æˆå‘˜å˜é‡
+    //é€šè¿‡æ•°å­—è¡¨ç¤ºè½¦è¾†å¤§å°ç±»å‹,å¼•æ“ç±»å‹
     private int carId;
     private String carName;
     private String engineType;
@@ -18,13 +18,13 @@ public class CarInfor {
     private String carBodyStructure;
 
 
-    //¹¹Ôìº¯Êı
+    //æ„é€ å‡½æ•°
     public CarInfor() {
 
     }
 
 
-    //»ñÈ¡³ÉÔ±±äÁ¿µÄÖµ
+    //è·å–æˆå‘˜å˜é‡çš„å€¼
     public int getCarId() {
         return carId;
     }
@@ -60,7 +60,7 @@ public class CarInfor {
     public Double getHighSpeed() {
         return highSpeed;
     }
-    //³õÊ¼»¯±äÁ¿
+    //åˆå§‹åŒ–å˜é‡
 
     public void setHighSpeed(Double highSpeed) {
         this.highSpeed = highSpeed;

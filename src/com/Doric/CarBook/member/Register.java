@@ -18,11 +18,11 @@ import org.json.JSONObject;
 
 public class Register extends Activity implements View.OnClickListener {
 
-    private JSONObject registerInfo;       //Ïò·şÎñÆ÷ÇëÇóµÃµ½µÄjson¶ÔÏó
+    private JSONObject registerInfo;       //å‘æœåŠ¡å™¨è¯·æ±‚å¾—åˆ°çš„jsonå¯¹è±¡
     private UserFunctions userFunctions;
 
-    //¶¨Òå¿Ø¼ş
-    private ProgressDialog progressDialog;   //Òì²½ÈÎÎñÊ±ÏÔÊ¾µÄ½ø¶ÈÌõ
+    //å®šä¹‰æ§ä»¶
+    private ProgressDialog progressDialog;   //å¼‚æ­¥ä»»åŠ¡æ—¶æ˜¾ç¤ºçš„è¿›åº¦æ¡
     private EditText edtUsername, edtPassword, edtEnsurePsd, edtEmail;
     private Button btnRegister, btnBack;
     private String username;
@@ -35,7 +35,7 @@ public class Register extends Activity implements View.OnClickListener {
 
         userFunctions = new UserFunctions(getApplicationContext());
 
-        //ÉèÖÃ¿Ø¼ş
+        //è®¾ç½®æ§ä»¶
         edtUsername = (EditText) findViewById(R.id.username);
         edtPassword = (EditText) findViewById(R.id.password);
         edtEnsurePsd = (EditText) findViewById(R.id.ensure_password);
@@ -43,11 +43,11 @@ public class Register extends Activity implements View.OnClickListener {
         btnRegister = (Button) findViewById(R.id.register);
         btnBack = (Button) findViewById(R.id.back);
 
-        //Ìí¼Ó¼àÌıÆ÷
+        //æ·»åŠ ç›‘å¬å™¨
         btnRegister.setOnClickListener(this);
         btnBack.setOnClickListener(this);
 
-        //Òş²ØActionbar
+        //éšè—Actionbar
         getActionBar().hide();
 
         Intent intent = getIntent();
@@ -58,69 +58,69 @@ public class Register extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         int id = v.getId();
 
-        //¡°×¢²á¡±°´Å¥
+        //â€œæ³¨å†Œâ€æŒ‰é’®
         if (id == R.id.register) {
-            //»ñÈ¡ÓÃ»§ÊäÈëµÄĞÅÏ¢
+            //è·å–ç”¨æˆ·è¾“å…¥çš„ä¿¡æ¯
             username = edtUsername.getText().toString();
             password = edtPassword.getText().toString();
             String enPassword = edtEnsurePsd.getText().toString();
             emailAddress = edtEmail.getText().toString();
 
-            //ÅĞ¶ÏÓÃ»§ÃûÊÇ·ñÎª¿Õ
+            //åˆ¤æ–­ç”¨æˆ·åæ˜¯å¦ä¸ºç©º
             if (username.equals("")) {
-                Toast.makeText(Register.this, "ÇëÊäÈëÓÃ»§Ãû", Toast.LENGTH_LONG).show();
+                Toast.makeText(Register.this, "è¯·è¾“å…¥ç”¨æˆ·å", Toast.LENGTH_LONG).show();
             }
-            //ÅĞ¶ÏÓÃ»§ÃûÊÇ·ñ¹ı³¤
+            //åˆ¤æ–­ç”¨æˆ·åæ˜¯å¦è¿‡é•¿
             else if (username.length() > 16) {
-                Toast.makeText(Register.this, "ÓÃ»§Ãû¹ı³¤£¬ÇëÖØĞÂÊäÈë", Toast.LENGTH_LONG).show();
+                Toast.makeText(Register.this, "ç”¨æˆ·åè¿‡é•¿ï¼Œè¯·é‡æ–°è¾“å…¥", Toast.LENGTH_LONG).show();
             }
-            //ÅĞ¶ÏÓÃ»§ÃûÊÇ·ñ¹ı¶Ì
+            //åˆ¤æ–­ç”¨æˆ·åæ˜¯å¦è¿‡çŸ­
             else if (username.length() < 6) {
-                Toast.makeText(Register.this, "ÓÃ»§Ãû¹ı¶Ì£¬ÇëÖØĞÂÊäÈë", Toast.LENGTH_LONG).show();
+                Toast.makeText(Register.this, "ç”¨æˆ·åè¿‡çŸ­ï¼Œè¯·é‡æ–°è¾“å…¥", Toast.LENGTH_LONG).show();
             }
-            //ÅĞ¶ÏÃÜÂëÊÇ·ñÎª¿Õ
+            //åˆ¤æ–­å¯†ç æ˜¯å¦ä¸ºç©º
             else if (password.equals("")) {
-                Toast.makeText(Register.this, "ÇëÊäÈëÃÜÂë", Toast.LENGTH_LONG).show();
+                Toast.makeText(Register.this, "è¯·è¾“å…¥å¯†ç ", Toast.LENGTH_LONG).show();
             }
-            //ÅĞ¶ÏÃÜÂëÊÇ·ñ¹ı³¤
+            //åˆ¤æ–­å¯†ç æ˜¯å¦è¿‡é•¿
             else if (password.length() > 16) {
-                Toast.makeText(Register.this, "ÃÜÂë¹ı³¤£¬ÇëÖØĞÂÊäÈë", Toast.LENGTH_LONG).show();
+                Toast.makeText(Register.this, "å¯†ç è¿‡é•¿ï¼Œè¯·é‡æ–°è¾“å…¥", Toast.LENGTH_LONG).show();
             }
-            //ÅĞ¶ÏÃÜÂëÊÇ·ñ¹ı¶Ì
+            //åˆ¤æ–­å¯†ç æ˜¯å¦è¿‡çŸ­
             else if (password.length() < 6) {
-                Toast.makeText(Register.this, "ÃÜÂë¹ı¶Ì£¬ÇëÖØĞÂÊäÈë", Toast.LENGTH_LONG).show();
+                Toast.makeText(Register.this, "å¯†ç è¿‡çŸ­ï¼Œè¯·é‡æ–°è¾“å…¥", Toast.LENGTH_LONG).show();
             }
-            //ÅĞ¶ÏÑéÖ¤ÃÜÂëÊÇ·ñÎª¿Õ
+            //åˆ¤æ–­éªŒè¯å¯†ç æ˜¯å¦ä¸ºç©º
             else if (enPassword.equals("")) {
-                Toast.makeText(Register.this, "ÇëÔÙ´ÎÊäÈëÄúµÄÃÜÂë", Toast.LENGTH_LONG).show();
+                Toast.makeText(Register.this, "è¯·å†æ¬¡è¾“å…¥æ‚¨çš„å¯†ç ", Toast.LENGTH_LONG).show();
             }
-            //ÅĞ¶ÏÑéÖ¤ÃÜÂëÊÇ·ñÕıÈ·
+            //åˆ¤æ–­éªŒè¯å¯†ç æ˜¯å¦æ­£ç¡®
             else if (!password.equals(enPassword)) {
-                Toast.makeText(Register.this, "Á½´ÎÊäÈëµÄÃÜÂë²»Í¬£¬ÇëÖØĞÂÊäÈë", Toast.LENGTH_LONG).show();
+                Toast.makeText(Register.this, "ä¸¤æ¬¡è¾“å…¥çš„å¯†ç ä¸åŒï¼Œè¯·é‡æ–°è¾“å…¥", Toast.LENGTH_LONG).show();
             }
-            //ÅĞ¶ÏÓÊÏäÊÇ·ñÎª¿Õ
+            //åˆ¤æ–­é‚®ç®±æ˜¯å¦ä¸ºç©º
             else if (emailAddress.equals("")) {
-                Toast.makeText(Register.this, "ÇëÊäÈëÄúµÄÓÊÏäµØÖ·", Toast.LENGTH_LONG).show();
+                Toast.makeText(Register.this, "è¯·è¾“å…¥æ‚¨çš„é‚®ç®±åœ°å€", Toast.LENGTH_LONG).show();
             }
-            //ÅĞ¶ÏÓÊÏä¸ñÊ½ÊÇ·ñºÏ¹æ·¶
+            //åˆ¤æ–­é‚®ç®±æ ¼å¼æ˜¯å¦åˆè§„èŒƒ
             else if (!check_email(emailAddress)) {
-                Toast.makeText(Register.this, "ÄúµÄÓÊÏäµØÖ·²»ÕıÈ·£¬ÇëÖØĞÂÊäÈë", Toast.LENGTH_LONG).show();
+                Toast.makeText(Register.this, "æ‚¨çš„é‚®ç®±åœ°å€ä¸æ­£ç¡®ï¼Œè¯·é‡æ–°è¾“å…¥", Toast.LENGTH_LONG).show();
             }
 
-            //·¢ËÍÓÃ»§ĞÅÏ¢µ½·şÎñÆ÷
+            //å‘é€ç”¨æˆ·ä¿¡æ¯åˆ°æœåŠ¡å™¨
             else {
-                //Òì²½ÈÎÎñÅĞ¶ÏÓÃ»§ÊÇ·ñµÇÂ¼³É¹¦
+                //å¼‚æ­¥ä»»åŠ¡åˆ¤æ–­ç”¨æˆ·æ˜¯å¦ç™»å½•æˆåŠŸ
                 new registerUser().execute();
             }
         }
 
-        //"·µ»Ø"°´Å¥
+        //"è¿”å›"æŒ‰é’®
         if (id == R.id.back) {
             Register.this.finish();
         }
     }
 
-    //ÑéÖ¤ÓÊÏä¸ñÊ½
+    //éªŒè¯é‚®ç®±æ ¼å¼
     public boolean check_email(String ead) {
         int len = ead.length();
         int i;
@@ -144,15 +144,15 @@ public class Register extends Activity implements View.OnClickListener {
 
         protected void onPreExecute() {
             super.onPreExecute();
-            //µ¯³ö"ÕıÔÚ×¢²á"¿ò
+            //å¼¹å‡º"æ­£åœ¨æ³¨å†Œ"æ¡†
             progressDialog = new ProgressDialog(Register.this);
-            progressDialog.setMessage("ÕıÔÚ×¢²á..");
+            progressDialog.setMessage("æ­£åœ¨æ³¨å†Œ..");
             progressDialog.setCancelable(true);
             progressDialog.show();
         }
 
         protected Void doInBackground(Void... params) {
-            //Ïò·şÎñÆ÷·¢ËÍÇëÇó
+            //å‘æœåŠ¡å™¨å‘é€è¯·æ±‚
             registerInfo = userFunctions.registerUser(username, emailAddress, password);
             return null;
         }
@@ -162,32 +162,32 @@ public class Register extends Activity implements View.OnClickListener {
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-            //ÅĞ¶ÏÊÕµ½µÄjsonÊÇ·ñÎª¿Õ
+            //åˆ¤æ–­æ”¶åˆ°çš„jsonæ˜¯å¦ä¸ºç©º
             if (registerInfo != null) {
                 try {
-                    //×¢²á³É¹¦
+                    //æ³¨å†ŒæˆåŠŸ
                     if (registerInfo.getString("error").equals("0")) {
-                        //Ìø×ªÖÁ¸öÈËÖĞĞÄ
+                        //è·³è½¬è‡³ä¸ªäººä¸­å¿ƒ
                         Intent intent = new Intent(Register.this, MainActivity.class);
                         startActivity(intent);
                     }
-                    //·¢Éú´íÎó
+                    //å‘ç”Ÿé”™è¯¯
                     else if (registerInfo.getString("error").equals("1")) {
-                        Toast.makeText(Register.this, "×¢²áÊ§°Ü", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Register.this, "æ³¨å†Œå¤±è´¥", Toast.LENGTH_LONG).show();
                     }
-                    //ÓÃ»§ÃûÒÑ´æÔÚ
+                    //ç”¨æˆ·åå·²å­˜åœ¨
                     else if (registerInfo.getString("error").equals("2")) {
-                        Toast.makeText(Register.this, "ÓÃ»§ÃûÒÑ´æÔÚ£¬ÇëÖØĞÂÊäÈë", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Register.this, "ç”¨æˆ·åå·²å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥", Toast.LENGTH_LONG).show();
                     }
-                    //ÓÊÏäÒÑ±»Ê¹ÓÃ
+                    //é‚®ç®±å·²è¢«ä½¿ç”¨
                     else {
-                        Toast.makeText(Register.this, "ÓÊÏäÒÑ´æÔÚ£¬ÇëÖØĞÂÊäÈë", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Register.this, "é‚®ç®±å·²å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(Register.this, "×¢²áÊ§°Ü£¬Çë¼ì²éÄúµÄÍøÂçÊÇ·ñÕı³£", Toast.LENGTH_LONG).show();
+                Toast.makeText(Register.this, "æ³¨å†Œå¤±è´¥ï¼Œè¯·æ£€æŸ¥æ‚¨çš„ç½‘ç»œæ˜¯å¦æ­£å¸¸", Toast.LENGTH_LONG).show();
             }
         }
     }

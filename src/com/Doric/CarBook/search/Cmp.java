@@ -3,7 +3,7 @@ package com.Doric.CarBook.search;
 import java.util.Comparator;
 
 /**
- * Èý¸ö±È½ÏÀà
+ * ä¸‰ä¸ªæ¯”è¾ƒç±»
  */
 class ComparatorCarInfo implements Comparator<CarInfor> {
     @Override

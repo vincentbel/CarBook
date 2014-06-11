@@ -26,32 +26,32 @@ import java.util.List;
 
 public class MyInformation extends Activity implements View.OnClickListener {
 
-    //·şÎñÆ÷ÇëÇóÏà¹Ø±äÁ¿
-    private String sexURL = Constant.BASE_URL + "/sex.php";  //µÇÂ¼ÇëÇóµÄurl,Îñ±Ø¼ÓÉÏhttp://»òhttps://
-    private List<NameValuePair> sexParams;    //µÇÂ¼Ê±·¢ËÍ¸ø·şÎñÆ÷µÄÊı¾İ
-    private JSONObject sexInfo;       //Ïò·şÎñÆ÷ÇëÇóµÃµ½µÄjson¶ÔÏó
+    //æœåŠ¡å™¨è¯·æ±‚ç›¸å…³å˜é‡
+    private String sexURL = Constant.BASE_URL + "/sex.php";  //ç™»å½•è¯·æ±‚çš„url,åŠ¡å¿…åŠ ä¸Šhttp://æˆ–https://
+    private List<NameValuePair> sexParams;    //ç™»å½•æ—¶å‘é€ç»™æœåŠ¡å™¨çš„æ•°æ®
+    private JSONObject sexInfo;       //å‘æœåŠ¡å™¨è¯·æ±‚å¾—åˆ°çš„jsonå¯¹è±¡
 
-    private String headURL = Constant.BASE_URL + "/user_setting.php";  //µÇÂ¼ÇëÇóµÄurl,Îñ±Ø¼ÓÉÏhttp://»òhttps://
-    private List<NameValuePair> headParams;    //µÇÂ¼Ê±·¢ËÍ¸ø·şÎñÆ÷µÄÊı¾İ
-    private JSONObject headInfo;       //Ïò·şÎñÆ÷ÇëÇóµÃµ½µÄjson¶ÔÏó
+    private String headURL = Constant.BASE_URL + "/user_setting.php";  //ç™»å½•è¯·æ±‚çš„url,åŠ¡å¿…åŠ ä¸Šhttp://æˆ–https://
+    private List<NameValuePair> headParams;    //ç™»å½•æ—¶å‘é€ç»™æœåŠ¡å™¨çš„æ•°æ®
+    private JSONObject headInfo;       //å‘æœåŠ¡å™¨è¯·æ±‚å¾—åˆ°çš„jsonå¯¹è±¡
 
-    private String informationURL = Constant.BASE_URL + "/user_setting.php";  //µÇÂ¼ÇëÇóµÄurl,Îñ±Ø¼ÓÉÏhttp://»òhttps://
-    private List<NameValuePair> informationParams;    //µÇÂ¼Ê±·¢ËÍ¸ø·şÎñÆ÷µÄÊı¾İ
-    private JSONObject informationInfo;       //Ïò·şÎñÆ÷ÇëÇóµÃµ½µÄjson¶ÔÏó
+    private String informationURL = Constant.BASE_URL + "/user_setting.php";  //ç™»å½•è¯·æ±‚çš„url,åŠ¡å¿…åŠ ä¸Šhttp://æˆ–https://
+    private List<NameValuePair> informationParams;    //ç™»å½•æ—¶å‘é€ç»™æœåŠ¡å™¨çš„æ•°æ®
+    private JSONObject informationInfo;       //å‘æœåŠ¡å™¨è¯·æ±‚å¾—åˆ°çš„jsonå¯¹è±¡
 
     private UserFunctions userFunctions;
 
-    //¶¨Òå¿Ø¼ş
-    private ProgressDialog progressDialog;   //Òì²½ÈÎÎñÊ±ÏÔÊ¾µÄ½ø¶ÈÌõ
+    //å®šä¹‰æ§ä»¶
+    private ProgressDialog progressDialog;   //å¼‚æ­¥ä»»åŠ¡æ—¶æ˜¾ç¤ºçš„è¿›åº¦æ¡
     private RelativeLayout loHead, loSex, loUsername;
     private Button btnLogOut, btnBack;
     private TextView tvUsername;
 
-    //¶¨Òå±äÁ¿
-    private String name = "ÔİÎŞ", sex = "ÄĞ";
-    private String[] sexes = new String[]{"ÄĞ", "Å®"};
+    //å®šä¹‰å˜é‡
+    private String name = "æš‚æ— ", sex = "ç”·";
+    private String[] sexes = new String[]{"ç”·", "å¥³"};
 
-    //ÉèÖÃÍ·ÏñËùÓÃ±äÁ¿
+    //è®¾ç½®å¤´åƒæ‰€ç”¨å˜é‡
     private String whichHead = "0";
     private ImageView currentHead = null;
 
@@ -61,7 +61,7 @@ public class MyInformation extends Activity implements View.OnClickListener {
 
         userFunctions = new UserFunctions(getApplicationContext());
 
-        //ÉèÖÃ¿Ø¼ş
+        //è®¾ç½®æ§ä»¶
         loHead = (RelativeLayout) findViewById(R.id.head_layout);
         loSex = (RelativeLayout) findViewById(R.id.sex_layout);
         loUsername = (RelativeLayout) findViewById(R.id.username_layout);
@@ -69,42 +69,42 @@ public class MyInformation extends Activity implements View.OnClickListener {
         btnBack = (Button) findViewById(R.id.back);
         tvUsername = (TextView) findViewById(R.id.username_text2);
 
-        //Ìí¼Ó¼àÌıÆ÷
+        //æ·»åŠ ç›‘å¬å™¨
         loHead.setOnClickListener(this);
         loSex.setOnClickListener(this);
         loUsername.setOnClickListener(this);
         btnLogOut.setOnClickListener(this);
         btnBack.setOnClickListener(this);
 
-        //Òş²ØActionbar
+        //éšè—Actionbar
         getActionBar().hide();
 
-        //È¡µÃÆô¶¯¸ÃActivityµÄIntent¶ÔÏó
+        //å–å¾—å¯åŠ¨è¯¥Activityçš„Intentå¯¹è±¡
         Intent intent = getIntent();
 
-        //È¡³öIntentÖĞ¸½¼ÓµÄÊı¾İ
+        //å–å‡ºIntentä¸­é™„åŠ çš„æ•°æ®
         if (intent.getStringExtra("name") != null) {
             name = intent.getStringExtra("name");
             tvUsername.setText(name);
         }
 
-        //»ñÈ¡ÓÃ»§ĞÅÏ¢
+        //è·å–ç”¨æˆ·ä¿¡æ¯
         informationParams = new ArrayList<NameValuePair>();
         informationParams.add(new BasicNameValuePair("tag", "get_avatar"));
         informationParams.add(new BasicNameValuePair("username", name));
 
-        //Òì²½ÈÎÎñ
+        //å¼‚æ­¥ä»»åŠ¡
         new getInformation().execute();
     }
 
-    //ÎªÍ¼ÏñÌí¼Ó±ß¿ò
+    //ä¸ºå›¾åƒæ·»åŠ è¾¹æ¡†
     public void handleImageView(ImageView imageView){
         currentHead.setImageDrawable(null);
         imageView.setImageResource(R.drawable.head_border);
         currentHead = imageView;
     }
 
-    //ÉèÖÃÍ·Ïñ
+    //è®¾ç½®å¤´åƒ
     public void setHead(String which) {
         ImageView imageHead = (ImageView) findViewById(R.id.head_image);
         switch ( Integer.parseInt(which) ){
@@ -134,24 +134,24 @@ public class MyInformation extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         int id = v.getId();
 
-        //"Í·Ïñ"°´Å¥
+        //"å¤´åƒ"æŒ‰é’®
         if (id == R.id.head_layout) {
             LayoutInflater inflater = getLayoutInflater();
             View layout = inflater.inflate(R.layout.choose_head, (ViewGroup) findViewById(R.id.chooseHead));
             AlertDialog headBuilder =  new AlertDialog.Builder(this)
-                    .setTitle("×Ô¶¨ÒåÍ·Ïñ")
+                    .setTitle("è‡ªå®šä¹‰å¤´åƒ")
                     .setView(layout)
-                    .setNegativeButton("È¡Ïû", null)
-                    .setPositiveButton("È·¶¨", new DialogInterface.OnClickListener() {
+                    .setNegativeButton("å–æ¶ˆ", null)
+                    .setPositiveButton("ç¡®å®š", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            //·¢ËÍÓÃ»§ĞÅÏ¢µ½·şÎñÆ÷
+                            //å‘é€ç”¨æˆ·ä¿¡æ¯åˆ°æœåŠ¡å™¨
                             headParams = new ArrayList<NameValuePair>();
                             headParams.add(new BasicNameValuePair("tag", "update_avatar"));
                             headParams.add(new BasicNameValuePair("user_id", name));
                             headParams.add(new BasicNameValuePair("status", whichHead));
 
-                            //Òì²½ÈÎÎñ
+                            //å¼‚æ­¥ä»»åŠ¡
                             new changeHead().execute();
                         }
                     })
@@ -167,12 +167,12 @@ public class MyInformation extends Activity implements View.OnClickListener {
             final ImageView imageHead8 = (ImageView) layout.findViewById(R.id.head8);
             final ImageView imageHead9 = (ImageView) layout.findViewById(R.id.head9);
 
-            //Ä¬ÈÏ¸øµÚÒ»¸öÍ·ÏñÌí¼Ó±ß¿ò
+            //é»˜è®¤ç»™ç¬¬ä¸€ä¸ªå¤´åƒæ·»åŠ è¾¹æ¡†
             imageHead1.setImageResource(R.drawable.head_border);
             currentHead = imageHead1;
             whichHead = "1";
 
-            //Ìí¼Ó¼àÌıÆ÷
+            //æ·»åŠ ç›‘å¬å™¨
             imageHead1.setOnClickListener(new View.OnClickListener(){
                 public void onClick(View v) { whichHead = "1"; handleImageView(imageHead1);}
             });
@@ -202,60 +202,60 @@ public class MyInformation extends Activity implements View.OnClickListener {
             });
         }
 
-        //"ĞÔ±ğ"°´Å¥
+        //"æ€§åˆ«"æŒ‰é’®
         if (id == R.id.sex_layout) {
             new AlertDialog.Builder(MyInformation.this) // build AlertDialog
-                    .setTitle("Ñ¡ÔñĞÔ±ğ") // title
+                    .setTitle("é€‰æ‹©æ€§åˆ«") // title
                     .setItems(sexes, new DialogInterface.OnClickListener() { //content
                         public void onClick(DialogInterface dialog, int which) {
-                            //ÅĞ¶ÏÊÇ·ñĞŞ¸ÄÁËĞÔ±ğ
+                            //åˆ¤æ–­æ˜¯å¦ä¿®æ”¹äº†æ€§åˆ«
                             if (!sexes[which].equals(sex)) {
                                 /*
-                                //·¢ËÍÓÃ»§ĞÅÏ¢µ½·şÎñÆ÷
+                                //å‘é€ç”¨æˆ·ä¿¡æ¯åˆ°æœåŠ¡å™¨
                                 sexParams = new ArrayList<NameValuePair>();
                                 sexParams.add(new BasicNameValuePair("tag", "sex"));
                                 sexParams.add(new BasicNameValuePair("username", name));
                                 sexParams.add(new BasicNameValuePair("sex", sex));
 
-                                //Òì²½ÈÎÎñ
+                                //å¼‚æ­¥ä»»åŠ¡
                                 new changeSex().execute();
                                 */
-                                if (sex.equals("ÄĞ")) {
-                                    sex = "Å®";
+                                if (sex.equals("ç”·")) {
+                                    sex = "å¥³";
                                 } else {
-                                    sex = "ÄĞ";
+                                    sex = "ç”·";
                                 }
                                 TextView tvSex = (TextView) findViewById(R.id.sex_text2);
                                 tvSex.setText(sex);
-                                Toast.makeText(MyInformation.this, "ĞÔ±ğĞŞ¸Ä³É¹¦", Toast.LENGTH_LONG).show();
+                                Toast.makeText(MyInformation.this, "æ€§åˆ«ä¿®æ”¹æˆåŠŸ", Toast.LENGTH_LONG).show();
                             }
                         }
                     })
                     .show();
         }
 
-        //"ÍË³öµÇÂ¼"°´Å¥
+        //"é€€å‡ºç™»å½•"æŒ‰é’®
         if (id == R.id.button_log_out) {
             logOutDialog();
         }
 
-        //"·µ»Ø"°´Å¥
+        //"è¿”å›"æŒ‰é’®
         if (id == R.id.back) {
             MyInformation.this.finish();
         }
     }
 
-    //ÍË³öµÇÂ¼¶Ô»°¿ò
+    //é€€å‡ºç™»å½•å¯¹è¯æ¡†
     public void logOutDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MyInformation.this);
-        builder.setMessage("È·¶¨ÒªÍË³öµÇÂ¼Âğ£¿");
-        builder.setTitle("ÍË³öµÇÂ¼");
-        builder.setNegativeButton("È¡Ïû", new DialogInterface.OnClickListener() {
+        builder.setMessage("ç¡®å®šè¦é€€å‡ºç™»å½•å—ï¼Ÿ");
+        builder.setTitle("é€€å‡ºç™»å½•");
+        builder.setNegativeButton("å–æ¶ˆ", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
-        builder.setPositiveButton("È·ÈÏ", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("ç¡®è®¤", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 userFunctions.logoutUser();
                 dialog.dismiss();
@@ -274,7 +274,7 @@ public class MyInformation extends Activity implements View.OnClickListener {
     }
 
 
-    //»ñÈ¡ÓÃ»§ĞÅÏ¢µÄÒì²½ÈÎÎñ
+    //è·å–ç”¨æˆ·ä¿¡æ¯çš„å¼‚æ­¥ä»»åŠ¡
     private class getInformation extends AsyncTask<Void, Void, Void> {
 
         protected void onPreExecute() {
@@ -282,7 +282,7 @@ public class MyInformation extends Activity implements View.OnClickListener {
         }
 
         protected Void doInBackground(Void... params) {
-            //Ïò·şÎñÆ÷·¢ËÍÇëÇó
+            //å‘æœåŠ¡å™¨å‘é€è¯·æ±‚
             JSONParser jsonParser = new JSONParser();
             informationInfo = jsonParser.getJSONFromUrl(informationURL, informationParams);
             return null;
@@ -290,11 +290,11 @@ public class MyInformation extends Activity implements View.OnClickListener {
 
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            //ÅĞ¶ÏÊÕµ½µÄjsonÊÇ·ñÎª¿Õ
+            //åˆ¤æ–­æ”¶åˆ°çš„jsonæ˜¯å¦ä¸ºç©º
             if (informationInfo != null) {
                 try {
                     if (informationInfo.getString("success").equals("1")) {
-                        //»ñÈ¡Í·Ïñ
+                        //è·å–å¤´åƒ
                         whichHead = informationInfo.getString("status");
                         setHead(whichHead);
                     }
@@ -305,20 +305,20 @@ public class MyInformation extends Activity implements View.OnClickListener {
         }
     }
 
-    //ĞŞ¸ÄÍ·Ïñ
+    //ä¿®æ”¹å¤´åƒ
     private class changeHead extends AsyncTask<Void, Void, Void> {
 
         protected void onPreExecute() {
             super.onPreExecute();
-            //µ¯³ö"ÕıÔÚĞŞ¸Ä"¿ò
+            //å¼¹å‡º"æ­£åœ¨ä¿®æ”¹"æ¡†
             progressDialog = new ProgressDialog(MyInformation.this);
-            progressDialog.setMessage("ÕıÔÚĞŞ¸Ä..");
+            progressDialog.setMessage("æ­£åœ¨ä¿®æ”¹..");
             progressDialog.setCancelable(true);
             progressDialog.show();
         }
 
         protected Void doInBackground(Void... params) {
-            //Ïò·şÎñÆ÷·¢ËÍÇëÇó
+            //å‘æœåŠ¡å™¨å‘é€è¯·æ±‚
             JSONParser jsonParser = new JSONParser();
             headInfo = jsonParser.getJSONFromUrl(headURL, headParams);
             return null;
@@ -329,27 +329,27 @@ public class MyInformation extends Activity implements View.OnClickListener {
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-            //ÅĞ¶ÏÊÕµ½µÄjsonÊÇ·ñÎª¿Õ
+            //åˆ¤æ–­æ”¶åˆ°çš„jsonæ˜¯å¦ä¸ºç©º
             if (headInfo != null) {
                 try {
                     if (headInfo.getString("success").equals("1")) {
-                        Toast.makeText(MyInformation.this, "Í·ÏñĞŞ¸Ä³É¹¦", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MyInformation.this, "å¤´åƒä¿®æ”¹æˆåŠŸ", Toast.LENGTH_LONG).show();
                         setHead(whichHead);
                     }
-                    //·¢Éú´íÎó
+                    //å‘ç”Ÿé”™è¯¯
                     else {
-                        Toast.makeText(MyInformation.this, "ĞŞ¸ÄÊ§°Ü", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MyInformation.this, "ä¿®æ”¹å¤±è´¥", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(MyInformation.this, "ĞŞ¸ÄÊ§°Ü£¬Çë¼ì²éÄúµÄÍøÂçÊÇ·ñÕı³£", Toast.LENGTH_LONG).show();
+                Toast.makeText(MyInformation.this, "ä¿®æ”¹å¤±è´¥ï¼Œè¯·æ£€æŸ¥æ‚¨çš„ç½‘ç»œæ˜¯å¦æ­£å¸¸", Toast.LENGTH_LONG).show();
             }
         }
     }
 
-    //ĞŞ¸ÄĞÔ±ğ
+    //ä¿®æ”¹æ€§åˆ«
     private class changeSex extends AsyncTask<Void, Void, Void> {
 
         protected void onPreExecute() {
@@ -357,7 +357,7 @@ public class MyInformation extends Activity implements View.OnClickListener {
         }
 
         protected Void doInBackground(Void... params) {
-            //Ïò·şÎñÆ÷·¢ËÍÇëÇó
+            //å‘æœåŠ¡å™¨å‘é€è¯·æ±‚
             JSONParser jsonParser = new JSONParser();
             sexInfo = jsonParser.getJSONFromUrl(sexURL, sexParams);
             return null;
@@ -368,28 +368,28 @@ public class MyInformation extends Activity implements View.OnClickListener {
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-            //ÅĞ¶ÏÊÕµ½µÄjsonÊÇ·ñÎª¿Õ
+            //åˆ¤æ–­æ”¶åˆ°çš„jsonæ˜¯å¦ä¸ºç©º
             if (sexInfo != null) {
                 try {
                     if (sexInfo.getString("success").equals("1")) {
-                        if (sex.equals("ÄĞ")) {
-                            sex = "Å®";
+                        if (sex.equals("ç”·")) {
+                            sex = "å¥³";
                         } else {
-                            sex = "ÄĞ";
+                            sex = "ç”·";
                         }
                         TextView tvSex = (TextView) findViewById(R.id.sex_text2);
                         tvSex.setText(sex);
-                        Toast.makeText(MyInformation.this, "ĞÔ±ğĞŞ¸Ä³É¹¦", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MyInformation.this, "æ€§åˆ«ä¿®æ”¹æˆåŠŸ", Toast.LENGTH_LONG).show();
                     }
-                    //·¢Éú´íÎó
+                    //å‘ç”Ÿé”™è¯¯
                     else {
-                        Toast.makeText(MyInformation.this, "ĞŞ¸ÄÊ§°Ü", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MyInformation.this, "ä¿®æ”¹å¤±è´¥", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(MyInformation.this, "ĞŞ¸ÄÊ§°Ü£¬Çë¼ì²éÄúµÄÍøÂçÊÇ·ñÕı³£", Toast.LENGTH_LONG).show();
+                Toast.makeText(MyInformation.this, "ä¿®æ”¹å¤±è´¥ï¼Œè¯·æ£€æŸ¥æ‚¨çš„ç½‘ç»œæ˜¯å¦æ­£å¸¸", Toast.LENGTH_LONG).show();
             }
         }
     }

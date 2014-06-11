@@ -44,7 +44,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Ìõ¼şËÑË÷½á¹û½çÃæ
+ * æ¡ä»¶æœç´¢ç»“æœç•Œé¢
  */
 public class Result extends Activity {
     public static ArrayList<CarInfor> mCarList;
@@ -67,7 +67,7 @@ public class Result extends Activity {
     @Override
     protected void onCreate(Bundle saveInstance){
         super.onCreate(saveInstance);
-        //»ñÈ¡ĞÅÏ¢
+        //è·å–ä¿¡æ¯
         getActionBar().setDisplayHomeAsUpEnabled(true);
         initPage();
         new GetPicData().start();
@@ -108,7 +108,7 @@ public class Result extends Activity {
 
         if(mCarList.size()==0){
             CarInfor cs =new CarInfor() ;
-            cs.setCarName("ºÜ±§Ç¸£¬Ã»ÓĞÕÒµ½ÄúÏëÒªµÄ³µ");
+            cs.setCarName("å¾ˆæŠ±æ­‰ï¼Œæ²¡æœ‰æ‰¾åˆ°æ‚¨æƒ³è¦çš„è½¦");
             cs.setCarId("0");
             cs.setCarPicPath("");
             mCarList.add(cs);
@@ -177,7 +177,7 @@ public class Result extends Activity {
 
 
     /**
-     * ¸üĞÂÊı¾İµÄHandler
+     * æ›´æ–°æ•°æ®çš„Handler
      */
     final Handler cwjHandler = new Handler();
     class UpdateRunnable implements  Runnable{
@@ -277,9 +277,9 @@ public class Result extends Activity {
         private String getSDPath() {
             File sdDir = null;
             boolean sdCardExist = Environment.getExternalStorageState()
-                    .equals(Environment.MEDIA_MOUNTED);   //ÅĞ¶Ïsd¿¨ÊÇ·ñ´æÔÚ
+                    .equals(Environment.MEDIA_MOUNTED);   //åˆ¤æ–­sdå¡æ˜¯å¦å­˜åœ¨
             if (sdCardExist) {
-                sdDir = Environment.getExternalStorageDirectory();//»ñÈ¡¸úÄ¿Â¼
+                sdDir = Environment.getExternalStorageDirectory();//è·å–è·Ÿç›®å½•
             }
             return sdDir.toString();
 
@@ -312,7 +312,7 @@ public class Result extends Activity {
 
 
 /**
- * »ñÈ¡ËÑË÷½á¹ûµÄÒì²½Àà
+ * è·å–æœç´¢ç»“æœçš„å¼‚æ­¥ç±»
  */
 class CSearchGetData{
     public  static  JSONObject carInfoObj;
@@ -348,12 +348,12 @@ class CSearchGetData{
 
         protected void onPreExecute() {
             super.onPreExecute();
-            //¼ÓÔØÊ±µ¯³ö
+            //åŠ è½½æ—¶å¼¹å‡º
             SearchMain.searchmain.loading();
         }
 
         protected Void doInBackground(Void... params) {
-            //Ïò·şÎñÆ÷·¢ËÍÇëÇó
+            //å‘æœåŠ¡å™¨å‘é€è¯·æ±‚
             JSONParser jsonParser = new JSONParser();
             carInfoObj = jsonParser.getJSONFromUrl(url, carInfoParams);
             return null;
@@ -368,7 +368,7 @@ class CSearchGetData{
                     int success = carInfoObj.getInt("success");
                     if(success==0){
                         SearchMain.searchmain.stopLoading();
-                        Toast.makeText(SearchMain.searchmain, "Î´ÕÒµ½·ûºÏµÄ³µÁ¾", Toast.LENGTH_LONG).show();
+                        Toast.makeText(SearchMain.searchmain, "æœªæ‰¾åˆ°ç¬¦åˆçš„è½¦è¾†", Toast.LENGTH_LONG).show();
                     }
                     else if (success == 1) {
                         int num = carInfoObj.getInt("search_number");
@@ -404,7 +404,7 @@ class CSearchGetData{
 
             } else {
                 SearchMain.searchmain.stopLoading();
-                Toast.makeText(SearchMain.searchmain, "ÎŞ·¨Á¬½ÓÍøÂç£¬Çë¼ì²éÄúµÄÊÖ»úÍøÂçÉèÖÃ", Toast.LENGTH_LONG).show();
+                Toast.makeText(SearchMain.searchmain, "æ— æ³•è¿æ¥ç½‘ç»œï¼Œè¯·æ£€æŸ¥æ‚¨çš„æ‰‹æœºç½‘ç»œè®¾ç½®", Toast.LENGTH_LONG).show();
             }
         }
     }

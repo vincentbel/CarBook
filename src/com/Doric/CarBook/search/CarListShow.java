@@ -67,7 +67,7 @@ public class CarListShow extends Fragment {
 
 
     /**
-     * »ñÈ¡¸ñÊ½»¯µÄÊı¾İ
+     * è·å–æ ¼å¼åŒ–çš„æ•°æ®
      * @param al_cs
      * @return
      */
@@ -89,13 +89,13 @@ public class CarListShow extends Fragment {
 
 
     /**
-     * ³õÊ¼»¯½çÃæ
+     * åˆå§‹åŒ–ç•Œé¢
      */
     public void initPage() {
 
 
 
-        //½çÃæÏÔÊ¾
+        //ç•Œé¢æ˜¾ç¤º
         mLinearLayout = new LinearLayout(SearchMain.searchmain);
         LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(LinearLayout.
                 LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -166,7 +166,7 @@ public class CarListShow extends Fragment {
 
 
     /**
-     * Êı¾İ°ó¶¨Àà
+     * æ•°æ®ç»‘å®šç±»
      */
     private class ListViewBinder implements SimpleAdapter.ViewBinder {
 
@@ -188,7 +188,7 @@ public class CarListShow extends Fragment {
 
 
     /**
-     * ¸üĞÂÊı¾İµÄhandler
+     * æ›´æ–°æ•°æ®çš„handler
      */
     final Handler cwjHandler = new Handler();
     class UpdateRunnable implements  Runnable{
@@ -263,16 +263,16 @@ public class CarListShow extends Fragment {
 
 
         /**
-         * »ñÈ¡SD¿¨Â·¾¶
+         * è·å–SDå¡è·¯å¾„
          * @return
          */
         private String getSDPath(){
             File sdDir = null;
             boolean sdCardExist = Environment.getExternalStorageState()
-                    .equals(Environment.MEDIA_MOUNTED);   //ÅĞ¶Ïsd¿¨ÊÇ·ñ´æÔÚ
+                    .equals(Environment.MEDIA_MOUNTED);   //åˆ¤æ–­sdå¡æ˜¯å¦å­˜åœ¨
             if   (sdCardExist)
             {
-                sdDir = Environment.getExternalStorageDirectory();//»ñÈ¡¸úÄ¿Â¼
+                sdDir = Environment.getExternalStorageDirectory();//è·å–è·Ÿç›®å½•
             }
             return sdDir.toString();
 
@@ -281,7 +281,7 @@ public class CarListShow extends Fragment {
 
 
         /**
-         * ¸ù¾İUrl»ñÈ¡Î¨Ò»µÄÍ¼Æ¬Â·¾¶
+         * æ ¹æ®Urlè·å–å”¯ä¸€çš„å›¾ç‰‡è·¯å¾„
          * @param imageUrl
          * @return
          */
@@ -310,7 +310,7 @@ public class CarListShow extends Fragment {
 
 
         /**
-         * ±£´æÍ¼Æ¬
+         * ä¿å­˜å›¾ç‰‡
          * @param path
          * @param bitmap
          * @throws IOException

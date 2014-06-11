@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class CarInfor implements Serializable {
 
-    //³ÉÔ±±äÁ¿
-    //Í¨¹ıÊı×Ö±íÊ¾³µÁ¾´óĞ¡ÀàĞÍ,ÒıÇæÀàĞÍ
+    //æˆå‘˜å˜é‡
+    //é€šè¿‡æ•°å­—è¡¨ç¤ºè½¦è¾†å¤§å°ç±»å‹,å¼•æ“ç±»å‹
 
 
     private String carSerie;
@@ -56,7 +56,7 @@ public class CarInfor implements Serializable {
         return result;
     }
 
-    //¹¹Ôìº¯Êı
+    //æ„é€ å‡½æ•°
     public CarInfor() {
 
     }
@@ -90,7 +90,7 @@ public class CarInfor implements Serializable {
     }
 
 
-    //»ñÈ¡³ÉÔ±±äÁ¿µÄÖµ
+    //è·å–æˆå‘˜å˜é‡çš„å€¼
 
     public String getCarGrade() {
         return carGrade;
@@ -101,7 +101,7 @@ public class CarInfor implements Serializable {
     }
 
 
-    //³õÊ¼»¯±äÁ¿
+    //åˆå§‹åŒ–å˜é‡
 
 
 

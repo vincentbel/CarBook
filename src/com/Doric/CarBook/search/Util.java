@@ -1,11 +1,11 @@
 /**
  * @(#)CnToSpell.java 
- * ��Ȩ���� Easydozer ��Ȩ���� Υ�߱ؾ� 
+ * 锟斤拷权锟斤拷锟斤拷 Easydozer 锟斤拷权锟斤拷锟斤拷 违锟竭必撅拷 
  *
- * �޶���¼:
- * 1)����ߣ�?asydozer
- *   ʱ����??004-10-20��??
- *   �??????��������??
+ * 锟睫讹拷锟斤拷录:
+ * 1)锟斤拷锟斤拷撸锟?asydozer
+ *   时锟斤拷锟戒??004-10-20锟斤??
+ *   锟??????斤拷锟斤拷锟斤拷锟斤??
  */
 package com.Doric.CarBook.search;
 
@@ -28,14 +28,14 @@ import java.util.*;
  */
 
 /**
- * ����ת��Ϊȫ??
+ * 锟斤拷锟斤拷转锟斤拷为全??
  * <p/>
  * <p/>
- * JDK��??
+ * JDK锟芥??
  * <p/>
  * 1.4
  *
- * @author л����??
+ * @author 谢锟斤拷锟斤??
  * @version 1.0
  * @see
  * @since 1.0
@@ -458,12 +458,12 @@ class PinyinUtil {
     }
 
     /**
-     * ��õ������??�?scii.
+     * 锟斤拷玫锟斤拷锟斤拷锟斤拷??锟?scii.
      *
      * @param cn char
-     *           �����ַ�
+     *           锟斤拷锟斤拷锟街凤拷
      * @return int
-     * ���󷵻� 0,���򷵻�ascii
+     * 锟斤拷锟襟返伙拷 0,锟斤拷锟津返伙拷ascii
      */
     public static int getCnAscii(char cn) {
         String str = new String();
@@ -476,13 +476,13 @@ class PinyinUtil {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        if (bytes == null || bytes.length > 2 || bytes.length <= 0) { //����
+        if (bytes == null || bytes.length > 2 || bytes.length <= 0) { //锟斤拷锟斤拷
             return 0;
         }
-        if (bytes.length == 1) { //Ӣ���ַ�
+        if (bytes.length == 1) { //英锟斤拷锟街凤拷
             return bytes[0];
         }
-        if (bytes.length == 2) { //�����ַ�
+        if (bytes.length == 2) { //锟斤拷锟斤拷锟街凤拷
             int hightByte = 256 + bytes[0];
             int lowByte = 256 + bytes[1];
 
@@ -493,25 +493,25 @@ class PinyinUtil {
             return ascii;
         }
 
-        return 0; //����
+        return 0; //锟斤拷锟斤拷
     }
 
     /**
-     * ���?SCII�뵽SpellMap�в��Ҷ�Ӧ��ƴ��
+     * 锟斤拷锟?SCII锟诫到SpellMap锟叫诧拷锟揭讹拷应锟斤拷拼锟斤拷
      *
      * @param ascii int
-     *              �ַ���?���?SCII
+     *              锟街凤拷锟接?拷锟?SCII
      * @return String
-     * ƴ��,�����ж�ASCII�Ƿ�>0&<160,����Ƿ��ض��?����??????
+     * 拼锟斤拷,锟斤拷锟斤拷锟叫讹拷ASCII锟角凤拷>0&<160,锟斤拷锟斤拷欠锟斤拷囟锟接?拷锟斤拷??????
      * <p/>
-     * ����SpellMap�в���??���û���ҵ�ƴ��?�򷵻�null,����ҵ��򷵻�ƴ��?
+     * 锟斤拷锟斤拷SpellMap锟叫诧拷锟斤??锟斤拷锟矫伙拷锟斤拷业锟狡达拷锟?锟津返伙拷null,锟斤拷锟斤拷业锟斤拷蚍祷锟狡达拷锟?
      */
     public static String getSpellByAscii(int ascii) {
-        if (ascii > 0 && ascii < 160) { //���ַ�??
+        if (ascii > 0 && ascii < 160) { //锟斤拷锟街凤??
             return String.valueOf((char) ascii);
         }
 
-        if (ascii < -20319 || ascii > -10247) { //��֪�����ַ�
+        if (ascii < -20319 || ascii > -10247) { //锟斤拷知锟斤拷锟斤拷锟街凤拷
             return null;
         }
 
@@ -531,7 +531,7 @@ class PinyinUtil {
             if (valObj instanceof Integer) {
                 asciiRang = ((Integer) valObj).intValue();
 
-                if (ascii >= asciiRang0 && ascii < asciiRang) { //����ҵ�??         9
+                if (ascii >= asciiRang0 && ascii < asciiRang) { //锟斤拷锟斤拷业锟??         9
                     return (spell0 == null) ? spell : spell0;
                 } else {
                     spell0 = spell;
@@ -545,11 +545,11 @@ class PinyinUtil {
     }
 
     /**
-     * �����ַ���??�Ǻ���ת��Ϊȫƴ,�����ַ�����?���??   * @param cnStr String
-     * �ַ�
+     * 锟斤拷锟斤拷锟街凤拷锟饺??锟角猴拷锟斤拷转锟斤拷为全拼,锟斤拷锟斤拷锟街凤拷锟斤拷锟阶?拷锟??   * @param cnStr String
+     * 锟街凤拷
      *
      * @return String
-     * ת����ȫƴ����ַ�?
+     * 转锟斤拷锟斤拷全拼锟斤拷锟斤拷址锟?
      */
     public static String getFullSpell(String cnStr) {
         if (null == cnStr || "".equals(cnStr.trim())) {
@@ -560,7 +560,7 @@ class PinyinUtil {
         StringBuffer retuBuf = new StringBuffer();
         for (int i = 0, Len = chars.length; i < Len; i++) {
             int ascii = getCnAscii(chars[i]);
-            if (ascii == 0) { //ȡasciiʱ����??
+            if (ascii == 0) { //取ascii时锟斤拷锟斤??
                 retuBuf.append(chars[i]);
             } else {
                 String spell = getSpellByAscii(ascii);
@@ -660,7 +660,7 @@ class PinyinSearch {
 
     static public ArrayList<CarInfor> conditionSearch(String carseable, Grade g, int low, int hig) {
         ArrayList<CarInfor> al = new ArrayList<CarInfor>();
-        //Ʒ��ɸѡ
+        //品牌筛选
 
         for (CarSeable cs : CarSeableData.mCarSeable) {
             for (CarSeries css : cs.getCarSeriesList()) {
@@ -668,7 +668,7 @@ class PinyinSearch {
             }
         }
 
-        //����ɸѡ
+        //车型筛选
         ArrayList<CarInfor> delete = new ArrayList<CarInfor>();
         for (CarInfor ci : al) {
             for (int i = 0; i < 17; i++) {
@@ -678,7 +678,7 @@ class PinyinSearch {
         }
         al.removeAll(delete);
 
-        //����ɸѡ
+        //车价筛选
         delete = new ArrayList<CarInfor>();
         for (CarInfor ci : al) {
             if (ci.getLowPrice() > hig || ci.getHigPrice() < low) {
@@ -693,7 +693,7 @@ class PinyinSearch {
     static public ArrayList<CarSeries> search(ArrayList<CarSeries> carSerieses,String sysmbol) {
         String[] tmp = sysmbol.split(" ");
         ArrayList<CarSeries> returnlist = new ArrayList<CarSeries>();
-        //���ֱ�����복������
+        //如果直接输入车辆名称
 
 
         returnlist = searchCarSeries(carSerieses, sysmbol);
@@ -789,8 +789,8 @@ class GBK2UTF {
 
 
 class PinYinIndex {
-    //Ϊ����Ʒ�����������ʽΪ��
-    //����????Ʒ���б�????�ɵ�Pair����??
+    //为车辆品牌排序，输出格式为：
+    //首字????品牌列表????成的Pair的列??
     public static ArrayList<Pair<String, ArrayList<CarSeable>>> getIndex_CarSeable(ArrayList<CarSeable> list) {
         Map<String, ArrayList<CarSeable>> returnarr = new HashMap<String,ArrayList<CarSeable>>();
 
@@ -831,7 +831,7 @@ class PinYinIndex {
         return pairs;
     }
 
-    //Ϊ������??
+    //为车辆排??
     public static ArrayList<Pair<String, ArrayList<CarInfor>>> getIndex_CarInfo(ArrayList<CarInfor> list) {
         Map<String, ArrayList<CarInfor>> returnarr = new HashMap<String,ArrayList<CarInfor>>();
 
@@ -926,7 +926,7 @@ class MyListView extends ListView {
     }
 
     /**
-     * ���ò�����
+     * 设置不滚动
      */
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,

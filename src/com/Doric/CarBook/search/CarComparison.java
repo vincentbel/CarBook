@@ -31,8 +31,8 @@ import java.util.Map;
  */
 
 /**
- * ³µÁ¾¶Ô±ÈµÄÖ÷Ò³Ãæ¡£
- * Ìá¹©Ìí¼Ó³µÁ¾ºÍ¶Ô±ÈÁ½ÖÖ²Ù×÷
+ * è½¦è¾†å¯¹æ¯”çš„ä¸»é¡µé¢ã€‚
+ * æä¾›æ·»åŠ è½¦è¾†å’Œå¯¹æ¯”ä¸¤ç§æ“ä½œ
  */
 public class CarComparison extends Activity {
     public static CarComparison carComparison;
@@ -85,7 +85,7 @@ public class CarComparison extends Activity {
     }
 
     /**
-     * ³õÊ¼»¯Ò³Ãæ
+     * åˆå§‹åŒ–é¡µé¢
      */
     private void Initialize(){
             listView = (ListView)findViewById(R.id.cmp_list);
@@ -116,12 +116,12 @@ public class CarComparison extends Activity {
                         LinearLayout layout = (LinearLayout)listView.getChildAt(i);
                         CheckBox cb = (CheckBox)layout.findViewById(R.id.cmplist_text);
                         if(cb.isChecked()){
-                            //Ñ¡¶¨¸Ã³µÁ¾
+                            //é€‰å®šè¯¥è½¦è¾†
                             carInfors.add(adapter.getItem(i));
                         }
                     }
                     if(carInfors.size()!=2){
-                        Toast.makeText(CarComparison.this,"ÇëÑ¡ÔñÁ½Á¾³µ",Toast.LENGTH_LONG).show();
+                        Toast.makeText(CarComparison.this,"è¯·é€‰æ‹©ä¸¤è¾†è½¦",Toast.LENGTH_LONG).show();
                         return;
                     }
                     it.putExtra("firstCar",carInfors.get(0));
@@ -135,7 +135,7 @@ public class CarComparison extends Activity {
     }
 
     /**
-     * ¸üĞÂÊı¾İµÄHandler
+     * æ›´æ–°æ•°æ®çš„Handler
      */
     final Handler handler = new Handler();
     class UpdateRunnable implements  Runnable{
@@ -173,7 +173,7 @@ public class CarComparison extends Activity {
                 linearLayout = (LinearLayout)convertView;
 
             }
-            //°ó¶¨Êı¾İ
+            //ç»‘å®šæ•°æ®
             CheckBox cb= (CheckBox)linearLayout.findViewById(R.id.cmplist_text);
             cb.setText(list.getCarSeable()+" " +list.getCarSerie()+" "+list.getCarName());
 
@@ -188,7 +188,7 @@ public class CarComparison extends Activity {
     public void loading() {
         if (!progressDialog.isShowing()) {
 
-            progressDialog.setMessage("¼ÓÔØÖĞ..");
+            progressDialog.setMessage("åŠ è½½ä¸­..");
             progressDialog.setCancelable(true);
             progressDialog.show();
         }

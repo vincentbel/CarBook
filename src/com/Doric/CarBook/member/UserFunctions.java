@@ -16,13 +16,13 @@ import java.util.List;
 
 public class UserFunctions {
 
-    //·şÎñÆ÷ÇëÇóURL   µÇÂ¼ÇëÇóµÄurl,Îñ±Ø¼ÓÉÏhttp://»òhttps://
+    //æœåŠ¡å™¨è¯·æ±‚URL   ç™»å½•è¯·æ±‚çš„url,åŠ¡å¿…åŠ ä¸Šhttp://æˆ–https://
     private static String loginURL = Constant.BASE_URL + "/login.php";
     private static String registerURL = Constant.BASE_URL + "/register.php";
     private static String collectionURL = Constant.BASE_URL + "/user_collect.php";
     private static String myCommentsURL = Constant.BASE_URL + "/user_comments.php";
 
-    //±êÇ©
+    //æ ‡ç­¾
     private static String loginTag = "login";
     private static String registerTag = "register";
     private static String collectionTag = "collect";
@@ -33,8 +33,8 @@ public class UserFunctions {
     private static String myCommentsTag = "my_comments";
 
 
-    DatabaseHelper db;   //±¾µØSQLiteÊı¾İ¿â¸¨ÖúÀà
-    private JSONParser jsonParser;     //json´«ÊäÊı¾İ¹¤¾ßÀà
+    DatabaseHelper db;   //æœ¬åœ°SQLiteæ•°æ®åº“è¾…åŠ©ç±»
+    private JSONParser jsonParser;     //jsonä¼ è¾“æ•°æ®å·¥å…·ç±»
 
     // constructor
     public UserFunctions(Context context) {
@@ -43,62 +43,62 @@ public class UserFunctions {
     }
 
     /**
-     * ·¢ËÍµÇÂ¼ÇëÇó
+     * å‘é€ç™»å½•è¯·æ±‚
      *
-     * @param username  µÇÂ¼µÄÓÃ»§Ãû
-     * @param password  µÇÂ¼ÃÜÂë
-     * @return ·µ»ØµÇÂ¼ÊÇ·ñ³É¹¦µÄjson¶ÔÏó£¬¾ßÌå¼û@link jsonÎÄ¼ş¼ĞÏÂregister_login.json
+     * @param username  ç™»å½•çš„ç”¨æˆ·å
+     * @param password  ç™»å½•å¯†ç 
+     * @return è¿”å›ç™»å½•æ˜¯å¦æˆåŠŸçš„jsonå¯¹è±¡ï¼Œå…·ä½“è§@link jsonæ–‡ä»¶å¤¹ä¸‹register_login.json
      */
     public JSONObject loginUser(String username, String password) {
-        // ¹¹Ôì·¢ËÍ¸ø·şÎñÆ÷¶ËµÄ²ÎÊı
+        // æ„é€ å‘é€ç»™æœåŠ¡å™¨ç«¯çš„å‚æ•°
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("tag", loginTag));
         params.add(new BasicNameValuePair("username", username));
         params.add(new BasicNameValuePair("password", password));
 
-        // »ñÈ¡ json ¶ÔÏó
+        // è·å– json å¯¹è±¡
         JSONObject json = jsonParser.getJSONFromUrl(loginURL, params);
 
-        //½«ÓÃ»§ĞÅÏ¢´æµ½±¾µØSQLiteÊı¾İ¿â²¢Í¬²½ÊÕ²Ø
+        //å°†ç”¨æˆ·ä¿¡æ¯å­˜åˆ°æœ¬åœ°SQLiteæ•°æ®åº“å¹¶åŒæ­¥æ”¶è—
         SyncData(json);
         return json;
     }
 
     /**
-     * ·¢ËÍ×¢²áÇëÇó
+     * å‘é€æ³¨å†Œè¯·æ±‚
      *
-     * @param name ×¢²áÓÃ»§Ãû
-     * @param email  ×¢²áemail
-     * @param password  ×¢²áÃÜÂë
-     * @return ·µ»Ø×¢²áÊÇ·ñ³É¹¦µÄjson¶ÔÏó£¬¾ßÌå¼û@link jsonÎÄ¼ş¼ĞÏÂregister_login.json
+     * @param name æ³¨å†Œç”¨æˆ·å
+     * @param email  æ³¨å†Œemail
+     * @param password  æ³¨å†Œå¯†ç 
+     * @return è¿”å›æ³¨å†Œæ˜¯å¦æˆåŠŸçš„jsonå¯¹è±¡ï¼Œå…·ä½“è§@link jsonæ–‡ä»¶å¤¹ä¸‹register_login.json
      */
     public JSONObject registerUser(String name, String email, String password) {
-        // ¹¹Ôì·¢ËÍ¸ø·şÎñÆ÷¶ËµÄ²ÎÊı
+        // æ„é€ å‘é€ç»™æœåŠ¡å™¨ç«¯çš„å‚æ•°
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("tag", registerTag));
         params.add(new BasicNameValuePair("username", name));
         params.add(new BasicNameValuePair("email", email));
         params.add(new BasicNameValuePair("password", password));
-        // »ñÈ¡ json ¶ÔÏó
+        // è·å– json å¯¹è±¡
         JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
 
-        //½«ÓÃ»§ĞÅÏ¢´æµ½±¾µØSQLiteÊı¾İ¿â
+        //å°†ç”¨æˆ·ä¿¡æ¯å­˜åˆ°æœ¬åœ°SQLiteæ•°æ®åº“
         SyncData(json);
         syncCollection();
         return json;
     }
 
     /**
-     * ½«ÓÃ»§ĞÅÏ¢´æµ½±¾µØSQLiteÊı¾İ¿â²¢Í¬²½ÊÕ²Ø
-     * @param json ·şÎñÆ÷»ñÈ¡µÄÓÃ»§Êı¾İjson¶ÔÏó
-     * @return ÊÇ·ñ³É¹¦
+     * å°†ç”¨æˆ·ä¿¡æ¯å­˜åˆ°æœ¬åœ°SQLiteæ•°æ®åº“å¹¶åŒæ­¥æ”¶è—
+     * @param json æœåŠ¡å™¨è·å–çš„ç”¨æˆ·æ•°æ®jsonå¯¹è±¡
+     * @return æ˜¯å¦æˆåŠŸ
      */
     public boolean SyncData(JSONObject json) {
         if (json != null) {
             try {
-                //Èç¹û×¢²á»òµÇÂ¼³É¹¦
+                //å¦‚æœæ³¨å†Œæˆ–ç™»å½•æˆåŠŸ
                 if (json.getString("success").equals("1")) {
-                    //½«ÓÃ»§ĞÅÏ¢´æµ½user±íÖĞ£¬·µ»Ø-1±íÊ¾²»³É¹¦
+                    //å°†ç”¨æˆ·ä¿¡æ¯å­˜åˆ°userè¡¨ä¸­ï¼Œè¿”å›-1è¡¨ç¤ºä¸æˆåŠŸ
                     long id = db.addUser(json.getString("username"),
                             Integer.parseInt(json.getString("user_id")),
                             json.getString("created_at"));
@@ -189,7 +189,7 @@ public class UserFunctions {
         return false;
     }
 
-    //½«±¾µØµÄÊÕ²ØÍ¬²½µ½·şÎñÆ÷
+    //å°†æœ¬åœ°çš„æ”¶è—åŒæ­¥åˆ°æœåŠ¡å™¨
     public void syncCollection() {
         String collectJsonString = db.getAllCollection();
         if (collectJsonString != null && isUserLoggedIn()) {

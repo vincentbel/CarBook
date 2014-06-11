@@ -50,12 +50,12 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i) {
-                    case 0: //¡¸Çå³ı»º´æ¡¹
+                    case 0: //ã€Œæ¸…é™¤ç¼“å­˜ã€
                         File sdDir = null;
                         boolean sdCardExist = Environment.getExternalStorageState()
-                                .equals(Environment.MEDIA_MOUNTED);   //ÅĞ¶Ïsd¿¨ÊÇ·ñ´æÔÚ
+                                .equals(Environment.MEDIA_MOUNTED);   //åˆ¤æ–­sdå¡æ˜¯å¦å­˜åœ¨
                         if (sdCardExist) {
-                            sdDir = Environment.getExternalStorageDirectory();//»ñÈ¡¸úÄ¿Â¼
+                            sdDir = Environment.getExternalStorageDirectory();//è·å–è·Ÿç›®å½•
                         }
                         String Dir = sdDir+ "/CarBook/Cache";
                         File file = new File(Dir);
@@ -65,15 +65,13 @@ public class SettingsFragment extends Fragment {
                                 files[j].delete();
                             }
                             file.delete();
-                            Toast.makeText(getActivity().getApplicationContext(),"Çå³ıÍê³É",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity().getApplicationContext(),"æ¸…é™¤å®Œæˆ",Toast.LENGTH_LONG).show();
                         }
                         else{
                             Log.d("Wrong","Delete Wrong");
-
-
                         }
                         break;
-                    //¡¸ÍÆËÍÉèÖÃ¡¹
+                    //ã€Œæ¨é€è®¾ç½®ã€
                     case 1: {
                         Intent intent = new Intent(getActivity(),PushSetting.class);
                         startActivity(intent);
@@ -90,17 +88,17 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i) {
-                    case 0: //¡¸·´À¡¡¹
+                    case 0: //ã€Œåé¦ˆã€
                         Intent feedbackIntent = new Intent(getActivity(), Feedback.class);
                         startActivity(feedbackIntent);
                         break;
-                    case 1: // ¡¸ĞÂ°æ±¾¼ì²â¡¹
-                        Toast.makeText(getActivity().getApplicationContext(), "µ±Ç°ÊÇ×îĞÂ°æ±¾", Toast.LENGTH_LONG).show();
+                    case 1: // ã€Œæ–°ç‰ˆæœ¬æ£€æµ‹ã€
+                        Toast.makeText(getActivity().getApplicationContext(), "å½“å‰æ˜¯æœ€æ–°ç‰ˆæœ¬", Toast.LENGTH_LONG).show();
                         break;
-                    case 2: // ¡¸¹ØÓÚ¡¹
+                    case 2: // ã€Œå…³äºã€
                         startActivity(new Intent(getActivity(), About.class));
                         break;
-                    case 3: // ¡¸ÍË³ö¡¹
+                    case 3: // ã€Œé€€å‡ºã€
                         Intent intent = new Intent(Intent.ACTION_MAIN);
                         intent.addCategory(Intent.CATEGORY_HOME);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -111,10 +109,4 @@ public class SettingsFragment extends Fragment {
             }
         });
     }
-
-    /**
-     *»ñÈ¡SD¿¨Â·¾¶
-     * @return
-     */
-
 }

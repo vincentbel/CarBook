@@ -20,11 +20,11 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * ³µÁ¾Æ·ÅÆ
+ * è½¦è¾†å“ç‰Œ
  */
 class CarSeable {
 
-    private ArrayList<CarSeries> carSeriesList;    //³µÏµlist
+    private ArrayList<CarSeries> carSeriesList;    //è½¦ç³»list
 
     private String carSeableName;
     private String picPath;
@@ -53,7 +53,7 @@ class CarSeable {
 
     }
 
-    //»ñÈ¡³µÏµ
+    //è·å–è½¦ç³»
     CarSeries findCarSeries(String name) {
         for (CarSeries cs : carSeriesList) {
             if (cs.getName().equals(name))
@@ -62,7 +62,7 @@ class CarSeable {
         return null;
     }
 
-    //´Ó·şÎñÆ÷»ñÈ¡³µÏµĞÅÏ¢
+    //ä»æœåŠ¡å™¨è·å–è½¦ç³»ä¿¡æ¯
     public void LoadCarSeries() {
 
         //brandParams
@@ -134,7 +134,7 @@ class CarSeable {
         }
 
         protected Void doInBackground(Void... params) {
-            //Ïò·şÎñÆ÷·¢ËÍÇëÇó
+            //å‘æœåŠ¡å™¨å‘é€è¯·æ±‚
             JSONParser jsonParser = new JSONParser();
             seriesObj = jsonParser.getJSONFromUrl(url, seriesParams);
             return null;
@@ -160,7 +160,7 @@ class CarSeable {
                 }
             } else {
 
-                Toast.makeText(SearchMain.searchmain, "ÎŞ·¨Á¬½ÓÍøÂç£¬Çë¼ì²éÄúµÄÊÖ»úÍøÂçÉèÖÃ", Toast.LENGTH_LONG).show();
+                Toast.makeText(SearchMain.searchmain, "æ— æ³•è¿æ¥ç½‘ç»œï¼Œè¯·æ£€æŸ¥æ‚¨çš„æ‰‹æœºç½‘ç»œè®¾ç½®", Toast.LENGTH_LONG).show();
 
             }
 

@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 /**
- * Êı¾İ»º´æ¡£Ìá¹©¶ÁĞ´¹¦ÄÜ
+ * æ•°æ®ç¼“å­˜ã€‚æä¾›è¯»å†™åŠŸèƒ½
  */
 public  class DataCache {
 
@@ -140,10 +140,10 @@ public  class DataCache {
     private static String getSDPath(){
         File sdDir = null;
         boolean sdCardExist = Environment.getExternalStorageState()
-                .equals(Environment.MEDIA_MOUNTED);   //ÅĞ¶Ïsd¿¨ÊÇ·ñ´æÔÚ
+                .equals(Environment.MEDIA_MOUNTED);   //åˆ¤æ–­sdå¡æ˜¯å¦å­˜åœ¨
         if   (sdCardExist)
         {
-            sdDir = Environment.getExternalStorageDirectory();//»ñÈ¡¸úÄ¿Â¼
+            sdDir = Environment.getExternalStorageDirectory();//è·å–è·Ÿç›®å½•
         }
         return sdDir.toString();
 

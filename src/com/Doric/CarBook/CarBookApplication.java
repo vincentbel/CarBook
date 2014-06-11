@@ -9,7 +9,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 /*
- *  ³õÊ¼»¯Application
+ *  åˆå§‹åŒ–Application
  */
 public class CarBookApplication extends Application {
     private static final String TAG = "JPush";
@@ -34,7 +34,7 @@ public class CarBookApplication extends Application {
                 .defaultDisplayImageOptions(defaultOptions)
                 .build();
         ImageLoader.getInstance().init(config);
-        JPushInterface.setDebugMode(true); 	// ÉèÖÃ¿ªÆôÈÕÖ¾,·¢²¼Ê±Çë¹Ø±ÕÈÕÖ¾
-        JPushInterface.init(this);     		// ³õÊ¼»¯ JPush
+        JPushInterface.setDebugMode(true); 	// è®¾ç½®å¼€å¯æ—¥å¿—,å‘å¸ƒæ—¶è¯·å…³é—­æ—¥å¿—
+        JPushInterface.init(this);     		// åˆå§‹åŒ– JPush
     }
 }

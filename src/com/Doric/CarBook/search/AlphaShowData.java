@@ -28,26 +28,26 @@ import java.util.Map;
 
 public class AlphaShowData{
     /**
-     * µ±Ç°±»Ñ¡ÖĞµÄ³µÁ¾Æ·ÅÆ
+     * å½“å‰è¢«é€‰ä¸­çš„è½¦è¾†å“ç‰Œ
      */
     public static CarSeable carseable;
     /**
-     * ×°ÔØËùÓĞµÄlistView
+     * è£…è½½æ‰€æœ‰çš„listView
      */
     public static LinearLayout mLinearLayout;
     /**
-     * ¹ö¶¯Öá
+     * æ»šåŠ¨è½´
      */
     public  static ScrollView mScrollView;
 
     public static RelativeLayout mRelativeLayout;
     /**
-     * ListViewµÄ¼¯ºÏ¡£ÓÃÓÚ¶ÁÈ¡Í¼Æ¬Ê±»ñÈ¡Ã¿Ò»¸ölistViewµÄAdapter
+     * ListViewçš„é›†åˆã€‚ç”¨äºè¯»å–å›¾ç‰‡æ—¶è·å–æ¯ä¸€ä¸ªlistViewçš„Adapter
      */
     public static ArrayList<Pair<String, MyListView>> listarray;
 
     /**
-     * ×ÖÄ¸Î»ÖÃMap
+     * å­—æ¯ä½ç½®Map
      */
     private static Map<String,Integer> alpha_index = null;
 
@@ -58,7 +58,7 @@ public class AlphaShowData{
 
     private static Toast toast ;
     /**
-     * ³õÊ¼»¯ÊÓÍ¼
+     * åˆå§‹åŒ–è§†å›¾
      * @param context
      * @param res
      */
@@ -109,7 +109,7 @@ public class AlphaShowData{
                                         int position, long id) {
                     ListView lv = (ListView) parent;
 
-                    HashMap<String, Object> Info = (HashMap<String, Object>) lv.getItemAtPosition(position);//SimpleAdapter¡¤???Map
+                    HashMap<String, Object> Info = (HashMap<String, Object>) lv.getItemAtPosition(position);//SimpleAdapterãƒ»???Map
 
                     carseable = CarSeableData.find((String) Info.get("title"));
 
@@ -238,8 +238,8 @@ public class AlphaShowData{
     }
 
     /**
-     * ÊÓÍ¼°ó¶¨Æ÷
-     * Ê¹SimpleAdapter¿ÉÒÔ°ó¶¨Bitmap¶ÔÏóµ½ImageView
+     * è§†å›¾ç»‘å®šå™¨
+     * ä½¿SimpleAdapterå¯ä»¥ç»‘å®šBitmapå¯¹è±¡åˆ°ImageView
      */
     private static class ListViewBinder implements SimpleAdapter.ViewBinder {
 
@@ -260,7 +260,7 @@ public class AlphaShowData{
     }
 
     /**
-     * °Ñ³µÁ¾Æ·ÅÆÊı¾İ×°Åä³ÉÊÊºÏListView°ó¶¨µÄĞÎÊ½
+     * æŠŠè½¦è¾†å“ç‰Œæ•°æ®è£…é…æˆé€‚åˆListViewç»‘å®šçš„å½¢å¼
      * @param al_cs
      * @return
      */
@@ -279,7 +279,7 @@ public class AlphaShowData{
     }
 
     /**
-     * ¼ÓÔØÍ¼Æ¬µÄHandler
+     * åŠ è½½å›¾ç‰‡çš„Handler
      */
     final static Handler cwjHandler = new Handler();
     private static class UpdateRunnable implements  Runnable{
@@ -294,7 +294,7 @@ public class AlphaShowData{
 
 
     /**
-     * ¼ÓÔØÍ¼Æ¬Ïß³Ì
+     * åŠ è½½å›¾ç‰‡çº¿ç¨‹
      */
     public  static class GetPicData extends Thread {
 
@@ -364,7 +364,7 @@ public class AlphaShowData{
         }
 
         /**
-         *»ñÈ¡SD¿¨Â·¾¶
+         *è·å–SDå¡è·¯å¾„
          * @return
          */
         private String getSDPath(){
@@ -380,7 +380,7 @@ public class AlphaShowData{
         }
 
         /**
-         * Í¨¹ıÍ¼Æ¬µÄUrlµÃµ½Í¼Æ¬µÄÎ¨Ò»±¾µØÂ·¾¶
+         * é€šè¿‡å›¾ç‰‡çš„Urlå¾—åˆ°å›¾ç‰‡çš„å”¯ä¸€æœ¬åœ°è·¯å¾„
          * @param imageUrl
          * @return
          */

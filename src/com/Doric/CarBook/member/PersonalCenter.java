@@ -32,14 +32,14 @@ public class PersonalCenter extends Fragment implements View.OnClickListener {
     private String name;
     private String whichHead = "0";
 
-    //¶¨Òå¿Ø¼ş
+    //å®šä¹‰æ§ä»¶
     private Button btnInformation, btnComment, btnLogOut;
     private TextView textView;
 
-    //·şÎñÆ÷ÇëÇóÏà¹Ø±äÁ¿
-    private String headURL = Constant.BASE_URL + "/user_setting.php";  //µÇÂ¼ÇëÇóµÄurl,Îñ±Ø¼ÓÉÏhttp://»òhttps://
-    private List<NameValuePair> headParams;    //µÇÂ¼Ê±·¢ËÍ¸ø·şÎñÆ÷µÄÊı¾İ
-    private JSONObject headInfo;       //Ïò·şÎñÆ÷ÇëÇóµÃµ½µÄjson¶ÔÏó
+    //æœåŠ¡å™¨è¯·æ±‚ç›¸å…³å˜é‡
+    private String headURL = Constant.BASE_URL + "/user_setting.php";  //ç™»å½•è¯·æ±‚çš„url,åŠ¡å¿…åŠ ä¸Šhttp://æˆ–https://
+    private List<NameValuePair> headParams;    //ç™»å½•æ—¶å‘é€ç»™æœåŠ¡å™¨çš„æ•°æ®
+    private JSONObject headInfo;       //å‘æœåŠ¡å™¨è¯·æ±‚å¾—åˆ°çš„jsonå¯¹è±¡
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class PersonalCenter extends Fragment implements View.OnClickListener {
         userFunctions = new UserFunctions(getActivity().getApplicationContext());
         name = userFunctions.getUsername();
 
-        //ÉèÖÃ¿Ø¼ş
+        //è®¾ç½®æ§ä»¶
         btnInformation = (Button) mView.findViewById(R.id.button_my_information);
         btnComment = (Button) mView.findViewById(R.id.button_my_comments);
         btnLogOut = (Button) mView.findViewById(R.id.button_log_out);
@@ -62,56 +62,56 @@ public class PersonalCenter extends Fragment implements View.OnClickListener {
 
         textView.setText(name);
 
-        //Ìí¼Ó¼àÌıÆ÷
+        //æ·»åŠ ç›‘å¬å™¨
         btnComment.setOnClickListener(this);
         btnInformation.setOnClickListener(this);
         btnLogOut.setOnClickListener(this);
 
-        //Òş²ØActionbar
+        //éšè—Actionbar
         //getActivity().getActionBar().hide();
 
-        //·¢ËÍÓÃ»§ĞÅÏ¢µ½·şÎñÆ÷
+        //å‘é€ç”¨æˆ·ä¿¡æ¯åˆ°æœåŠ¡å™¨
         headParams = new ArrayList<NameValuePair>();
         headParams.add(new BasicNameValuePair("tag", "get_avatar"));
         headParams.add(new BasicNameValuePair("username", name));
 
-        //Òì²½ÈÎÎñ
+        //å¼‚æ­¥ä»»åŠ¡
         new getHead().execute();
     }
 
     public void onClick(View v) {
         int id = v.getId();
 
-        //"ÎÒµÄ×ÊÁÏ"°´Å¥
+        //"æˆ‘çš„èµ„æ–™"æŒ‰é’®
         if (id == R.id.button_my_information) {
             Intent intent = new Intent(getActivity(), MyInformation.class);
             intent.putExtra("name", name);
             startActivity(intent);
         }
 
-        //"ÎÒµÄÆÀÂÛ"°´Å¥
+        //"æˆ‘çš„è¯„è®º"æŒ‰é’®
         if (id == R.id.button_my_comments) {
             Intent intent = new Intent(getActivity(), MyComments.class);
             startActivity(intent);
         }
 
-        //"ÍË³öµÇÂ¼"°´Å¥
+        //"é€€å‡ºç™»å½•"æŒ‰é’®
         if (id == R.id.button_log_out) {
             logOutDialog();
         }
     }
 
-    //ÍË³öµÇÂ¼¶Ô»°¿ò
+    //é€€å‡ºç™»å½•å¯¹è¯æ¡†
     public void logOutDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("È·¶¨ÒªÍË³öµÇÂ¼Âğ£¿");
-        builder.setTitle("ÍË³öµÇÂ¼");
-        builder.setNegativeButton("È¡Ïû", new DialogInterface.OnClickListener() {
+        builder.setMessage("ç¡®å®šè¦é€€å‡ºç™»å½•å—ï¼Ÿ");
+        builder.setTitle("é€€å‡ºç™»å½•");
+        builder.setNegativeButton("å–æ¶ˆ", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
-        builder.setPositiveButton("È·ÈÏ", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("ç¡®è®¤", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 userFunctions.logoutUser();
                 dialog.dismiss();
@@ -125,7 +125,7 @@ public class PersonalCenter extends Fragment implements View.OnClickListener {
         builder.create().show();
     }
 
-    //»ñÈ¡Í·Ïñ
+    //è·å–å¤´åƒ
     private class getHead extends AsyncTask<Void, Void, Void> {
 
         protected void onPreExecute() {
@@ -133,7 +133,7 @@ public class PersonalCenter extends Fragment implements View.OnClickListener {
         }
 
         protected Void doInBackground(Void... params) {
-            //Ïò·şÎñÆ÷·¢ËÍÇëÇó
+            //å‘æœåŠ¡å™¨å‘é€è¯·æ±‚
             JSONParser jsonParser = new JSONParser();
             headInfo = jsonParser.getJSONFromUrl(headURL, headParams);
             return null;
@@ -141,7 +141,7 @@ public class PersonalCenter extends Fragment implements View.OnClickListener {
 
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            //ÅĞ¶ÏÊÕµ½µÄjsonÊÇ·ñÎª¿Õ
+            //åˆ¤æ–­æ”¶åˆ°çš„jsonæ˜¯å¦ä¸ºç©º
             if (headInfo != null) {
                 try {
                     if (headInfo.getString("success").equals("1")) {
@@ -155,7 +155,7 @@ public class PersonalCenter extends Fragment implements View.OnClickListener {
         }
     }
 
-    //ÉèÖÃÍ·Ïñ
+    //è®¾ç½®å¤´åƒ
     public void setHead(String which) {
         ImageView imageHead = (ImageView)getView().findViewById(R.id.pc_head);
         switch ( Integer.parseInt(which) ){

@@ -27,7 +27,7 @@ import com.Doric.CarBook.R;
 import java.util.ArrayList;
 
 /**
- * CarArgumentFragmentËùÔÚµÄActivity
+ * CarArgumentFragmentæ‰€åœ¨çš„Activity
  */
 public class CarCmpShow extends ActionBarActivity {
     /**
@@ -82,7 +82,7 @@ public class CarCmpShow extends ActionBarActivity {
     public void loading() {
         if (!progressDialog.isShowing()) {
 
-            progressDialog.setMessage("¼ÓÔØÖÐ..");
+            progressDialog.setMessage("åŠ è½½ä¸­..");
             progressDialog.setCancelable(true);
             progressDialog.show();
         }

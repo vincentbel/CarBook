@@ -20,7 +20,7 @@ import java.util.List;
  */
 
 /**
- * ³µÏµ
+ * è½¦ç³»
  */
 public class CarSeries {
 
@@ -47,7 +47,7 @@ public class CarSeries {
         carList = new ArrayList<CarInfor>();
     }
 
-    //»ñÈ¡¸ÃÆ·ÅÆ£¬³µÏµÏÂµÄ³µÁ¾ĞÅÏ¢
+    //è·å–è¯¥å“ç‰Œï¼Œè½¦ç³»ä¸‹çš„è½¦è¾†ä¿¡æ¯
     public boolean loadCar(FragmentTransaction ft) {
         fragmentTransaction = ft;
         if (!isload) {
@@ -134,12 +134,12 @@ public class CarSeries {
 
         protected void onPreExecute() {
             super.onPreExecute();
-            //µ¯³ö"ÕıÔÚµÇÂ¼"¿ò
+            //å¼¹å‡º"æ­£åœ¨ç™»å½•"æ¡†
             SearchMain.searchmain.loading();
         }
 
         protected Void doInBackground(Void... params) {
-            //Ïò·şÎñÆ÷·¢ËÍÇëÇó
+            //å‘æœåŠ¡å™¨å‘é€è¯·æ±‚
             JSONParser jsonParser = new JSONParser();
             carObj = jsonParser.getJSONFromUrl(url, carParams);
             return null;
@@ -163,7 +163,7 @@ public class CarSeries {
                 }
             } else {
                 SearchMain.searchmain.stopLoading();
-                Toast.makeText(SearchMain.searchmain, "ÎŞ·¨Á¬½ÓÍøÂç£¬Çë¼ì²éÄúµÄÊÖ»úÍøÂçÉèÖÃ", Toast.LENGTH_LONG).show();
+                Toast.makeText(SearchMain.searchmain, "æ— æ³•è¿æ¥ç½‘ç»œï¼Œè¯·æ£€æŸ¥æ‚¨çš„æ‰‹æœºç½‘ç»œè®¾ç½®", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -177,7 +177,7 @@ public class CarSeries {
             cs.setCarSeable(carSeableName);
             cs.setCarId(carObj.getString("model_number_" + i+"_car_id"));
             System.out.println(cs.getCarId());
-            //ÓÃ³µÏµµÄµÚÒ»ÕÅÍ¼Æ¬×÷Îª³µÁ¾µÄÍ¼Æ¬
+            //ç”¨è½¦ç³»çš„ç¬¬ä¸€å¼ å›¾ç‰‡ä½œä¸ºè½¦è¾†çš„å›¾ç‰‡
             carList.add(cs);
         }
         isload = true;

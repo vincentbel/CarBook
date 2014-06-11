@@ -37,14 +37,14 @@ public class CarShowUtil {
         return false;
     }
 
-    // Ğ£ÑéTag Alias Ö»ÄÜÊÇÊı×Ö,Ó¢ÎÄ×ÖÄ¸ºÍÖĞÎÄ
+    // æ ¡éªŒTag Alias åªèƒ½æ˜¯æ•°å­—,è‹±æ–‡å­—æ¯å’Œä¸­æ–‡
     public static boolean isValidTagAndAlias(String s) {
         Pattern p = Pattern.compile("^[\u4E00-\u9FA50-9a-zA-Z_-]{0,}$");
         Matcher m = p.matcher(s);
         return m.matches();
     }
 
-    // È¡µÃAppKey
+    // å–å¾—AppKey
     public static String getAppKey(Context context) {
         Bundle metaData = null;
         String appKey = null;
@@ -65,7 +65,7 @@ public class CarShowUtil {
         return appKey;
     }
 
-    // È¡µÃ°æ±¾ºÅ
+    // å–å¾—ç‰ˆæœ¬å·
     public static String GetVersion(Context context) {
         try {
             PackageInfo manager = context.getPackageManager().getPackageInfo(

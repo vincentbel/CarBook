@@ -19,14 +19,14 @@ import org.json.JSONObject;
 
 public class Login extends Activity implements OnClickListener {
 
-    UserFunctions userFunctions;        //ÓÃ»§¹¦ÄÜÀà
-    String username;    //ÓÃ»§Ãû
-    String password;    //ÃÜÂë
-    private JSONObject loginInfo;       //Ïò·şÎñÆ÷ÇëÇóµÃµ½µÄjson¶ÔÏó
-    //¶¨Òå¿Ø¼ş
+    UserFunctions userFunctions;        //ç”¨æˆ·åŠŸèƒ½ç±»
+    String username;    //ç”¨æˆ·å
+    String password;    //å¯†ç 
+    private JSONObject loginInfo;       //å‘æœåŠ¡å™¨è¯·æ±‚å¾—åˆ°çš„jsonå¯¹è±¡
+    //å®šä¹‰æ§ä»¶
     private EditText edtUsername, edtPassword;
     private Button btnLogin, btnRegister, btnBack;
-    private ProgressDialog progressDialog;   //Òì²½ÈÎÎñÊ±ÏÔÊ¾µÄ½ø¶ÈÌõ
+    private ProgressDialog progressDialog;   //å¼‚æ­¥ä»»åŠ¡æ—¶æ˜¾ç¤ºçš„è¿›åº¦æ¡
     private TextView tvFindPsd;
 
 
@@ -36,7 +36,7 @@ public class Login extends Activity implements OnClickListener {
 
         userFunctions = new UserFunctions(getApplicationContext());
 
-        //ÉèÖÃ¿Ø¼ş
+        //è®¾ç½®æ§ä»¶
         edtUsername = (EditText) findViewById(R.id.username);
         edtPassword = (EditText) findViewById(R.id.password);
         btnLogin = (Button) findViewById(R.id.login);
@@ -44,13 +44,13 @@ public class Login extends Activity implements OnClickListener {
         btnBack = (Button) findViewById(R.id.back);
         tvFindPsd = (TextView) findViewById(R.id.forget_psd);
 
-        //Ìí¼Ó¼àÌıÆ÷
+        //æ·»åŠ ç›‘å¬å™¨
         btnRegister.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
         btnBack.setOnClickListener(this);
         tvFindPsd.setOnClickListener(this);
 
-        //Òş²ØActionbar
+        //éšè—Actionbar
         getActionBar().hide();
     }
 
@@ -58,41 +58,41 @@ public class Login extends Activity implements OnClickListener {
 
         int id = v.getId();
 
-        //»ñÈ¡ÓÃ»§ÃûÃÜÂë
+        //è·å–ç”¨æˆ·åå¯†ç 
         username = edtUsername.getText().toString();
         password = edtPassword.getText().toString();
 
-        //¡°×¢²á¡±°´Å¥
+        //â€œæ³¨å†Œâ€æŒ‰é’®
         if (id == R.id.register) {
-            // ´ÓµÇÂ½½çÃæ×ªµ½×¢²á½çÃæÊ±½«ÓÃ»§ÃûºÍÃÜÂë´«¹ıÈ¥£¬¼õÉÙÓÃ»§ÊäÈë
+            // ä»ç™»é™†ç•Œé¢è½¬åˆ°æ³¨å†Œç•Œé¢æ—¶å°†ç”¨æˆ·åå’Œå¯†ç ä¼ è¿‡å»ï¼Œå‡å°‘ç”¨æˆ·è¾“å…¥
             Intent intent = new Intent(Login.this, Register.class);
             intent.putExtra("username", username);
             intent.putExtra("password", password);
             startActivity(intent);
         }
 
-        //¡°µÇÂ½¡±°´Å¥
+        //â€œç™»é™†â€æŒ‰é’®
         if (id == R.id.login) {
 
-            //ÅĞ¶ÏÓÃ»§ÃûÊÇ·ñÎª¿Õ
+            //åˆ¤æ–­ç”¨æˆ·åæ˜¯å¦ä¸ºç©º
             if (username.equals("")) {
-                Toast.makeText(Login.this, "ÇëÊäÈëÓÃ»§Ãû", Toast.LENGTH_LONG).show();
+                Toast.makeText(Login.this, "è¯·è¾“å…¥ç”¨æˆ·å", Toast.LENGTH_LONG).show();
             }
-            //ÅĞ¶ÏÃÜÂëÊÇ·ñÎª¿Õ
+            //åˆ¤æ–­å¯†ç æ˜¯å¦ä¸ºç©º
             else if (password.equals("")) {
-                Toast.makeText(Login.this, "ÇëÊäÈëÃÜÂë", Toast.LENGTH_LONG).show();
+                Toast.makeText(Login.this, "è¯·è¾“å…¥å¯†ç ", Toast.LENGTH_LONG).show();
             } else {
-                //Òì²½ÈÎÎñÅĞ¶ÏÓÃ»§ÊÇ·ñµÇÂ¼³É¹¦
+                //å¼‚æ­¥ä»»åŠ¡åˆ¤æ–­ç”¨æˆ·æ˜¯å¦ç™»å½•æˆåŠŸ
                 new CheckUser().execute();
             }
         }
 
-        //"·µ»Ø"°´Å¥
+        //"è¿”å›"æŒ‰é’®
         if (id == R.id.back) {
             Login.this.finish();
         }
 
-        //"Íü¼ÇÃÜÂë£¿"°´Å¥
+        //"å¿˜è®°å¯†ç ï¼Ÿ"æŒ‰é’®
         if (id == R.id.forget_psd) {
             Intent intent = new Intent(Login.this, FindPsd.class);
             startActivity(intent);
@@ -103,16 +103,16 @@ public class Login extends Activity implements OnClickListener {
 
         protected void onPreExecute() {
             super.onPreExecute();
-            //µ¯³ö"ÕıÔÚµÇÂ¼"¿ò
+            //å¼¹å‡º"æ­£åœ¨ç™»å½•"æ¡†
             progressDialog = new ProgressDialog(Login.this);
-            progressDialog.setMessage("ÕıÔÚµÇÂ¼..");
+            progressDialog.setMessage("æ­£åœ¨ç™»å½•..");
             progressDialog.setCancelable(true);
             progressDialog.show();
         }
 
         protected Void doInBackground(Void... params) {
 
-            //Ïò·şÎñÆ÷·¢ËÍÇëÇó
+            //å‘æœåŠ¡å™¨å‘é€è¯·æ±‚
             loginInfo = userFunctions.loginUser(username, password);
             return null;
         }
@@ -123,21 +123,21 @@ public class Login extends Activity implements OnClickListener {
                 progressDialog.dismiss();
             }
 
-            //ÅĞ¶ÏÊÕµ½µÄjsonÊÇ·ñÎª¿Õ
+            //åˆ¤æ–­æ”¶åˆ°çš„jsonæ˜¯å¦ä¸ºç©º
             if (loginInfo != null) {
                 try {
-                    //ÕË»§ĞÅÏ¢ÑéÖ¤Ê§°Ü
+                    //è´¦æˆ·ä¿¡æ¯éªŒè¯å¤±è´¥
                     if (loginInfo.getString("success").equals("0")) {
-                        Toast.makeText(Login.this, "ÓÃ»§Ãû»òÃÜÂë´íÎó£¬ÇëÖØĞÂÊäÈë", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Login.this, "ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥", Toast.LENGTH_LONG).show();
                     }
-                    //ÕË»§ĞÅÏ¢ÑéÖ¤³É¹¦
+                    //è´¦æˆ·ä¿¡æ¯éªŒè¯æˆåŠŸ
                     else {
-                        Toast.makeText(Login.this, "µÇÂ¼³É¹¦£¡", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Login.this, "ç™»å½•æˆåŠŸï¼", Toast.LENGTH_LONG).show();
 
-                        //»ñÈ¡ÓÃ»§Ãû
+                        //è·å–ç”¨æˆ·å
                         String name = edtUsername.getText().toString();
 
-                        //Ìø×ªÖÁÖ÷½çÃæ
+                        //è·³è½¬è‡³ä¸»ç•Œé¢
                         Login.this.finish();
                         Intent intent = new Intent(Login.this, MainActivity.class);
                         startActivity(intent);
@@ -146,7 +146,7 @@ public class Login extends Activity implements OnClickListener {
                     e.printStackTrace();
                 }
             } else {
-                Toast.makeText(Login.this, "ÑéÖ¤Ê§°Ü£¬Çë¼ì²éÄúµÄÍøÂçÊÇ·ñÕı³£", Toast.LENGTH_LONG).show();
+                Toast.makeText(Login.this, "éªŒè¯å¤±è´¥ï¼Œè¯·æ£€æŸ¥æ‚¨çš„ç½‘ç»œæ˜¯å¦æ­£å¸¸", Toast.LENGTH_LONG).show();
             }
         }
     }
