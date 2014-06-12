@@ -33,10 +33,10 @@
         <Button
                 android:layout_width="50dp"
                 android:layout_height="40dp"
-                android:background="@xml/login_btn_background_white"
+                android:background="#0099FF"
                 android:id="@+id/send"
                 android:text="发送"
-                android:textSize="14dp"
+                android:textSize="18sp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"/>
     </RelativeLayout>
@@ -44,7 +44,7 @@
     <EditText
             android:id="@+id/content"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:maxEms="800"
             android:background="@xml/login_edt_background"
             android:gravity="start"

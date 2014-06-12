@@ -6,7 +6,8 @@
               android:layout_height="match_parent">
             <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
                     android:orientation="horizontal" android:layout_alignParentBottom="true"
-                    android:layout_alignParentLeft="true" android:id="@+id/relativeLayout">
+                    android:layout_alignParentLeft="true" android:paddingBottom="@dimen/default_padding"
+                    android:id="@+id/relativeLayout">
                     <Button android:layout_width="@dimen/btn_width" android:layout_height="wrap_content"
                             android:id="@+id/add_btn" android:text="@string/add_btn"
                             android:layout_marginLeft="40dp" android:layout_alignParentTop="true"

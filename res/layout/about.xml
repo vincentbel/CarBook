@@ -52,11 +52,11 @@
                 />
     </LinearLayout>
 
-    <ImageView android:layout_width="48dp"
+    <ImageView android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:id="@+id/about_up"
                android:src="@drawable/ic_about_up"
                android:layout_alignParentBottom="true"
-               android:layout_marginBottom="24dp"
+               android:layout_marginBottom="48dp"
                android:layout_centerHorizontal="true"/>
 </RelativeLayout>

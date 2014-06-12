@@ -37,6 +37,7 @@
 
     <application android:label="@string/app_name"
                  android:theme="@style/Theme.Carbook"
+                 android:logo="@drawable/ic_doric_white"
                  android:icon="@drawable/ic_launcher"
                  android:name="com.Doric.CarBook.CarBookApplication">
 

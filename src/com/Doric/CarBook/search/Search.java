@@ -116,7 +116,7 @@ public class Search extends Activity {
                 String key = mEditText.getText().toString();
 
                 if (key.trim().equals("")) {
-                    Toast.makeText(SearchMain.searchmain, "¹Ø¼ü×Ö²»¿ÉÎª¿Õ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SearchMain.searchmain, "å…³é”®å­—ä¸å¯ä¸ºç©º", Toast.LENGTH_LONG).show();
                     return;
                 }
                 // mCarSeriesList = PinyinSearch.search(key);
@@ -290,10 +290,10 @@ public class Search extends Activity {
         private String getSDPath(){
             File sdDir = null;
             boolean sdCardExist = Environment.getExternalStorageState()
-                    .equals(Environment.MEDIA_MOUNTED);   //ÅĞ¶Ïsd¿¨ÊÇ·ñ´æÔÚ
+                    .equals(Environment.MEDIA_MOUNTED);   //åˆ¤æ–­sdå¡æ˜¯å¦å­˜åœ¨
             if   (sdCardExist)
             {
-                sdDir = Environment.getExternalStorageDirectory();//»ñÈ¡¸úÄ¿Â¼
+                sdDir = Environment.getExternalStorageDirectory();//è·å–è·Ÿç›®å½•
             }
             return sdDir.toString();
 
@@ -350,12 +350,12 @@ class SearchGetData {
 
         protected void onPreExecute() {
             super.onPreExecute();
-            //µ¯³ö"ÕıÔÚµÇÂ¼"¿ò
+            //å¼¹å‡º"æ­£åœ¨ç™»å½•"æ¡†
             SearchMain.searchmain.loading();
         }
 
         protected Void doInBackground(Void... params) {
-            //Ïò·şÎñÆ÷·¢ËÍÇëÇó
+            //å‘æœåŠ¡å™¨å‘é€è¯·æ±‚
             JSONParser jsonParser = new JSONParser();
             searchObj = jsonParser.getJSONFromUrl(url, searchParams);
             return null;
@@ -371,7 +371,7 @@ class SearchGetData {
                     int success = searchObj.getInt("success");
                     if(success==0){
                         SearchMain.searchmain.stopLoading();
-                        Toast.makeText(SearchMain.searchmain, "Î´ÕÒµ½·ûºÏµÄ³µÁ¾", Toast.LENGTH_LONG).show();
+                        Toast.makeText(SearchMain.searchmain, "æœªæ‰¾åˆ°ç¬¦åˆçš„è½¦è¾†", Toast.LENGTH_LONG).show();
 
                     }
                     else if (success == 1) {
@@ -407,7 +407,7 @@ class SearchGetData {
                 }
             } else {
                 SearchMain.searchmain.stopLoading();
-                Toast.makeText(SearchMain.searchmain, "ÎŞ·¨Á¬½ÓÍøÂç£¬Çë¼ì²éÄúµÄÊÖ»úÍøÂçÉèÖÃ", Toast.LENGTH_LONG).show();
+                Toast.makeText(SearchMain.searchmain, "æ— æ³•è¿æ¥ç½‘ç»œï¼Œè¯·æ£€æŸ¥æ‚¨çš„æ‰‹æœºç½‘ç»œè®¾ç½®", Toast.LENGTH_LONG).show();
             }
         }
     }
