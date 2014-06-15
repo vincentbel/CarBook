@@ -36,11 +36,6 @@ public class PersonalCenter extends Fragment implements View.OnClickListener {
     private Button btnInformation, btnComment, btnLogOut;
     private TextView textView;
 
-    //服务器请求相关变量
-    private String headURL = Constant.BASE_URL + "/user_setting.php";  //登录请求的url,务必加上http://或https://
-    private List<NameValuePair> headParams;    //登录时发送给服务器的数据
-    private JSONObject headInfo;       //向服务器请求得到的json对象
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.personal_center, container, false);
@@ -70,13 +65,9 @@ public class PersonalCenter extends Fragment implements View.OnClickListener {
         //隐藏Actionbar
         //getActivity().getActionBar().hide();
 
-        //发送用户信息到服务器
-        headParams = new ArrayList<NameValuePair>();
-        headParams.add(new BasicNameValuePair("tag", "get_avatar"));
-        headParams.add(new BasicNameValuePair("username", name));
 
-        //异步任务
-        new getHead().execute();
+        ImageView imageHead = (ImageView)getView().findViewById(R.id.pc_head);
+        imageHead.setBackgroundResource(userFunctions.getUserAvatarResource());
     }
 
     public void onClick(View v) {
@@ -124,52 +115,4 @@ public class PersonalCenter extends Fragment implements View.OnClickListener {
         });
         builder.create().show();
     }
-
-    //获取头像
-    private class getHead extends AsyncTask<Void, Void, Void> {
-
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        protected Void doInBackground(Void... params) {
-            //向服务器发送请求
-            JSONParser jsonParser = new JSONParser();
-            headInfo = jsonParser.getJSONFromUrl(headURL, headParams);
-            return null;
-        }
-
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            //判断收到的json是否为空
-            if (headInfo != null) {
-                try {
-                    if (headInfo.getString("success").equals("1")) {
-                        whichHead = headInfo.getString("status");
-                        setHead(whichHead);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    //设置头像
-    public void setHead(String which) {
-        ImageView imageHead = (ImageView)getView().findViewById(R.id.pc_head);
-        switch ( Integer.parseInt(which) ){
-            case 1: imageHead.setBackgroundResource(R.drawable.head1); break;
-            case 2: imageHead.setBackgroundResource(R.drawable.head2); break;
-            case 3: imageHead.setBackgroundResource(R.drawable.head3); break;
-            case 4: imageHead.setBackgroundResource(R.drawable.head4); break;
-            case 5: imageHead.setBackgroundResource(R.drawable.head5); break;
-            case 6: imageHead.setBackgroundResource(R.drawable.head6); break;
-            case 7: imageHead.setBackgroundResource(R.drawable.head7); break;
-            case 8: imageHead.setBackgroundResource(R.drawable.head8); break;
-            case 9: imageHead.setBackgroundResource(R.drawable.head9); break;
-            default:imageHead.setBackgroundResource(R.drawable.pc_default_head); break;
-        }
-    }
-
 }

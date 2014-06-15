@@ -94,7 +94,8 @@ public class MyInformation extends Activity implements View.OnClickListener {
         informationParams.add(new BasicNameValuePair("username", name));
 
         //异步任务
-        new getInformation().execute();
+        //new getInformation().execute();
+        setHead();
     }
 
     //为图像添加边框
@@ -105,30 +106,9 @@ public class MyInformation extends Activity implements View.OnClickListener {
     }
 
     //设置头像
-    public void setHead(String which) {
+    public void setHead() {
         ImageView imageHead = (ImageView) findViewById(R.id.head_image);
-        switch ( Integer.parseInt(which) ){
-            case 1:
-                imageHead.setBackgroundResource(R.drawable.head1); break;
-            case 2:
-                imageHead.setBackgroundResource(R.drawable.head2); break;
-            case 3:
-                imageHead.setBackgroundResource(R.drawable.head3); break;
-            case 4:
-                imageHead.setBackgroundResource(R.drawable.head4); break;
-            case 5:
-                imageHead.setBackgroundResource(R.drawable.head5); break;
-            case 6:
-                imageHead.setBackgroundResource(R.drawable.head6); break;
-            case 7:
-                imageHead.setBackgroundResource(R.drawable.head7); break;
-            case 8:
-                imageHead.setBackgroundResource(R.drawable.head8); break;
-            case 9:
-                imageHead.setBackgroundResource(R.drawable.head9); break;
-            default:
-                imageHead.setBackgroundResource(R.drawable.pc_default_head); break;
-        }
+        imageHead.setBackgroundResource(userFunctions.getUserAvatarResource());
     }
 
     public void onClick(View v) {
@@ -296,7 +276,7 @@ public class MyInformation extends Activity implements View.OnClickListener {
                     if (informationInfo.getString("success").equals("1")) {
                         //获取头像
                         whichHead = informationInfo.getString("status");
-                        setHead(whichHead);
+                        setHead();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -306,7 +286,7 @@ public class MyInformation extends Activity implements View.OnClickListener {
     }
 
     //修改头像
-    private class changeHead extends AsyncTask<Void, Void, Void> {
+    private class changeHead extends AsyncTask<Void, Void, Boolean> {
 
         protected void onPreExecute() {
             super.onPreExecute();
@@ -317,34 +297,20 @@ public class MyInformation extends Activity implements View.OnClickListener {
             progressDialog.show();
         }
 
-        protected Void doInBackground(Void... params) {
-            //向服务器发送请求
-            JSONParser jsonParser = new JSONParser();
-            headInfo = jsonParser.getJSONFromUrl(headURL, headParams);
-            return null;
+        protected Boolean doInBackground(Void... params) {
+            return userFunctions.setUserAvatar(name, Integer.parseInt(whichHead));
         }
 
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+        protected void onPostExecute(Boolean result) {
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
             //判断收到的json是否为空
-            if (headInfo != null) {
-                try {
-                    if (headInfo.getString("success").equals("1")) {
+            if (result) {
                         Toast.makeText(MyInformation.this, "头像修改成功", Toast.LENGTH_LONG).show();
-                        setHead(whichHead);
-                    }
-                    //发生错误
-                    else {
-                        Toast.makeText(MyInformation.this, "修改失败", Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                        setHead();
             } else {
-                Toast.makeText(MyInformation.this, "修改失败，请检查您的网络是否正常", Toast.LENGTH_LONG).show();
+                Toast.makeText(MyInformation.this, getResources().getString(R.string.no_internet_connection),Toast.LENGTH_LONG).show();
             }
         }
     }

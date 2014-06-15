@@ -2,7 +2,9 @@ package com.Doric.CarBook.member;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 import com.Doric.CarBook.Constant;
+import com.Doric.CarBook.R;
 import com.Doric.CarBook.utility.DatabaseHelper;
 import com.Doric.CarBook.utility.JSONParser;
 import org.apache.http.NameValuePair;
@@ -21,6 +23,7 @@ public class UserFunctions {
     private static String registerURL = Constant.BASE_URL + "/register.php";
     private static String collectionURL = Constant.BASE_URL + "/user_collect.php";
     private static String myCommentsURL = Constant.BASE_URL + "/user_comments.php";
+    private static String userSettingURL = Constant.BASE_URL + "/user_setting.php";
 
     //标签
     private static String loginTag = "login";
@@ -31,7 +34,7 @@ public class UserFunctions {
     private static String myCollection = "my_collection";
     private static String defaultCollection = "default_collection";
     private static String myCommentsTag = "my_comments";
-
+    private static String updateAvatar = "update_avatar";
 
     DatabaseHelper db;   //本地SQLite数据库辅助类
     private JSONParser jsonParser;     //json传输数据工具类
@@ -253,5 +256,60 @@ public class UserFunctions {
         params.add(new BasicNameValuePair("tag", myCommentsTag));
         params.add(new BasicNameValuePair("user_id", getUserId() + ""));
         return jsonParser.getJSONFromUrl(myCommentsURL, params);
+    }
+
+
+    //用户头像功能
+    public int getUserAvatarResource() {
+        if (!isUserLoggedIn()) {
+            return R.drawable.pc_default_head;
+        }
+        int which = Integer.parseInt(db.getUserDetails().get(DatabaseHelper.KEY_USER_AVATAR));
+        Log.d("avatar status: ", which + "");
+        switch ( which ) {
+            case 1:
+                return R.drawable.head1;
+            case 2:
+                return R.drawable.head2;
+            case 3:
+                return R.drawable.head3;
+            case 4:
+                return R.drawable.head4;
+            case 5:
+                return R.drawable.head5;
+            case 6:
+                return R.drawable.head6;
+            case 7:
+                return R.drawable.head7;
+            case 8:
+                return R.drawable.head8;
+            case 9:
+                return R.drawable.head9;
+            default:
+                return R.drawable.pc_default_head;
+        }
+    }
+
+    public boolean setUserAvatar(String name, int avatar) {
+        List<NameValuePair> avatarParams = new ArrayList<NameValuePair>();
+        avatarParams.add(new BasicNameValuePair("tag", updateAvatar));
+        avatarParams.add(new BasicNameValuePair("user_id", name));
+        avatarParams.add(new BasicNameValuePair("status", avatar + ""));
+        JSONObject avatarInfo = jsonParser.getJSONFromUrl(userSettingURL, avatarParams);
+        if (avatarInfo != null) {
+            try {
+                if (avatarInfo.getString("success").equals("1")) {
+                    db.updateAvatar(avatar);
+                    return true;
+                }
+                //发生错误
+                else {
+                    return false;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 }

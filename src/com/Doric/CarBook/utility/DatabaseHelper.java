@@ -18,44 +18,46 @@ import java.util.jar.JarException;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    // Logcat ±êÇ©
+    // Logcat æ ‡ç­¾
     private static final String LOG = "DatabaseHelper";
 
     private static final int DATABASE_VERSION = 1;
-    // Êı¾İ¿âÃû³Æ
+    // æ•°æ®åº“åç§°
     private static final String DATABASE_NAME = "carbook";
 
-    /***********     ±íÃû    *******************/
+    /***********     è¡¨å    *******************/
     private static final String TABLE_USER = "user";
     private static final String TABLE_COLLECTION = "collection";
 
 
-    /*****************    ¸÷±íµÄÁĞÃû      *************************/
+    /*****************    å„è¡¨çš„åˆ—å      *************************/
 
-    // Í¨ÓÃÁĞÃû
+    // é€šç”¨åˆ—å
     public static final String KEY_ID = "id";
     public static final String KEY_CREATED_AT = "create_at";
 
-    // user±í - ÁĞÃû
+    // userè¡¨ - åˆ—å
     public static final String KEY_USER_NAME = "username";
     public static final String KEY_USER_ID = "user_id";
+    public static final String KEY_USER_AVATAR = "user_avatar";
 
-    // collection±í - ÁĞÃû
+    // collectionè¡¨ - åˆ—å
     public static final String KEY_COLLECTION_CAR_ID = "car_id";
     public static final String KEY_COLLECTION_UER_ID = "user_id";
     //public static final String KEY_IS_SYNC = "is_sync";
 
-    /*************** ½¨±íÓï¾ä    *********************/
+    /*************** å»ºè¡¨è¯­å¥    *********************/
 
-    // user±í - ½¨±íÓï¾ä
+    // userè¡¨ - å»ºè¡¨è¯­å¥
     private static final String CREATE_TABLE_USER =
             "CREATE TABLE " + TABLE_USER + "("
             + KEY_ID + " INTEGER PRIMARY KEY,"
             + KEY_USER_ID + " INTEGER DEFAULT -1,"
             + KEY_USER_NAME + " TEXT,"
+            + KEY_USER_AVATAR + " INTEGER DEFAULT 0,"
             + KEY_CREATED_AT + " DATETIME" + ")";
 
-    // collection±í - ½¨±íÓï¾ä
+    // collectionè¡¨ - å»ºè¡¨è¯­å¥
     private static final String CREATE_TABLE_COLLECTION =
             "CREATE TABLE " + TABLE_COLLECTION + "("
             + KEY_ID + " INTEGER PRIMARY KEY,"
@@ -65,7 +67,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + KEY_CREATED_AT  + " DATETIME" + ")";
 
 
-    //Ä¬ÈÏÓÃ»§id£¬µ±ÓÃ»§Ã»ÓĞµÇÂ¼Ê±£¬ÊÕ²ØÆû³µÊ±Ê¹ÓÃ
+    //é»˜è®¤ç”¨æˆ·idï¼Œå½“ç”¨æˆ·æ²¡æœ‰ç™»å½•æ—¶ï¼Œæ”¶è—æ±½è½¦æ—¶ä½¿ç”¨
     private static final int DEFAULT_USER_ID = -1;
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -74,7 +76,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        // ½¨±í
+        // å»ºè¡¨
         db.execSQL(CREATE_TABLE_USER);
         db.execSQL(CREATE_TABLE_COLLECTION);
     }
@@ -127,6 +129,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             user.put(KEY_USER_NAME, cursor.getString(cursor.getColumnIndex(KEY_USER_NAME)));
             user.put(KEY_CREATED_AT, cursor.getString(cursor.getColumnIndex(KEY_CREATED_AT)));
             user.put(KEY_USER_ID, cursor.getString(cursor.getColumnIndex(KEY_USER_ID)));
+            user.put(KEY_USER_AVATAR,cursor.getString(cursor.getColumnIndex(KEY_USER_AVATAR)));
         }
         cursor.close();
         db.close();
@@ -146,6 +149,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
 
         return count;
+    }
+
+    public int updateAvatar(int avatar) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_USER_AVATAR, avatar);
+        return db.update(TABLE_USER, values, null, null);
     }
 
     public boolean isCarCollected(int carId) {
@@ -196,9 +206,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * ½«collection±íËùÓĞµÄuser_id¶¼¸ÄÎª@param userId
-     * @param userId  ÓÃ»§ÔÚ·şÎñÆ÷ÉÏµÄ±£´æµÄuser_id
-     * @return  ¸üĞÂµÄ±íµÄĞĞÊı
+     * å°†collectionè¡¨æ‰€æœ‰çš„user_idéƒ½æ”¹ä¸º@param userId
+     * @param userId  ç”¨æˆ·åœ¨æœåŠ¡å™¨ä¸Šçš„ä¿å­˜çš„user_id
+     * @return  æ›´æ–°çš„è¡¨çš„è¡Œæ•°
      */
     public int addUserIdToCollection(int userId) {
         SQLiteDatabase db = this.getWritableDatabase();

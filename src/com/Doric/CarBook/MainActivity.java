@@ -290,11 +290,16 @@ public class MainActivity extends InstrumentedActivity {
                 if (userFunctions.isUserLoggedIn()) {
                     String username = userFunctions.getUsername(); //获取用户名
                     viewHolder.textView.setText(username);
+                    final float scale = getContext().getResources().getDisplayMetrics().density;
+                    viewHolder.imageView.getLayoutParams().height = (int) (64 * scale + 0.5f);
+                    viewHolder.imageView.getLayoutParams().width = (int) (64 * scale + 0.5f);
+                    viewHolder.imageView.setImageResource(userFunctions.getUserAvatarResource());
                 } else {
                     viewHolder.textView.setText("注册登录");
+                    viewHolder.imageView.setImageResource(icons[position]);
                 }
                 viewHolder.textView.setTextColor(Color.WHITE);
-                viewHolder.imageView.setImageResource(icons[position]);
+
             } else {
                 viewHolder.textView.setText(values[position]);
                 viewHolder.imageView.setImageResource(icons[position]);
