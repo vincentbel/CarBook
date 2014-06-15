@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
@@ -36,6 +38,7 @@ public class MyComments extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.my_comments);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         progressBar = (ProgressBar) findViewById(R.id.comment_progress_bar);
         noCommentsTextView = (TextView) findViewById(R.id.no_comments);
 
@@ -47,6 +50,17 @@ public class MyComments extends Activity {
 
         commentList = (ListView) findViewById(R.id.my_comments_list);
         new GetMyComments().execute();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private class GetMyComments extends AsyncTask<Void, Void, Void> {

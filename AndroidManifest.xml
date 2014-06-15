@@ -87,7 +87,8 @@
         </activity>
 
         <activity android:name=".member.MyComments"
-                  android:screenOrientation="portrait">
+                  android:screenOrientation="portrait"
+                  android:parentActivityName="com.Doric.CarBook.MainActivity">
         </activity>
 
         <activity
