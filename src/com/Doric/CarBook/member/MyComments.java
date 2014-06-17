@@ -29,6 +29,7 @@ public class MyComments extends Activity {
     ListView commentList;
     ProgressBar progressBar;
     TextView noCommentsTextView;
+    String title = "我的评论";
 
     private ImageLoader imageLoader = ImageLoader.getInstance();
     private List<ImageView> imageViews = new ArrayList<ImageView>();
@@ -39,6 +40,7 @@ public class MyComments extends Activity {
 
         setContentView(R.layout.my_comments);
         getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setTitle(title);
         progressBar = (ProgressBar) findViewById(R.id.comment_progress_bar);
         noCommentsTextView = (TextView) findViewById(R.id.no_comments);
 
