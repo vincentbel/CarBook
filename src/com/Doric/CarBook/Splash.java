@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.TextView;
 import cn.jpush.android.api.JPushInterface;
 import com.Doric.CarBook.search.CarSeableData;
 
@@ -32,6 +36,13 @@ public class Splash extends Activity {
             }
 
         }, SPLASH_DISPLAY_LENGTH);
+
+        TextView appNameTextView = (TextView) findViewById(R.id.splash_app_name);
+        ImageView appImageView = (ImageView) findViewById(R.id.splash_app_image);
+        Animation appImageAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.splash_app_image);
+        Animation appNameAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.splash_app_name);
+        appNameTextView.startAnimation(appNameAnimation);
+        appImageView.startAnimation(appImageAnimation);
     }
 
     @Override

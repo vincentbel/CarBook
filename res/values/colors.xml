@@ -7,4 +7,6 @@
     <color name="transparent">#00000000</color>
     <color name="background_dark">#ff000000</color>
     <color name="background_light">#ffffffff</color>
+
+    <color name="base_blue">#0099FF</color>
 </resources>
