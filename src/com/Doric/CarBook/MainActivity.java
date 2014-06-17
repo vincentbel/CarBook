@@ -157,6 +157,7 @@ public class MainActivity extends InstrumentedActivity {
                 if (userFunctions.isUserLoggedIn()) {
                     fragment = new PersonalCenter();
                     fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                    mLeftDrawerTitle = leftDrawerTitles[position];
                 } else {
                     startActivity(new Intent(this, Login.class));
                 }
@@ -167,6 +168,7 @@ public class MainActivity extends InstrumentedActivity {
                 args.putString("tag", "HotCarShow");
                 fragment.setArguments(args);
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                mLeftDrawerTitle = leftDrawerTitles[position];
                 break;
             case 2: //「找车」模块
                 Intent it  =new Intent();
@@ -176,10 +178,12 @@ public class MainActivity extends InstrumentedActivity {
             case 3: // [我的收藏]模块
                 fragment = new MyCollection();
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                mLeftDrawerTitle = leftDrawerTitles[position];
                 break;
             case 4: // 「设置」模块
                 fragment = new SettingsFragment();
                 fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+                mLeftDrawerTitle = leftDrawerTitles[position];
                 break;
 
             default:
@@ -188,7 +192,6 @@ public class MainActivity extends InstrumentedActivity {
 
         //更新选择的item和标题，然后关闭左侧侧拉栏
         drawerList.setItemChecked(position, true);
-        mLeftDrawerTitle = leftDrawerTitles[position];
         getActionBar().setTitle(mLeftDrawerTitle);
         drawerLayout.closeDrawer(drawerList);
     }
