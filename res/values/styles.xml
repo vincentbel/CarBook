@@ -1,5 +1,11 @@
-    <resources xmlns:android="http://schemas.android.com/apk/res/android">  
-      
+    <resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+        <style name="Theme.NoActionBar" parent="style/Theme.Carbook">
+            <item name="android:windowActionBar">false</item>
+            <item name="android:windowNoTitle">true</item>
+        </style>
+
         <!--<style name="AppBaseTheme" parent="android:Theme"></style>-->
       
         <style name="LoginTheme" parent="android:style/Theme.Holo.Light" >

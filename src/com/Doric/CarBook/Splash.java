@@ -22,8 +22,6 @@ public class Splash extends Activity {
         setContentView(R.layout.splash);
         //如果车辆品牌信息已经保存了，就预读取了
 
-        //隐藏Actionbar
-        getActionBar().hide();
 
         new Handler().postDelayed(new Runnable(){
 
